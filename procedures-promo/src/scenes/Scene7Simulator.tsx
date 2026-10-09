@@ -12,15 +12,15 @@ export const Scene7Simulator: React.FC = () => {
   const { fps } = useVideoConfig();
   const cam = {
     fx: ease(frame, [0, 46], [IF_CENTER.x, 675], GLIDE),
-    fy: ease(frame, [0, 46], [IF_CENTER.y + 24, 270], GLIDE),
+    fy: ease(frame, [0, 46], [IF_CENTER.y + 24, 256], GLIDE),
     s: ease(frame, [0, 46], [1.6, 0.88], EXPO_OUT),
   };
   const input = frame < S7.send ? typed(TEXT.userMessage, frame, S7.typeStart, S7.typeFpc) : "";
-  const reveal = Math.floor(ease(frame, [S7.agentReply, S7.agentReply + 40], [0, TEXT.agentReply.split(" ").length], (t) => t));
+  const reveal = Math.floor(ease(frame, [S7.agentReply, S7.agentReply + 30], [0, TEXT.agentReply.split(" ").length], (t) => t));
   return (
     <Stage>
       <Camera cam={cam}>
-        <ProcedureEditor s={scene7State(frame)} />
+        <ProcedureEditor s={scene7State(frame, fps)} />
       </Camera>
       <Simulator
         style={{
@@ -33,12 +33,12 @@ export const Scene7Simulator: React.FC = () => {
           caretOn: input.length < TEXT.userMessage.length || Math.floor(frame / 18) % 2 === 0,
           sendPress: frame >= S7.send - 2 && frame <= S7.send + 6 ? 1 : 0,
           userBubble: pop(frame, S7.send + 2, fps, 14),
-          typingDots: frame >= S7.trailStart + 30 && frame < S7.agentReply ? 1 : 0,
+          typingDots: frame >= S7.step1 && frame < S7.agentReply ? ease(frame, [S7.step1, S7.step1 + 8], [0, 1]) : 0,
           agentBubble: frame >= S7.agentReply ? pop(frame, S7.agentReply, fps, 16) : 0,
           agentWords: reveal,
           followed: pop(frame, S7.followed, fps, 9),
           flash: flashCurve(frame, S7.followed),
-          meta: ease(frame, [S7.followed + 14, S7.followed + 34], [0, 1]),
+          meta: ease(frame, [S7.executed, S7.executed + 20], [0, 1]),
         }}
       />
     </Stage>

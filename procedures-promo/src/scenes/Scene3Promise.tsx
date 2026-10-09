@@ -2,10 +2,10 @@ import React from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
 import { Stage } from "../components/Stage";
 import { RevealWords } from "../components/RevealText";
-import { Line, LogoTop, StatusDot } from "../components/Opening";
+import { Line } from "../components/Opening";
 import { COLORS, TEXT, ease } from "../theme";
 
-// "every time." locks at scene frame 96 (0:04.80 in the full video).
+// "every time." locks at scene frame 96.
 export const LOCK_FRAME = 96;
 
 export const PromiseLine: React.FC<{ frame: number; fps: number; style?: React.CSSProperties }> = ({
@@ -43,8 +43,6 @@ export const Scene3Promise: React.FC = () => {
   const { fps } = useVideoConfig();
   return (
     <Stage>
-      <LogoTop />
-      <StatusDot scale={1} lime={1} opacity={1} />
       <Line
         size={36}
         weight={500}

@@ -1,17 +1,13 @@
 import React from "react";
-import { useCurrentFrame, useVideoConfig } from "remotion";
+import { useCurrentFrame } from "remotion";
 import { Stage } from "../components/Stage";
-import { Line, LogoTop, StatusDot } from "../components/Opening";
-import { TEXT, ease, pop } from "../theme";
+import { Line } from "../components/Opening";
+import { TEXT, ease } from "../theme";
 
 export const Scene2CoreRule: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const dotPop = pop(frame, 8, fps, 7);
   return (
     <Stage>
-      <LogoTop />
-      <StatusDot scale={frame < 8 ? 1 : 0.6 + 0.4 * dotPop} lime={ease(frame, [8, 10], [0, 1])} opacity={1} />
       {/* Line 1 exits upward */}
       <Line
         size={32}

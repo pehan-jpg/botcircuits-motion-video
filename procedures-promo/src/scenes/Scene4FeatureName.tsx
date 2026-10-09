@@ -1,7 +1,6 @@
 import React from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
 import { Stage } from "../components/Stage";
-import { LogoTop, StatusDot } from "../components/Opening";
 import { PromiseLine } from "./Scene3Promise";
 import { COLORS, TEXT, ease } from "../theme";
 
@@ -57,8 +56,6 @@ export const Scene4FeatureName: React.FC = () => {
   return (
     <Stage>
       <div style={{ position: "absolute", inset: 0, ...out }}>
-        <LogoTop />
-        <StatusDot scale={1} lime={1} opacity={1} />
         <PromiseLine frame={200} fps={fps} />
       </div>
       <FeatureTitle frame={frame} />

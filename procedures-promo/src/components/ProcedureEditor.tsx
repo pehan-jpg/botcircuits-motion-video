@@ -2,67 +2,66 @@ import React from "react";
 import { COLORS, TEXT } from "../theme";
 
 // Editor card geometry, in world coordinates (the camera transforms the whole world).
-export const CARD = { x: 160, y: 56, w: 640, h: 428 };
+export const CARD = { x: 160, y: 50, w: 640, h: 412 };
 // Key element positions relative to the card, used to aim the cursor and the camera.
 export const POS = {
   title: { x: 24, y: 72, w: 592, h: 32 },
-  step: { y: 120 },
-  instr: { x: 140, y: 146, w: 360, h: 46 },
-  chip: { x: 510, y: 158 },
-  addPill: { x: 140, y: 208, w: 124, h: 24 },
-  branchHeader: { y: 212 },
-  ifCard: { x: 112, y: 238, w: 504, h: 92 },
-  elseCard: { x: 112, y: 340, w: 504, h: 40 },
+  step1: { x: 24, y: 120, w: 592, h: 32 },
+  addPill: { x: 64, y: 162, w: 128, h: 24 },
+  ifCard: { x: 64, y: 162, w: 552, h: 92 },
+  elseCard: { x: 64, y: 264, w: 552, h: 36 },
+  // Steps 2 and 3 slide down when the branch is inserted under step 1.
+  step2Y: [200, 316] as [number, number],
+  step3Y: [240, 356] as [number, number],
   cond: { x: 50, y: 12, w: 250, h: 26 },
   action: { x: 50, y: 50, w: 236, h: 26 },
-  toggle: { x: 312, y: 56, w: 26, h: 14 },
-  rail: { x: 44, y1: 132, y2: 360 },
+  toggle: { x: 306, y: 56, w: 26, h: 14 },
+  railX: 40,
 };
+export const BRANCH_Y = POS.ifCard.y + 46; // where the branch connector meets the IF card
 
 export type EditorState = {
-  rows: number[]; // staggered entry progress for the template rows (0→1)
+  rows: number[]; // staggered entry progress: top bar, procedure name
   titleText: string;
   titleFocus: boolean;
-  instrText: string;
-  instrFocus: boolean;
-  chip: number;
+  steps: [number, number, number]; // staggered pop-in of the three steps
   addPill: number; // 1 = visible, 0 = gone
-  branches: [number, number, number]; // header, IF card, ELSE IF card (spring progress)
-  condText: string;
-  condFocus: boolean;
+  branches: [number, number]; // IF card, ELSE IF card (spring progress)
+  condFocus: number;
   actionOpen: number;
   actionHover: number;
   actionSelected: boolean;
   toggle: number;
   glow: number;
   badge: number;
-  trail: number; // 0→1 along the rail (live execution traversal)
-  verifyActive: number;
+  triggered: number; // 0 = "Active Policy", 1 = "Strict Boundary Triggered" (lit)
+  trail: number; // 0→1 live execution path: step 1 → IF card
+  step1Active: number;
   ifActive: number;
+  executed: number;
   caretOn: boolean;
   saved: boolean;
 };
 
 export const EMPTY_EDITOR: EditorState = {
-  rows: [1, 1, 1, 1, 1, 1],
+  rows: [1, 1],
   titleText: "",
   titleFocus: false,
-  instrText: "",
-  instrFocus: false,
-  chip: 0,
-  addPill: 1,
-  branches: [0, 0, 0],
-  condText: "",
-  condFocus: false,
+  steps: [0, 0, 0],
+  addPill: 0,
+  branches: [0, 0],
+  condFocus: 0,
   actionOpen: 0,
   actionHover: -1,
   actionSelected: false,
   toggle: 0,
   glow: 0,
   badge: 0,
+  triggered: 0,
   trail: 0,
-  verifyActive: 0,
+  step1Active: 0,
   ifActive: 0,
+  executed: 0,
   caretOn: false,
   saved: false,
 };
@@ -106,16 +105,86 @@ const Caret: React.FC<{ on: boolean }> = ({ on }) => (
   />
 );
 
-const rowStyle = (p: number): React.CSSProperties => ({
-  opacity: p,
-  translate: `0px ${(1 - p) * 10}px`,
-});
+const Check: React.FC<{ color?: string }> = ({ color = COLORS.ink }) => (
+  <svg width={9} height={9} viewBox="0 0 10 10">
+    <path d="M2 5.2 L4.2 7.3 L8 3" stroke={color} strokeWidth={1.5} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+const StepRow: React.FC<{
+  n: number;
+  title: string;
+  y: number;
+  p: number;
+  active?: number;
+}> = ({ n, title, y, p, active = 0 }) => (
+  <div
+    style={{
+      position: "absolute",
+      left: POS.step1.x,
+      top: y,
+      width: POS.step1.w,
+      height: POS.step1.h,
+      boxSizing: "border-box",
+      borderRadius: 8,
+      border: active > 0 ? `1.5px solid rgba(210,248,0,${active})` : `1px solid ${COLORS.border}`,
+      background: active > 0 ? `rgba(210,248,0,${0.1 * active})` : COLORS.surface,
+      boxShadow: active > 0 ? `0 0 ${14 * active}px rgba(210,248,0,${0.5 * active})` : undefined,
+      opacity: Math.min(1, p * 1.4),
+      translate: `0px ${(1 - p) * 12}px`,
+      display: "flex",
+      alignItems: "center",
+      fontSize: 12,
+      fontWeight: 500,
+      letterSpacing: "-0.005em",
+      zIndex: 1,
+    }}
+  >
+    <span
+      style={{
+        position: "absolute",
+        left: POS.railX - POS.step1.x - 9,
+        width: 18,
+        height: 18,
+        borderRadius: 9,
+        border: `1px solid ${active > 0.5 ? COLORS.ink : COLORS.border}`,
+        background: active > 0.5 ? COLORS.lime : COLORS.surface,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 9,
+        color: active > 0.5 ? COLORS.ink : COLORS.grey,
+      }}
+    >
+      {n}
+    </span>
+    <span style={{ position: "absolute", left: 36 }}>
+      <span style={{ color: COLORS.greyLight, fontWeight: 400 }}>{n}.</span> {title}
+    </span>
+    <Badge bg={COLORS.runBg} fg={COLORS.runFg} style={{ position: "absolute", right: 10 }}>
+      RUN
+    </Badge>
+  </div>
+);
 
 const ACTIONS = ["Send message", "Run instruction", TEXT.action, "End conversation"];
 
 export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProperties }> = ({ s, style }) => {
   const focusBorder = (f: boolean) => (f ? "1px solid #111827" : `1px solid ${COLORS.border}`);
-  const ifBorder = s.glow > 0 ? `1.5px solid rgba(210,248,0,${s.glow})` : `1px solid ${COLORS.border}`;
+  const lit = Math.max(s.glow, s.ifActive);
+  const step2Y = lerp(POS.step2Y[0], POS.step2Y[1], s.branches[0]);
+  const step3Y = lerp(POS.step3Y[0], POS.step3Y[1], s.branches[0]);
+  const s1c = POS.step1.y + POS.step1.h / 2;
+  const s3c = step3Y + POS.step1.h / 2;
+  // Live trail: down the rail from step 1 to the branch, then across into the IF card.
+  const vLen = BRANCH_Y - s1c;
+  const hLen = POS.ifCard.x - POS.railX;
+  const dist = s.trail * (vLen + hLen);
+  const vDone = Math.min(dist, vLen);
+  const hDone = Math.max(0, dist - vLen);
+  const head = { x: POS.railX + hDone, y: s1c + vDone };
   return (
     <div
       style={{
@@ -134,7 +203,8 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
       {/* Top bar */}
       <div
         style={{
-          ...rowStyle(s.rows[0]),
+          opacity: s.rows[0],
+          translate: `0px ${(1 - s.rows[0]) * 10}px`,
           height: 44,
           borderBottom: `1px solid ${COLORS.border}`,
           display: "flex",
@@ -168,12 +238,13 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
       </div>
 
       {/* Procedure name */}
-      <div style={{ ...rowStyle(s.rows[1]), position: "absolute", left: POS.title.x, top: 54, fontSize: 9.5, color: COLORS.grey }}>
+      <div style={{ opacity: s.rows[1], position: "absolute", left: POS.title.x, top: 54, fontSize: 9.5, color: COLORS.grey }}>
         Procedure name
       </div>
       <div
         style={{
-          ...rowStyle(s.rows[1]),
+          opacity: s.rows[1],
+          translate: `0px ${(1 - s.rows[1]) * 10}px`,
           position: "absolute",
           left: POS.title.x,
           top: POS.title.y,
@@ -195,151 +266,56 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
         {s.titleFocus ? <Caret on={s.caretOn} /> : null}
       </div>
 
-      {/* Execution rail */}
+      {/* Step rail */}
       <div
         style={{
-          ...rowStyle(s.rows[2]),
           position: "absolute",
-          left: POS.rail.x,
-          top: POS.rail.y1,
+          left: POS.railX,
+          top: s1c,
           width: 1,
-          height: (POS.rail.y2 - POS.rail.y1) * Math.max(0.35, s.branches[2]),
+          height: (s3c - s1c) * s.steps[2],
           background: COLORS.border,
         }}
       />
+      {/* Branch connector */}
       <div
         style={{
           position: "absolute",
-          left: POS.rail.x - 0.5,
-          top: POS.rail.y1,
-          width: 2,
-          height: (284 - POS.rail.y1) * s.trail,
-          borderRadius: 1,
-          background: COLORS.lime,
-          boxShadow: "0 0 6px rgba(210,248,0,0.9)",
-          opacity: s.trail > 0 ? 1 : 0,
+          left: POS.railX,
+          top: BRANCH_Y,
+          width: hLen * s.branches[0],
+          height: 1,
+          background: COLORS.border,
         }}
       />
-      {s.trail > 0 && s.trail < 1 ? (
-        <div
-          style={{
-            position: "absolute",
-            left: POS.rail.x - 4.5,
-            top: POS.rail.y1 + (284 - POS.rail.y1) * s.trail - 4,
-            width: 9,
-            height: 9,
-            borderRadius: 5,
-            background: COLORS.lime,
-            boxShadow: "0 0 10px 4px rgba(210,248,0,0.75)",
-          }}
-        />
+      {/* Live execution trail */}
+      {s.trail > 0 ? (
+        <>
+          <div style={{ position: "absolute", left: POS.railX - 0.5, top: s1c, width: 2, height: vDone, background: COLORS.lime, boxShadow: "0 0 6px rgba(210,248,0,0.9)" }} />
+          <div style={{ position: "absolute", left: POS.railX, top: BRANCH_Y - 0.5, width: hDone, height: 2, background: COLORS.lime, boxShadow: "0 0 6px rgba(210,248,0,0.9)" }} />
+          {s.trail < 1 ? (
+            <div
+              style={{
+                position: "absolute",
+                left: head.x - 4.5,
+                top: head.y - 4.5,
+                width: 9,
+                height: 9,
+                borderRadius: 5,
+                background: COLORS.lime,
+                boxShadow: "0 0 10px 4px rgba(210,248,0,0.75)",
+                zIndex: 3,
+              }}
+            />
+          ) : null}
+        </>
       ) : null}
 
-      {/* Step 1 header */}
-      <div
-        style={{
-          ...rowStyle(s.rows[2]),
-          position: "absolute",
-          left: 24,
-          top: POS.step.y,
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          fontSize: 13,
-          fontWeight: 500,
-        }}
-      >
-        <span style={{ color: COLORS.greyLight, fontWeight: 400 }}>1.</span>
-        Verify eligibility
-      </div>
+      <StepRow n={1} title={TEXT.steps[0]} y={POS.step1.y} p={s.steps[0]} active={s.step1Active} />
+      <StepRow n={2} title={TEXT.steps[1]} y={step2Y} p={s.steps[1]} />
+      <StepRow n={3} title={TEXT.steps[2]} y={step3Y} p={s.steps[2]} />
 
-      {/* Row 1.1 — RUN instruction */}
-      <div
-        style={{
-          ...rowStyle(s.rows[3]),
-          position: "absolute",
-          left: 56,
-          top: POS.instr.y,
-          width: 560,
-          height: POS.instr.h,
-          borderRadius: 8,
-          background: `rgba(210,248,0,${0.16 * s.verifyActive})`,
-          boxShadow: s.verifyActive > 0 ? `inset 0 0 0 1px rgba(210,248,0,${0.9 * s.verifyActive})` : undefined,
-          marginLeft: -8,
-          paddingLeft: 8,
-        }}
-      >
-        <span style={{ position: "absolute", left: 8, top: 6, fontSize: 9.5, color: COLORS.greyLight }}>1.1</span>
-        <Badge bg={COLORS.runBg} fg={COLORS.runFg} style={{ position: "absolute", left: 32, top: 4 }}>
-          RUN
-        </Badge>
-        <span
-          style={{
-            position: "absolute",
-            left: 32,
-            top: 24,
-            fontSize: 8.5,
-            color: COLORS.grey,
-            background: "#F3F4F6",
-            borderRadius: 4,
-            padding: "2px 5px",
-          }}
-        >
-          Instruction
-        </span>
-      </div>
-      <div
-        style={{
-          ...rowStyle(s.rows[3]),
-          position: "absolute",
-          left: POS.instr.x,
-          top: POS.instr.y,
-          width: POS.instr.w,
-          height: POS.instr.h,
-          boxSizing: "border-box",
-          border: focusBorder(s.instrFocus),
-          background: COLORS.surface,
-          borderRadius: 8,
-          padding: "6px 10px",
-          fontSize: 11,
-          lineHeight: 1.5,
-          color: s.instrText ? COLORS.ink : COLORS.greyLight,
-        }}
-      >
-        {s.instrText || (s.instrFocus ? "" : "Describe what the agent should do…")}
-        {s.instrFocus ? <Caret on={s.caretOn} /> : null}
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          left: POS.chip.x,
-          top: POS.chip.y,
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-          fontSize: 9.5,
-          color: COLORS.greyLight,
-          opacity: s.chip,
-          scale: String(0.85 + 0.15 * s.chip),
-        }}
-      >
-        into
-        <span
-          style={{
-            background: COLORS.varBg,
-            color: COLORS.varFg,
-            borderRadius: 5,
-            padding: "3px 6px",
-            fontSize: 9.5,
-            fontWeight: 500,
-          }}
-        >
-          <span style={{ fontSize: 7.5, opacity: 0.7, marginRight: 3 }}>Aa</span>
-          order_age
-        </span>
-      </div>
-
-      {/* + Add branch rule */}
+      {/* + Add branch rule (under step 1) */}
       <div
         style={{
           position: "absolute",
@@ -350,49 +326,19 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
           boxSizing: "border-box",
           borderRadius: 12,
           border: `1px dashed #D1D5DB`,
+          background: COLORS.surface,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           gap: 4,
           fontSize: 10.5,
           color: COLORS.grey,
-          opacity: s.addPill * s.rows[4],
-          translate: `0px ${(1 - s.rows[4]) * 10}px`,
+          opacity: s.addPill,
           scale: String(0.9 + 0.1 * s.addPill),
         }}
       >
         <span style={{ fontSize: 13, lineHeight: 1 }}>+</span> Add branch rule
       </div>
-
-      {/* 1.2 IF header */}
-      <div
-        style={{
-          position: "absolute",
-          left: 64,
-          top: POS.branchHeader.y,
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          fontSize: 9.5,
-          color: COLORS.greyLight,
-          opacity: s.branches[0],
-          translate: `0px ${(1 - s.branches[0]) * 12}px`,
-        }}
-      >
-        1.2
-        <Badge bg={COLORS.ifBg} fg={COLORS.ifFg}>IF</Badge>
-        <span style={{ color: COLORS.grey }}>2 branches</span>
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          left: 100,
-          top: 232,
-          width: 1,
-          height: 150 * s.branches[2],
-          background: "#E9D5FF",
-        }}
-      />
 
       {/* IF card */}
       <div
@@ -404,14 +350,11 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
           height: POS.ifCard.h,
           boxSizing: "border-box",
           borderRadius: 10,
-          border: ifBorder,
+          border: s.glow > 0 ? `1.5px solid rgba(210,248,0,${s.glow})` : `1px solid ${COLORS.border}`,
           background: COLORS.surface,
-          boxShadow:
-            s.glow > 0 || s.ifActive > 0
-              ? `0 0 ${16 * Math.max(s.glow, s.ifActive)}px rgba(210,248,0,${0.55 * Math.max(s.glow, s.ifActive)})`
-              : "0 1px 2px rgba(17,24,39,0.04)",
-          opacity: Math.min(1, s.branches[1] * 1.5),
-          translate: `0px ${(1 - s.branches[1]) * 12}px`,
+          boxShadow: lit > 0 ? `0 0 ${16 * lit}px rgba(210,248,0,${0.55 * lit})` : "0 1px 2px rgba(17,24,39,0.04)",
+          opacity: Math.min(1, s.branches[0] * 1.5),
+          translate: `0px ${(1 - s.branches[0]) * 12}px`,
           zIndex: 2,
         }}
       >
@@ -428,16 +371,16 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
             height: POS.cond.h,
             boxSizing: "border-box",
             borderRadius: 6,
-            border: focusBorder(s.condFocus),
+            border: `1px solid ${COLORS.border}`,
+            boxShadow: s.condFocus > 0 ? `0 0 0 ${2 * s.condFocus}px rgba(17,24,39,${0.12 * s.condFocus})` : undefined,
             padding: "0 9px",
             display: "flex",
             alignItems: "center",
             fontSize: 11,
-            color: s.condText ? COLORS.ink : COLORS.greyLight,
+            color: COLORS.ink,
           }}
         >
-          {s.condText || "Add a condition…"}
-          {s.condFocus ? <Caret on={s.caretOn} /> : null}
+          {TEXT.condition}
         </div>
         <span
           style={{
@@ -454,9 +397,7 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
           Natural language
         </span>
 
-        <span style={{ position: "absolute", left: 12, top: 57, fontSize: 8.5, color: COLORS.greyLight, letterSpacing: "0.04em" }}>
-          THEN
-        </span>
+        <span style={{ position: "absolute", left: 14, top: 57, fontSize: 9.5, color: COLORS.greyLight }}>1.1</span>
         <div
           style={{
             position: "absolute",
@@ -466,7 +407,7 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
             height: POS.action.h,
             boxSizing: "border-box",
             borderRadius: 6,
-            border: focusBorder(s.actionOpen > 0.5),
+            border: s.executed > 0 ? `1px solid rgba(17,24,39,${0.2 + 0.8 * s.executed})` : focusBorder(s.actionOpen > 0.5),
             padding: "0 9px",
             display: "flex",
             alignItems: "center",
@@ -516,7 +457,30 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
           Strict Boundary Rule
         </span>
 
-        {/* ● Active Policy badge */}
+        {/* ✓ Executed */}
+        <div
+          style={{
+            position: "absolute",
+            right: 12,
+            top: 53,
+            height: 20,
+            padding: "0 8px",
+            borderRadius: 10,
+            background: COLORS.lime,
+            color: COLORS.ink,
+            display: "flex",
+            alignItems: "center",
+            gap: 4,
+            fontSize: 9.5,
+            fontWeight: 500,
+            opacity: Math.min(1, s.executed * 1.4),
+            scale: String(s.executed),
+          }}
+        >
+          <Check /> Executed
+        </div>
+
+        {/* ● Active Policy → ● Strict Boundary Triggered */}
         <div
           style={{
             position: "absolute",
@@ -525,19 +489,21 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
             height: 18,
             padding: "0 8px",
             borderRadius: 9,
-            background: COLORS.ink,
-            color: "#FFFFFF",
+            background: s.triggered > 0.5 ? COLORS.lime : COLORS.ink,
+            color: s.triggered > 0.5 ? COLORS.ink : "#FFFFFF",
+            boxShadow: s.triggered > 0 ? `0 0 ${16 * s.triggered}px ${3 * s.triggered}px rgba(210,248,0,${0.7 * s.triggered})` : undefined,
             display: "flex",
             alignItems: "center",
             gap: 5,
             fontSize: 9,
             fontWeight: 500,
+            whiteSpace: "nowrap",
             opacity: Math.min(1, s.badge * 1.4),
             scale: String(s.badge),
           }}
         >
-          <span style={{ width: 5, height: 5, borderRadius: 3, background: COLORS.lime }} />
-          Active Policy
+          <span style={{ width: 5, height: 5, borderRadius: 3, background: s.triggered > 0.5 ? COLORS.ink : COLORS.lime }} />
+          {s.triggered > 0.5 ? "Strict Boundary Triggered" : "Active Policy"}
         </div>
 
         {/* Action dropdown */}
@@ -603,15 +569,15 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
           padding: "0 12px",
           fontSize: 11,
           color: COLORS.grey,
-          opacity: Math.min(1, s.branches[2] * 1.5),
-          translate: `0px ${(1 - s.branches[2]) * 12}px`,
+          opacity: Math.min(1, s.branches[1] * 1.5),
+          translate: `0px ${(1 - s.branches[1]) * 12}px`,
         }}
       >
         <Badge bg={COLORS.ifBg} fg={COLORS.ifFg}>ELSE IF</Badge>
-        Order Age ≤ 30 Days
+        <span style={{ color: COLORS.ink }}>{TEXT.elseCondition}</span>
         <span style={{ color: COLORS.greyLight }}>→</span>
-        <Badge bg={COLORS.runBg} fg={COLORS.runFg}>RUN</Badge>
-        Calculate refund
+        <Badge bg={COLORS.sendBg} fg={COLORS.sendFg}>SEND</Badge>
+        Explain final-sale policy
       </div>
     </div>
   );

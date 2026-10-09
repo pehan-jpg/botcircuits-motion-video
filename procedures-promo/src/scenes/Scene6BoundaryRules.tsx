@@ -12,7 +12,7 @@ export const Scene6BoundaryRules: React.FC = () => {
   const { fps } = useVideoConfig();
   const cam = {
     fx: ease(frame, [0, 54], [480, IF_CENTER.x], GLIDE),
-    fy: ease(frame, [0, 54], [270, IF_CENTER.y + 24], GLIDE),
+    fy: ease(frame, [0, 54], [256, IF_CENTER.y + 24], GLIDE),
     s: ease(frame, [0, 60], [1, 1.6], EXPO_OUT),
   };
   const ifX = POS.ifCard.x;
@@ -26,18 +26,18 @@ export const Scene6BoundaryRules: React.FC = () => {
         <ProcedureEditor s={scene6State(frame, fps)} />
         <Cursor
           frame={frame}
-          opacity={ease(frame, [96, 106], [0, 1])}
+          opacity={ease(frame, [66, 76], [0, 1])}
           counterScale={1 / cam.s}
           clicks={[S6.actionClick, S6.optionClick, S6.toggleClick]}
           keys={[
-            { f: 96, x: action.x + 90, y: action.y + 70 },
-            { f: 124, x: action.x, y: action.y },
-            { f: 140, x: action.x, y: action.y },
-            { f: 160, x: option.x, y: option.y },
-            { f: 176, x: option.x, y: option.y },
-            { f: 202, x: toggle.x, y: toggle.y },
-            { f: 236, x: toggle.x, y: toggle.y },
-            { f: 280, x: toggle.x + 70, y: toggle.y + 60 },
+            { f: 66, x: action.x + 90, y: action.y + 70 },
+            { f: 94, x: action.x, y: action.y },
+            { f: 110, x: action.x, y: action.y },
+            { f: 130, x: option.x, y: option.y },
+            { f: 146, x: option.x, y: option.y },
+            { f: 172, x: toggle.x, y: toggle.y },
+            { f: 206, x: toggle.x, y: toggle.y },
+            { f: 250, x: toggle.x + 70, y: toggle.y + 60 },
           ]}
         />
       </Camera>

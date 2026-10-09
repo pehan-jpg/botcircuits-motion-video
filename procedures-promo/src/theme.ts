@@ -68,14 +68,18 @@ export const TEXT = {
   line3b: "It follows them",
   line3c: "every time.",
   feature: "BotCircuits Procedures.",
-  title: "Process Refund Request",
-  instruction:
-    "Verify if item is eligible for return and calculate refund based on order date.",
+  title: "Process Return & Refund Request",
+  steps: [
+    "Verify Order Eligibility & Policy Limits",
+    "Calculate Refund Amount & Deduct Restocking Fee",
+    "Generate Prepaid Shipping Label & Issue Credit",
+  ],
   condition: "Order Age > 30 Days",
+  elseCondition: "Item Marked Final Sale",
   action: "Escalate to Human Agent",
-  userMessage: "I want a refund for my order placed 40 days ago.",
+  userMessage: "I want to return my order placed 40 days ago.",
   agentReply:
-    "Your order was placed 40 days ago, which exceeds our 30-day window. I am connecting you with a human specialist right now.",
+    "Your order was placed 40 days ago, which exceeds our 30-day return policy. Connecting you with a human specialist now.",
   outro1: "You decided once.",
   outro2: "Every customer gets the right path.",
   outroSub: "BotCircuits Procedures",

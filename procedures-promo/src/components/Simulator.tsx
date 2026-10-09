@@ -49,24 +49,18 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
           gap: 3,
         }}
       >
-        <div style={{ fontSize: 13, fontWeight: 500, display: "flex", alignItems: "center", gap: 8 }}>
-          Simulator
-          <span style={{ fontSize: 9, color: COLORS.grey, fontWeight: 400, border: `1px solid ${COLORS.border}`, borderRadius: 8, padding: "1px 6px" }}>
-            Test mode
-          </span>
-        </div>
-        <div style={{ fontSize: 9.5, color: COLORS.grey }}>Procedure · {TEXT.title}</div>
+        <div style={{ fontSize: 13, fontWeight: 500 }}>Simulator</div>
+        <div style={{ fontSize: 9.5, color: COLORS.grey }}>Live test</div>
       </div>
 
       {/* ✓ Procedure Followed */}
       <div
         style={{
           position: "absolute",
-          left: 0,
-          right: 0,
-          top: 64,
+          right: 14,
+          top: 15,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "flex-end",
         }}
       >
         <div
@@ -98,7 +92,7 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
         style={{
           position: "absolute",
           right: 16,
-          top: 100,
+          top: 74,
           maxWidth: 220,
           padding: "8px 11px",
           borderRadius: "12px 12px 3px 12px",
@@ -116,7 +110,7 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
       </div>
 
       {/* Agent */}
-      <div style={{ position: "absolute", left: 16, top: 168, display: "flex", gap: 8, opacity: Math.max(st.typingDots, st.agentBubble) }}>
+      <div style={{ position: "absolute", left: 16, top: 142, display: "flex", gap: 8, opacity: Math.max(st.typingDots, st.agentBubble) }}>
         <div
           style={{
             width: 22,
