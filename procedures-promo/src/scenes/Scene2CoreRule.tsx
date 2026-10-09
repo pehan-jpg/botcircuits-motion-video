@@ -19,7 +19,7 @@ export const Scene2CoreRule: React.FC = () => {
       >
         <StaticLines lines={TEXT.line1} />
       </Line>
-      {/* Fast central scale-up, then a 5s hold */}
+      {/* Fast central scale-up, then a 2.5s hold */}
       <Line
         size={56}
         weight={500}

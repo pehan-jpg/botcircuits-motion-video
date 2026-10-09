@@ -22,28 +22,17 @@ export const track = (frame: number, keys: { f: number; v: number }[]) => {
 
 const caret = (frame: number) => Math.floor(frame / 18) % 2 === 0;
 
-// Scene 5 — the multi-step procedure builds downward, one card every 1.2s (72 frames).
-const GAP = 72;
+// Scene 5 — the multi-step procedure cascades in, one card every 0.6s (36 frames).
+const GAP = 36;
 export const S5 = {
   titleClick: 72,
   titleType: 76,
   titleFpc: 2,
-  h1: 150,
-  pill: 170,
-  addClick: 206,
+  cascade: 146,
 };
-export const S5_CARDS: Record<CardKey, number> = {
-  h1: S5.h1,
-  c11: S5.addClick + 6,
-  c12: S5.addClick + 6 + GAP,
-  h2: S5.addClick + 6 + GAP * 2 - 24,
-  c21: S5.addClick + 6 + GAP * 2,
-  c22: S5.addClick + 6 + GAP * 3,
-  h3: S5.addClick + 6 + GAP * 4 - 24,
-  c31: S5.addClick + 6 + GAP * 4,
-  c32: S5.addClick + 6 + GAP * 5,
-};
-export const S5_PULLBACK = S5_CARDS.c32 + 90;
+const ORDER: CardKey[] = ["h1", "c11", "c12", "h2", "c21", "c22", "h3", "c31", "c32"];
+export const S5_CARDS = Object.fromEntries(ORDER.map((k, i) => [k, S5.cascade + i * GAP])) as Record<CardKey, number>;
+export const S5_PULLBACK = S5_CARDS.c32 + 40;
 
 // Camera: follow the newest card down, then pull back to frame the whole procedure.
 const bottomOf: Record<CardKey, number> = {
@@ -64,12 +53,11 @@ export const FULL_VIEW = {
 };
 
 export const scene5Camera = (frame: number) => {
-  const keys: { f: number; v: number }[] = [{ f: 0, v: 256 }];
-  (Object.keys(S5_CARDS) as CardKey[]).forEach((k) => {
+  // Glide continuously from card to card as the cascade grows downward.
+  const keys: { f: number; v: number }[] = [{ f: S5.cascade, v: 256 }];
+  ORDER.forEach((k) => {
     const v = followY(k);
-    if (v !== keys[keys.length - 1].v) {
-      keys.push({ f: S5_CARDS[k] - 10, v: keys[keys.length - 1].v }, { f: S5_CARDS[k] + 30, v });
-    }
+    if (v !== keys[keys.length - 1].v) keys.push({ f: S5_CARDS[k] + 24, v });
   });
   keys.push({ f: S5_PULLBACK, v: keys[keys.length - 1].v }, { f: S5_PULLBACK + 60, v: FULL_VIEW.fy });
   return {
@@ -95,9 +83,8 @@ export const scene5State = (frame: number, fps: number): EditorState => {
     ...EMPTY_EDITOR,
     rows: [0, 1].map((i) => ease(frame, [14 + i * 6, 14 + i * 6 + 26], [0, 1])),
     titleText,
-    titleFocus: frame >= S5.titleClick && frame < S5.h1,
+    titleFocus: frame >= S5.titleClick && frame < S5.cascade,
     cards,
-    addPill: frame < S5.addClick ? ease(frame, [S5.pill, S5.pill + 14], [0, 1]) : ease(frame, [S5.addClick + 2, S5.addClick + 10], [1, 0]),
     caretOn: typing || caret(frame),
   };
 };
@@ -132,20 +119,20 @@ export const S6_END = scene6State(1000, 60);
 export const S7 = {
   typeStart: 50,
   typeFpc: 1,
-  send: 140,
-  step1: 156,
-  pass1: 186,
-  toStep2: 222,
-  step2: 252,
-  branch21: 282,
-  calc: 312,
-  toStep3: 350,
-  step3: 380,
-  label: 412,
-  send32: 440,
-  agentReply: 460,
-  allDone: 520,
-  pullBack: 540,
+  send: 136,
+  // Rapid 0.8s (48-frame) pulse per step
+  step1: 146,
+  pass1: 160,
+  toStep2: 186,
+  step2: 194,
+  branch21: 206,
+  calc: 218,
+  toStep3: 234,
+  step3: 242,
+  label: 254,
+  send32: 268,
+  agentReply: 280,
+  allDone: 330, // badge, then a 1.2s hold before the crossfade into scene 8
 };
 
 export const scene7State = (frame: number, fps: number): EditorState => {

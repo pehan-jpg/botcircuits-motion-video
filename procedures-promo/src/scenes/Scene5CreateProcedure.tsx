@@ -13,7 +13,6 @@ export const Scene5CreateProcedure: React.FC = () => {
   const { fps } = useVideoConfig();
   const cam = scene5Camera(frame);
   const title = W(POS.title.x + 300, POS.title.y + 18);
-  const add = W(POS.addPill.x + 64, POS.addPill.y + 13);
   return (
     <Stage>
       {/* Feature name dissolves as the camera pushes in */}
@@ -29,16 +28,14 @@ export const Scene5CreateProcedure: React.FC = () => {
         <ProcedureEditor s={scene5State(frame, fps)} style={{ opacity: ease(frame, [8, 30], [0, 1]) }} />
         <Cursor
           frame={frame}
-          opacity={ease(frame, [44, 56], [0, 1]) * ease(frame, [S5.addClick + 30, S5.addClick + 46], [1, 0])}
+          opacity={ease(frame, [44, 56], [0, 1]) * ease(frame, [S5.cascade + 20, S5.cascade + 36], [1, 0])}
           counterScale={1 / cam.s}
-          clicks={[S5.titleClick, S5.addClick]}
+          clicks={[S5.titleClick]}
           keys={[
             { f: 44, x: CARD.x + 560, y: CARD.y + 400 },
             { f: 70, x: title.x, y: title.y },
-            { f: 150, x: title.x, y: title.y },
-            { f: 202, x: add.x, y: add.y },
-            { f: 214, x: add.x, y: add.y },
-            { f: 250, x: add.x + 260, y: add.y + 90 },
+            { f: S5.cascade, x: title.x, y: title.y },
+            { f: S5.cascade + 36, x: title.x + 160, y: title.y + 120 },
           ]}
         />
       </Camera>

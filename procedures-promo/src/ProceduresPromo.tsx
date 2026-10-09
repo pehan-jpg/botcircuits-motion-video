@@ -15,10 +15,10 @@ export const ProceduresPromo: React.FC = () => {
   const { fps } = useVideoConfig();
   return (
     <TransitionSeries>
-      <TransitionSeries.Sequence name="1 · Intro Hook" durationInFrames={490} premountFor={fps}>
+      <TransitionSeries.Sequence name="1 · Intro Hook" durationInFrames={270} premountFor={fps}>
         <Scene1Hook />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="2 · Core Rule" durationInFrames={340} premountFor={fps}>
+      <TransitionSeries.Sequence name="2 · Core Rule" durationInFrames={190} premountFor={fps}>
         <Scene2CoreRule />
       </TransitionSeries.Sequence>
       <TransitionSeries.Sequence name="3 · Promise" durationInFrames={144} premountFor={fps}>
@@ -27,17 +27,17 @@ export const ProceduresPromo: React.FC = () => {
       <TransitionSeries.Sequence name="4 · Feature Name" durationInFrames={120} premountFor={fps}>
         <Scene4FeatureName />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="5 · Create Procedure" durationInFrames={872} premountFor={fps}>
+      <TransitionSeries.Sequence name="5 · Create Procedure" durationInFrames={594} premountFor={fps}>
         <Scene5CreateProcedure />
       </TransitionSeries.Sequence>
       <TransitionSeries.Sequence name="6 · Boundary Rules" durationInFrames={270} premountFor={fps}>
         <Scene6BoundaryRules />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="7 · Simulator" durationInFrames={660} premountFor={fps}>
+      <TransitionSeries.Sequence name="7 · Simulator" durationInFrames={426} premountFor={fps}>
         <Scene7Simulator />
       </TransitionSeries.Sequence>
       <TransitionSeries.Transition presentation={fade()} timing={linearTiming({ durationInFrames: 24 })} />
-      <TransitionSeries.Sequence name="8 · Outro" durationInFrames={520} premountFor={fps}>
+      <TransitionSeries.Sequence name="8 · Outro" durationInFrames={390} premountFor={fps}>
         <Scene8Outro />
       </TransitionSeries.Sequence>
     </TransitionSeries>

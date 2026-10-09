@@ -4,7 +4,7 @@ import { Stage } from "../components/Stage";
 import { Camera } from "../components/Camera";
 import { CARD, CONTENT_BOTTOM, ProcedureEditor } from "../components/ProcedureEditor";
 import { Simulator, flashCurve } from "../components/Simulator";
-import { FULL_VIEW, IF_CENTER, S7, scene7State, track } from "../editorTimeline";
+import { IF_CENTER, S7, scene7State, track } from "../editorTimeline";
 import { EXPO_OUT, TEXT, ease, pop, typed } from "../theme";
 
 // Split view: editor centred in the left 600px, simulator drawer on the right.
@@ -17,28 +17,18 @@ const BOTTOM_FY = CARD.y + CONTENT_BOTTOM - 270 / SPLIT_S + 10;
 export const Scene7Simulator: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const s =
-    frame < S7.pullBack
-      ? ease(frame, [0, 46], [1.6, SPLIT_S], EXPO_OUT)
-      : track(frame, [
-          { f: S7.pullBack, v: SPLIT_S },
-          { f: S7.pullBack + 60, v: FULL_VIEW.s },
-        ]);
   const cam = {
-    s,
+    s: ease(frame, [0, 46], [1.6, SPLIT_S], EXPO_OUT),
     fx: track(frame, [
       { f: 0, v: IF_CENTER.x },
       { f: 46, v: fxFor(SPLIT_S) },
-      { f: S7.pullBack, v: fxFor(SPLIT_S) },
-      { f: S7.pullBack + 60, v: fxFor(FULL_VIEW.s) },
     ]),
+    // Follows the traversal down to step 3.
     fy: track(frame, [
       { f: 0, v: IF_CENTER.y + 24 },
       { f: 46, v: TOP_FY },
-      { f: S7.toStep3 - 10, v: TOP_FY },
-      { f: S7.step3 + 10, v: BOTTOM_FY },
-      { f: S7.pullBack, v: BOTTOM_FY },
-      { f: S7.pullBack + 60, v: FULL_VIEW.fy },
+      { f: S7.toStep3 - 8, v: TOP_FY },
+      { f: S7.step3 + 16, v: BOTTOM_FY },
     ]),
   };
   const input = frame < S7.send ? typed(TEXT.userMessage, frame, S7.typeStart, S7.typeFpc) : "";
@@ -68,8 +58,8 @@ export const Scene7Simulator: React.FC = () => {
           typingDots: frame >= S7.step1 && frame < S7.agentReply ? ease(frame, [S7.step1, S7.step1 + 8], [0, 1]) : 0,
           status,
           agentBubble: frame >= S7.agentReply ? pop(frame, S7.agentReply, fps, 16) : 0,
-          agentWords: Math.floor(ease(frame, [S7.agentReply, S7.agentReply + 36], [0, wordCount], (t) => t)),
-          button: pop(frame, S7.agentReply + 40, fps, 12),
+          agentWords: Math.floor(ease(frame, [S7.agentReply, S7.agentReply + 30], [0, wordCount], (t) => t)),
+          button: pop(frame, S7.agentReply + 32, fps, 12),
           allDone: pop(frame, S7.allDone, fps, 9),
           flash: flashCurve(frame, S7.allDone),
           meta: ease(frame, [S7.allDone + 10, S7.allDone + 30], [0, 1]),

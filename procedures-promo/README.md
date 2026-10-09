@@ -1,6 +1,6 @@
 # BotCircuits Procedures — Promo Video
 
-Remotion project for the 8-scene "BotCircuits Procedures" SaaS promo (1920×1080, 60 fps, 56.5 s).
+Remotion project for the 8-scene "BotCircuits Procedures" SaaS promo (1920×1080, 60 fps, 39.7 s, no audio).
 
 ```bash
 npm i
