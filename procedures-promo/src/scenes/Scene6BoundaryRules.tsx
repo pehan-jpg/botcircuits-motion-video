@@ -3,8 +3,8 @@ import { useCurrentFrame, useVideoConfig } from "remotion";
 import { Stage } from "../components/Stage";
 import { Camera } from "../components/Camera";
 import { Cursor } from "../components/Cursor";
-import { POS, ProcedureEditor } from "../components/ProcedureEditor";
-import { IF_CENTER, S6, W, scene6State } from "../editorTimeline";
+import { POS, ProcedureEditor, ifCard } from "../components/ProcedureEditor";
+import { FULL_VIEW, IF_CENTER, S6, W, scene6State } from "../editorTimeline";
 import { EXPO_OUT, GLIDE, ease } from "../theme";
 
 export const Scene6BoundaryRules: React.FC = () => {
@@ -12,11 +12,11 @@ export const Scene6BoundaryRules: React.FC = () => {
   const { fps } = useVideoConfig();
   const cam = {
     fx: ease(frame, [0, 54], [480, IF_CENTER.x], GLIDE),
-    fy: ease(frame, [0, 54], [256, IF_CENTER.y + 24], GLIDE),
-    s: ease(frame, [0, 60], [1, 1.6], EXPO_OUT),
+    fy: ease(frame, [0, 54], [FULL_VIEW.fy, IF_CENTER.y + 24], GLIDE),
+    s: ease(frame, [0, 60], [FULL_VIEW.s, 1.6], EXPO_OUT),
   };
-  const ifX = POS.ifCard.x;
-  const ifY = POS.ifCard.y;
+  const ifX = ifCard.x;
+  const ifY = ifCard.y;
   const action = W(ifX + POS.action.x + 110, ifY + POS.action.y + 14);
   const option = W(ifX + POS.action.x + 90, ifY + POS.action.y + POS.action.h + 8 + 2 * 24 + 12);
   const toggle = W(ifX + POS.toggle.x + 14, ifY + POS.toggle.y + 8);

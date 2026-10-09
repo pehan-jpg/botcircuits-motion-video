@@ -1,34 +1,34 @@
 import React from "react";
 import { useCurrentFrame } from "remotion";
 import { Stage } from "../components/Stage";
-import { Line } from "../components/Opening";
+import { Line, StaticLines } from "../components/Opening";
 import { TEXT, ease } from "../theme";
 
 export const Scene2CoreRule: React.FC = () => {
   const frame = useCurrentFrame();
   return (
     <Stage>
-      {/* Line 1 exits upward */}
+      {/* Scene 1 text exits upward */}
       <Line
-        size={32}
-        weight={400}
+        size={52}
+        weight={500}
         style={{
           translate: `0px ${ease(frame, [0, 20], [0, -20])}px`,
           opacity: ease(frame, [0, 16], [1, 0]),
         }}
       >
-        {TEXT.line1}
+        <StaticLines lines={TEXT.line1} />
       </Line>
-      {/* Line 2: fast central scale-up */}
+      {/* Fast central scale-up, then a 5s hold */}
       <Line
-        size={36}
+        size={56}
         weight={500}
         style={{
           scale: String(ease(frame, [14, 40], [0.92, 1])),
           opacity: ease(frame, [14, 32], [0, 1]),
         }}
       >
-        {TEXT.line2}
+        <StaticLines lines={TEXT.line2} />
       </Line>
     </Stage>
   );

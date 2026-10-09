@@ -5,18 +5,26 @@ import { BrandMark } from "./BrandLogo";
 export const SIM = { x: 616, y: 20, w: 324, h: 500 };
 
 export type SimState = {
+  frame: number;
   inputText: string;
   caretOn: boolean;
   sendPress: number;
   userBubble: number;
-  typingDots: number; // 0 hidden, 1 visible
+  typingDots: number; // 0 hidden → 1 visible
+  status: string; // live step status under the typing indicator
   agentBubble: number;
   agentWords: number; // words of the reply revealed
-  followed: number; // badge pop progress
+  button: number; // [Download Label] pop progress
+  allDone: number; // header badge pop progress
   flash: number; // 1 at flash peak → 0
   meta: number;
-  frame: number;
 };
+
+const Check: React.FC<{ color?: string }> = ({ color = COLORS.ink }) => (
+  <svg width={10} height={10} viewBox="0 0 10 10">
+    <path d="M2 5.2 L4.2 7.3 L8 3" stroke={color} strokeWidth={1.4} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> = ({ st, style }) => {
   const words = TEXT.agentReply.split(" ");
@@ -52,48 +60,38 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
         <div style={{ fontSize: 13, fontWeight: 500 }}>Simulator</div>
         <div style={{ fontSize: 9.5, color: COLORS.grey }}>Live test</div>
       </div>
-
-      {/* ✓ Procedure Followed */}
+      {/* ✓ All 3 Procedures Executed */}
       <div
         style={{
           position: "absolute",
           right: 14,
           top: 15,
           display: "flex",
-          justifyContent: "flex-end",
+          alignItems: "center",
+          gap: 6,
+          height: 22,
+          padding: "0 10px",
+          borderRadius: 11,
+          background: COLORS.lime,
+          color: COLORS.ink,
+          fontSize: 10,
+          fontWeight: 500,
+          whiteSpace: "nowrap",
+          opacity: Math.min(1, st.allDone * 1.5),
+          scale: String(st.allDone),
+          boxShadow: `0 0 ${24 * st.flash}px ${6 * st.flash}px rgba(210,248,0,${0.8 * st.flash})`,
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            height: 22,
-            padding: "0 10px",
-            borderRadius: 11,
-            background: COLORS.lime,
-            color: COLORS.ink,
-            fontSize: 10,
-            fontWeight: 500,
-            opacity: Math.min(1, st.followed * 1.5),
-            scale: String(st.followed),
-            boxShadow: `0 0 ${24 * st.flash}px ${6 * st.flash}px rgba(210,248,0,${0.8 * st.flash})`,
-          }}
-        >
-          <svg width={10} height={10} viewBox="0 0 10 10">
-            <path d="M2 5.2 L4.2 7.3 L8 3" stroke={COLORS.ink} strokeWidth={1.4} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          Procedure Followed
-        </div>
+        <Check /> All 3 Procedures Executed
       </div>
 
-      {/* User message */}
+      {/* Customer message */}
       <div
         style={{
           position: "absolute",
           right: 16,
-          top: 74,
-          maxWidth: 220,
+          top: 70,
+          maxWidth: 228,
           padding: "8px 11px",
           borderRadius: "12px 12px 3px 12px",
           background: COLORS.ink,
@@ -110,7 +108,7 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
       </div>
 
       {/* Agent */}
-      <div style={{ position: "absolute", left: 16, top: 142, display: "flex", gap: 8, opacity: Math.max(st.typingDots, st.agentBubble) }}>
+      <div style={{ position: "absolute", left: 16, top: 150, display: "flex", gap: 8, opacity: Math.max(st.typingDots, st.agentBubble) }}>
         <div
           style={{
             width: 22,
@@ -130,9 +128,9 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             <div
               style={{
-                width: 236,
+                width: 242,
                 boxSizing: "border-box",
-                padding: "8px 11px",
+                padding: "9px 11px",
                 borderRadius: "12px 12px 12px 3px",
                 background: "#F3F4F6",
                 fontSize: 11,
@@ -146,36 +144,64 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
                   {w}{" "}
                 </span>
               ))}
+              <div
+                style={{
+                  marginTop: 8,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  height: 26,
+                  padding: "0 11px",
+                  borderRadius: 7,
+                  background: COLORS.ink,
+                  color: "#FFFFFF",
+                  fontSize: 10.5,
+                  fontWeight: 500,
+                  opacity: Math.min(1, st.button * 1.4),
+                  scale: String(0.9 + 0.1 * st.button),
+                  transformOrigin: "0 50%",
+                }}
+              >
+                <svg width={10} height={10} viewBox="0 0 10 10">
+                  <path d="M5 1.5 L5 6.5 M2.8 4.5 L5 6.7 L7.2 4.5 M2 8.5 L8 8.5" stroke="#FFFFFF" strokeWidth={1.2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Download Label
+              </div>
             </div>
             <div style={{ fontSize: 9, color: COLORS.grey, opacity: st.meta, display: "flex", alignItems: "center", gap: 5 }}>
               <span style={{ width: 5, height: 5, borderRadius: 3, background: COLORS.lime }} />
-              Escalated to human · Strict Boundary Rule
+              Steps 1 → 2.1 → 3.1 → 3.2 executed
             </div>
           </div>
         ) : (
-          <div
-            style={{
-              height: 26,
-              padding: "0 10px",
-              borderRadius: "12px 12px 12px 3px",
-              background: "#F3F4F6",
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-            }}
-          >
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                style={{
-                  width: 5,
-                  height: 5,
-                  borderRadius: 3,
-                  background: COLORS.greyLight,
-                  opacity: 0.4 + 0.6 * Math.max(0, Math.sin((st.frame - i * 5) / 5)),
-                }}
-              />
-            ))}
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <div
+              style={{
+                height: 26,
+                width: 44,
+                boxSizing: "border-box",
+                padding: "0 10px",
+                borderRadius: "12px 12px 12px 3px",
+                background: "#F3F4F6",
+                display: "flex",
+                alignItems: "center",
+                gap: 4,
+              }}
+            >
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  style={{
+                    width: 5,
+                    height: 5,
+                    borderRadius: 3,
+                    background: COLORS.greyLight,
+                    opacity: 0.4 + 0.6 * Math.max(0, Math.sin((st.frame - i * 5) / 5)),
+                  }}
+                />
+              ))}
+            </div>
+            <div style={{ fontSize: 9, color: COLORS.grey, whiteSpace: "nowrap" }}>{st.status}</div>
           </div>
         )}
       </div>
@@ -198,16 +224,20 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
           color: st.inputText ? COLORS.ink : COLORS.greyLight,
         }}
       >
-        <span style={{ flex: 1, whiteSpace: "nowrap", overflow: "hidden" }}>
-          {st.inputText || "Send a test message…"}
-          {st.inputText ? (
-            <span style={{ display: "inline-block", width: 1, height: 11, marginLeft: 1, verticalAlign: -2, background: COLORS.ink, opacity: st.caretOn ? 1 : 0 }} />
-          ) : null}
+        <span style={{ flex: 1, whiteSpace: "nowrap", overflow: "hidden", direction: "rtl", textAlign: "left" }}>
+          <bdi>
+            {st.inputText || "Send a test message…"}
+            {st.inputText ? (
+              <span style={{ display: "inline-block", width: 1, height: 11, marginLeft: 1, verticalAlign: -2, background: COLORS.ink, opacity: st.caretOn ? 1 : 0 }} />
+            ) : null}
+          </bdi>
         </span>
         <div
           style={{
             width: 26,
             height: 26,
+            flexShrink: 0,
+            marginLeft: 6,
             borderRadius: 8,
             background: st.inputText ? COLORS.ink : "#E5E7EB",
             display: "flex",

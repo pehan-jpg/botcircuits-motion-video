@@ -62,8 +62,8 @@ export const typed = (text: string, frame: number, start: number, framesPerChar:
   text.slice(0, Math.max(0, Math.floor((frame - start) / framesPerChar)));
 
 export const TEXT = {
-  line1: "Every customer asks something different.",
-  line2: "Your CX agent should still know exactly what to do.",
+  line1: ["Every customer asks", "something different."],
+  line2: ["Your CX agent should still", "know exactly what to do."],
   line3a: "Write the steps once.",
   line3b: "It follows them",
   line3c: "every time.",
@@ -77,10 +77,12 @@ export const TEXT = {
   condition: "Order Age > 30 Days",
   elseCondition: "Item Marked Final Sale",
   action: "Escalate to Human Agent",
-  userMessage: "I want to return my order placed 40 days ago.",
+  userMessage: "I'd like to return my jacket from order #8492. I changed my mind about the color.",
   agentReply:
-    "Your order was placed 40 days ago, which exceeds our 30-day return policy. Connecting you with a human specialist now.",
+    "I can help with that! A $15 restocking fee applies for preference returns. Your net refund will be $105.00. Here is your prepaid shipping label:",
   outro1: "You decided once.",
-  outro2: "Every customer gets the right path.",
-  outroSub: "BotCircuits Procedures",
+  outro2: ["Every customer gets", "the right path."],
 };
+
+// Hero logo size shared by Scene 1 and Scene 8 (140% of the 48px standard lock-up).
+export const HERO_LOGO_H = 48 * 1.4;

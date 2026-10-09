@@ -2,21 +2,53 @@ import React from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
 import { Stage } from "../components/Stage";
 import { Camera } from "../components/Camera";
-import { ProcedureEditor } from "../components/ProcedureEditor";
+import { CARD, CONTENT_BOTTOM, ProcedureEditor } from "../components/ProcedureEditor";
 import { Simulator, flashCurve } from "../components/Simulator";
-import { IF_CENTER, S7, scene7State } from "../editorTimeline";
-import { EXPO_OUT, GLIDE, TEXT, ease, pop, typed } from "../theme";
+import { FULL_VIEW, IF_CENTER, S7, scene7State, track } from "../editorTimeline";
+import { EXPO_OUT, TEXT, ease, pop, typed } from "../theme";
+
+// Split view: editor centred in the left 600px, simulator drawer on the right.
+const LEFT_CENTER = 308;
+const SPLIT_S = 0.88;
+const fxFor = (s: number) => 480 + (480 - LEFT_CENTER) / s;
+const TOP_FY = CARD.y + 270 / SPLIT_S;
+const BOTTOM_FY = CARD.y + CONTENT_BOTTOM - 270 / SPLIT_S + 10;
 
 export const Scene7Simulator: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const s =
+    frame < S7.pullBack
+      ? ease(frame, [0, 46], [1.6, SPLIT_S], EXPO_OUT)
+      : track(frame, [
+          { f: S7.pullBack, v: SPLIT_S },
+          { f: S7.pullBack + 60, v: FULL_VIEW.s },
+        ]);
   const cam = {
-    fx: ease(frame, [0, 46], [IF_CENTER.x, 675], GLIDE),
-    fy: ease(frame, [0, 46], [IF_CENTER.y + 24, 256], GLIDE),
-    s: ease(frame, [0, 46], [1.6, 0.88], EXPO_OUT),
+    s,
+    fx: track(frame, [
+      { f: 0, v: IF_CENTER.x },
+      { f: 46, v: fxFor(SPLIT_S) },
+      { f: S7.pullBack, v: fxFor(SPLIT_S) },
+      { f: S7.pullBack + 60, v: fxFor(FULL_VIEW.s) },
+    ]),
+    fy: track(frame, [
+      { f: 0, v: IF_CENTER.y + 24 },
+      { f: 46, v: TOP_FY },
+      { f: S7.toStep3 - 10, v: TOP_FY },
+      { f: S7.step3 + 10, v: BOTTOM_FY },
+      { f: S7.pullBack, v: BOTTOM_FY },
+      { f: S7.pullBack + 60, v: FULL_VIEW.fy },
+    ]),
   };
   const input = frame < S7.send ? typed(TEXT.userMessage, frame, S7.typeStart, S7.typeFpc) : "";
-  const reveal = Math.floor(ease(frame, [S7.agentReply, S7.agentReply + 30], [0, TEXT.agentReply.split(" ").length], (t) => t));
+  const wordCount = TEXT.agentReply.split(" ").length;
+  const status =
+    frame < S7.toStep2
+      ? "Step 1 · Verifying eligibility…"
+      : frame < S7.toStep3
+        ? "Step 2 · Calculating refund…"
+        : "Step 3 · Generating return label…";
   return (
     <Stage>
       <Camera cam={cam}>
@@ -34,11 +66,13 @@ export const Scene7Simulator: React.FC = () => {
           sendPress: frame >= S7.send - 2 && frame <= S7.send + 6 ? 1 : 0,
           userBubble: pop(frame, S7.send + 2, fps, 14),
           typingDots: frame >= S7.step1 && frame < S7.agentReply ? ease(frame, [S7.step1, S7.step1 + 8], [0, 1]) : 0,
+          status,
           agentBubble: frame >= S7.agentReply ? pop(frame, S7.agentReply, fps, 16) : 0,
-          agentWords: reveal,
-          followed: pop(frame, S7.followed, fps, 9),
-          flash: flashCurve(frame, S7.followed),
-          meta: ease(frame, [S7.executed, S7.executed + 20], [0, 1]),
+          agentWords: Math.floor(ease(frame, [S7.agentReply, S7.agentReply + 36], [0, wordCount], (t) => t)),
+          button: pop(frame, S7.agentReply + 40, fps, 12),
+          allDone: pop(frame, S7.allDone, fps, 9),
+          flash: flashCurve(frame, S7.allDone),
+          meta: ease(frame, [S7.allDone + 10, S7.allDone + 30], [0, 1]),
         }}
       />
     </Stage>
