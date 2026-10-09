@@ -10,8 +10,8 @@ export const Scene2CoreRule: React.FC = () => {
     <Stage>
       {/* Scene 1 text exits upward */}
       <Line
-        size={52}
-        weight={500}
+        size={34}
+        weight={400}
         style={{
           translate: `0px ${ease(frame, [0, 20], [0, -20])}px`,
           opacity: ease(frame, [0, 16], [1, 0]),
@@ -21,8 +21,8 @@ export const Scene2CoreRule: React.FC = () => {
       </Line>
       {/* Fast central scale-up, then a 2.5s hold */}
       <Line
-        size={56}
-        weight={500}
+        size={34}
+        weight={400}
         style={{
           scale: String(ease(frame, [14, 40], [0.92, 1])),
           opacity: ease(frame, [14, 32], [0, 1]),

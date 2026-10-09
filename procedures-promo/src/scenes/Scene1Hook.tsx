@@ -34,7 +34,7 @@ export const Scene1Hook: React.FC = () => {
       >
         <BrandLogo height={HERO_LOGO_H} />
       </div>
-      <Line size={52} weight={500}>
+      <Line size={34} weight={400}>
         <RevealLines lines={TEXT.line1} start={TEXT_IN} />
       </Line>
     </Stage>

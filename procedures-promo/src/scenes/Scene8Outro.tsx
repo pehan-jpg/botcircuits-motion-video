@@ -29,10 +29,10 @@ export const Scene8Outro: React.FC = () => {
           opacity: ease(frame, [TEXT_OUT, TEXT_OUT + 26], [1, 0]),
         }}
       >
-        <div style={{ fontSize: 36, fontWeight: 400, color: COLORS.grey, lineHeight: 1.2 }}>
+        <div style={{ fontSize: 34, fontWeight: 400, color: COLORS.grey, lineHeight: 1.25 }}>
           <RevealWords text={TEXT.outro1} start={10} offsetY={18} />
         </div>
-        <div style={{ fontSize: 56, fontWeight: 500, color: COLORS.ink, lineHeight: 1.15, marginTop: 14 }}>
+        <div style={{ fontSize: 34, fontWeight: 400, color: COLORS.ink, lineHeight: 1.25, marginTop: 8 }}>
           <RevealLines lines={TEXT.outro2} start={30} offsetY={20} />
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { loadFont } from "@remotion/fonts";
 import { Easing, interpolate, spring, staticFile } from "remotion";
 
-// Inter Regular (400) and Medium (500) only — no heavier weights anywhere.
+// Inter only. All headline / title-card copy is Regular (400) at 34px; Medium (500) appears only inside the product UI.
 // Bundled locally (variable font, Latin subset) so renders never depend on the network.
 export const fontFamily = "Inter";
 loadFont({
@@ -62,8 +62,8 @@ export const typed = (text: string, frame: number, start: number, framesPerChar:
   text.slice(0, Math.max(0, Math.floor((frame - start) / framesPerChar)));
 
 export const TEXT = {
-  line1: ["Every customer asks", "something different."],
-  line2: ["Your CX agent should still", "know exactly what to do."],
+  line1: ["Every customer asks something different."],
+  line2: ["Your CX agent should still know exactly what to do."],
   line3a: "Write the steps once.",
   line3b: "It follows them",
   line3c: "every time.",
@@ -81,7 +81,7 @@ export const TEXT = {
   agentReply:
     "I can help with that! A $15 restocking fee applies for preference returns. Your net refund will be $105.00. Here is your prepaid shipping label:",
   outro1: "You decided once.",
-  outro2: ["Every customer gets", "the right path."],
+  outro2: ["Every customer gets the right path."],
 };
 
 // Hero logo size shared by Scene 1 and Scene 8 (140% of the 48px standard lock-up).

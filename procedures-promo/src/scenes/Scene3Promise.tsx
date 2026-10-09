@@ -46,8 +46,8 @@ export const Scene3Promise: React.FC = () => {
   return (
     <Stage>
       <Line
-        size={56}
-        weight={500}
+        size={34}
+        weight={400}
         style={{
           opacity: ease(frame, [0, 16], [1, 0]),
           filter: `blur(${ease(frame, [0, 16], [0, 6])}px)`,
