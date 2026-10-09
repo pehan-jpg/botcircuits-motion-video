@@ -3,7 +3,7 @@ import { useCurrentFrame, useVideoConfig } from "remotion";
 import { Stage } from "../components/Stage";
 import { Camera } from "../components/Camera";
 import { CARD, CONTENT_BOTTOM, ProcedureEditor } from "../components/ProcedureEditor";
-import { Simulator, flashCurve } from "../components/Simulator";
+import { Simulator } from "../components/Simulator";
 import { FULL_VIEW, S7, scene7State, track } from "../editorTimeline";
 import { EXPO_OUT, TEXT, ease, pop, typed } from "../theme";
 
@@ -17,8 +17,10 @@ const BOTTOM_FY = CARD.y + CONTENT_BOTTOM - 270 / SPLIT_S + 10;
 const words = (text: string, frame: number, start: number) =>
   Math.floor(ease(frame, [start, start + 26], [0, text.split(" ").length], (t) => t));
 
-export const Scene7Simulator: React.FC = () => {
-  const frame = useCurrentFrame();
+// `atFrame` lets the orbit scene show this scene's final frame (Freeze would clamp to its own length).
+export const Scene7Simulator: React.FC<{ atFrame?: number }> = ({ atFrame }) => {
+  const current = useCurrentFrame();
+  const frame = atFrame ?? current;
   const { fps } = useVideoConfig();
   const cam = {
     s: ease(frame, [0, 46], [FULL_VIEW.s, SPLIT_S], EXPO_OUT),
@@ -71,8 +73,6 @@ export const Scene7Simulator: React.FC = () => {
           words: [words(TEXT.reply1, frame, S7.reply1), words(TEXT.reply2, frame, S7.reply2)],
           card: pop(frame, S7.card, fps, 15),
           hover: ease(frame, [S7.hover, S7.hover + 18], [0, 1]),
-          allDone: pop(frame, S7.allDone, fps, 9),
-          flash: flashCurve(frame, S7.allDone),
         }}
       />
     </Stage>

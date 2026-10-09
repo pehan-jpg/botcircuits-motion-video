@@ -16,15 +16,7 @@ export type SimState = {
   words: [number, number]; // words revealed per reply
   card: number; // interactive label card slide-in progress
   hover: number; // cursor over the download button
-  allDone: number; // header badge pop progress
-  flash: number;
 };
-
-const Check: React.FC<{ color?: string }> = ({ color = COLORS.ink }) => (
-  <svg width={10} height={10} viewBox="0 0 10 10">
-    <path d="M2 5.2 L4.2 7.3 L8 3" stroke={color} strokeWidth={1.4} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
 
 const Avatar: React.FC = () => (
   <div
@@ -207,31 +199,6 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
       <div style={{ fontSize: 13, fontWeight: 500 }}>Simulator</div>
       <div style={{ fontSize: 9.5, color: COLORS.grey }}>Live test</div>
     </div>
-    {/* ✓ All 3 Procedures Executed */}
-    <div
-      style={{
-        position: "absolute",
-        right: 14,
-        top: 15,
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
-        height: 22,
-        padding: "0 10px",
-        borderRadius: 11,
-        background: COLORS.lime,
-        color: COLORS.ink,
-        fontSize: 10,
-        fontWeight: 500,
-        whiteSpace: "nowrap",
-        opacity: Math.min(1, st.allDone * 1.5),
-        scale: String(st.allDone),
-        boxShadow: `0 0 ${18 * st.flash}px ${4 * st.flash}px rgba(210,248,0,${0.6 * st.flash})`,
-      }}
-    >
-      <Check /> All 3 Procedures Executed
-    </div>
-
     {/* Conversation: anchored to the bottom so earlier messages scroll up as new ones arrive */}
     <div
       style={{
@@ -331,6 +298,3 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
     </div>
   </div>
 );
-
-export const flashCurve = (frame: number, start: number) =>
-  frame < start ? 0 : ease(frame, [start, start + 6], [0, 1]) * ease(frame, [start + 6, start + 40], [1, 0]);

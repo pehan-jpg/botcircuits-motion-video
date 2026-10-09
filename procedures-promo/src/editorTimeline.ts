@@ -22,34 +22,51 @@ export const track = (frame: number, keys: { f: number; v: number }[]) => {
 
 const caret = (frame: number) => Math.floor(frame / 18) % 2 === 0;
 
-// ── Scene 5 — the whole procedure is built live, starting from a blank editor ──
-const TYPE = (start: number, k: FieldKey, fpc: number) => ({ start, fpc, end: start + Math.ceil(toksLen(FIELDS[k]) * fpc) });
-// A pill / dropdown click opens its menu; the cursor reaches the item and selects it 26 frames after the click.
-export const menuTimes = (click: number) => ({ open: click + 2, hover: click + 14, select: click + 26 });
+// ── Scene 5 — the procedure assembles itself section by section on a blank editor ──
+const FPC = 0.9; // 15ms per character
+const TAG = 9; // tags and pills snap in over ~0.15s
+const TYPE = (start: number, k: FieldKey) => ({ start, end: start + Math.ceil(toksLen(FIELDS[k]) * FPC) });
 
 export const S5 = (() => {
-  const title = { click: 72, start: 76, fpc: 1.6, end: 76 + Math.ceil(TEXT.title.length * 1.6) };
+  const title = { click: 50, start: 54, end: 54 + Math.ceil(TEXT.title.length * FPC) };
   // Step 1
-  const step1 = { click: title.end + 26 };
-  const cond11 = { click: step1.click + 28, ...TYPE(step1.click + 32, "cond11", 1.4) };
-  const action = { click: cond11.end + 18 };
-  const toggle = { click: menuTimes(action.click).select + 30 };
-  const c12 = toggle.click + 22;
+  const h1 = title.end + 14;
+  const c11 = h1 + 8;
+  const if11 = c11 + 10;
+  const cond11 = TYPE(if11 + TAG, "cond11");
+  const handoff11 = cond11.end + 8;
+  const act11 = TYPE(handoff11 + TAG, "act11");
+  const toggle = act11.end + 11;
+  const c12 = toggle + 18;
   // Step 2
-  const step2 = { click: c12 + 40 };
-  const cond = { click: step2.click + 34, ...TYPE(step2.click + 38, "cond21", 1.6) };
-  const set = { pill: cond.end + 22, hover: 0, ...TYPE(cond.end + 55, "set21", 1.6) };
-  const calc = { pill: set.end + 19, hover: 1, ...TYPE(set.end + 52, "calc21", 1.4) };
-  const c22 = calc.end + 14;
+  const h2 = c12 + 26;
+  const c21 = h2 + 8;
+  const if21 = c21 + 10;
+  const cond21 = TYPE(if21 + TAG, "cond21");
+  const set21 = cond21.end + 10;
+  const setT = TYPE(set21 + TAG, "set21");
+  const calc21 = setT.end + 9;
+  const calcT = TYPE(calc21 + TAG, "calc21");
+  const c22 = calcT.end + 13;
   // Step 3
-  const pan3 = calc.end + 20;
-  const step3 = { click: pan3 + 46 };
-  const api = { pill: step3.click + 40, hover: 2, ...TYPE(step3.click + 76, "api31", 1.3) };
-  const send = { pill: api.end + 28, hover: 3, ...TYPE(api.end + 64, "send32", 0.8) };
-  const done = send.end + 4;
-  return { title, step1, cond11, action, toggle, c12, step2, cond, set, calc, c22, pan3, step3, api, send, done, pullBack: done + 16 };
+  const pan3 = c22 + 8;
+  const h3 = pan3 + 18;
+  const c31 = h3 + 8;
+  const api31 = c31 + 10;
+  const apiT = TYPE(api31 + TAG, "api31");
+  const returns = apiT.end + 4;
+  const c32 = returns + 12;
+  const send32 = c32 + 10;
+  const sendT = TYPE(send32 + TAG, "send32");
+  const done = sendT.end + 6;
+  return {
+    title, h1, c11, if11, cond11, handoff11, act11, toggle, c12,
+    h2, c21, if21, cond21, set21, setT, calc21, calcT, c22,
+    pan3, h3, c31, api31, apiT, returns, c32, send32, sendT, done,
+    pullBack: done + 10,
+  };
 })();
-export const S5_LENGTH = S5.pullBack + 60 + 50;
+export const S5_LENGTH = S5.pullBack + 60 + 40;
 
 export const FULL_VIEW = {
   s: 540 / (CONTENT_BOTTOM + 60),
@@ -65,129 +82,85 @@ export const scene5Camera = (frame: number) => ({
   fy: track(frame, [
     { f: 0, v: 256 },
     { f: S5.title.end, v: 256 },
-    { f: S5.step1.click + 30, v: STEP1_FY },
-    { f: S5.step2.click + 6, v: STEP1_FY },
-    { f: S5.step2.click + 40, v: STEP2_FY },
+    { f: S5.h1 + 24, v: STEP1_FY },
+    { f: S5.h2 - 6, v: STEP1_FY },
+    { f: S5.h2 + 24, v: STEP2_FY },
     { f: S5.pan3, v: STEP2_FY },
-    { f: S5.pan3 + 40, v: STEP3_FY },
+    { f: S5.pan3 + 32, v: STEP3_FY },
     { f: S5.pullBack, v: STEP3_FY },
     { f: S5.pullBack + 60, v: FULL_VIEW.fy },
   ]),
   s:
     frame < S5.title.end
-      ? ease(frame, [8, 60], [0.8, 1])
+      ? ease(frame, [8, 50], [0.8, 1])
       : track(frame, [
           { f: S5.title.end, v: 1 },
-          { f: S5.step1.click + 30, v: WORK_S },
+          { f: S5.h1 + 24, v: WORK_S },
           { f: S5.pullBack, v: WORK_S },
           { f: S5.pullBack + 60, v: FULL_VIEW.s },
         ]),
 });
 
-const typedAt = (frame: number, t: { start: number; fpc: number }, k: FieldKey) =>
-  Math.min(toksLen(FIELDS[k]), Math.max(0, Math.floor((frame - t.start) / t.fpc)));
+const typedAt = (frame: number, t: { start: number }, k: FieldKey) =>
+  Math.min(toksLen(FIELDS[k]), Math.max(0, Math.floor((frame - t.start) / FPC)));
 
 export const scene5State = (frame: number, fps: number): EditorState => {
-  const fadeIn = (f: number) => ease(frame, [f, f + 12], [0, 1]);
-  const fadeOut = (f: number) => ease(frame, [f, f + 6], [1, 0]);
-  const mAction = menuTimes(S5.action.click);
-  const mSet = menuTimes(S5.set.pill);
-  const mCalc = menuTimes(S5.calc.pill);
-  const mApi = menuTimes(S5.api.pill);
-  const mSend = menuTimes(S5.send.pill);
+  const snap = (f: number) => ease(frame, [f, f + TAG], [0, 1], (x) => x);
   const cards: Record<CardKey, number> = {
-    h1: pop(frame, S5.step1.click + 4, fps, 14),
-    c11: pop(frame, S5.step1.click + 12, fps, 14),
-    c12: pop(frame, S5.c12, fps, 14),
-    h2: pop(frame, S5.step2.click + 4, fps, 14),
-    c21: pop(frame, S5.step2.click + 12, fps, 14),
-    c22: pop(frame, S5.c22, fps, 14),
-    h3: pop(frame, S5.step3.click + 4, fps, 14),
-    c31: pop(frame, mApi.select, fps, 14),
-    c32: pop(frame, mSend.select, fps, 14),
+    h1: pop(frame, S5.h1, fps, 15),
+    c11: pop(frame, S5.c11, fps, 15),
+    c12: pop(frame, S5.c12, fps, 15),
+    h2: pop(frame, S5.h2, fps, 15),
+    c21: pop(frame, S5.c21, fps, 15),
+    c22: pop(frame, S5.c22, fps, 15),
+    h3: pop(frame, S5.h3, fps, 15),
+    c31: pop(frame, S5.c31, fps, 15),
+    c32: pop(frame, S5.c32, fps, 15),
   };
-
-  const titleText = typed(TEXT.title, frame, S5.title.start, S5.title.fpc);
-  const fields: [FieldKey, { start: number; end: number; fpc: number }, number][] = [
-    ["cond11", S5.cond11, S5.cond11.click],
-    ["cond21", S5.cond, S5.cond.click],
-    ["set21", S5.set, S5.set.start - 4],
-    ["calc21", S5.calc, S5.calc.start - 4],
-    ["api31", S5.api, S5.api.start - 4],
-    ["send32", S5.send, S5.send.start - 4],
+  const fields: [FieldKey, { start: number; end: number }][] = [
+    ["cond11", S5.cond11],
+    ["act11", S5.act11],
+    ["cond21", S5.cond21],
+    ["set21", S5.setT],
+    ["calc21", S5.calcT],
+    ["api31", S5.apiT],
+    ["send32", S5.sendT],
   ];
-  const focusField = fields.find(([, t, from]) => frame >= from && frame < t.end + 6);
-  const focus: FieldKey | null = focusField ? focusField[0] : null;
+  const focusField = fields.find(([, t]) => frame >= t.start - 2 && frame < t.end + 4);
   const typing =
     (frame >= S5.title.start && frame < S5.title.end) || fields.some(([, t]) => frame >= t.start && frame < t.end);
-
-  const menuFor = (m: ReturnType<typeof menuTimes>, hover: number) => ({
-    p: frame < m.select ? ease(frame, [m.open, m.open + 12], [0, 1]) : ease(frame, [m.select + 2, m.select + 10], [1, 0]),
-    hover: frame >= m.hover ? hover : -1,
-  });
-  const menu =
-    frame >= S5.api.pill
-      ? { at: "c3" as const, ...(frame >= S5.send.pill ? menuFor(mSend, S5.send.hover) : menuFor(mApi, S5.api.hover)) }
-      : { at: "c21" as const, ...(frame >= S5.calc.pill ? menuFor(mCalc, S5.calc.hover) : menuFor(mSet, S5.set.hover)) };
-
-  const addSlot = frame < S5.step1.click + 4 ? 0 : frame < S5.step2.click + 4 ? 1 : 2;
   return {
     ...EMPTY_EDITOR,
     rows: [0, 1].map((i) => ease(frame, [10 + i * 6, 10 + i * 6 + 26], [0, 1])),
-    titleText,
-    titleFocus: frame >= S5.title.click && frame < S5.title.end + 10,
+    titleText: typed(TEXT.title, frame, S5.title.start, FPC),
+    titleFocus: frame >= S5.title.click && frame < S5.title.end + 8,
     cards,
-    typed: {
-      cond11: typedAt(frame, S5.cond11, "cond11"),
-      cond21: typedAt(frame, S5.cond, "cond21"),
-      set21: typedAt(frame, S5.set, "set21"),
-      calc21: typedAt(frame, S5.calc, "calc21"),
-      api31: typedAt(frame, S5.api, "api31"),
-      send32: typedAt(frame, S5.send, "send32"),
+    tags: {
+      if11: snap(S5.if11),
+      handoff11: snap(S5.handoff11),
+      if21: snap(S5.if21),
+      set21: snap(S5.set21),
+      calc21: snap(S5.calc21),
+      api31: snap(S5.api31),
+      send32: snap(S5.send32),
     },
-    focus,
-    // Step 1.1: HANDOFF from the action dropdown, then the Strict Boundary Rule toggle.
-    actionOpen:
-      frame < mAction.select
-        ? ease(frame, [mAction.open, mAction.open + 14], [0, 1])
-        : ease(frame, [mAction.select + 2, mAction.select + 12], [1, 0]),
-    actionHover: frame >= mAction.hover ? 2 : -1,
-    actionSelected: frame >= mAction.select + 2,
-    toggle: ease(frame, [S5.toggle.click, S5.toggle.click + 10], [0, 1]),
-    glow: ease(frame, [S5.toggle.click + 2, S5.toggle.click + 24], [0, 1]),
-    badge: pop(frame, S5.toggle.click + 8, fps, 10),
-    // Step 2.1 actions
-    set21Row: pop(frame, mSet.select, fps, 14),
-    calc21Row: pop(frame, mCalc.select, fps, 14),
+    typed: Object.fromEntries(fields.map(([k, t]) => [k, typedAt(frame, t, k)])) as Record<FieldKey, number>,
+    focus: focusField ? focusField[0] : null,
+    set21Row: ease(frame, [S5.set21 - 2, S5.set21 + 4], [0, 1]),
+    calc21Row: ease(frame, [S5.calc21 - 2, S5.calc21 + 4], [0, 1]),
     c21H: track(frame, [
       { f: 0, v: 40 },
-      { f: S5.cond.end + 4, v: 40 },
-      { f: S5.cond.end + 16, v: 64 },
-      { f: mSet.select, v: 64 },
-      { f: mSet.select + 12, v: 88 },
-      { f: S5.calc.end + 4, v: 88 },
-      { f: S5.calc.end + 16, v: 86 },
+      { f: S5.set21 - 8, v: 40 },
+      { f: S5.set21, v: 64 },
+      { f: S5.calc21 - 8, v: 64 },
+      { f: S5.calc21, v: 86 },
     ]),
-    // "+ Add action" pills: each is visible from when it becomes useful until an action is picked.
-    pill21: {
-      p: Math.max(fadeIn(S5.cond.end + 8) * fadeOut(mSet.select), fadeIn(S5.set.end + 4) * fadeOut(mCalc.select)),
-      slot: frame < S5.set.end + 4 ? 1 : 2,
-    },
-    pill3: {
-      p: Math.max(fadeIn(S5.step3.click + 14) * fadeOut(mApi.select), fadeIn(S5.api.end + 10) * fadeOut(mSend.select)),
-      slot: frame < S5.api.end + 10 ? 0 : 1,
-    },
-    menu,
-    returnsChip: pop(frame, S5.api.end + 4, fps, 14),
-    // "+ Add a step…" row: the blank state, then below each new step until it is clicked.
-    addStep: {
-      p: Math.max(
-        fadeIn(30) * fadeOut(S5.step1.click + 2),
-        fadeIn(S5.c12 + 10) * fadeOut(S5.step2.click + 2),
-        fadeIn(S5.c22 + 10) * fadeOut(S5.step3.click + 2),
-      ),
-      slot: addSlot,
-    },
+    returnsChip: snap(S5.returns),
+    // Strict Boundary Rule: the toggle slides on with a micro-pulse.
+    toggle: ease(frame, [S5.toggle, S5.toggle + 8], [0, 1]),
+    togglePulse: ease(frame, [S5.toggle + 6, S5.toggle + 26], [0, 1], (x) => x),
+    glow: ease(frame, [S5.toggle + 2, S5.toggle + 20], [0, 1]),
+    badge: pop(frame, S5.toggle + 6, fps, 10),
     caretOn: typing || caret(frame),
   };
 };
@@ -215,9 +188,9 @@ export const S7 = {
   label: 612,
   card: 628,
   hover: 680,
-  allDone: 706, // header badge, then a 1.2s hold before the crossfade into scene 8
+  end: 710, // the 3D orbit scene picks up from this exact frame
 };
-export const S7_LENGTH = S7.allDone + 72 + 24;
+export const S7_LENGTH = S7.end;
 
 export const scene7State = (frame: number, fps: number): EditorState => {
   const on = (f: number, d = 10) => ease(frame, [f, f + d], [0, 1]);
@@ -228,14 +201,14 @@ export const scene7State = (frame: number, fps: number): EditorState => {
     // Inactive cards return to neutral borders; the toggle and badge still show the strict rule.
     glow: S5_END.glow * ease(frame, [0, 30], [1, 0]),
     // Only the executing step glows; finished steps keep a quiet check.
-    stepActive: [on(S7.step1) * off(S7.step2), on(S7.step2) * off(S7.step3), on(S7.step3) * off(S7.allDone)],
-    stepDone: [on(S7.step2, 6), on(S7.step3, 6), on(S7.allDone, 6)],
+    stepActive: [on(S7.step1) * off(S7.step2), on(S7.step2) * off(S7.step3), on(S7.step3)],
+    stepDone: [on(S7.step2, 6), on(S7.step3, 6), 0],
     passChip: pop(frame, S7.pass1, fps, 14),
     skipStep1Branches: on(S7.pass1, 18),
     c21Active: on(S7.branch21) * off(S7.step3),
     calcPill: pop(frame, S7.calc, fps, 11),
     c31Active: on(S7.step3 + 6) * off(S7.card),
     labelPill: pop(frame, S7.label, fps, 11),
-    c32Active: on(S7.card) * off(S7.allDone),
+    c32Active: on(S7.card),
   };
 };

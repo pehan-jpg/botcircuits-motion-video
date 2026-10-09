@@ -1,6 +1,6 @@
 # BotCircuits Procedures — Promo Video
 
-Remotion project for the "BotCircuits Procedures" SaaS promo (1920×1080, 60 fps, 43.7 s, no audio).
+Remotion project for the "BotCircuits Procedures" SaaS promo (1920×1080, 60 fps, 42.6 s, no audio).
 
 ```bash
 npm i
@@ -13,6 +13,7 @@ npx remotion render ProceduresPromo out/botcircuits-procedures-promo.mp4
 - `src/ProceduresPromo.tsx` — master timeline (TransitionSeries of the scenes)
 - `src/scenes/` — one file per scene; each is also registered on its own under **Scenes** in Studio
 - `src/components/ProcedureEditor.tsx` — the Procedures UI (shared by scenes 5 and 7)
+- `src/scenes/Scene7bOrbit.tsx` — 3D orbit canvas of procedure cards between the simulator and the outro
 - `src/editorTimeline.ts` — frame-accurate editor state for scenes 5 and 7 (live build from a blank editor, simulator traversal)
 - `src/theme.ts` — design system: colours, Inter 400/500, easing, copy
 
