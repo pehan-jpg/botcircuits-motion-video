@@ -13,13 +13,13 @@ export const ProceduresPromo: React.FC = () => {
   const { fps } = useVideoConfig();
   return (
     <TransitionSeries>
-      <TransitionSeries.Sequence name="1 · Intro Hook" durationInFrames={241} premountFor={fps}>
+      <TransitionSeries.Sequence name="1 · Intro Hook" durationInFrames={181} premountFor={fps}>
         <Scene1Hook />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="2 · Core Rule" durationInFrames={130} premountFor={fps}>
+      <TransitionSeries.Sequence name="2 · Core Rule" durationInFrames={100} premountFor={fps}>
         <Scene2CoreRule />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="3 · Introducing" durationInFrames={140} premountFor={fps}>
+      <TransitionSeries.Sequence name="3 · Introducing" durationInFrames={125} premountFor={fps}>
         <Scene3Introducing />
       </TransitionSeries.Sequence>
       <TransitionSeries.Sequence name="5 · Create Procedure" durationInFrames={1138} premountFor={fps}>
@@ -29,7 +29,7 @@ export const ProceduresPromo: React.FC = () => {
         <Scene7Simulator />
       </TransitionSeries.Sequence>
       <TransitionSeries.Transition presentation={fade()} timing={linearTiming({ durationInFrames: 24 })} />
-      <TransitionSeries.Sequence name="8 · Outro" durationInFrames={420} premountFor={fps}>
+      <TransitionSeries.Sequence name="8 · Outro" durationInFrames={300} premountFor={fps}>
         <Scene8Outro />
       </TransitionSeries.Sequence>
     </TransitionSeries>

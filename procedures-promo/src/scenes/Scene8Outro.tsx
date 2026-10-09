@@ -4,9 +4,9 @@ import { Stage } from "../components/Stage";
 import { BrandLogo } from "../components/BrandLogo";
 import { COLORS, HERO_LOGO_H, TEXT, ease } from "../theme";
 
-// 0:00–0:03.5 text + tagline (reveal + hold) → 0:03.5–0:04.0 dissolve to an empty canvas → hero logo scales in, then holds 2.0s.
-export const TEXT_OUT = 210;
-const LOGO_IN = 240;
+// 0:00–0:02.0 two text lines (reveal + hold) → dissolve to an empty canvas → hero logo with the tagline under it, 2.5s.
+export const TEXT_OUT = 120;
+const LOGO_IN = 150;
 const REVEAL_START = 10;
 
 // One line revealed upward through a bottom clipping mask; lines are staggered 35ms apart.
@@ -53,25 +53,27 @@ export const Scene8Outro: React.FC = () => {
         <MaskedLine i={1} style={{ fontSize: 34, lineHeight: 1.25, letterSpacing: "-0.025em", color: COLORS.ink, marginTop: 4 }}>
           {TEXT.outro2.join(" ")}
         </MaskedLine>
-        <MaskedLine i={2} style={{ fontSize: 20, lineHeight: 1.3, letterSpacing: "-0.01em", color: COLORS.grey, marginTop: 18 }}>
-          {TEXT.tagline}
-        </MaskedLine>
       </div>
 
-      {/* Standalone hero logo (same size as Scene 1) */}
+      {/* Hero logo (same size as Scene 1) with the tagline directly beneath; they reveal together */}
       {frame >= LOGO_IN ? (
         <div
           style={{
             position: "absolute",
             inset: 0,
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
+            gap: 22,
             opacity: ease(frame, [LOGO_IN, LOGO_IN + 30], [0, 1]),
             scale: String(ease(frame, [LOGO_IN, LOGO_IN + 60], [0.85, 1])),
           }}
         >
           <BrandLogo height={HERO_LOGO_H} />
+          <div style={{ fontSize: 20, fontWeight: 400, lineHeight: 1.3, letterSpacing: "-0.01em", color: COLORS.grey }}>
+            {TEXT.tagline}
+          </div>
         </div>
       ) : null}
     </Stage>

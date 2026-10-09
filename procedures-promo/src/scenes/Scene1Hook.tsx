@@ -5,7 +5,7 @@ import { BrandLogo } from "../components/BrandLogo";
 import { Line, RevealLines } from "../components/Opening";
 import { HERO_LOGO_H, TEXT, ease } from "../theme";
 
-// Hero logo (in, 1.0s hold, dissolve) → text reveal, 2.0s hold (exits upward at the start of scene 2).
+// Hero logo (in, 1.0s hold, dissolve) → text reveal, 1.0s hold (exits upward at the start of scene 2).
 const LOGO_IN = 0;
 const LOGO_RISE = 12;
 export const LOGO_OUT = LOGO_IN + LOGO_RISE + 60;

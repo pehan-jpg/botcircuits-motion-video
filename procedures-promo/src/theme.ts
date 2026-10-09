@@ -85,7 +85,7 @@ export const TEXT = {
   labelCardButton: "Download Shipping Label",
   outro1: "You decided once.",
   outro2: ["Every customer gets the right path."],
-  tagline: "AI Concierge for Scalable, Personalized Customer Operations.",
+  tagline: "AI Concierge for Scalable, Personalized Customer Operations",
 };
 
 // Hero logo size shared by Scene 1 and Scene 8 (140% of the 48px standard lock-up).
