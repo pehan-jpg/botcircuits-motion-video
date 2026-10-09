@@ -9,7 +9,7 @@ export type SimState = {
   inputText: string;
   caretOn: boolean;
   sendPress: number;
-  userBubble: number;
+  userBubbles: [number, number]; // customer messages 1 and 2
   typing: number; // typing indicator visibility
   status: string; // live step status under the typing indicator
   replies: [number, number]; // pop progress of agent replies 1 and 2
@@ -50,7 +50,7 @@ const enter = (p: number): React.CSSProperties => ({
 });
 
 const AgentBubble: React.FC<{ p: number; text: string; words: number }> = ({ p, text, words }) => (
-  <div style={{ display: "flex", gap: 8, ...enter(p) }}>
+  <div style={{ display: "flex", gap: 8, flexShrink: 0, ...enter(p) }}>
     <Avatar />
     <div
       style={{
@@ -73,9 +73,28 @@ const AgentBubble: React.FC<{ p: number; text: string; words: number }> = ({ p, 
   </div>
 );
 
+const UserBubble: React.FC<{ p: number; text: string }> = ({ p, text }) => (
+  <div
+    style={{
+      alignSelf: "flex-end",
+      maxWidth: 236,
+      padding: "8px 11px",
+      borderRadius: "12px 12px 3px 12px",
+      background: COLORS.ink,
+      color: "#FFFFFF",
+      fontSize: 11,
+      lineHeight: 1.45,
+      flexShrink: 0,
+      ...enter(p),
+    }}
+  >
+    {text}
+  </div>
+);
+
 // Agent reply 3: the interactive prepaid-label card.
 const LabelCard: React.FC<{ p: number; hover: number }> = ({ p, hover }) => (
-  <div style={{ display: "flex", opacity: Math.min(1, p * 1.4), translate: `${(1 - Math.min(1, p)) * 24}px 0px` }}>
+  <div style={{ display: "flex", flexShrink: 0, opacity: Math.min(1, p * 1.4), translate: `${(1 - Math.min(1, p)) * 24}px 0px` }}>
     <div
       style={{
         width: 304,
@@ -213,30 +232,28 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
       <Check /> All 3 Procedures Executed
     </div>
 
-    {/* Conversation */}
-    <div style={{ position: "absolute", left: 14, right: 14, top: 66, display: "flex", flexDirection: "column", gap: 10 }}>
-      {st.userBubble > 0 ? (
-        <div
-          style={{
-            alignSelf: "flex-end",
-            maxWidth: 236,
-            padding: "8px 11px",
-            borderRadius: "12px 12px 3px 12px",
-            background: COLORS.ink,
-            color: "#FFFFFF",
-            fontSize: 11,
-            lineHeight: 1.45,
-            ...enter(st.userBubble),
-          }}
-        >
-          {TEXT.userMessage}
-        </div>
-      ) : null}
+    {/* Conversation: anchored to the bottom so earlier messages scroll up as new ones arrive */}
+    <div
+      style={{
+        position: "absolute",
+        left: 14,
+        right: 14,
+        top: 62,
+        bottom: 78,
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
+        gap: 10,
+      }}
+    >
+      {st.userBubbles[0] > 0 ? <UserBubble p={st.userBubbles[0]} text={TEXT.userMessage} /> : null}
       {st.replies[0] > 0 ? <AgentBubble p={st.replies[0]} text={TEXT.reply1} words={st.words[0]} /> : null}
       {st.replies[1] > 0 ? <AgentBubble p={st.replies[1]} text={TEXT.reply2} words={st.words[1]} /> : null}
+      {st.userBubbles[1] > 0 ? <UserBubble p={st.userBubbles[1]} text={TEXT.userMessage2} /> : null}
       {st.card > 0 ? <LabelCard p={st.card} hover={st.hover} /> : null}
       {st.typing > 0 ? (
-        <div style={{ display: "flex", gap: 8, alignItems: "center", opacity: st.typing }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexShrink: 0, opacity: st.typing }}>
           <Avatar />
           <div
             style={{

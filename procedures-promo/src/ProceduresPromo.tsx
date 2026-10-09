@@ -25,7 +25,7 @@ export const ProceduresPromo: React.FC = () => {
       <TransitionSeries.Sequence name="5 · Create Procedure" durationInFrames={1138} premountFor={fps}>
         <Scene5CreateProcedure />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="7 · Simulator" durationInFrames={672} premountFor={fps}>
+      <TransitionSeries.Sequence name="7 · Simulator" durationInFrames={802} premountFor={fps}>
         <Scene7Simulator />
       </TransitionSeries.Sequence>
       <TransitionSeries.Transition presentation={fade()} timing={linearTiming({ durationInFrames: 24 })} />

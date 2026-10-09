@@ -34,12 +34,19 @@ export const Scene7Simulator: React.FC = () => {
       { f: S7.step3 + 18, v: BOTTOM_FY },
     ]),
   };
-  const input = frame < S7.send ? typed(TEXT.userMessage, frame, S7.typeStart, S7.typeFpc) : "";
+  // The input holds customer message 1, then (after reply 2) customer message 2.
+  const message = frame < S7.send2 && frame >= S7.type2Start ? TEXT.userMessage2 : TEXT.userMessage;
+  const input =
+    frame < S7.send
+      ? typed(TEXT.userMessage, frame, S7.typeStart, S7.typeFpc)
+      : frame >= S7.type2Start && frame < S7.send2
+        ? typed(TEXT.userMessage2, frame, S7.type2Start, S7.typeFpc)
+        : "";
   // A typing indicator precedes each agent message.
   const typingWindows: [number, number, string][] = [
-    [S7.step2 - 6, S7.reply1, "Step 2 · Calculating refund…"],
-    [S7.step3 - 2, S7.reply2, "Step 3 · Calling EasyPost…"],
-    [S7.reply2 + 30, S7.card, "Step 3 · Generating label…"],
+    [S7.step1 + 6, S7.reply1, "Step 1 · Verifying eligibility…"],
+    [S7.step2 + 4, S7.reply2, "Step 2 · Calculating refund…"],
+    [S7.step3 + 4, S7.card, "Step 3 · Generating label…"],
   ];
   const win = typingWindows.find(([a, b]) => frame >= a && frame < b);
   return (
@@ -55,9 +62,9 @@ export const Scene7Simulator: React.FC = () => {
         st={{
           frame,
           inputText: input,
-          caretOn: input.length < TEXT.userMessage.length || Math.floor(frame / 18) % 2 === 0,
-          sendPress: frame >= S7.send - 2 && frame <= S7.send + 6 ? 1 : 0,
-          userBubble: pop(frame, S7.send + 2, fps, 14),
+          caretOn: input.length < message.length || Math.floor(frame / 18) % 2 === 0,
+          sendPress: (frame >= S7.send - 2 && frame <= S7.send + 6) || (frame >= S7.send2 - 2 && frame <= S7.send2 + 6) ? 1 : 0,
+          userBubbles: [pop(frame, S7.send + 2, fps, 14), pop(frame, S7.send2 + 2, fps, 14)],
           typing: win ? ease(frame, [win[0], win[0] + 8], [0, 1]) : 0,
           status: win ? win[2] : "",
           replies: [pop(frame, S7.reply1, fps, 16), pop(frame, S7.reply2, fps, 16)],

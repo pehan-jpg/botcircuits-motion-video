@@ -139,6 +139,9 @@ export const EMPTY_EDITOR: EditorState = {
 // Muted accent: Pigmented Lime at 25% fill with a subtle 1px border.
 const LIME_FILL = (a: number) => `rgba(210,248,0,${0.25 * a})`;
 const LIME_EDGE = (a: number) => `rgba(170,200,0,${0.75 * a})`;
+// Active card during execution: white card, 1.5px Pigmented Lime stroke, 4px ambient glow at 15%.
+const ACTIVE_BORDER = (a: number) => `1.5px solid rgba(210,248,0,${a})`;
+const ACTIVE_GLOW = (a: number) => `0 0 4px 4px rgba(210,248,0,${0.15 * a})`;
 const GUIDE = "#E5E7EB";
 
 const BADGE = {
@@ -380,9 +383,9 @@ const SubCard: React.FC<{
       height: h ?? pos.h,
       boxSizing: "border-box",
       borderRadius: 10,
-      border: border ?? (active > 0 ? `1px solid ${LIME_EDGE(active)}` : `1px solid ${COLORS.border}`),
-      background: active > 0 ? LIME_FILL(active) : COLORS.surface,
-      boxShadow: shadow ?? "0 1px 2px rgba(17,24,39,0.04)",
+      border: border ?? (active > 0 ? ACTIVE_BORDER(active) : `1px solid ${COLORS.border}`),
+      background: COLORS.surface,
+      boxShadow: shadow ?? (active > 0 ? ACTIVE_GLOW(active) : "0 1px 2px rgba(17,24,39,0.04)"),
       opacity: Math.min(1, p * 1.5) * (1 - 0.55 * dim),
       translate: `0px ${(1 - Math.min(1, p)) * 12}px`,
       zIndex: z,
@@ -408,8 +411,9 @@ const StepRow: React.FC<{ n: number; p: number; active: number; done: number; ex
       height: POS.stepH,
       boxSizing: "border-box",
       borderRadius: 8,
-      border: active > 0 ? `1px solid ${LIME_EDGE(active)}` : `1px solid ${COLORS.border}`,
-      background: active > 0 ? LIME_FILL(active) : COLORS.surface,
+      border: active > 0 ? ACTIVE_BORDER(active) : `1px solid ${COLORS.border}`,
+      background: COLORS.surface,
+      boxShadow: active > 0 ? ACTIVE_GLOW(active) : undefined,
       opacity: Math.min(1, p * 1.4),
       translate: `0px ${(1 - Math.min(1, p)) * 12}px`,
       display: "flex",

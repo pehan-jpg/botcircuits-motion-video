@@ -194,27 +194,28 @@ export const scene5State = (frame: number, fps: number): EditorState => {
 
 export const S5_END = scene5State(10000, 60);
 
-// ── Scene 7 — four synchronized phases: chat on the right, the tree lights on the left ──
+// ── Scene 7 — a three-turn conversation; each turn lights its step on the left ──
 export const S7 = {
   typeStart: 50,
   typeFpc: 2.7, // 45ms per character
   send: 276,
-  // Phase 1 — message sent, step 1 validates
+  // Turn 1 — policy check (step 1) → reply 1
   step1: 282,
   pass1: 294,
-  // Phase 2 — step 2 evaluates branch 2.1, first agent reply
-  step2: 324,
-  branch21: 332,
-  calc: 348,
-  reply1: 364,
-  // Phase 3 — step 3 calls EasyPost, second agent reply
-  step3: 410,
-  reply2: 446,
-  // Phase 4 — label generated, interactive card delivered
-  label: 488,
-  card: 504,
-  hover: 552,
-  allDone: 576, // header badge, then a 1.2s hold before the crossfade into scene 8
+  reply1: 330,
+  // Turn 2 — fee calculation (step 2) → reply 2 with a confirmation prompt
+  step2: 372,
+  branch21: 380,
+  calc: 396,
+  reply2: 420,
+  // Turn 3 — customer confirms → label generation (step 3) → interactive card
+  type2Start: 478,
+  send2: 568,
+  step3: 576,
+  label: 612,
+  card: 628,
+  hover: 680,
+  allDone: 706, // header badge, then a 1.2s hold before the crossfade into scene 8
 };
 export const S7_LENGTH = S7.allDone + 72 + 24;
 
@@ -224,12 +225,14 @@ export const scene7State = (frame: number, fps: number): EditorState => {
   return {
     ...S5_END,
     saved: true,
-    // Only the executing node is lit; finished nodes keep a quiet check.
+    // Inactive cards return to neutral borders; the toggle and badge still show the strict rule.
+    glow: S5_END.glow * ease(frame, [0, 30], [1, 0]),
+    // Only the executing step glows; finished steps keep a quiet check.
     stepActive: [on(S7.step1) * off(S7.step2), on(S7.step2) * off(S7.step3), on(S7.step3) * off(S7.allDone)],
     stepDone: [on(S7.step2, 6), on(S7.step3, 6), on(S7.allDone, 6)],
     passChip: pop(frame, S7.pass1, fps, 14),
     skipStep1Branches: on(S7.pass1, 18),
-    c21Active: on(S7.branch21) * off(S7.step3 + 10),
+    c21Active: on(S7.branch21) * off(S7.step3),
     calcPill: pop(frame, S7.calc, fps, 11),
     c31Active: on(S7.step3 + 6) * off(S7.card),
     labelPill: pop(frame, S7.label, fps, 11),
