@@ -4,8 +4,7 @@ import { fade } from "@remotion/transitions/fade";
 import { useVideoConfig } from "remotion";
 import { Scene1Hook } from "./scenes/Scene1Hook";
 import { Scene2CoreRule } from "./scenes/Scene2CoreRule";
-import { Scene3Promise } from "./scenes/Scene3Promise";
-import { Scene4FeatureName } from "./scenes/Scene4FeatureName";
+import { Scene3Introducing } from "./scenes/Scene3Introducing";
 import { Scene5CreateProcedure } from "./scenes/Scene5CreateProcedure";
 import { Scene6BoundaryRules } from "./scenes/Scene6BoundaryRules";
 import { Scene7Simulator } from "./scenes/Scene7Simulator";
@@ -15,17 +14,14 @@ export const ProceduresPromo: React.FC = () => {
   const { fps } = useVideoConfig();
   return (
     <TransitionSeries>
-      <TransitionSeries.Sequence name="1 · Intro Hook" durationInFrames={270} premountFor={fps}>
+      <TransitionSeries.Sequence name="1 · Intro Hook" durationInFrames={282} premountFor={fps}>
         <Scene1Hook />
       </TransitionSeries.Sequence>
       <TransitionSeries.Sequence name="2 · Core Rule" durationInFrames={190} premountFor={fps}>
         <Scene2CoreRule />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="3 · Promise" durationInFrames={144} premountFor={fps}>
-        <Scene3Promise />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="4 · Feature Name" durationInFrames={120} premountFor={fps}>
-        <Scene4FeatureName />
+      <TransitionSeries.Sequence name="3 · Introducing" durationInFrames={200} premountFor={fps}>
+        <Scene3Introducing />
       </TransitionSeries.Sequence>
       <TransitionSeries.Sequence name="5 · Create Procedure" durationInFrames={594} premountFor={fps}>
         <Scene5CreateProcedure />

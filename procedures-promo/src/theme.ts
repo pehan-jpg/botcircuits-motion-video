@@ -63,11 +63,9 @@ export const typed = (text: string, frame: number, start: number, framesPerChar:
 
 export const TEXT = {
   line1: ["Every customer asks something different."],
-  line2: ["Your CX agent should still know exactly what to do."],
-  line3a: "Write the steps once.",
-  line3b: "It follows them",
-  line3c: "every time.",
-  feature: "BotCircuits Procedures.",
+  line2: ["Your CX agent should still know what to do."],
+  introLead: "Introducing",
+  introName: "BotCircuits Procedures",
   title: "Process Return & Refund Request",
   steps: [
     "Verify Order Eligibility & Policy Limits",

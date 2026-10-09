@@ -4,7 +4,7 @@ import { Stage } from "../components/Stage";
 import { Camera } from "../components/Camera";
 import { Cursor } from "../components/Cursor";
 import { CARD, POS, ProcedureEditor } from "../components/ProcedureEditor";
-import { FeatureTitle } from "./Scene4FeatureName";
+import { IntroLine } from "./Scene3Introducing";
 import { S5, W, scene5Camera, scene5State } from "../editorTimeline";
 import { ease } from "../theme";
 
@@ -15,9 +15,10 @@ export const Scene5CreateProcedure: React.FC = () => {
   const title = W(POS.title.x + 300, POS.title.y + 18);
   return (
     <Stage>
-      {/* Feature name dissolves as the camera pushes in */}
-      <FeatureTitle
-        frame={200}
+      {/* Scene 3 line dissolves as the camera pushes in */}
+      <IntroLine
+        frame={400}
+        fps={fps}
         style={{
           opacity: ease(frame, [0, 22], [1, 0]),
           scale: String(ease(frame, [0, 30], [1, 1.08])),
