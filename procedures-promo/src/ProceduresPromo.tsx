@@ -25,10 +25,10 @@ export const ProceduresPromo: React.FC = () => {
       <TransitionSeries.Sequence name="5 · Create Procedure" durationInFrames={757} premountFor={fps}>
         <Scene5CreateProcedure />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="7 · Simulator" durationInFrames={710} premountFor={fps}>
+      <TransitionSeries.Sequence name="7 · Simulator" durationInFrames={716} premountFor={fps}>
         <Scene7Simulator />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="7b · Orbit Canvas" durationInFrames={384} premountFor={fps}>
+      <TransitionSeries.Sequence name="7b · Orbit Canvas" durationInFrames={300} premountFor={fps}>
         <Scene7bOrbit />
       </TransitionSeries.Sequence>
       <TransitionSeries.Sequence name="8 · Outro" durationInFrames={300} premountFor={fps}>

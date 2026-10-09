@@ -15,7 +15,9 @@ export type SimState = {
   replies: [number, number]; // pop progress of agent replies 1 and 2
   words: [number, number]; // words revealed per reply
   card: number; // interactive label card slide-in progress
-  hover: number; // cursor over the download button
+  hover: number; // cursor glides onto the download button
+  press: number; // 0→1→0 click (button scales to 96%)
+  clickPulse: number; // 0→1 lime pulse ring after the click
 };
 
 const Avatar: React.FC = () => (
@@ -85,7 +87,7 @@ const UserBubble: React.FC<{ p: number; text: string }> = ({ p, text }) => (
 );
 
 // Agent reply 3: the interactive prepaid-label card.
-const LabelCard: React.FC<{ p: number; hover: number }> = ({ p, hover }) => (
+const LabelCard: React.FC<{ p: number; hover: number; press: number; clickPulse: number }> = ({ p, hover, press, clickPulse }) => (
   <div style={{ display: "flex", flexShrink: 0, opacity: Math.min(1, p * 1.4), translate: `${(1 - Math.min(1, p)) * 24}px 0px` }}>
     <div
       style={{
@@ -139,7 +141,11 @@ const LabelCard: React.FC<{ p: number; hover: number }> = ({ p, hover }) => (
           gap: 7,
           fontSize: 11,
           fontWeight: 500,
-          scale: String(1 + 0.015 * hover),
+          scale: String(1 - 0.04 * press),
+          boxShadow:
+            clickPulse > 0 && clickPulse < 1
+              ? `0 0 0 ${7 * clickPulse}px rgba(210,248,0,${0.55 * (1 - clickPulse)})`
+              : undefined,
         }}
       >
         <svg width={11} height={11} viewBox="0 0 10 10">
@@ -218,7 +224,7 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
       {st.replies[0] > 0 ? <AgentBubble p={st.replies[0]} text={TEXT.reply1} words={st.words[0]} /> : null}
       {st.replies[1] > 0 ? <AgentBubble p={st.replies[1]} text={TEXT.reply2} words={st.words[1]} /> : null}
       {st.userBubbles[1] > 0 ? <UserBubble p={st.userBubbles[1]} text={TEXT.userMessage2} /> : null}
-      {st.card > 0 ? <LabelCard p={st.card} hover={st.hover} /> : null}
+      {st.card > 0 ? <LabelCard p={st.card} hover={st.hover} press={st.press} clickPulse={st.clickPulse} /> : null}
       {st.typing > 0 ? (
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexShrink: 0, opacity: st.typing }}>
           <Avatar />

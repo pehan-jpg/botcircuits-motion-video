@@ -187,8 +187,10 @@ export const S7 = {
   step3: 576,
   label: 612,
   card: 628,
-  hover: 680,
-  end: 710, // the 3D orbit scene picks up from this exact frame
+  hover: 650, // cursor glides onto the download button
+  click: 676,
+  zoom: 680, // exponential ease-in macro zoom through the button
+  end: 716, // the 3D orbit scene picks up from this exact frame
 };
 export const S7_LENGTH = S7.end;
 

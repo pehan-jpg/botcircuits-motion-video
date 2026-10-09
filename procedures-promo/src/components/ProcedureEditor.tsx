@@ -175,9 +175,9 @@ export const V: React.FC<{ children: string; p?: number; pulse?: number }> = ({ 
     <span
       style={{
         display: "inline-block",
-        background: pulse > 0 ? `rgba(210,248,0,${0.25 + 0.55 * pulse})` : COLORS.varBg,
-        color: pulse > 0.5 ? COLORS.ink : COLORS.varFg,
-        boxShadow: pulse > 0 ? `0 0 0 ${3 * pulse}px rgba(210,248,0,${0.25 * pulse})` : undefined,
+        background: COLORS.varBg,
+        boxShadow: pulse > 0 ? `inset 0 0 0 40px rgba(210,248,0,${0.25 * pulse}), 0 0 0 ${3 * pulse}px rgba(210,248,0,${0.25 * pulse})` : undefined,
+        color: COLORS.varFg,
         borderRadius: 4,
         padding: "0 5px",
         fontWeight: 500,
