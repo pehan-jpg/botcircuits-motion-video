@@ -5,11 +5,11 @@ import { BrandLogo } from "../components/BrandLogo";
 import { Line, RevealLines } from "../components/Opening";
 import { HERO_LOGO_H, TEXT, ease } from "../theme";
 
-// 0:00–0:01.5 hero logo (in, 1.2s hold, dissolve) → text reveal, 2.5s hold (exits upward at the start of scene 2).
+// Hero logo (in, 1.0s hold, dissolve) → text reveal, 2.0s hold (exits upward at the start of scene 2).
 const LOGO_IN = 0;
 const LOGO_RISE = 12;
-export const LOGO_OUT = LOGO_IN + LOGO_RISE + 72;
-export const TEXT_IN = 92;
+export const LOGO_OUT = LOGO_IN + LOGO_RISE + 60;
+export const TEXT_IN = 80;
 
 export const Scene1Hook: React.FC = () => {
   const frame = useCurrentFrame();

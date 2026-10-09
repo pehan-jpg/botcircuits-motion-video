@@ -4,9 +4,9 @@ import { Stage } from "../components/Stage";
 import { BrandLogo } from "../components/BrandLogo";
 import { COLORS, HERO_LOGO_H, TEXT, ease } from "../theme";
 
-// 0:00–0:04.5 text + tagline (reveal + hold) → 0:04.5–0:05.0 dissolve to an empty canvas → 0:05.0–0:08.0 hero logo.
-export const TEXT_OUT = 270;
-const LOGO_IN = 300;
+// 0:00–0:03.5 text + tagline (reveal + hold) → 0:03.5–0:04.0 dissolve to an empty canvas → hero logo scales in, then holds 2.0s.
+export const TEXT_OUT = 210;
+const LOGO_IN = 240;
 const REVEAL_START = 10;
 
 // One line revealed upward through a bottom clipping mask; lines are staggered 35ms apart.
