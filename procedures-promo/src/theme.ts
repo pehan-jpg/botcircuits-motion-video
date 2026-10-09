@@ -80,6 +80,7 @@ export const TEXT = {
     "I can help with that! A $15 restocking fee applies for preference returns. Your net refund will be $105.00. Here is your prepaid shipping label:",
   outro1: "You decided once.",
   outro2: ["Every customer gets the right path."],
+  tagline: "AI Concierge for Scalable, Personalized Customer Operations.",
 };
 
 // Hero logo size shared by Scene 1 and Scene 8 (140% of the 48px standard lock-up).

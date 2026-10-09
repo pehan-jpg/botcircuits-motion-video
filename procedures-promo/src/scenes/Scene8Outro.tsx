@@ -1,14 +1,32 @@
 import React from "react";
-import { useCurrentFrame } from "remotion";
+import { useCurrentFrame, useVideoConfig } from "remotion";
 import { Stage } from "../components/Stage";
-import { RevealWords } from "../components/RevealText";
-import { RevealLines } from "../components/Opening";
 import { BrandLogo } from "../components/BrandLogo";
 import { COLORS, HERO_LOGO_H, TEXT, ease } from "../theme";
 
-// 0:00–0:03.0 text (reveal + hold) → 0:03.0–0:03.5 dissolve to an empty canvas → 0:03.5–0:06.5 hero logo.
-export const TEXT_OUT = 180;
-const LOGO_IN = 210;
+// 0:00–0:04.5 text + tagline (reveal + hold) → 0:04.5–0:05.0 dissolve to an empty canvas → 0:05.0–0:08.0 hero logo.
+export const TEXT_OUT = 270;
+const LOGO_IN = 300;
+const REVEAL_START = 10;
+
+// One line revealed upward through a bottom clipping mask; lines are staggered 35ms apart.
+const MaskedLine: React.FC<{ i: number; style: React.CSSProperties; children: React.ReactNode }> = ({ i, style, children }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const s = REVEAL_START + i * (35 / 1000) * fps;
+  return (
+    <div style={{ overflow: "hidden", paddingBottom: "0.12em", ...style }}>
+      <div
+        style={{
+          translate: `0px ${ease(frame, [s, s + 34], [110, 0])}%`,
+          opacity: ease(frame, [s, s + 24], [0, 1]),
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
 
 export const Scene8Outro: React.FC = () => {
   const frame = useCurrentFrame();
@@ -24,17 +42,20 @@ export const Scene8Outro: React.FC = () => {
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          letterSpacing: "-0.025em",
+          fontWeight: 400,
           scale: String(ease(frame, [TEXT_OUT, TEXT_OUT + 30], [1, 0.96])),
           opacity: ease(frame, [TEXT_OUT, TEXT_OUT + 26], [1, 0]),
         }}
       >
-        <div style={{ fontSize: 34, fontWeight: 400, color: COLORS.grey, lineHeight: 1.25 }}>
-          <RevealWords text={TEXT.outro1} start={10} offsetY={18} />
-        </div>
-        <div style={{ fontSize: 34, fontWeight: 400, color: COLORS.ink, lineHeight: 1.25, marginTop: 8 }}>
-          <RevealLines lines={TEXT.outro2} start={30} offsetY={20} />
-        </div>
+        <MaskedLine i={0} style={{ fontSize: 34, lineHeight: 1.25, letterSpacing: "-0.025em", color: COLORS.grey }}>
+          {TEXT.outro1}
+        </MaskedLine>
+        <MaskedLine i={1} style={{ fontSize: 34, lineHeight: 1.25, letterSpacing: "-0.025em", color: COLORS.ink, marginTop: 4 }}>
+          {TEXT.outro2.join(" ")}
+        </MaskedLine>
+        <MaskedLine i={2} style={{ fontSize: 20, lineHeight: 1.3, letterSpacing: "-0.01em", color: COLORS.grey, marginTop: 18 }}>
+          {TEXT.tagline}
+        </MaskedLine>
       </div>
 
       {/* Standalone hero logo (same size as Scene 1) */}
