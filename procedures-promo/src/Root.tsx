@@ -14,7 +14,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="ProceduresPromo"
         component={ProceduresPromo}
-        durationInFrames={2328}
+        durationInFrames={2705}
         fps={60}
         width={1920}
         height={1080}
@@ -23,9 +23,9 @@ export const RemotionRoot: React.FC = () => {
         <Composition id="Scene1-Hook" component={Scene1Hook} durationInFrames={282} fps={60} width={1920} height={1080} />
         <Composition id="Scene2-CoreRule" component={Scene2CoreRule} durationInFrames={190} fps={60} width={1920} height={1080} />
         <Composition id="Scene3-Introducing" component={Scene3Introducing} durationInFrames={200} fps={60} width={1920} height={1080} />
-        <Composition id="Scene5-CreateProcedure" component={Scene5CreateProcedure} durationInFrames={594} fps={60} width={1920} height={1080} />
+        <Composition id="Scene5-CreateProcedure" component={Scene5CreateProcedure} durationInFrames={871} fps={60} width={1920} height={1080} />
         <Composition id="Scene6-BoundaryRules" component={Scene6BoundaryRules} durationInFrames={270} fps={60} width={1920} height={1080} />
-        <Composition id="Scene7-Simulator" component={Scene7Simulator} durationInFrames={426} fps={60} width={1920} height={1080} />
+        <Composition id="Scene7-Simulator" component={Scene7Simulator} durationInFrames={526} fps={60} width={1920} height={1080} />
         <Composition id="Scene8-Outro" component={Scene8Outro} durationInFrames={390} fps={60} width={1920} height={1080} />
       </Folder>
     </>

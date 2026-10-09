@@ -14,7 +14,6 @@ export const POS = {
   stepW: 592,
   stepH: 32,
   stepY: [120, 316, 534],
-  addPill: { x: SUB_X, y: 162, w: 128, h: 24 },
   c11: { x: SUB_X, y: 162, w: SUB_W, h: 92 },
   c12: { x: SUB_X, y: 264, w: SUB_W, h: 36 },
   c21: { x: SUB_X, y: 358, w: SUB_W, h: 86 },
@@ -24,10 +23,44 @@ export const POS = {
   action: { x: 50, y: 50, w: 236, h: 26 },
   toggle: { x: 306, y: 56, w: 26, h: 14 },
   railX: 40,
+  // Rows inside card 2.1 (card-local y) and the "+ Add action" pill slots.
+  c21Rows: [10, 35, 59],
+  fieldX: 70, // where typed fields start inside a sub-card
+  addPill: { w: 92, h: 20 },
 };
 export const ifCard = POS.c11;
 export const stepCenter = (i: number) => POS.stepY[i] + POS.stepH / 2;
 export const CONTENT_BOTTOM = POS.c32.y + POS.c32.h + 24;
+
+// ── Typed content: plain text plus {variable} tokens that turn into green pills ──
+export type Tok = { text: string } | { chip: string };
+export const tokLen = (t: Tok) => ("chip" in t ? t.chip.length + 2 : t.text.length);
+export const toksLen = (toks: Tok[]) => toks.reduce((a, t) => a + tokLen(t), 0);
+
+export const FIELDS = {
+  cond21: [{ chip: "return_reason" }, { text: ' == "Customer Dislike"' }],
+  set21: [{ chip: "restocking_fee" }, { text: " = $15.00" }],
+  calc21: [{ chip: "net_refund" }, { text: " = " }, { chip: "order_total" }, { text: " − " }, { chip: "restocking_fee" }],
+  api31: [{ text: "Generate_EasyPost_Label(" }, { chip: "order_id" }, { text: ")" }],
+  send32: [
+    { text: "Your return label has been created: " },
+    { chip: "shipping_label_url" },
+    { text: ". Your estimated refund of " },
+    { chip: "net_refund" },
+    { text: " will process upon receipt." },
+  ],
+} satisfies Record<string, Tok[]>;
+export type FieldKey = keyof typeof FIELDS;
+
+const VARIABLES = ["order_age", "order_id", "order_total", "return_reason", "restocking_fee", "net_refund", "shipping_label_url"];
+
+export const ACTION_TYPES = [
+  { kind: "SET", desc: "Set a variable" },
+  { kind: "CALC", desc: "Calculate a value" },
+  { kind: "CALL_API", desc: "Call an external API" },
+  { kind: "SEND", desc: "Send a message" },
+  { kind: "HANDOFF", desc: "Hand off to a human" },
+] as const;
 
 export type CardKey = "h1" | "c11" | "c12" | "h2" | "c21" | "c22" | "h3" | "c31" | "c32";
 
@@ -36,7 +69,16 @@ export type EditorState = {
   titleText: string;
   titleFocus: boolean;
   cards: Record<CardKey, number>; // spring progress per step header / sub-card
-  addPill: number;
+  // Interactive configuration (scene 5)
+  typed: Record<FieldKey, number>; // characters typed per field
+  focus: FieldKey | null;
+  set21Row: number;
+  calc21Row: number;
+  c21H: number;
+  pill21: { p: number; slot: number }; // slot = which c21 row the pill sits in
+  pill3: { p: number; slot: number }; // slot 0 = c31 position, 1 = c32 position
+  menu: { p: number; at: "c21" | "c3"; hover: number };
+  returnsChip: number;
   // Step 1.1 configuration (scene 6)
   condFocus: number;
   actionOpen: number;
@@ -46,11 +88,10 @@ export type EditorState = {
   glow: number;
   badge: number;
   // Live traversal (scene 7)
-  trailY: number; // head of the execution path along the rail (card-relative y); 0 = off
   stepActive: [number, number, number];
   stepDone: [number, number, number];
-  passChip: number; // step 1 "{order_age} = 12 days · Passed"
-  skipStep1Branches: number; // dims 1.1 / 1.2 when neither applies
+  passChip: number;
+  skipStep1Branches: number;
   c21Active: number;
   calcPill: number;
   c31Active: number;
@@ -60,14 +101,20 @@ export type EditorState = {
   saved: boolean;
 };
 
-const ZERO_CARDS: Record<CardKey, number> = { h1: 0, c11: 0, c12: 0, h2: 0, c21: 0, c22: 0, h3: 0, c31: 0, c32: 0 };
-
 export const EMPTY_EDITOR: EditorState = {
   rows: [1, 1],
   titleText: "",
   titleFocus: false,
-  cards: ZERO_CARDS,
-  addPill: 0,
+  cards: { h1: 0, c11: 0, c12: 0, h2: 0, c21: 0, c22: 0, h3: 0, c31: 0, c32: 0 },
+  typed: { cond21: 0, set21: 0, calc21: 0, api31: 0, send32: 0 },
+  focus: null,
+  set21Row: 0,
+  calc21Row: 0,
+  c21H: 40,
+  pill21: { p: 0, slot: 1 },
+  pill3: { p: 0, slot: 0 },
+  menu: { p: 0, at: "c21", hover: -1 },
+  returnsChip: 0,
   condFocus: 0,
   actionOpen: 0,
   actionHover: -1,
@@ -75,7 +122,6 @@ export const EMPTY_EDITOR: EditorState = {
   toggle: 0,
   glow: 0,
   badge: 0,
-  trailY: 0,
   stepActive: [0, 0, 0],
   stepDone: [0, 0, 0],
   passChip: 0,
@@ -88,6 +134,11 @@ export const EMPTY_EDITOR: EditorState = {
   caretOn: false,
   saved: false,
 };
+
+// Muted accent: Pigmented Lime at 25% fill with a subtle 1px border.
+const LIME_FILL = (a: number) => `rgba(210,248,0,${0.25 * a})`;
+const LIME_EDGE = (a: number) => `rgba(170,200,0,${0.75 * a})`;
+const GUIDE = "#E5E7EB";
 
 const BADGE = {
   RUN: [COLORS.runBg, COLORS.runFg],
@@ -121,7 +172,7 @@ const Badge: React.FC<{ kind: keyof typeof BADGE; style?: React.CSSProperties }>
   </span>
 );
 
-// Variable chip, e.g. {net_refund}
+// Variable pill, e.g. {net_refund}
 const V: React.FC<{ children: string }> = ({ children }) => (
   <span
     style={{
@@ -129,9 +180,9 @@ const V: React.FC<{ children: string }> = ({ children }) => (
       background: COLORS.varBg,
       color: COLORS.varFg,
       borderRadius: 4,
-      padding: "1px 5px",
+      padding: "0 5px",
       fontWeight: 500,
-      lineHeight: 1.35,
+      lineHeight: 1.5,
     }}
   >
     {`{${children}}`}
@@ -158,7 +209,115 @@ const Check: React.FC<{ color?: string; size?: number }> = ({ color = COLORS.ink
   </svg>
 );
 
-// Lime status pill that pops onto a card edge during the live run.
+// Renders `n` typed characters of a token list. A {variable} becomes a pill once its closing brace is typed;
+// while it is being typed, an autocomplete list of matching variables is shown under the field.
+const TypedTokens: React.FC<{ toks: Tok[]; n: number; focus: boolean; caretOn: boolean; placeholder: string }> = ({
+  toks,
+  n,
+  focus,
+  caretOn,
+  placeholder,
+}) => {
+  let left = n;
+  let partialChip: string | null = null;
+  const out: React.ReactNode[] = [];
+  toks.forEach((t, i) => {
+    if (left <= 0) return;
+    const len = tokLen(t);
+    if ("chip" in t) {
+      if (left >= len) out.push(<V key={i}>{t.chip}</V>);
+      else {
+        const raw = `{${t.chip}}`.slice(0, left);
+        out.push(<span key={i}>{raw}</span>);
+        partialChip = raw.slice(1);
+      }
+    } else {
+      out.push(<span key={i} style={{ whiteSpace: "pre-wrap" }}>{t.text.slice(0, left)}</span>);
+    }
+    left -= len;
+  });
+  const prefix = partialChip as string | null;
+  const matches = prefix === null ? [] : VARIABLES.filter((v) => v.startsWith(prefix)).slice(0, 4);
+  return (
+    <>
+      {n === 0 && !focus ? <span style={{ color: COLORS.greyLight }}>{placeholder}</span> : out}
+      {focus ? <Caret on={caretOn} /> : null}
+      {focus && matches.length > 0 ? (
+        <span
+          style={{
+            position: "absolute",
+            left: 0,
+            top: "100%",
+            marginTop: 4,
+            padding: 4,
+            width: 170,
+            boxSizing: "border-box",
+            borderRadius: 8,
+            background: COLORS.surface,
+            border: `1px solid ${COLORS.border}`,
+            boxShadow: "0 12px 28px -8px rgba(17,24,39,0.18)",
+            display: "flex",
+            flexDirection: "column",
+            zIndex: 20,
+            whiteSpace: "nowrap",
+          }}
+        >
+          <span style={{ fontSize: 8, color: COLORS.greyLight, padding: "2px 6px 4px", letterSpacing: "0.04em" }}>VARIABLES</span>
+          {matches.map((m, i) => (
+            <span
+              key={m}
+              style={{
+                padding: "3px 6px",
+                borderRadius: 5,
+                background: i === 0 ? "#F3F4F6" : "transparent",
+                fontSize: 10,
+              }}
+            >
+              <V>{m}</V>
+            </span>
+          ))}
+        </span>
+      ) : null}
+    </>
+  );
+};
+
+// Inline input box that hosts typed tokens.
+const Field: React.FC<{
+  s: EditorState;
+  k: FieldKey;
+  placeholder: string;
+  width?: number;
+  multiline?: boolean;
+}> = ({ s, k, placeholder, width, multiline }) => {
+  const focus = s.focus === k;
+  return (
+    <span
+      style={{
+        position: "relative",
+        display: multiline ? "block" : "inline-flex",
+        alignItems: "center",
+        gap: 0,
+        minHeight: 20,
+        width,
+        minWidth: 120,
+        boxSizing: "border-box",
+        padding: multiline ? "3px 7px" : "0 7px",
+        borderRadius: 5,
+        border: `1px solid ${focus ? COLORS.ink : COLORS.border}`,
+        background: COLORS.surface,
+        fontSize: 10.5,
+        lineHeight: multiline ? 1.65 : 1,
+        color: COLORS.ink,
+        whiteSpace: multiline ? "normal" : "nowrap",
+      }}
+    >
+      <TypedTokens toks={FIELDS[k]} n={s.typed[k]} focus={focus} caretOn={s.caretOn} placeholder={placeholder} />
+    </span>
+  );
+};
+
+// Soft lime status pill that pops onto a card edge during the live run.
 const StatusPill: React.FC<{ p: number; children: React.ReactNode; style?: React.CSSProperties }> = ({ p, children, style }) => (
   <div
     style={{
@@ -168,7 +327,9 @@ const StatusPill: React.FC<{ p: number; children: React.ReactNode; style?: React
       height: 18,
       padding: "0 8px",
       borderRadius: 9,
-      background: COLORS.lime,
+      boxSizing: "border-box",
+      background: "#F4FDCC",
+      border: `1px solid ${LIME_EDGE(1)}`,
       color: COLORS.ink,
       display: "flex",
       alignItems: "center",
@@ -176,7 +337,6 @@ const StatusPill: React.FC<{ p: number; children: React.ReactNode; style?: React
       fontSize: 9,
       fontWeight: 500,
       whiteSpace: "nowrap",
-      boxShadow: `0 0 ${12 * Math.min(1, p)}px rgba(210,248,0,0.6)`,
       opacity: Math.min(1, p * 1.4),
       scale: String(p),
       zIndex: 4,
@@ -187,7 +347,6 @@ const StatusPill: React.FC<{ p: number; children: React.ReactNode; style?: React
   </div>
 );
 
-// Children of a card fade up one after another as the card's spring progresses.
 const stag = (p: number, i: number) => Math.max(0, Math.min(1, (p - i * 0.14) / 0.55));
 const Item: React.FC<{ p: number; i: number; style?: React.CSSProperties; children: React.ReactNode }> = ({
   p,
@@ -202,6 +361,7 @@ const Item: React.FC<{ p: number; i: number; style?: React.CSSProperties; childr
 
 const SubCard: React.FC<{
   pos: { x: number; y: number; w: number; h: number };
+  h?: number;
   p: number;
   active?: number;
   dim?: number;
@@ -209,19 +369,19 @@ const SubCard: React.FC<{
   shadow?: string;
   z?: number;
   children: React.ReactNode;
-}> = ({ pos, p, active = 0, dim = 0, border, shadow, z = 1, children }) => (
+}> = ({ pos, h, p, active = 0, dim = 0, border, shadow, z = 1, children }) => (
   <div
     style={{
       position: "absolute",
       left: pos.x,
       top: pos.y,
       width: pos.w,
-      height: pos.h,
+      height: h ?? pos.h,
       boxSizing: "border-box",
       borderRadius: 10,
-      border: border ?? (active > 0 ? `1.5px solid rgba(210,248,0,${active})` : `1px solid ${COLORS.border}`),
-      background: active > 0 ? `rgba(210,248,0,${0.08 * active})` : COLORS.surface,
-      boxShadow: shadow ?? (active > 0 ? `0 0 ${14 * active}px rgba(210,248,0,${0.5 * active})` : "0 1px 2px rgba(17,24,39,0.04)"),
+      border: border ?? (active > 0 ? `1px solid ${LIME_EDGE(active)}` : `1px solid ${COLORS.border}`),
+      background: active > 0 ? LIME_FILL(active) : COLORS.surface,
+      boxShadow: shadow ?? "0 1px 2px rgba(17,24,39,0.04)",
       opacity: Math.min(1, p * 1.5) * (1 - 0.55 * dim),
       translate: `0px ${(1 - Math.min(1, p)) * 12}px`,
       zIndex: z,
@@ -247,9 +407,8 @@ const StepRow: React.FC<{ n: number; p: number; active: number; done: number; ex
       height: POS.stepH,
       boxSizing: "border-box",
       borderRadius: 8,
-      border: active > 0 ? `1.5px solid rgba(210,248,0,${active})` : `1px solid ${COLORS.border}`,
-      background: active > 0 ? `rgba(210,248,0,${0.1 * active})` : COLORS.surface,
-      boxShadow: active > 0 ? `0 0 ${14 * active}px rgba(210,248,0,${0.5 * active})` : undefined,
+      border: active > 0 ? `1px solid ${LIME_EDGE(active)}` : `1px solid ${COLORS.border}`,
+      background: active > 0 ? LIME_FILL(active) : COLORS.surface,
       opacity: Math.min(1, p * 1.4),
       translate: `0px ${(1 - Math.min(1, p)) * 12}px`,
       display: "flex",
@@ -260,6 +419,7 @@ const StepRow: React.FC<{ n: number; p: number; active: number; done: number; ex
       zIndex: 2,
     }}
   >
+    {/* Tree node: lights up in soft lime only while active */}
     <span
       style={{
         position: "absolute",
@@ -268,8 +428,9 @@ const StepRow: React.FC<{ n: number; p: number; active: number; done: number; ex
         height: 18,
         borderRadius: 9,
         boxSizing: "border-box",
-        border: `1px solid ${active > 0.5 || done > 0.5 ? COLORS.ink : COLORS.border}`,
-        background: active > 0.5 || done > 0.5 ? COLORS.lime : COLORS.surface,
+        border: `1px solid ${active > 0.5 ? LIME_EDGE(1) : done > 0.5 ? COLORS.greyLight : COLORS.border}`,
+        background: active > 0.5 ? COLORS.lime : COLORS.surface,
+        boxShadow: active > 0.5 ? `0 0 0 3px ${LIME_FILL(1)}` : undefined,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -277,7 +438,7 @@ const StepRow: React.FC<{ n: number; p: number; active: number; done: number; ex
         color: active > 0.5 || done > 0.5 ? COLORS.ink : COLORS.grey,
       }}
     >
-      {done > 0.5 ? <Check size={10} /> : n}
+      {done > 0.5 && active < 0.5 ? <Check size={10} color={COLORS.grey} /> : n}
     </span>
     <span style={{ position: "absolute", left: 36 }}>
       <span style={{ color: COLORS.greyLight, fontWeight: 400 }}>{n}.</span> {TEXT.steps[n - 1]}
@@ -287,34 +448,111 @@ const StepRow: React.FC<{ n: number; p: number; active: number; done: number; ex
   </div>
 );
 
+const AddPill: React.FC<{ p: number; x: number; y: number }> = ({ p, x, y }) => (
+  <div
+    style={{
+      position: "absolute",
+      left: x,
+      top: y,
+      width: POS.addPill.w,
+      height: POS.addPill.h,
+      boxSizing: "border-box",
+      borderRadius: 10,
+      border: "1px dashed #D1D5DB",
+      background: COLORS.surface,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 3,
+      fontSize: 9.5,
+      color: COLORS.grey,
+      opacity: p,
+      scale: String(0.9 + 0.1 * p),
+      zIndex: 3,
+    }}
+  >
+    <span style={{ fontSize: 12, lineHeight: 1 }}>+</span> Add action
+  </div>
+);
+
+const ActionMenu: React.FC<{ p: number; hover: number; x: number; y: number }> = ({ p, hover, x, y }) =>
+  p > 0 ? (
+    <div
+      style={{
+        position: "absolute",
+        left: x,
+        top: y,
+        width: 176,
+        boxSizing: "border-box",
+        padding: 4,
+        borderRadius: 8,
+        background: COLORS.surface,
+        border: `1px solid ${COLORS.border}`,
+        boxShadow: "0 12px 28px -8px rgba(17,24,39,0.18)",
+        opacity: p,
+        translate: `0px ${(1 - p) * -6}px`,
+        zIndex: 30,
+      }}
+    >
+      {ACTION_TYPES.map((a, i) => {
+        const ip = Math.min(1, Math.max(0, p * 4 - i * 0.5));
+        return (
+          <div
+            key={a.kind}
+            style={{
+              height: 22,
+              borderRadius: 5,
+              display: "flex",
+              alignItems: "center",
+              gap: 7,
+              padding: "0 6px",
+              fontSize: 9.5,
+              color: COLORS.grey,
+              background: hover === i ? "#F3F4F6" : "transparent",
+              opacity: ip,
+              translate: `0px ${(1 - ip) * 5}px`,
+            }}
+          >
+            <Badge kind={a.kind} style={{ width: 54, justifyContent: "center", padding: 0 }} />
+            {a.desc}
+          </div>
+        );
+      })}
+    </div>
+  ) : null;
+
 const ACTIONS = ["Send message", "Run instruction", TEXT.action, "End conversation"];
 const label: React.CSSProperties = { fontSize: 9.5, color: COLORS.greyLight, width: 22 };
 const row: React.CSSProperties = { display: "flex", alignItems: "center", gap: 7, fontSize: 10.5, color: COLORS.ink, whiteSpace: "nowrap" };
 
+// Positions of the "+ Add action" pill, card-relative, exported for aiming the cursor.
+export const pill21Pos = (slot: number) => ({ x: POS.c21.x + 41, y: POS.c21.y + POS.c21Rows[slot] });
+export const pill3Pos = (slot: number) => ({ x: POS.c31.x, y: (slot === 0 ? POS.c31.y : POS.c32.y) + 8 });
+export const MENU_OFFSET = POS.addPill.h + 4;
+export const menuItemCenter = (pill: { x: number; y: number }, i: number) => ({
+  x: pill.x + 80,
+  y: pill.y + MENU_OFFSET + 4 + i * 22 + 11,
+});
+
 export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProperties }> = ({ s, style }) => {
   const c = s.cards;
-  const lit11 = s.glow;
   const s1c = stepCenter(0);
-  // Rail grows down to the most recently revealed step.
-  const railEnd = c.h3 > 0 ? stepCenter(2) : c.h2 > 0 ? stepCenter(1) : s1c;
-  const railP = c.h3 > 0 ? c.h3 : c.h2 > 0 ? c.h2 : 1;
-  const prevEnd = c.h3 > 0 ? stepCenter(1) : c.h2 > 0 ? s1c : s1c;
-  const railLen = prevEnd - s1c + (railEnd - prevEnd) * Math.min(1, railP);
-  const connector = (y: number, p: number, lit = 0) => (
+  const s3c = stepCenter(2);
+  const connector = (y: number, p: number) => (
     <div
       key={y}
       style={{
         position: "absolute",
         left: POS.railX,
-        top: y,
+        top: y - 0.75,
         width: (SUB_X - POS.railX) * Math.min(1, p),
-        height: lit > 0 ? 2 : 1,
-        marginTop: lit > 0 ? -0.5 : 0,
-        background: lit > 0 ? COLORS.lime : COLORS.border,
-        boxShadow: lit > 0 ? "0 0 6px rgba(210,248,0,0.9)" : undefined,
+        height: 1.5,
+        background: GUIDE,
       }}
     />
   );
+  const p21 = pill21Pos(s.pill21.slot);
+  const p3 = pill3Pos(s.pill3.slot);
   return (
     <div
       style={{
@@ -396,44 +634,24 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
         {s.titleFocus ? <Caret on={s.caretOn} /> : null}
       </div>
 
-      {/* Rail, connectors and the live execution trail */}
-      {c.h1 > 0 ? (
-        <div style={{ position: "absolute", left: POS.railX, top: s1c, width: 1, height: railLen, background: COLORS.border }} />
-      ) : null}
+      {/* Neutral 1.5px guide line and connectors */}
+      <div
+        style={{
+          position: "absolute",
+          left: POS.railX - 0.75,
+          top: s1c,
+          width: 1.5,
+          height: (s3c - s1c) * Math.min(1, c.h3),
+          background: GUIDE,
+          opacity: c.h1,
+        }}
+      />
       {connector(POS.c11.y + 18, c.c11)}
       {connector(POS.c12.y + 18, c.c12)}
-      {connector(POS.c21.y + 18, c.c21, s.c21Active)}
+      {connector(POS.c21.y + 18, c.c21)}
       {connector(POS.c22.y + 18, c.c22)}
-      {connector(POS.c31.y + 18, c.c31, s.c31Active)}
-      {connector(POS.c32.y + 18, c.c32, s.c32Active)}
-      {s.trailY > 0 ? (
-        <>
-          <div
-            style={{
-              position: "absolute",
-              left: POS.railX - 0.5,
-              top: s1c,
-              width: 2,
-              height: s.trailY - s1c,
-              background: COLORS.lime,
-              boxShadow: "0 0 6px rgba(210,248,0,0.9)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: POS.railX - 4.5,
-              top: s.trailY - 4.5,
-              width: 9,
-              height: 9,
-              borderRadius: 5,
-              background: COLORS.lime,
-              boxShadow: "0 0 10px 4px rgba(210,248,0,0.75)",
-              zIndex: 3,
-            }}
-          />
-        </>
-      ) : null}
+      {connector(POS.c31.y + 18, Math.max(c.c31, s.pill3.p))}
+      {connector(POS.c32.y + 18, c.c32)}
 
       {/* ── Step 1 ─────────────────────────────── */}
       <StepRow
@@ -455,7 +673,7 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
               translate: `${(1 - s.passChip) * 8}px 0px`,
             }}
           >
-            <span style={{ fontSize: 9.5 }}>
+            <span>
               <V>order_age</V> = 12 days
             </span>
             <span
@@ -466,7 +684,9 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
                 height: 16,
                 padding: "0 6px",
                 borderRadius: 8,
-                background: COLORS.lime,
+                boxSizing: "border-box",
+                background: "#F4FDCC",
+                border: `1px solid ${LIME_EDGE(1)}`,
                 fontWeight: 500,
               }}
             >
@@ -476,31 +696,6 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
         }
       />
 
-      {/* + Add branch rule */}
-      <div
-        style={{
-          position: "absolute",
-          left: POS.addPill.x,
-          top: POS.addPill.y,
-          width: POS.addPill.w,
-          height: POS.addPill.h,
-          boxSizing: "border-box",
-          borderRadius: 12,
-          border: `1px dashed #D1D5DB`,
-          background: COLORS.surface,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 4,
-          fontSize: 10.5,
-          color: COLORS.grey,
-          opacity: s.addPill,
-          scale: String(0.9 + 0.1 * s.addPill),
-        }}
-      >
-        <span style={{ fontSize: 13, lineHeight: 1 }}>+</span> Add branch rule
-      </div>
-
       {/* 1.1 IF Order Age > 30 Days → HANDOFF + Strict Boundary Rule */}
       <SubCard
         pos={POS.c11}
@@ -508,7 +703,7 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
         dim={s.skipStep1Branches}
         z={5}
         border={s.glow > 0 ? `1.5px solid rgba(210,248,0,${s.glow})` : undefined}
-        shadow={lit11 > 0 ? `0 0 ${16 * lit11}px rgba(210,248,0,${0.55 * lit11})` : undefined}
+        shadow={s.glow > 0 ? `0 0 ${16 * s.glow}px rgba(210,248,0,${0.55 * s.glow})` : undefined}
       >
         <Item p={c.c11} i={0} style={{ left: 12, top: 17 }}>
           <Badge kind="IF" />
@@ -591,7 +786,6 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
         <Item p={c.c11} i={3} style={{ left: POS.toggle.x + 34, top: 56 }}>
           <span style={{ fontSize: 10.5, color: COLORS.ink }}>Strict Boundary Rule</span>
         </Item>
-        {/* ● Active Policy */}
         <div
           style={{
             position: "absolute",
@@ -614,7 +808,6 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
           <span style={{ width: 5, height: 5, borderRadius: 3, background: COLORS.lime }} />
           Active Policy
         </div>
-        {/* Action dropdown */}
         {s.actionOpen > 0 ? (
           <div
             style={{
@@ -674,31 +867,29 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
       {/* ── Step 2 ─────────────────────────────── */}
       <StepRow n={2} p={c.h2} active={s.stepActive[1]} done={s.stepDone[1]} />
 
-      {/* 2.1 IF {return_reason} == "Customer Dislike" */}
-      <SubCard pos={POS.c21} p={c.c21} active={s.c21Active}>
+      {/* 2.1 — configured interactively in scene 5 */}
+      <SubCard pos={POS.c21} h={s.c21H} p={c.c21} active={s.c21Active} z={s.focus === "cond21" || s.menu.at === "c21" ? 8 : 1}>
         <StatusPill p={s.calcPill}>
           <V>net_refund</V> $120.00 − $15.00 = $105.00
         </StatusPill>
-        <Item p={c.c21} i={0} style={{ left: 12, top: 10, ...row }}>
-          <Badge kind="IF" />
-          <V>return_reason</V>
-          <span>== &quot;Customer Dislike&quot;</span>
-        </Item>
-        <Item p={c.c21} i={1} style={{ left: 12, top: 36, ...row }}>
+        <div style={{ position: "absolute", left: 12, top: POS.c21Rows[0], ...row }}>
+          <span style={{ width: 22 + 7 + 16, display: "inline-flex" }}>
+            <Badge kind="IF" />
+          </span>
+          <Field s={s} k="cond21" placeholder="Add a condition…" />
+        </div>
+        <div style={{ position: "absolute", left: 12, top: POS.c21Rows[1], opacity: s.set21Row, translate: `0px ${(1 - s.set21Row) * 6}px`, ...row }}>
           <span style={label}>2.1</span>
           <Badge kind="SET" />
-          <V>restocking_fee</V>
-          <span>= $15.00</span>
-        </Item>
-        <Item p={c.c21} i={2} style={{ left: 41, top: 60, ...row }}>
+          <Field s={s} k="set21" placeholder="variable = value" />
+        </div>
+        <div style={{ position: "absolute", left: 41, top: POS.c21Rows[2], opacity: s.calc21Row, translate: `0px ${(1 - s.calc21Row) * 6}px`, ...row }}>
           <Badge kind="CALC" />
-          <V>net_refund</V>
-          <span>=</span>
-          <V>order_total</V>
-          <span>−</span>
-          <V>restocking_fee</V>
-        </Item>
+          <Field s={s} k="calc21" placeholder="formula" />
+        </div>
       </SubCard>
+      <AddPill p={s.pill21.p} x={p21.x} y={p21.y} />
+      {s.menu.at === "c21" ? <ActionMenu p={s.menu.p} hover={s.menu.hover} x={p21.x} y={p21.y + MENU_OFFSET} /> : null}
 
       {/* 2.2 ELSE IF {return_reason} == "Defective Item" */}
       <SubCard pos={POS.c22} p={c.c22} dim={s.c21Active > 0 ? 0.6 * s.c21Active : 0}>
@@ -721,37 +912,35 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
       <StepRow n={3} p={c.h3} active={s.stepActive[2]} done={s.stepDone[2]} />
 
       {/* 3.1 CALL_API */}
-      <SubCard pos={POS.c31} p={c.c31} active={s.c31Active}>
+      <SubCard pos={POS.c31} p={c.c31} active={s.c31Active} z={s.focus === "api31" ? 8 : 1}>
         <StatusPill p={s.labelPill}>
           <Check size={8} /> Label Generated
         </StatusPill>
-        <Item p={c.c31} i={0} style={{ left: 12, top: 10, ...row }}>
+        <div style={{ position: "absolute", left: 12, top: 8, ...row }}>
           <span style={label}>3.1</span>
           <Badge kind="CALL_API" />
-          <span>
-            Generate_EasyPost_Label(<V>order_id</V>)
+          <Field s={s} k="api31" placeholder="function(args)" />
+          <span style={{ display: "flex", alignItems: "center", gap: 6, opacity: s.returnsChip, translate: `${(1 - s.returnsChip) * 6}px 0px` }}>
+            <span style={{ color: COLORS.greyLight }}>→</span>
+            <span style={{ color: COLORS.grey }}>returns</span>
+            <V>shipping_label_url</V>
           </span>
-          <span style={{ color: COLORS.greyLight }}>→</span>
-          <span style={{ color: COLORS.grey }}>returns</span>
-          <V>shipping_label_url</V>
-        </Item>
+        </div>
       </SubCard>
 
       {/* 3.2 SEND */}
-      <SubCard pos={POS.c32} p={c.c32} active={s.c32Active}>
-        <Item p={c.c32} i={0} style={{ left: 12, top: 10 }}>
-          <span style={label}>3.2</span>
-        </Item>
-        <Item p={c.c32} i={0} style={{ left: 41, top: 9 }}>
+      <SubCard pos={POS.c32} p={c.c32} active={s.c32Active} z={s.focus === "send32" ? 8 : 1}>
+        <span style={{ position: "absolute", left: 12, top: 12, ...label }}>3.2</span>
+        <span style={{ position: "absolute", left: 41, top: 10 }}>
           <Badge kind="SEND" />
-        </Item>
-        <Item p={c.c32} i={1} style={{ left: 88, top: 9, width: 440 }}>
-          <div style={{ fontSize: 10.5, lineHeight: 1.6, color: COLORS.ink }}>
-            &ldquo;Your return label has been created: <V>shipping_label_url</V>. Your estimated refund of{" "}
-            <V>net_refund</V> will process upon receipt.&rdquo;
-          </div>
-        </Item>
+        </span>
+        <div style={{ position: "absolute", left: 88, top: 7 }}>
+          <Field s={s} k="send32" placeholder="Message…" width={440} multiline />
+        </div>
       </SubCard>
+
+      <AddPill p={s.pill3.p} x={p3.x} y={p3.y} />
+      {s.menu.at === "c3" ? <ActionMenu p={s.menu.p} hover={s.menu.hover} x={p3.x} y={p3.y + MENU_OFFSET} /> : null}
     </div>
   );
 };

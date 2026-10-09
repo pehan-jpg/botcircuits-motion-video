@@ -213,24 +213,23 @@ export const Simulator: React.FC<{ st: SimState; style?: React.CSSProperties }> 
           left: 12,
           right: 12,
           bottom: 12,
-          height: 38,
+          height: 54,
           boxSizing: "border-box",
           borderRadius: 10,
           border: `1px solid ${st.inputText ? COLORS.ink : COLORS.border}`,
           display: "flex",
           alignItems: "center",
-          padding: "0 6px 0 12px",
+          padding: "0 8px 0 12px",
           fontSize: 10.5,
           color: st.inputText ? COLORS.ink : COLORS.greyLight,
         }}
       >
-        <span style={{ flex: 1, whiteSpace: "nowrap", overflow: "hidden", direction: "rtl", textAlign: "left" }}>
-          <bdi>
-            {st.inputText || "Send a test message…"}
-            {st.inputText ? (
-              <span style={{ display: "inline-block", width: 1, height: 11, marginLeft: 1, verticalAlign: -2, background: COLORS.ink, opacity: st.caretOn ? 1 : 0 }} />
-            ) : null}
-          </bdi>
+        {/* Two-line, auto-wrapping input so the whole message stays visible */}
+        <span style={{ flex: 1, lineHeight: 1.5, whiteSpace: "normal" }}>
+          {st.inputText || "Send a test message…"}
+          {st.inputText ? (
+            <span style={{ display: "inline-block", width: 1, height: 11, marginLeft: 1, verticalAlign: -2, background: COLORS.ink, opacity: st.caretOn ? 1 : 0 }} />
+          ) : null}
         </span>
         <div
           style={{

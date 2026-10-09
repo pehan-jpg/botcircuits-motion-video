@@ -27,16 +27,16 @@ export const Scene7Simulator: React.FC = () => {
     fy: track(frame, [
       { f: 0, v: IF_CENTER.y + 24 },
       { f: 46, v: TOP_FY },
-      { f: S7.toStep3 - 8, v: TOP_FY },
+      { f: S7.step3 - 8, v: TOP_FY },
       { f: S7.step3 + 16, v: BOTTOM_FY },
     ]),
   };
   const input = frame < S7.send ? typed(TEXT.userMessage, frame, S7.typeStart, S7.typeFpc) : "";
   const wordCount = TEXT.agentReply.split(" ").length;
   const status =
-    frame < S7.toStep2
+    frame < S7.step2
       ? "Step 1 · Verifying eligibility…"
-      : frame < S7.toStep3
+      : frame < S7.step3
         ? "Step 2 · Calculating refund…"
         : "Step 3 · Generating return label…";
   return (
@@ -55,7 +55,8 @@ export const Scene7Simulator: React.FC = () => {
           caretOn: input.length < TEXT.userMessage.length || Math.floor(frame / 18) % 2 === 0,
           sendPress: frame >= S7.send - 2 && frame <= S7.send + 6 ? 1 : 0,
           userBubble: pop(frame, S7.send + 2, fps, 14),
-          typingDots: frame >= S7.step1 && frame < S7.agentReply ? ease(frame, [S7.step1, S7.step1 + 8], [0, 1]) : 0,
+          // Phase 2: a 1.0s typing indicator while step 2 evaluates
+          typingDots: frame >= S7.step2 && frame < S7.agentReply ? ease(frame, [S7.step2, S7.step2 + 8], [0, 1]) : 0,
           status,
           agentBubble: frame >= S7.agentReply ? pop(frame, S7.agentReply, fps, 16) : 0,
           agentWords: Math.floor(ease(frame, [S7.agentReply, S7.agentReply + 30], [0, wordCount], (t) => t)),

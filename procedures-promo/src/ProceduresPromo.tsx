@@ -23,13 +23,13 @@ export const ProceduresPromo: React.FC = () => {
       <TransitionSeries.Sequence name="3 · Introducing" durationInFrames={200} premountFor={fps}>
         <Scene3Introducing />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="5 · Create Procedure" durationInFrames={594} premountFor={fps}>
+      <TransitionSeries.Sequence name="5 · Create Procedure" durationInFrames={871} premountFor={fps}>
         <Scene5CreateProcedure />
       </TransitionSeries.Sequence>
       <TransitionSeries.Sequence name="6 · Boundary Rules" durationInFrames={270} premountFor={fps}>
         <Scene6BoundaryRules />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence name="7 · Simulator" durationInFrames={426} premountFor={fps}>
+      <TransitionSeries.Sequence name="7 · Simulator" durationInFrames={526} premountFor={fps}>
         <Scene7Simulator />
       </TransitionSeries.Sequence>
       <TransitionSeries.Transition presentation={fade()} timing={linearTiming({ durationInFrames: 24 })} />
