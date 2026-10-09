@@ -9,8 +9,10 @@ export const RevealWords: React.FC<{
   staggerMs?: number;
   durationFrames?: number;
   offsetY?: number;
-}> = ({ text, start, staggerMs = 35, durationFrames = 30, offsetY = 18 }) => {
-  const frame = useCurrentFrame();
+  frame?: number; // optional override, e.g. to show a settled line inside another scene
+}> = ({ text, start, staggerMs = 35, durationFrames = 30, offsetY = 18, frame: frameOverride }) => {
+  const current = useCurrentFrame();
+  const frame = frameOverride ?? current;
   const { fps } = useVideoConfig();
   const stagger = (staggerMs / 1000) * fps;
   return (

@@ -76,8 +76,11 @@ export const TEXT = {
   elseCondition: "Item Marked Final Sale",
   action: "Escalate to Human Agent",
   userMessage: "I'd like to return my jacket from order #8492. I changed my mind about the color.",
-  agentReply:
-    "I can help with that! A $15 restocking fee applies for preference returns. Your net refund will be $105.00. Here is your prepaid shipping label:",
+  reply1: "I can help you process that return! Let me verify your item and calculate your eligible refund.",
+  reply2: "Since this is a preference return, a $15 restocking fee applies. Your net refund will be $105.00 upon receipt.",
+  labelCardTitle: "Prepaid Return Shipping Label",
+  labelCardSub: "Order #8492 • USPS Ground Advantage",
+  labelCardButton: "Download Shipping Label",
   outro1: "You decided once.",
   outro2: ["Every customer gets the right path."],
   tagline: "AI Concierge for Scalable, Personalized Customer Operations.",

@@ -38,6 +38,7 @@ export const tokLen = (t: Tok) => ("chip" in t ? t.chip.length + 2 : t.text.leng
 export const toksLen = (toks: Tok[]) => toks.reduce((a, t) => a + tokLen(t), 0);
 
 export const FIELDS = {
+  cond11: [{ text: "Order Age > 30 Days" }],
   cond21: [{ chip: "return_reason" }, { text: ' == "Customer Dislike"' }],
   set21: [{ chip: "restocking_fee" }, { text: " = $15.00" }],
   calc21: [{ chip: "net_refund" }, { text: " = " }, { chip: "order_total" }, { text: " − " }, { chip: "restocking_fee" }],
@@ -78,9 +79,9 @@ export type EditorState = {
   pill21: { p: number; slot: number }; // slot = which c21 row the pill sits in
   pill3: { p: number; slot: number }; // slot 0 = c31 position, 1 = c32 position
   menu: { p: number; at: "c21" | "c3"; hover: number };
+  addStep: { p: number; slot: number }; // "+ Add a step…" row at step slot 0, 1 or 2
   returnsChip: number;
   // Step 1.1 configuration (scene 6)
-  condFocus: number;
   actionOpen: number;
   actionHover: number;
   actionSelected: boolean;
@@ -106,7 +107,7 @@ export const EMPTY_EDITOR: EditorState = {
   titleText: "",
   titleFocus: false,
   cards: { h1: 0, c11: 0, c12: 0, h2: 0, c21: 0, c22: 0, h3: 0, c31: 0, c32: 0 },
-  typed: { cond21: 0, set21: 0, calc21: 0, api31: 0, send32: 0 },
+  typed: { cond11: 0, cond21: 0, set21: 0, calc21: 0, api31: 0, send32: 0 },
   focus: null,
   set21Row: 0,
   calc21Row: 0,
@@ -114,8 +115,8 @@ export const EMPTY_EDITOR: EditorState = {
   pill21: { p: 0, slot: 1 },
   pill3: { p: 0, slot: 0 },
   menu: { p: 0, at: "c21", hover: -1 },
+  addStep: { p: 0, slot: 0 },
   returnsChip: 0,
-  condFocus: 0,
   actionOpen: 0,
   actionHover: -1,
   actionSelected: false,
@@ -537,6 +538,7 @@ export const menuItemCenter = (pill: { x: number; y: number }, i: number) => ({
 export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProperties }> = ({ s, style }) => {
   const c = s.cards;
   const s1c = stepCenter(0);
+  const s2c = stepCenter(1);
   const s3c = stepCenter(2);
   const connector = (y: number, p: number) => (
     <div
@@ -641,7 +643,7 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
           left: POS.railX - 0.75,
           top: s1c,
           width: 1.5,
-          height: (s3c - s1c) * Math.min(1, c.h3),
+          height: (s2c - s1c) * Math.min(1, c.h2) + (s3c - s2c) * Math.min(1, c.h3),
           background: GUIDE,
           opacity: c.h1,
         }}
@@ -702,8 +704,7 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
         p={c.c11}
         dim={s.skipStep1Branches}
         z={5}
-        border={s.glow > 0 ? `1.5px solid rgba(210,248,0,${s.glow})` : undefined}
-        shadow={s.glow > 0 ? `0 0 ${16 * s.glow}px rgba(210,248,0,${0.55 * s.glow})` : undefined}
+        border={s.glow > 0 ? `1px solid ${LIME_EDGE(s.glow)}` : undefined}
       >
         <Item p={c.c11} i={0} style={{ left: 12, top: 17 }}>
           <Badge kind="IF" />
@@ -715,8 +716,7 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
               height: 26,
               boxSizing: "border-box",
               borderRadius: 6,
-              border: `1px solid ${COLORS.border}`,
-              boxShadow: s.condFocus > 0 ? `0 0 0 ${2 * s.condFocus}px rgba(17,24,39,${0.12 * s.condFocus})` : undefined,
+              border: `1px solid ${s.focus === "cond11" ? COLORS.ink : COLORS.border}`,
               padding: "0 9px",
               display: "flex",
               alignItems: "center",
@@ -724,7 +724,7 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
               color: COLORS.ink,
             }}
           >
-            {TEXT.condition}
+            <TypedTokens toks={FIELDS.cond11} n={s.typed.cond11} focus={s.focus === "cond11"} caretOn={s.caretOn} placeholder="Add a condition…" />
           </div>
         </Item>
         <Item p={c.c11} i={1} style={{ right: 12, top: 17 }}>
@@ -939,6 +939,30 @@ export const ProcedureEditor: React.FC<{ s: EditorState; style?: React.CSSProper
         </div>
       </SubCard>
 
+      {/* "+ Add a step…" placeholder row */}
+      <div
+        style={{
+          position: "absolute",
+          left: POS.stepX,
+          top: POS.stepY[s.addStep.slot],
+          width: POS.stepW,
+          height: POS.stepH,
+          boxSizing: "border-box",
+          borderRadius: 8,
+          border: "1px dashed #D1D5DB",
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          paddingLeft: 14,
+          fontSize: 11,
+          color: COLORS.grey,
+          opacity: s.addStep.p,
+          translate: `0px ${(1 - s.addStep.p) * 6}px`,
+          zIndex: 3,
+        }}
+      >
+        <span style={{ fontSize: 14, lineHeight: 1 }}>+</span> Add a step…
+      </div>
       <AddPill p={s.pill3.p} x={p3.x} y={p3.y} />
       {s.menu.at === "c3" ? <ActionMenu p={s.menu.p} hover={s.menu.hover} x={p3.x} y={p3.y + MENU_OFFSET} /> : null}
     </div>

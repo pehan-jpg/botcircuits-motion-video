@@ -19,9 +19,9 @@ export const IntroLine: React.FC<{ frame: number; fps: number; style?: React.CSS
   return (
     <Line size={34} weight={400} style={style}>
       <div style={{ whiteSpace: "nowrap" }}>
-        <RevealWords text={TEXT.introLead} start={START} />
+        <RevealWords text={TEXT.introLead} start={START} frame={frame} />
         <span style={{ position: "relative", display: "inline-block" }}>
-          <RevealWords text={TEXT.introName} start={START + stagger} />
+          <RevealWords text={TEXT.introName} start={START + stagger} frame={frame} />
           <span
             style={{
               position: "absolute",
