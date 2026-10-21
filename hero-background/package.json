@@ -10,6 +10,7 @@
   "private": true,
   "dependencies": {
     "@remotion/cli": "4.0.537",
+    "@remotion/google-fonts": "4.0.537",
     "@remotion/transitions": "4.0.537",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -30,7 +31,11 @@
     "lint": "eslint src && tsc",
     "stills": "node scripts/stills.mjs && python3 scripts/measure.py out/stills",
     "render:mp4": "remotion render HeroBackground out/hero-background.mp4 --codec=h264 --crf=20 --x264-preset=slow --muted",
-    "render:webm": "remotion render HeroBackground out/hero-background.webm --codec=vp9 --crf=33 --muted"
+    "render:webm": "remotion render HeroBackground out/hero-background.webm --codec=vp9 --crf=33 --muted",
+    "overlay:stills": "node scripts/overlay-stills.mjs",
+    "overlay:preview": "remotion render HeroOverlay out/overlay-preview.mp4 --scale=0.5 --codec=h264 --crf=23 --muted",
+    "overlay:mp4": "remotion render HeroOverlay out/hero-overlay.mp4 --codec=h264 --crf=18 --x264-preset=slow --muted",
+    "overlay:webm": "remotion render HeroOverlay out/hero-overlay.webm --codec=vp9 --crf=30 --muted"
   },
   "allowScripts": {
     "esbuild": false
