@@ -72,3 +72,7 @@ npm run overlay:check     # scan the MP4 for single-frame render glitches
 Fonts load from Google Fonts at render time. Behind a TLS-intercepting proxy, render with a full
 Chromium that trusts the proxy CA: `--browser-executable=<chrome> --chrome-mode=chrome-for-testing`
 (for the stills script: `REMOTION_BROWSER` and `REMOTION_CHROME_MODE=chrome-for-testing`).
+
+Render with `--gl=swangle` (already in the npm scripts): with the default GL backend, Chrome occasionally
+captured a frame before all compositing tiles were painted, leaving blank patches behind the frosted glass.
+Run `npm run overlay:check` after a render to scan for any single-frame glitch.
