@@ -1,6 +1,6 @@
 import type React from "react";
 import { Easing, interpolate, spring } from "remotion";
-import { MOTION, THEME } from "./config";
+import { MOTION } from "./config";
 
 type Bezier = readonly [number, number, number, number];
 
@@ -60,7 +60,7 @@ export const cardMotion = (
     translate: `${x.toFixed(2)}px ${y.toFixed(2)}px`,
     scale: String(lerp(MOTION.enter.scaleFrom, 1, p)),
   };
-  const fade: React.CSSProperties = {
+  const fade = {
     opacity: p * (1 - q),
     filter: blurFilter(MOTION.enter.blurPx * (1 - p) + MOTION.exit.blurPx * q),
   };
@@ -76,13 +76,4 @@ export const swap = (frame: number, inAt: number, outAt: number | null, duration
     translate: `0px ${(distance * (1 - i) - distance * o).toFixed(2)}px`,
     filter: blurFilter(3 * (1 - i) + 3 * o),
   } satisfies React.CSSProperties;
-};
-
-export const glassSurface: React.CSSProperties = {
-  background: THEME.glass.fill,
-  backdropFilter: THEME.glass.backdropFilter,
-  WebkitBackdropFilter: THEME.glass.backdropFilter,
-  border: THEME.glass.border,
-  borderRadius: THEME.glass.radius,
-  boxSizing: "border-box",
 };

@@ -1,25 +1,32 @@
 import type React from "react";
-import { interpolate } from "remotion";
-import { THEME } from "./config";
-import { inter, mono } from "./fonts";
-import { clamp, glassSurface, lerp, ramp, revealEase } from "./motion";
+import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { MOTION, STACK, THEME } from "./config";
+import { inter } from "./fonts";
+import { blurFilter, cardMotion, clamp, lerp, ramp, revealEase } from "./motion";
 
-/* ---------- Typography ---------- */
+/* ---------- Typography (Inter only) ---------- */
+
+const textBase: React.CSSProperties = {
+  fontFamily: inter,
+  fontVariantNumeric: "tabular-nums",
+  textShadow: THEME.textShadow,
+};
 
 export const Label: React.FC<{ children: React.ReactNode; color?: string; style?: React.CSSProperties }> = ({
   children,
-  color = THEME.textSecondary,
+  color = THEME.text,
   style,
 }) => (
   <div
     style={{
-      fontFamily: mono,
+      ...textBase,
       fontSize: THEME.type.label.size,
       fontWeight: THEME.type.label.weight,
       letterSpacing: THEME.type.label.letterSpacing,
       textTransform: "uppercase",
       lineHeight: 1.2,
       color,
+      opacity: THEME.type.label.opacity,
       ...style,
     }}
   >
@@ -30,7 +37,7 @@ export const Label: React.FC<{ children: React.ReactNode; color?: string; style?
 export const Title: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
   <div
     style={{
-      fontFamily: inter,
+      ...textBase,
       fontSize: THEME.type.title.size,
       fontWeight: THEME.type.title.weight,
       lineHeight: 1.3,
@@ -50,10 +57,10 @@ export const Body: React.FC<{ children: React.ReactNode; color?: string; style?:
 }) => (
   <div
     style={{
-      fontFamily: inter,
+      ...textBase,
       fontSize: THEME.type.body.size,
       fontWeight: THEME.type.body.weight,
-      lineHeight: 1.4,
+      lineHeight: 1.38,
       color,
       ...style,
     }}
@@ -62,28 +69,57 @@ export const Body: React.FC<{ children: React.ReactNode; color?: string; style?:
   </div>
 );
 
-/* ---------- Glass card ---------- */
+/* ---------- Glass ---------- */
+
+export type GlassVariant = "action" | "query";
+
+const glassBackground = (variant: GlassVariant, tint: number) =>
+  variant === "action"
+    ? `${THEME.glass.actionSheen}, rgba(${THEME.glass.actionTint}, ${tint})`
+    : `linear-gradient(${THEME.glass.queryFill}, ${THEME.glass.queryFill}), rgba(${THEME.glass.actionTint}, ${tint})`;
 
 type GlassProps = {
-  x: number;
-  y: number;
-  width: number;
+  variant: GlassVariant;
+  /** Alpha of the dark tint under the glass (per scene, from config). */
+  tint: number;
+  /** Fixed width, or "fit" to hug the content up to `maxWidth`. */
+  width: number | "fit";
+  maxWidth?: number;
   /** Container transform (translate / scale / float). */
   transform: React.CSSProperties;
   /** Opacity + blur, applied on the surface itself. */
-  fade: React.CSSProperties;
-  /** Optional reveal: inset in px from the right / bottom edges, and corner radius. */
-  reveal?: { right: number; bottom: number; radius: number; height: number };
-  surfaceStyle?: React.CSSProperties;
+  fade: { opacity: number; filter?: string };
+  /** Optional clip reveal: inset in px from the right / bottom edges, and corner radius. */
+  reveal?: { right: number; bottom: number; radius: number; width: number; height: number };
   radius?: number;
+  surfaceStyle?: React.CSSProperties;
   children: React.ReactNode;
 };
 
-export const Glass: React.FC<GlassProps> = ({ x, y, width, transform, fade, reveal, surfaceStyle, radius: radiusProp, children }) => {
+/** A glass surface that flows inside the stack. Its shadow lives on its own layer so reveals never clip it. */
+export const Glass: React.FC<GlassProps> = ({
+  variant,
+  tint,
+  width,
+  maxWidth,
+  transform,
+  fade,
+  reveal,
+  radius: radiusProp,
+  surfaceStyle,
+  children,
+}) => {
   const radius = reveal?.radius ?? radiusProp ?? THEME.glass.radius;
   return (
-    <div style={{ position: "absolute", left: x, top: y, width, ...transform }}>
-      {/* Shadow lives on its own layer so a clip-path reveal never clips it. */}
+    <div
+      style={{
+        position: "relative",
+        width: width === "fit" ? "fit-content" : width,
+        maxWidth,
+        transformOrigin: "100% 0%",
+        ...transform,
+      }}
+    >
       <div
         style={{
           position: "absolute",
@@ -94,16 +130,23 @@ export const Glass: React.FC<GlassProps> = ({ x, y, width, transform, fade, reve
           borderRadius: radius,
           boxShadow: THEME.glass.shadow,
           transformOrigin: "0 0",
-          scale: reveal ? `${1 - reveal.right / width} ${1 - reveal.bottom / reveal.height}` : undefined,
+          scale: reveal ? `${1 - reveal.right / reveal.width} ${1 - reveal.bottom / reveal.height}` : undefined,
           opacity: fade.opacity,
         }}
       />
       <div
         style={{
-          ...glassSurface,
           position: "relative",
+          boxSizing: "border-box",
+          background: glassBackground(variant, tint),
+          backdropFilter: THEME.glass.backdropFilter,
+          WebkitBackdropFilter: THEME.glass.backdropFilter,
+          border: THEME.glass.border,
+          boxShadow: THEME.glass.innerHighlight,
           borderRadius: radius,
-          clipPath: reveal ? `inset(0px ${reveal.right.toFixed(2)}px ${reveal.bottom.toFixed(2)}px 0px round ${radius.toFixed(2)}px)` : undefined,
+          clipPath: reveal
+            ? `inset(0px ${reveal.right.toFixed(2)}px ${reveal.bottom.toFixed(2)}px 0px round ${radius.toFixed(2)}px)`
+            : undefined,
           ...fade,
           ...surfaceStyle,
         }}
@@ -111,6 +154,83 @@ export const Glass: React.FC<GlassProps> = ({ x, y, width, transform, fade, reve
         {children}
       </div>
     </div>
+  );
+};
+
+/** The single right-aligned column every scene uses. */
+export const Stack: React.FC<{ y: number; children: React.ReactNode }> = ({ y, children }) => (
+  <div
+    style={{
+      position: "absolute",
+      left: STACK.left,
+      top: y,
+      width: STACK.width,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-end",
+      gap: STACK.gap,
+    }}
+  >
+    {children}
+  </div>
+);
+
+/** Word-by-word reveal: each word fades in from a short blur. */
+export const WordReveal: React.FC<{ text: string; frame: number; start: number }> = ({ text, frame, start }) => {
+  const q = MOTION.query;
+  return (
+    <>
+      {text.split(" ").map((word, i) => {
+        const t = ramp(frame, start + i * q.wordStagger, q.wordFrames);
+        return (
+          <span key={i}>
+            <span style={{ display: "inline-block", opacity: t, filter: blurFilter(q.wordBlurPx * (1 - t)) }}>{word}</span>{" "}
+          </span>
+        );
+      })}
+    </>
+  );
+};
+
+/** Customer query bubble at the top of each stack; dims once the action card arrives. */
+export const QueryBubble: React.FC<{
+  text: string;
+  enter: number;
+  exit: number;
+  dimAt: number;
+  tint: number;
+}> = ({ text, enter, exit, dimAt, tint }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const m = cardMotion(frame, fps, enter, exit, "bottom", enter);
+  if (!m.visible) return null;
+  const dim = lerp(1, MOTION.query.dimTo, ramp(frame, dimAt, MOTION.query.dimFrames));
+
+  return (
+    <Glass
+      variant="query"
+      tint={tint}
+      width="fit"
+      maxWidth={STACK.queryMaxWidth}
+      transform={m.transform}
+      fade={{ ...m.fade, opacity: m.fade.opacity * dim }}
+      surfaceStyle={{ padding: "12px 18px 14px", textAlign: "right" }}
+    >
+      <Label>Customer</Label>
+      <div
+        style={{
+          ...textBase,
+          marginTop: 5,
+          fontSize: THEME.type.query.size,
+          fontWeight: THEME.type.query.weight,
+          lineHeight: 1.36,
+          color: THEME.text,
+          textWrap: "balance",
+        }}
+      >
+        <WordReveal text={text} frame={frame} start={enter + MOTION.query.wordDelay} />
+      </div>
+    </Glass>
   );
 };
 
@@ -254,7 +374,7 @@ export const Ripple: React.FC<{ frame: number; at: number; x: number; y: number;
         height: size,
         borderRadius: "50%",
         border: `2px solid ${THEME.lime}`,
-        background: `color-mix(in srgb, ${THEME.lime} 18%, transparent)`,
+        background: `color-mix(in srgb, ${THEME.lime} 22%, transparent)`,
         scale: String(lerp(0.15, 1, t)),
         opacity: interpolate(t, [0, 0.15, 1], [0, 0.9, 0], clamp),
         pointerEvents: "none",
@@ -274,7 +394,7 @@ export const Shimmer: React.FC<{ frame: number; width: number | string; height?:
       width,
       height,
       borderRadius: height / 2,
-      background: "rgba(18, 22, 27, 0.07)",
+      background: THEME.shimmerBase,
       overflow: "hidden",
       position: "relative",
     }}
@@ -285,7 +405,7 @@ export const Shimmer: React.FC<{ frame: number; width: number | string; height?:
         top: 0,
         bottom: 0,
         width: "60%",
-        background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%)",
+        background: `linear-gradient(90deg, rgba(255,255,255,0) 0%, ${THEME.shimmerHighlight} 50%, rgba(255,255,255,0) 100%)`,
         translate: `${(((frame * 4) % 260) - 80).toFixed(1)}% 0px`,
       }}
     />
@@ -300,7 +420,7 @@ export const RollText: React.FC<{
   stagger?: number;
   duration?: number;
   style?: React.CSSProperties;
-}> = ({ text, frame, start, stagger = 2, duration = 12, style }) => (
+}> = ({ text, frame, start, stagger = 1, duration = 12, style }) => (
   <div style={{ display: "flex", overflow: "hidden", ...style }}>
     {text.split("").map((ch, i) => {
       const t = interpolate(frame, [start + i * stagger, start + i * stagger + duration], [0, 1], {

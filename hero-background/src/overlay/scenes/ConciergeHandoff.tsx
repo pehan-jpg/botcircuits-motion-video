@@ -1,12 +1,12 @@
 import type React from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
-import { SCENES, THEME } from "../config";
-import { cardMotion, clamp, lerp, pressScale, progressEase, ramp, swap } from "../motion";
-import { Body, DotLoader, Glass, Label, LimeCheck, Ripple, Title } from "../ui";
+import { SCENES, STACK, THEME, exitTiming } from "../config";
+import { cardMotion, clamp, lerp, progressEase, ramp, swap } from "../motion";
+import { Body, DotLoader, Glass, Label, LimeCheck, QueryBubble, Stack, Title } from "../ui";
 
 const S = SCENES.concierge;
-const CARD_HEIGHT = 256;
-const AVATAR = 56;
+const EXIT = exitTiming(S.exitEnd);
+const AVATAR = 52;
 
 const PulseRing: React.FC<{ frame: number; at: number }> = ({ frame, at }) => {
   const t = interpolate(frame, [at, at + 26], [0, 1], clamp);
@@ -36,7 +36,7 @@ const Avatars: React.FC<{ frame: number }> = ({ frame }) => {
   const packetT = frame >= a.lineEnd && frame < S.joinedAt ? ((frame - a.lineEnd) % 16) / 16 : -1;
 
   return (
-    <div style={{ display: "flex", alignItems: "center", height: AVATAR, marginTop: 20 }}>
+    <div style={{ display: "flex", alignItems: "center", height: AVATAR, marginTop: 16 }}>
       <div style={{ position: "relative", width: AVATAR, height: AVATAR, flexShrink: 0, opacity: agent, scale: String(lerp(0.6, 1, agent)) }}>
         {pulses.map((p) => (
           <PulseRing key={p} frame={frame} at={p} />
@@ -58,7 +58,7 @@ const Avatars: React.FC<{ frame: number }> = ({ frame }) => {
             position: "absolute",
             inset: 0,
             background: THEME.text,
-            opacity: 0.55,
+            opacity: 0.7,
             transformOrigin: "0 50%",
             scale: `${line} 1`,
           }}
@@ -85,7 +85,9 @@ const Avatars: React.FC<{ frame: number }> = ({ frame }) => {
           width: AVATAR,
           height: AVATAR,
           borderRadius: "50%",
-          background: "rgba(18, 22, 27, 0.08)",
+          background: "rgba(255, 255, 255, 0.16)",
+          border: `1px solid ${THEME.hairline}`,
+          boxSizing: "border-box",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -100,81 +102,34 @@ const Avatars: React.FC<{ frame: number }> = ({ frame }) => {
   );
 };
 
-export const ConciergeHandoff: React.FC = () => {
+const HandoffCard: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const { visible, transform, fade } = cardMotion(frame, fps, S.enter, S.exit, S.enterFrom);
+  const { visible, transform, fade } = cardMotion(frame, fps, S.card.enter, EXIT.card, S.card.enterFrom, S.query.enter);
   if (!visible) return null;
 
-  const e = ramp(frame, S.expand.start, S.expand.end - S.expand.start);
-  const reveal =
-    e < 1
-      ? {
-          right: (S.width - S.chip.width) * (1 - e),
-          bottom: (CARD_HEIGHT - S.chip.height) * (1 - e),
-          radius: lerp(S.chip.height / 2, THEME.glass.radius, e),
-          height: CARD_HEIGHT,
-        }
-      : undefined;
-
-  const chipOrigin = `${S.chip.width / 2}px ${S.chip.height / 2}px`;
-  const containerTransform: React.CSSProperties = {
-    ...transform,
-    transformOrigin: chipOrigin,
-    scale: String(Number(transform.scale) * pressScale(frame, S.ripple)),
-  };
-  const chipOut = ramp(frame, S.expand.start, 6);
-  const content = ramp(frame, S.expand.start + 4, 14);
-
   return (
-    <Glass
-      x={S.x}
-      y={S.y}
-      width={S.width}
-      transform={containerTransform}
-      fade={fade}
-      reveal={reveal}
-      surfaceStyle={{ height: CARD_HEIGHT, padding: 24, overflow: "hidden" }}
-    >
-      {/* Quick reply chip */}
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          width: S.chip.width,
-          height: S.chip.height,
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-          padding: "0 22px",
-          boxSizing: "border-box",
-          opacity: 1 - chipOut,
-          translate: `0px ${(-6 * chipOut).toFixed(2)}px`,
-          whiteSpace: "nowrap",
-        }}
-      >
-        <div style={{ width: 10, height: 10, borderRadius: "50%", background: THEME.lime, flexShrink: 0 }} />
-        <Body style={{ fontWeight: 500 }}>{S.copy.chip}</Body>
-      </div>
-      <Ripple frame={frame} at={S.ripple} x={S.chip.width * 0.7} y={S.chip.height / 2} size={260} duration={18} />
-
-      {/* Handoff card */}
-      <div style={{ opacity: content, translate: `0px ${(10 * (1 - content)).toFixed(2)}px` }}>
-        <Label>{S.copy.label}</Label>
-        <Title style={{ marginTop: 8 }}>{S.copy.title}</Title>
-        <Avatars frame={frame} />
-        <div style={{ position: "relative", height: 56, marginTop: 20 }}>
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", gap: 14, ...swap(frame, S.connecting.start, S.joinedAt) }}>
-            <DotLoader frame={frame} />
-            <Body color={THEME.textSecondary}>{S.copy.connecting}</Body>
-          </div>
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", gap: 14, ...swap(frame, S.joinedAt + 2, null, 12) }}>
-            <LimeCheck frame={frame} start={S.joinedAt + 2} size={30} />
-            <Body>{S.copy.joined}</Body>
-          </div>
+    <Glass variant="action" tint={S.tint} width={STACK.width} transform={transform} fade={fade} surfaceStyle={{ padding: 20 }}>
+      <Label>{S.copy.label}</Label>
+      <Title style={{ marginTop: 6 }}>{S.copy.title}</Title>
+      <Avatars frame={frame} />
+      <div style={{ position: "relative", height: 58, marginTop: 16 }}>
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", gap: 14, ...swap(frame, S.connecting.start, S.joinedAt) }}>
+          <DotLoader frame={frame} />
+          <Body color={THEME.textSecondary}>{S.copy.connecting}</Body>
+        </div>
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", gap: 14, ...swap(frame, S.joinedAt + 2, null, 12) }}>
+          <LimeCheck frame={frame} start={S.joinedAt + 2} size={30} />
+          <Body>{S.copy.joined}</Body>
         </div>
       </div>
     </Glass>
   );
 };
+
+export const ConciergeHandoff: React.FC = () => (
+  <Stack y={S.stackY}>
+    <QueryBubble text={S.query.text} enter={S.query.enter} exit={EXIT.query} dimAt={S.card.enter} tint={S.queryTint} />
+    <HandoffCard />
+  </Stack>
+);

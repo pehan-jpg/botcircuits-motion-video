@@ -44,24 +44,29 @@ render commands, or set `REMOTION_BROWSER` for `npm run stills`.
 
 ---
 
-# Hero overlay (`HeroOverlay`)
+# Hero overlay (`HeroOverlay`, v2)
 
 Motion-graphics overlay on the merged hero video: 1920x1080, 30 fps, 614 frames.
 The base video (`public/hero_base.mp4`) plays untouched (no grade, trim or filters) with `OffthreadVideo`, muted.
 
-All copy, timings, positions, colours and spring values are in [`src/overlay/config.ts`](src/overlay/config.ts).
+All copy, timings, positions, glass tints, colours and spring values are in [`src/overlay/config.ts`](src/overlay/config.ts).
 `BRAND_LIME` is a placeholder (`#B5E61D`) until the exact BotCircuits hex is supplied.
 
+- Layout: one right-aligned column (x 1400–1840, 440px wide) per scene, with each scene's start
+  height in `SCENES.*.stackY`; nothing sits above y 110 (nav bar).
+- Each scene: a light frosted customer query bubble, then a dark tinted glass action card beneath it.
+- Type: Inter only (400/500/600), tabular numerals.
 - Cuts (ffmpeg scene detection, first frame of each new shot): **153, 303, 463**.
 - Transitions, 24 frames centred on each cut: blur dip + warm flare (cut 1 and the loop point),
   whip pan with horizontal SVG motion blur (cut 2), lime sweep with 4% push-in (cut 3).
-- Scenes: `src/overlay/scenes/` — flight update, booking progress, boarding pass, concierge handoff.
+- `validateTimeline()` fails the render if any element is within 16 frames of a cut or the loop point.
 
 ```bash
-npm run overlay:stills    # verification stills → out/overlay-stills
+npm run overlay:stills    # verification stills (STILLS_DIR to choose the folder)
 npm run overlay:preview   # half-resolution preview
-npm run overlay:mp4       # 1080p H.264, CRF 18, no audio
-npm run overlay:webm      # VP9 WebM, no audio
+npm run overlay:mp4       # 1080p H.264, CRF 18, no audio → out/hero-overlay-v2.mp4
+npm run overlay:webm      # VP9 WebM, no audio → out/hero-overlay-v2.webm
+npm run overlay:check     # scan the MP4 for single-frame render glitches
 ```
 
 Fonts load from Google Fonts at render time. Behind a TLS-intercepting proxy, render with a full

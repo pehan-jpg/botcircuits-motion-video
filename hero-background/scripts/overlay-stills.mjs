@@ -3,7 +3,7 @@ import { bundle } from "@remotion/bundler";
 import { renderStill, selectComposition } from "@remotion/renderer";
 import path from "node:path";
 
-const outDir = "out/overlay-stills";
+const outDir = process.env.STILLS_DIR ?? "out/overlay-stills";
 const frames = (process.argv[2] ?? "0,20,70,120,144,152,160,200,250,294,302,310,340,390,440,456,464,472,500,560,613")
   .split(",")
   .map(Number);

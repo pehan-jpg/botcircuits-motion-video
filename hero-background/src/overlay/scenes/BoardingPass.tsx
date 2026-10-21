@@ -1,12 +1,13 @@
 import type React from "react";
 import { random, useCurrentFrame, useVideoConfig } from "remotion";
-import { SCENES, THEME } from "../config";
+import { SCENES, STACK, THEME, exitTiming } from "../config";
 import { cardMotion, progressEase, ramp } from "../motion";
-import { Body, Glass, Label, PLANE_PATH, RollText, Title } from "../ui";
+import { Body, Glass, Label, PLANE_PATH, QueryBubble, RollText, Stack, Title } from "../ui";
 
 const S = SCENES.boardingPass;
-const PASS_HEIGHT = 290;
-const ARC = { w: 250, h: 56, p0: [10, 44], p1: [125, -6], p2: [240, 44] } as const;
+const EXIT = exitTiming(S.exitEnd);
+const PASS_HEIGHT = 278;
+const ARC = { w: 196, h: 56, p0: [12, 44], p1: [98, -6], p2: [184, 44] } as const;
 const BAR_WIDTHS = Array.from({ length: S.barcode.bars }, (_, i) => [2, 2, 3, 4, 6][Math.floor(random(`bar-${i}`) * 5)]);
 
 const arcPoint = (t: number) => {
@@ -19,7 +20,7 @@ const arcPoint = (t: number) => {
 };
 
 const Airport: React.FC<{ code: string; city: string; align: "left" | "right" }> = ({ code, city, align }) => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: align === "left" ? "flex-start" : "flex-end", width: 96 }}>
+  <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: align === "left" ? "flex-start" : "flex-end", width: 98 }}>
     <Title style={{ letterSpacing: "0.04em" }}>{code}</Title>
     <Label>{city}</Label>
   </div>
@@ -54,7 +55,7 @@ const Detail: React.FC<{ frame: number; label: string; value: string; start: num
   <div style={{ display: "flex", flexDirection: "column", gap: 6, opacity: ramp(frame, start, 8) }}>
     <Label>{label}</Label>
     <Title>
-      <RollText text={value} frame={frame} start={start + 2} style={{ height: 29 }} />
+      <RollText text={value} frame={frame} start={start + 2} style={{ height: 31 }} />
     </Title>
   </div>
 );
@@ -62,7 +63,7 @@ const Detail: React.FC<{ frame: number; label: string; value: string; start: num
 const Barcode: React.FC<{ frame: number }> = ({ frame }) => {
   const span = S.barcode.end - S.barcode.start - 8;
   return (
-    <div style={{ display: "flex", gap: 3, height: 40, alignItems: "flex-end" }}>
+    <div style={{ display: "flex", gap: 3, height: 38, alignItems: "flex-end" }}>
       {BAR_WIDTHS.map((w, i) => (
         <div
           key={i}
@@ -94,67 +95,81 @@ const DoubleTick: React.FC<{ frame: number; start: number }> = ({ frame, start }
   );
 };
 
-export const BoardingPass: React.FC = () => {
+const Pass: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const pass = cardMotion(frame, fps, S.enter, S.exit, S.enterFrom);
+  const pass = cardMotion(frame, fps, S.card.enter, EXIT.card, S.card.enterFrom, S.query.enter);
   if (!pass.visible) return null;
-  const tag = cardMotion(frame, fps, S.tagAt, S.exit, "bottom", S.enter);
 
   const wipe = ramp(frame, S.wipe.start, S.wipe.end - S.wipe.start);
-  const reveal = wipe < 1 ? { right: S.width * (1 - wipe), bottom: 0, radius: THEME.glass.radius, height: PASS_HEIGHT } : undefined;
+  const reveal =
+    wipe < 1
+      ? { right: STACK.width * (1 - wipe), bottom: 0, radius: 22, width: STACK.width, height: PASS_HEIGHT }
+      : undefined;
 
   return (
-    <>
-      <Glass
-        x={S.x}
-        y={S.y}
-        width={S.width}
-        transform={pass.transform}
-        fade={pass.fade}
-        reveal={reveal}
-        surfaceStyle={{ height: PASS_HEIGHT, padding: 24, display: "flex", flexDirection: "column" }}
-      >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <Label color={THEME.text}>{S.copy.label}</Label>
-          <Label color={THEME.onLime} style={{ background: THEME.lime, padding: "5px 10px", borderRadius: 999 }}>
-            {S.copy.badge}
-          </Label>
-        </div>
+    <Glass
+      variant="action"
+      tint={S.tint}
+      width={STACK.width}
+      transform={pass.transform}
+      fade={pass.fade}
+      reveal={reveal}
+      surfaceStyle={{ height: PASS_HEIGHT, padding: 20, display: "flex", flexDirection: "column" }}
+    >
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <Label>{S.copy.label}</Label>
+        <Label color={THEME.onLime} style={{ opacity: 1, textShadow: "none", background: THEME.lime, padding: "5px 10px", borderRadius: 999 }}>
+          {S.copy.badge}
+        </Label>
+      </div>
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 18, height: 56 }}>
-          <Airport code={S.copy.from.code} city={S.copy.from.city} align="left" />
-          <Route frame={frame} />
-          <Airport code={S.copy.to.code} city={S.copy.to.city} align="right" />
-        </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 16, height: 56 }}>
+        <Airport code={S.copy.from.code} city={S.copy.from.city} align="left" />
+        <Route frame={frame} />
+        <Airport code={S.copy.to.code} city={S.copy.to.city} align="right" />
+      </div>
 
-        <div style={{ borderTop: `1.5px dashed ${THEME.hairline}`, marginTop: 18 }} />
+      <div style={{ borderTop: `1.5px dashed ${THEME.hairline}`, marginTop: 16 }} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1.2fr", marginTop: 16 }}>
-          {S.copy.details.map((d, i) => (
-            <Detail key={d.label} frame={frame} label={d.label} value={d.value} start={S.details.start + i * S.details.stagger} />
-          ))}
-        </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1.25fr", marginTop: 14 }}>
+        {S.copy.details.map((d, i) => (
+          <Detail key={d.label} frame={frame} label={d.label} value={d.value} start={S.details.start + i * S.details.stagger} />
+        ))}
+      </div>
 
-        <div style={{ marginTop: "auto" }}>
-          <Barcode frame={frame} />
-        </div>
-      </Glass>
-
-      {tag.visible ? (
-        <Glass
-          x={S.x}
-          y={S.y + PASS_HEIGHT + 14}
-          width={324}
-          radius={999}
-          transform={tag.transform}
-          fade={tag.fade}
-          surfaceStyle={{ padding: "12px 18px 12px 12px", display: "flex", alignItems: "center", gap: 12, whiteSpace: "nowrap" }}
-        >
-          <DoubleTick frame={frame} start={S.tagAt + 8} />
-          <Body>{S.copy.tag}</Body>
-        </Glass>
-      ) : null}
-    </>
+      <div style={{ marginTop: "auto" }}>
+        <Barcode frame={frame} />
+      </div>
+    </Glass>
   );
 };
+
+const Tag: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const tag = cardMotion(frame, fps, S.tagAt, EXIT.card, "bottom", S.query.enter);
+  if (!tag.visible) return null;
+  return (
+    <Glass
+      variant="action"
+      tint={S.tint}
+      width="fit"
+      radius={999}
+      transform={tag.transform}
+      fade={tag.fade}
+      surfaceStyle={{ padding: "11px 18px 11px 11px", display: "flex", alignItems: "center", gap: 12, whiteSpace: "nowrap" }}
+    >
+      <DoubleTick frame={frame} start={S.tagAt + 8} />
+      <Body>{S.copy.tag}</Body>
+    </Glass>
+  );
+};
+
+export const BoardingPass: React.FC = () => (
+  <Stack y={S.stackY}>
+    <QueryBubble text={S.query.text} enter={S.query.enter} exit={EXIT.query} dimAt={S.card.enter} tint={S.queryTint} />
+    <Pass />
+    <Tag />
+  </Stack>
+);

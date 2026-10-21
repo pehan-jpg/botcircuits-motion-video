@@ -1,10 +1,13 @@
 import { AbsoluteFill, OffthreadVideo, staticFile, useCurrentFrame } from "remotion";
-import { COMP } from "./config";
+import { COMP, validateTimeline } from "./config";
 import { BoardingPass } from "./scenes/BoardingPass";
 import { BookingProgress } from "./scenes/BookingProgress";
 import { ConciergeHandoff } from "./scenes/ConciergeHandoff";
 import { FlightUpdate } from "./scenes/FlightUpdate";
 import { Flare, LimeBand, VideoWrapper, transitionState } from "./transitions";
+
+// Fail fast if a scene drifts within the minimum gap of a cut or the loop point.
+validateTimeline();
 
 export const HeroOverlay: React.FC = () => {
   const frame = useCurrentFrame();

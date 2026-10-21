@@ -1,5 +1,5 @@
 /**
- * Hero overlay — every copy string, timing, position, colour and spring value lives here.
+ * Hero overlay (v2) — every copy string, timing, position, colour and spring value lives here.
  * Frames are absolute composition frames (30 fps).
  */
 
@@ -65,25 +65,46 @@ export const TRANSITION_FX = {
   },
 } as const;
 
+/** Single right-aligned column shared by every scene. */
+export const STACK = {
+  left: 1400,
+  right: 1840,
+  width: 440,
+  gap: 12,
+  queryMaxWidth: 400,
+  /** Website navigation bar: nothing may sit above this line. */
+  navSafeY: 110,
+} as const;
+
 export const THEME = {
   lime: BRAND_LIME,
-  text: "#12161B",
-  textSecondary: "#5B6470",
   onLime: "#12161B",
-  subtleFill: "rgba(18, 22, 27, 0.05)",
-  hairline: "rgba(18, 22, 27, 0.10)",
+  text: "#FFFFFF",
+  textSecondary: "rgba(255, 255, 255, 0.68)",
+  subtleFill: "rgba(255, 255, 255, 0.10)",
+  hairline: "rgba(255, 255, 255, 0.22)",
+  shimmerBase: "rgba(255, 255, 255, 0.14)",
+  shimmerHighlight: "rgba(255, 255, 255, 0.45)",
+  /** Subtle legibility lift for white text on glass. */
+  textShadow: "0 1px 2px rgba(0, 0, 0, 0.18)",
   glass: {
-    fill: "rgba(255, 255, 255, 0.78)",
-    backdropFilter: "blur(24px) saturate(1.2)",
-    border: "1px solid rgba(255, 255, 255, 0.6)",
-    radius: 24,
-    shadow: "0 20px 60px rgba(20, 30, 40, 0.18)",
+    /** Action cards: translucent dark tinted glass (alpha set per scene). */
+    actionTint: "24, 28, 34",
+    actionSheen: "linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.04) 100%)",
+    /** Customer query bubbles: lighter frosted glass. */
+    queryFill: "rgba(255, 255, 255, 0.18)",
+    backdropFilter: "blur(28px) saturate(1.4)",
+    border: "1px solid rgba(255, 255, 255, 0.28)",
+    innerHighlight: "inset 0 1px 0 rgba(255, 255, 255, 0.35)",
+    radius: 22,
+    shadow: "0 18px 50px rgba(0, 0, 0, 0.22)",
   },
   type: {
-    title: { size: 22, weight: 600 },
-    body: { size: 20, weight: 400 },
-    button: { size: 18, weight: 600 },
-    label: { size: 13, weight: 500, letterSpacing: "0.08em" },
+    title: { size: 24, weight: 600 },
+    body: { size: 21, weight: 400 },
+    query: { size: 21, weight: 500 },
+    button: { size: 19, weight: 600 },
+    label: { size: 13, weight: 600, letterSpacing: "0.08em", opacity: 0.65 },
   },
 } as const;
 
@@ -93,27 +114,31 @@ export const MOTION = {
   revealEasing: [0.22, 1, 0.36, 1],
   progressEasing: [0.45, 0, 0.55, 1],
   enter: { frames: 20, translatePx: 24, blurPx: 8, scaleFrom: 0.97 },
-  exit: { frames: 14, translatePx: -12, blurPx: 6 },
+  exit: { frames: 12, translatePx: -12, blurPx: 6, queryLeadFrames: 3 },
   float: { amplitudePx: 3, periodFrames: 96 },
   press: { scale: 0.96, downFrames: 3, upFrames: 5 },
-  /** Cards stay this far away from every cut. */
+  query: { wordDelay: 4, wordStagger: 2, wordFrames: 8, wordBlurPx: 4, dimTo: 0.8, dimFrames: 12 },
+  /** Cards stay this far away from every cut (including the loop point). */
   minGapFromCut: 16,
 } as const;
 
 export const SCENES = {
   flight: {
     name: "Scene 1 · Flight update",
-    x: 1230,
-    y: 160,
-    width: 500,
-    enterFrom: "right",
-    enter: 16,
-    exit: 120,
-    beats: { loading: 42, options: 66, highlight: 72, ripple: 74, rebookAppear: 80, press: 92, confirmed: 99 },
+    stackY: 120,
+    /** Action-card glass alpha: raised over the bright sky for legibility. */
+    tint: 0.5,
+    /** Dark tint under the query frost (0 = pure frost). */
+    queryTint: 0.28,
+    query: { text: "Is my flight to Singapore still on time?", enter: 16 },
+    card: { enter: 36, enterFrom: "right" },
+    beats: { loading: 54, options: 70, highlight: 74, ripple: 76, rebookAppear: 80, press: 90, confirmed: 96 },
+    /** Last frame of the action card's exit; the query leads it by 3 frames. */
+    exitEnd: 134,
     copy: {
       label: "Flight update",
       time: "now",
-      delayed: "Your 6:40 PM flight is delayed by 2 h 10 m.",
+      delayed: "Your 6:40\u00A0PM flight is delayed by 2\u00A0h\u00A010\u00A0m.",
       finding: "Finding your best option",
       option1: "9:15 PM tonight, seat 14A",
       option2: "7:05 AM tomorrow",
@@ -124,21 +149,21 @@ export const SCENES = {
   },
   booking: {
     name: "Scene 2 · Booking progress",
-    x: 96,
-    y: 72,
-    width: 520,
-    enterFrom: "bottom",
-    enter: 169,
-    exit: 270,
-    progressEnd: 258,
+    stackY: 110,
+    tint: 0.3,
+    queryTint: 0.08,
+    query: { text: "Please book me on the 9:15 PM flight.", enter: 169 },
+    card: { enter: 190, enterFrom: "bottom" },
+    progressEnd: 262,
     steps: [
-      { label: "Checking seat availability", start: 178, end: 202 },
-      { label: "Rebooking onto the 9:15 PM flight", start: 202, end: 228 },
-      { label: "Issuing a new boarding pass", start: 228, end: 254 },
+      { label: "Checking seat availability", start: 204, end: 224 },
+      { label: "Rebooking onto the 9:15 PM flight", start: 224, end: 244 },
+      { label: "Issuing a new boarding pass", start: 244, end: 262 },
     ],
     /** Frames before a step's end at which the spinner morphs into a check. */
     morphFrames: 8,
-    footerAt: 258,
+    footerAt: 264,
+    exitEnd: 284,
     copy: {
       title: "Updating your booking",
       footer: "All steps completed automatically",
@@ -146,17 +171,17 @@ export const SCENES = {
   },
   boardingPass: {
     name: "Scene 3 · Boarding pass",
-    x: 1090,
-    y: 150,
-    width: 520,
-    enterFrom: "bottom",
-    enter: 319,
-    wipe: { start: 319, end: 343 },
-    route: { start: 334, end: 376 },
-    details: { start: 346, stagger: 14, end: 396 },
-    barcode: { start: 360, end: 396, bars: 56 },
-    tagAt: 402,
-    exit: 433,
+    stackY: 140,
+    tint: 0.4,
+    queryTint: 0.22,
+    query: { text: "Can you send my boarding pass to WhatsApp?", enter: 319 },
+    card: { enter: 342, enterFrom: "bottom" },
+    wipe: { start: 342, end: 364 },
+    route: { start: 356, end: 392 },
+    details: { start: 366, stagger: 12, end: 410 },
+    barcode: { start: 380, end: 410, bars: 52 },
+    tagAt: 414,
+    exitEnd: 447,
     copy: {
       label: "Boarding pass",
       badge: "Rebooked",
@@ -172,20 +197,16 @@ export const SCENES = {
   },
   concierge: {
     name: "Scene 4 · Concierge handoff",
-    x: 120,
-    y: 200,
-    width: 520,
-    enterFrom: "bottom",
-    enter: 480,
-    ripple: 490,
-    expand: { start: 492, end: 510 },
-    chip: { width: 340, height: 60 },
-    avatars: { start: 514, agentAt: 514, humanAt: 522, lineStart: 520, lineEnd: 540, pulseEvery: 12, pulseUntil: 548 },
-    connecting: { start: 520, end: 556 },
-    joinedAt: 556,
-    exit: 584,
+    stackY: 620,
+    tint: 0.4,
+    queryTint: 0.32,
+    query: { text: "Can you arrange a private transfer on arrival?", enter: 480 },
+    card: { enter: 512, enterFrom: "bottom" },
+    avatars: { agentAt: 526, humanAt: 532, lineStart: 528, lineEnd: 548, pulseEvery: 12, pulseUntil: 552 },
+    connecting: { start: 526 },
+    joinedAt: 560,
+    exitEnd: 598,
     copy: {
-      chip: "Arrange a private transfer",
       label: "Concierge handoff",
       title: "Arrange a private transfer",
       initials: "CT",
@@ -194,3 +215,26 @@ export const SCENES = {
     },
   },
 } as const;
+
+/** Start frame of an action card's exit; the query bubble exits `queryLeadFrames` earlier. */
+export const exitTiming = (exitEnd: number) => {
+  const card = exitEnd - MOTION.exit.frames;
+  return { card, query: card - MOTION.exit.queryLeadFrames };
+};
+
+/** Throws if any scene puts an element on screen within `minGapFromCut` of a cut or the loop point. */
+export const validateTimeline = () => {
+  const cuts = [0, ...Object.values(CUTS), COMP.durationInFrames];
+  for (const s of Object.values(SCENES)) {
+    const first = s.query.enter;
+    const last = s.exitEnd;
+    for (const c of cuts) {
+      const tooCloseBefore = last > c - MOTION.minGapFromCut && last < c;
+      const tooCloseAfter = first >= c && first < c + MOTION.minGapFromCut;
+      if (tooCloseBefore || tooCloseAfter) {
+        throw new Error(`${s.name}: frames ${first}–${last} are within ${MOTION.minGapFromCut} frames of cut ${c}`);
+      }
+    }
+    if (s.stackY < STACK.navSafeY) throw new Error(`${s.name}: stack starts above the nav safe line`);
+  }
+};

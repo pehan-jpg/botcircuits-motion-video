@@ -1,11 +1,12 @@
 import type React from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
-import { SCENES, THEME } from "../config";
+import { SCENES, STACK, THEME, exitTiming } from "../config";
 import { inter } from "../fonts";
 import { cardMotion, lerp, pressScale, ramp, swap } from "../motion";
-import { Body, DotLoader, Glass, Label, LimeCheck, LimeIcon, Ripple, Shimmer, Title } from "../ui";
+import { Body, DotLoader, Glass, Label, LimeCheck, LimeIcon, QueryBubble, Ripple, Shimmer, Stack, Title } from "../ui";
 
 const S = SCENES.flight;
+const EXIT = exitTiming(S.exitEnd);
 const BODY_HEIGHT = 128;
 const ROW_HEIGHT = 56;
 
@@ -17,10 +18,10 @@ const layer: React.CSSProperties = {
   justifyContent: "center",
 };
 
-export const FlightUpdate: React.FC = () => {
+const ActionCard: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const { visible, transform, fade } = cardMotion(frame, fps, S.enter, S.exit, S.enterFrom);
+  const { visible, transform, fade } = cardMotion(frame, fps, S.card.enter, EXIT.card, S.card.enterFrom, S.query.enter);
   if (!visible) return null;
 
   const b = S.beats;
@@ -28,18 +29,17 @@ export const FlightUpdate: React.FC = () => {
   const rebook = ramp(frame, b.rebookAppear, 10);
 
   return (
-    <Glass x={S.x} y={S.y} width={S.width} transform={transform} fade={fade} surfaceStyle={{ padding: 24 }}>
-      {/* Header */}
+    <Glass variant="action" tint={S.tint} width={STACK.width} transform={transform} fade={fade} surfaceStyle={{ padding: 20 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <LimeIcon />
-        <Label color={THEME.text}>{S.copy.label}</Label>
+        <Label>{S.copy.label}</Label>
         <div style={{ flex: 1 }} />
         <Label>{S.copy.time}</Label>
       </div>
 
-      <div style={{ position: "relative", height: BODY_HEIGHT, marginTop: 16 }}>
+      <div style={{ position: "relative", height: BODY_HEIGHT, marginTop: 14 }}>
         {/* 1. Delay message */}
-        <div style={{ ...layer, ...swap(frame, S.enter - 10, b.loading) }}>
+        <div style={{ ...layer, ...swap(frame, S.card.enter - 10, b.loading) }}>
           <Body>{S.copy.delayed}</Body>
         </div>
 
@@ -63,16 +63,16 @@ export const FlightUpdate: React.FC = () => {
               background: THEME.subtleFill,
               display: "flex",
               alignItems: "center",
-              padding: "0 10px 0 18px",
+              padding: "0 9px 0 16px",
               overflow: "hidden",
             }}
           >
-            <Body style={{ flex: 1 }}>{S.copy.option1}</Body>
-            <Ripple frame={frame} at={b.ripple} x={120} y={ROW_HEIGHT / 2} size={220} />
+            <Body style={{ flex: 1, whiteSpace: "nowrap" }}>{S.copy.option1}</Body>
+            <Ripple frame={frame} at={b.ripple} x={110} y={ROW_HEIGHT / 2} size={220} />
             <div
               style={{
                 height: 38,
-                padding: "0 18px",
+                padding: "0 16px",
                 borderRadius: 19,
                 background: THEME.lime,
                 color: THEME.onLime,
@@ -88,7 +88,7 @@ export const FlightUpdate: React.FC = () => {
             >
               {S.copy.rebook}
             </div>
-            <Ripple frame={frame} at={b.press} x={400} y={ROW_HEIGHT / 2} size={140} duration={16} />
+            <Ripple frame={frame} at={b.press} x={350} y={ROW_HEIGHT / 2} size={140} duration={16} />
           </div>
           {/* Lime ring highlighting the first row */}
           <div
@@ -111,16 +111,16 @@ export const FlightUpdate: React.FC = () => {
               background: THEME.subtleFill,
               display: "flex",
               alignItems: "center",
-              padding: "0 18px",
+              padding: "0 16px",
             }}
           >
             <Body>{S.copy.option2}</Body>
           </div>
         </div>
 
-        {/* 4. Confirmed */}
-        <div style={{ ...layer, flexDirection: "row", alignItems: "center", gap: 16, ...swap(frame, b.confirmed + 2, null, 12, 18) }}>
-          <LimeCheck frame={frame} start={b.confirmed + 2} size={44} />
+        {/* 4. Confirmed: circle at `confirmed`, check drawn by `confirmed + 16` */}
+        <div style={{ ...layer, flexDirection: "row", alignItems: "center", gap: 16, ...swap(frame, b.confirmed, null, 12, 18) }}>
+          <LimeCheck frame={frame} start={b.confirmed} size={44} drawFrames={12} />
           <div>
             <Title>{S.copy.confirmed}</Title>
             <Body color={THEME.textSecondary}>{S.copy.confirmedDetail}</Body>
@@ -130,3 +130,10 @@ export const FlightUpdate: React.FC = () => {
     </Glass>
   );
 };
+
+export const FlightUpdate: React.FC = () => (
+  <Stack y={S.stackY}>
+    <QueryBubble text={S.query.text} enter={S.query.enter} exit={EXIT.query} dimAt={S.card.enter} tint={S.queryTint} />
+    <ActionCard />
+  </Stack>
+);

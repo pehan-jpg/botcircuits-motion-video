@@ -34,8 +34,9 @@
     "render:webm": "remotion render HeroBackground out/hero-background.webm --codec=vp9 --crf=33 --muted",
     "overlay:stills": "node scripts/overlay-stills.mjs",
     "overlay:preview": "remotion render HeroOverlay out/overlay-preview.mp4 --scale=0.5 --codec=h264 --crf=23 --muted",
-    "overlay:mp4": "remotion render HeroOverlay out/hero-overlay.mp4 --codec=h264 --crf=18 --x264-preset=slow --muted",
-    "overlay:webm": "remotion render HeroOverlay out/hero-overlay.webm --codec=vp9 --crf=30 --muted"
+    "overlay:mp4": "remotion render HeroOverlay out/hero-overlay-v2.mp4 --codec=h264 --crf=18 --x264-preset=slow --muted",
+    "overlay:webm": "remotion render HeroOverlay out/hero-overlay-v2.webm --codec=vp9 --crf=30 --muted",
+    "overlay:check": "python3 scripts/find-glitches.py out/hero-overlay-v2.mp4 0.72 0.97"
   },
   "allowScripts": {
     "esbuild": false
