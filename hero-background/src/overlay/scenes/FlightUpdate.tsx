@@ -2,7 +2,7 @@ import type React from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
 import { SCENES, STACK, THEME, exitTiming } from "../config";
 import { inter } from "../fonts";
-import { cardMotion, lerp, pressScale, ramp, swap } from "../motion";
+import { type ItemMotion, floatY, itemMotion, lerp, pressScale, ramp, stackLayout, stackTransform, swap } from "../motion";
 import { Body, DotLoader, Glass, Label, LimeCheck, LimeIcon, QueryBubble, Ripple, Shimmer, Stack, Title } from "../ui";
 
 const S = SCENES.flight;
@@ -18,18 +18,22 @@ const layer: React.CSSProperties = {
   justifyContent: "center",
 };
 
-const ActionCard: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const { visible, transform, fade } = cardMotion(frame, fps, S.card.enter, EXIT.card, S.card.enterFrom, S.query.enter);
-  if (!visible) return null;
-
+const ActionCard: React.FC<{ frame: number; motion: ItemMotion; y: number; clipTop: number }> = ({ frame, motion, y, clipTop }) => {
   const b = S.beats;
   const highlight = ramp(frame, b.highlight, 12);
   const rebook = ramp(frame, b.rebookAppear, 10);
 
   return (
-    <Glass variant="action" tint={S.tint} width={STACK.width} transform={transform} fade={fade} surfaceStyle={{ padding: 20 }}>
+    <Glass
+      variant="action"
+      tint={S.tint}
+      width={STACK.width}
+      height={S.card.height}
+      transform={stackTransform(y, motion.scale)}
+      fade={motion.fade}
+      clipTop={clipTop}
+      surfaceStyle={{ padding: 20 }}
+    >
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <LimeIcon />
         <Label>{S.copy.label}</Label>
@@ -131,9 +135,23 @@ const ActionCard: React.FC = () => {
   );
 };
 
-export const FlightUpdate: React.FC = () => (
-  <Stack y={S.stackY}>
-    <QueryBubble text={S.query.text} enter={S.query.enter} exit={EXIT.query} dimAt={S.card.enter} tint={S.queryTint} />
-    <ActionCard />
-  </Stack>
-);
+export const FlightUpdate: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const qm = itemMotion(frame, fps, S.query.enter, EXIT.query);
+  const cm = itemMotion(frame, fps, S.card.enter, EXIT.card);
+  if (!qm.visible && !cm.visible) return null;
+
+  const [ql, cl] = stackLayout([
+    { p: qm.p, h: STACK.queryHeight, ownY: qm.ownY },
+    { p: cm.p, h: S.card.height, ownY: cm.ownY },
+  ]);
+  const float = floatY(frame, S.query.enter);
+
+  return (
+    <Stack bottom={S.stackBottom}>
+      <QueryBubble frame={frame} text={S.query.text} enter={S.query.enter} dimAt={S.card.enter} tint={S.queryTint} motion={qm} y={-ql.offset + qm.ownY + float} />
+      {cm.visible ? <ActionCard frame={frame} motion={cm} y={-cl.offset + cm.ownY + float} clipTop={cl.clipTop} /> : null}
+    </Stack>
+  );
+};

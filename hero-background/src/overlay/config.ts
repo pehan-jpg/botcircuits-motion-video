@@ -12,7 +12,9 @@ export const COMP = {
   height: 1080,
   fps: 30,
   durationInFrames: 614,
-  src: "hero_base.mp4",
+  /** "original" plays public/hero_base.mp4 exactly as delivered: no grading of any kind. */
+  baseVideo: "original",
+  sources: { original: "hero_base.mp4" },
   /** Only visible if a transition ever exposes a frame edge; light, never black. */
   backdrop: "#F2F0EC",
 } as const;
@@ -65,13 +67,17 @@ export const TRANSITION_FX = {
   },
 } as const;
 
-/** Single right-aligned column shared by every scene. */
+/** Single right-aligned, bottom-anchored column shared by every scene. */
 export const STACK = {
   left: 1400,
   right: 1840,
   width: 440,
   gap: 12,
   queryMaxWidth: 400,
+  /** Every query is two balanced lines at 21px; fixed so layout is deterministic. */
+  queryHeight: 102,
+  /** New elements rise into the bottom slot from this far below it. */
+  risePx: 24,
   /** Website navigation bar: nothing may sit above this line. */
   navSafeY: 110,
 } as const;
@@ -109,8 +115,10 @@ export const THEME = {
 } as const;
 
 export const MOTION = {
-  /** Overdamped (critical damping is ~23.7 for this stiffness), so no overshoot. */
-  spring: { damping: 26, stiffness: 140, mass: 1 },
+  /** Stack spring: overdamped (critical damping is ~20.8), settles in ~15 frames, no overshoot. */
+  spring: { damping: 22, stiffness: 120, mass: 0.9 },
+  /** Exit spring (fixed 12-frame duration). */
+  exitSpring: { damping: 26, stiffness: 140, mass: 1 },
   revealEasing: [0.22, 1, 0.36, 1],
   progressEasing: [0.45, 0, 0.55, 1],
   enter: { frames: 20, translatePx: 24, blurPx: 8, scaleFrom: 0.97 },
@@ -118,20 +126,21 @@ export const MOTION = {
   float: { amplitudePx: 3, periodFrames: 96 },
   press: { scale: 0.96, downFrames: 3, upFrames: 5 },
   query: { wordDelay: 4, wordStagger: 2, wordFrames: 8, wordBlurPx: 4, dimTo: 0.8, dimFrames: 12 },
-  /** Cards stay this far away from every cut (including the loop point). */
+  /** Cards stay this far away from the three cuts and the start of the loop. */
   minGapFromCut: 16,
 } as const;
 
 export const SCENES = {
   flight: {
     name: "Scene 1 · Flight update",
-    stackY: 120,
+    /** Bottom edge of the stack. */
+    stackBottom: 520,
     /** Action-card glass alpha: raised over the bright sky for legibility. */
     tint: 0.5,
     /** Dark tint under the query frost (0 = pure frost). */
     queryTint: 0.28,
     query: { text: "Is my flight to Singapore still on time?", enter: 16 },
-    card: { enter: 36, enterFrom: "right" },
+    card: { enter: 36, height: 212 },
     beats: { loading: 54, options: 70, highlight: 74, ripple: 76, rebookAppear: 80, press: 90, confirmed: 96 },
     /** Last frame of the action card's exit; the query leads it by 3 frames. */
     exitEnd: 134,
@@ -149,20 +158,21 @@ export const SCENES = {
   },
   booking: {
     name: "Scene 2 · Booking progress",
-    stackY: 110,
+    stackBottom: 500,
     tint: 0.3,
     queryTint: 0.08,
     query: { text: "Please book me on the 9:15 PM flight.", enter: 169 },
-    card: { enter: 190, enterFrom: "bottom" },
+    /** Card heights per state: it grows upward as each step and the footer arrive. */
+    card: { enter: 190, height: 73 },
     progressEnd: 262,
     steps: [
-      { label: "Checking seat availability", start: 204, end: 224 },
-      { label: "Rebooking onto the 9:15 PM flight", start: 224, end: 244 },
-      { label: "Issuing a new boarding pass", start: 244, end: 262 },
+      { label: "Checking seat availability", start: 204, end: 224, grow: 42 },
+      { label: "Rebooking onto the 9:15 PM flight", start: 224, end: 244, grow: 38 },
+      { label: "Issuing a new boarding pass", start: 244, end: 262, grow: 38 },
     ],
     /** Frames before a step's end at which the spinner morphs into a check. */
     morphFrames: 8,
-    footerAt: 264,
+    footer: { at: 264, grow: 32 },
     exitEnd: 284,
     copy: {
       title: "Updating your booking",
@@ -171,16 +181,16 @@ export const SCENES = {
   },
   boardingPass: {
     name: "Scene 3 · Boarding pass",
-    stackY: 140,
+    stackBottom: 540,
     tint: 0.4,
     queryTint: 0.22,
     query: { text: "Can you send my boarding pass to WhatsApp?", enter: 319 },
-    card: { enter: 342, enterFrom: "bottom" },
+    card: { enter: 342, height: 246 },
     wipe: { start: 342, end: 364 },
     route: { start: 356, end: 392 },
     details: { start: 366, stagger: 12, end: 410 },
     barcode: { start: 380, end: 410, bars: 52 },
-    tagAt: 414,
+    tag: { at: 414, height: 50 },
     exitEnd: 447,
     copy: {
       label: "Boarding pass",
@@ -195,23 +205,30 @@ export const SCENES = {
       tag: "Sent to your WhatsApp",
     },
   },
-  concierge: {
-    name: "Scene 4 · Concierge handoff",
-    stackY: 620,
+  aiConcierge: {
+    name: "Scene 4 · AI concierge transfer",
+    stackBottom: 980,
     tint: 0.4,
     queryTint: 0.32,
     query: { text: "Can you arrange a private transfer on arrival?", enter: 480 },
-    card: { enter: 512, enterFrom: "bottom" },
-    avatars: { agentAt: 526, humanAt: 532, lineStart: 528, lineEnd: 548, pulseEvery: 12, pulseUntil: 552 },
-    connecting: { start: 526 },
-    joinedAt: 560,
-    exitEnd: 598,
+    card: { enter: 512, height: 165 },
+    route: { start: 528, end: 566 },
+    steps: [
+      { label: "Checking vehicle availability", start: 534, end: 552, grow: 42 },
+      { label: "Reserving a sedan for 11:35 PM", start: 552, end: 570, grow: 38 },
+    ],
+    morphFrames: 8,
+    confirmed: { at: 576, grow: 48 },
+    detail: { at: 582, grow: 34 },
+    /** Ends on 612 as specified, so the exit runs into the loop blur dip (frame 613 stays empty). */
+    exitEnd: 612,
     copy: {
-      label: "Concierge handoff",
-      title: "Arrange a private transfer",
-      initials: "CT",
-      connecting: "Connecting you to a concierge",
-      joined: "Concierge joined. Your transfer is being arranged.",
+      label: "AI concierge",
+      title: "Arranging your private transfer",
+      from: "Changi T3",
+      to: "Marina Bay",
+      confirmed: "Transfer confirmed",
+      detail: "Pickup at arrivals, 11:35 PM",
     },
   },
 } as const;
@@ -222,9 +239,9 @@ export const exitTiming = (exitEnd: number) => {
   return { card, query: card - MOTION.exit.queryLeadFrames };
 };
 
-/** Throws if any scene puts an element on screen within `minGapFromCut` of a cut or the loop point. */
+/** Throws if a scene breaks the cut gap, the nav safe line, or leaves a card on the loop frames. */
 export const validateTimeline = () => {
-  const cuts = [0, ...Object.values(CUTS), COMP.durationInFrames];
+  const cuts = [0, ...Object.values(CUTS)];
   for (const s of Object.values(SCENES)) {
     const first = s.query.enter;
     const last = s.exitEnd;
@@ -235,6 +252,21 @@ export const validateTimeline = () => {
         throw new Error(`${s.name}: frames ${first}–${last} are within ${MOTION.minGapFromCut} frames of cut ${c}`);
       }
     }
-    if (s.stackY < STACK.navSafeY) throw new Error(`${s.name}: stack starts above the nav safe line`);
+    if (last > COMP.durationInFrames - 2) throw new Error(`${s.name}: the last frame must stay empty`);
+  }
+  // Tallest state of each stack must stay below the nav bar, float included.
+  const q = STACK.queryHeight + STACK.gap;
+  const b = SCENES.booking;
+  const c = SCENES.aiConcierge;
+  const peaks: [string, number, number][] = [
+    [SCENES.flight.name, SCENES.flight.stackBottom, q + SCENES.flight.card.height],
+    [b.name, b.stackBottom, q + b.card.height + b.steps.reduce((sum, st) => sum + st.grow, 0) + b.footer.grow],
+    [SCENES.boardingPass.name, SCENES.boardingPass.stackBottom, q + SCENES.boardingPass.card.height + STACK.gap + SCENES.boardingPass.tag.height],
+    [c.name, c.stackBottom, q + c.card.height + c.steps.reduce((sum, st) => sum + st.grow, 0) + c.confirmed.grow + c.detail.grow],
+  ];
+  for (const [name, bottom, height] of peaks) {
+    const top = bottom - height - MOTION.float.amplitudePx;
+    if (top < STACK.navSafeY) throw new Error(`${name}: stack top ${top} is above the nav safe line ${STACK.navSafeY}`);
   }
 };
+

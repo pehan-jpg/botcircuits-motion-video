@@ -1,8 +1,8 @@
 import type React from "react";
-import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { interpolate } from "remotion";
 import { MOTION, STACK, THEME } from "./config";
 import { inter } from "./fonts";
-import { blurFilter, cardMotion, clamp, lerp, ramp, revealEase } from "./motion";
+import { type ItemMotion, blurFilter, clamp, lerp, ramp, revealEase, stackTransform } from "./motion";
 
 /* ---------- Typography (Inter only) ---------- */
 
@@ -85,38 +85,51 @@ type GlassProps = {
   /** Fixed width, or "fit" to hug the content up to `maxWidth`. */
   width: number | "fit";
   maxWidth?: number;
-  /** Container transform (translate / scale / float). */
+  /** Surface height in px (animated for cards that grow upward). */
+  height: number;
+  /** Container transform (stack position, rise, float, exit drift). */
   transform: React.CSSProperties;
   /** Opacity + blur, applied on the surface itself. */
   fade: { opacity: number; filter?: string };
-  /** Optional clip reveal: inset in px from the right / bottom edges, and corner radius. */
-  reveal?: { right: number; bottom: number; radius: number; width: number; height: number };
+  /** Optional horizontal wipe: inset in px from the right edge. */
+  clipRight?: number;
+  /** Hidden top portion while the element rises into an opening slot. */
+  clipTop?: number;
   radius?: number;
   surfaceStyle?: React.CSSProperties;
   children: React.ReactNode;
 };
 
-/** A glass surface that flows inside the stack. Its shadow lives on its own layer so reveals never clip it. */
+/**
+ * A glass surface anchored to the bottom-right of its stack; the stack positions it with
+ * `transform`. Its shadow lives on its own layer so reveals never clip it.
+ */
 export const Glass: React.FC<GlassProps> = ({
   variant,
   tint,
   width,
   maxWidth,
+  height,
   transform,
   fade,
-  reveal,
+  clipRight = 0,
+  clipTop = 0,
   radius: radiusProp,
   surfaceStyle,
   children,
 }) => {
-  const radius = reveal?.radius ?? radiusProp ?? THEME.glass.radius;
+  const radius = radiusProp ?? THEME.glass.radius;
+  const w = typeof width === "number" ? width : undefined;
+  const clipped = clipRight > 0.01 || clipTop > 0.01;
   return (
     <div
       style={{
-        position: "relative",
-        width: width === "fit" ? "fit-content" : width,
+        position: "absolute",
+        right: 0,
+        bottom: 0,
+        width: width === "fit" ? "max-content" : width,
         maxWidth,
-        transformOrigin: "100% 0%",
+        transformOrigin: "100% 100%",
         ...transform,
       }}
     >
@@ -129,8 +142,8 @@ export const Glass: React.FC<GlassProps> = ({
           height: "100%",
           borderRadius: radius,
           boxShadow: THEME.glass.shadow,
-          transformOrigin: "0 0",
-          scale: reveal ? `${1 - reveal.right / reveal.width} ${1 - reveal.bottom / reveal.height}` : undefined,
+          transformOrigin: "0 100%",
+          scale: clipped ? `${w ? 1 - clipRight / w : 1} ${Math.max(0, 1 - clipTop / height)}` : undefined,
           opacity: fade.opacity,
         }}
       />
@@ -138,14 +151,16 @@ export const Glass: React.FC<GlassProps> = ({
         style={{
           position: "relative",
           boxSizing: "border-box",
+          height,
+          overflow: "hidden",
           background: glassBackground(variant, tint),
           backdropFilter: THEME.glass.backdropFilter,
           WebkitBackdropFilter: THEME.glass.backdropFilter,
           border: THEME.glass.border,
           boxShadow: THEME.glass.innerHighlight,
           borderRadius: radius,
-          clipPath: reveal
-            ? `inset(0px ${reveal.right.toFixed(2)}px ${reveal.bottom.toFixed(2)}px 0px round ${radius.toFixed(2)}px)`
+          clipPath: clipped
+            ? `inset(${clipTop.toFixed(2)}px ${clipRight.toFixed(2)}px 0px 0px round ${Math.min(radius, height / 2).toFixed(2)}px)`
             : undefined,
           ...fade,
           ...surfaceStyle,
@@ -157,22 +172,9 @@ export const Glass: React.FC<GlassProps> = ({
   );
 };
 
-/** The single right-aligned column every scene uses. */
-export const Stack: React.FC<{ y: number; children: React.ReactNode }> = ({ y, children }) => (
-  <div
-    style={{
-      position: "absolute",
-      left: STACK.left,
-      top: y,
-      width: STACK.width,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "flex-end",
-      gap: STACK.gap,
-    }}
-  >
-    {children}
-  </div>
+/** The single right-aligned column; its bottom edge sits at `bottom` and elements stack upward. */
+export const Stack: React.FC<{ bottom: number; children: React.ReactNode }> = ({ bottom, children }) => (
+  <div style={{ position: "absolute", left: STACK.left, top: 0, width: STACK.width, height: bottom }}>{children}</div>
 );
 
 /** Word-by-word reveal: each word fades in from a short blur. */
@@ -192,18 +194,18 @@ export const WordReveal: React.FC<{ text: string; frame: number; start: number }
   );
 };
 
-/** Customer query bubble at the top of each stack; dims once the action card arrives. */
+/** Customer query bubble; dims once the action card arrives. */
 export const QueryBubble: React.FC<{
+  frame: number;
   text: string;
   enter: number;
-  exit: number;
   dimAt: number;
   tint: number;
-}> = ({ text, enter, exit, dimAt, tint }) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const m = cardMotion(frame, fps, enter, exit, "bottom", enter);
-  if (!m.visible) return null;
+  motion: ItemMotion;
+  /** Vertical position relative to the stack bottom (negative = up). */
+  y: number;
+}> = ({ frame, text, enter, dimAt, tint, motion, y }) => {
+  if (!motion.visible) return null;
   const dim = lerp(1, MOTION.query.dimTo, ramp(frame, dimAt, MOTION.query.dimFrames));
 
   return (
@@ -212,15 +214,16 @@ export const QueryBubble: React.FC<{
       tint={tint}
       width="fit"
       maxWidth={STACK.queryMaxWidth}
-      transform={m.transform}
-      fade={{ ...m.fade, opacity: m.fade.opacity * dim }}
-      surfaceStyle={{ padding: "12px 18px 14px", textAlign: "right" }}
+      height={STACK.queryHeight}
+      transform={stackTransform(y, motion.scale)}
+      fade={{ ...motion.fade, opacity: motion.fade.opacity * dim }}
+      surfaceStyle={{ padding: "11px 18px 12px", textAlign: "right" }}
     >
       <Label>Customer</Label>
       <div
         style={{
           ...textBase,
-          marginTop: 5,
+          marginTop: 4,
           fontSize: THEME.type.query.size,
           fontWeight: THEME.type.query.weight,
           lineHeight: 1.36,

@@ -44,28 +44,35 @@ render commands, or set `REMOTION_BROWSER` for `npm run stills`.
 
 ---
 
-# Hero overlay (`HeroOverlay`, v2)
+# Hero overlay (`HeroOverlay`, v3)
 
 Motion-graphics overlay on the merged hero video: 1920x1080, 30 fps, 614 frames.
-The base video (`public/hero_base.mp4`) plays untouched (no grade, trim or filters) with `OffthreadVideo`, muted.
+`COMP.baseVideo = "original"` plays `public/hero_base.mp4` exactly as delivered with `OffthreadVideo`, muted:
+no grading of any kind, in ffmpeg or Remotion.
 
-All copy, timings, positions, glass tints, colours and spring values are in [`src/overlay/config.ts`](src/overlay/config.ts).
-`BRAND_LIME` is a placeholder (`#B5E61D`) until the exact BotCircuits hex is supplied.
+All copy, timings, positions, heights, glass tints, colours and spring values are in
+[`src/overlay/config.ts`](src/overlay/config.ts). `BRAND_LIME` is a placeholder (`#B5E61D`).
 
-- Layout: one right-aligned column (x 1400–1840, 440px wide) per scene, with each scene's start
-  height in `SCENES.*.stackY`; nothing sits above y 110 (nav bar).
-- Each scene: a light frosted customer query bubble, then a dark tinted glass action card beneath it.
-- Type: Inter only (400/500/600), tabular numerals.
+- Layout: one right-aligned, bottom-anchored column (x 1400–1840, 440px wide). Each scene's bottom
+  edge is `SCENES.*.stackBottom`; nothing sits above y 110 (nav bar).
+- Chat-style stacking: the customer query appears in the bottom slot; each new card rises into the
+  bottom slot (24px below, blur 8 → 0) while everything above glides up by its height + 12px gap,
+  on one spring (damping 22, stiffness 120, mass 0.9). A rising card is clipped at the top so it
+  emerges out of its slot without overlapping the element above.
+- Cards that grow (booking steps, transfer card) animate their height with the same spring from
+  fixed per-state heights in config, so every position is computed deterministically per frame.
+- Scene 4: the AI concierge arranges the transfer itself (route, two steps, confirmation).
 - Cuts (ffmpeg scene detection, first frame of each new shot): **153, 303, 463**.
 - Transitions, 24 frames centred on each cut: blur dip + warm flare (cut 1 and the loop point),
   whip pan with horizontal SVG motion blur (cut 2), lime sweep with 4% push-in (cut 3).
-- `validateTimeline()` fails the render if any element is within 16 frames of a cut or the loop point.
+- `validateTimeline()` fails the render if an element is within 16 frames of a cut, a stack's
+  tallest state reaches above the nav line, or a card is left on the last frame.
 
 ```bash
-npm run overlay:stills    # verification stills (STILLS_DIR to choose the folder)
+npm run overlay:stills    # verification stills (STILLS_DIR, REMOTION_GL=swangle)
 npm run overlay:preview   # half-resolution preview
-npm run overlay:mp4       # 1080p H.264, CRF 18, no audio → out/hero-overlay-v2.mp4
-npm run overlay:webm      # VP9 WebM, no audio → out/hero-overlay-v2.webm
+npm run overlay:mp4       # 1080p H.264, CRF 18, no audio → out/hero-overlay-v3.mp4 (scanned, retried)
+npm run overlay:webm      # VP9 WebM, no audio → out/hero-overlay-v3.webm (scanned, retried)
 npm run overlay:check     # scan the MP4 for single-frame render glitches
 ```
 
@@ -73,6 +80,6 @@ Fonts load from Google Fonts at render time. Behind a TLS-intercepting proxy, re
 Chromium that trusts the proxy CA: `--browser-executable=<chrome> --chrome-mode=chrome-for-testing`
 (for the stills script: `REMOTION_BROWSER` and `REMOTION_CHROME_MODE=chrome-for-testing`).
 
-Render with `--gl=swangle` (already in the npm scripts): with the default GL backend, Chrome occasionally
-captured a frame before all compositing tiles were painted, leaving blank patches behind the frosted glass.
-Run `npm run overlay:check` after a render to scan for any single-frame glitch.
+Render with `--gl=swangle`: with the default GL backend, Chrome occasionally captured a frame before
+all compositing tiles were painted, leaving blank patches behind the frosted glass.
+`scripts/render-final.sh` renders, scans every frame for that signature, and retries on a glitch or a hang.

@@ -1,8 +1,8 @@
 import { AbsoluteFill, OffthreadVideo, staticFile, useCurrentFrame } from "remotion";
 import { COMP, validateTimeline } from "./config";
+import { AiConcierge } from "./scenes/AiConcierge";
 import { BoardingPass } from "./scenes/BoardingPass";
 import { BookingProgress } from "./scenes/BookingProgress";
-import { ConciergeHandoff } from "./scenes/ConciergeHandoff";
 import { FlightUpdate } from "./scenes/FlightUpdate";
 import { Flare, LimeBand, VideoWrapper, transitionState } from "./transitions";
 
@@ -17,7 +17,7 @@ export const HeroOverlay: React.FC = () => {
     <AbsoluteFill style={{ backgroundColor: COMP.backdrop, overflow: "hidden" }}>
       <VideoWrapper state={t}>
         {/* The merged base video, untouched: no grade, no trim, muted. */}
-        <OffthreadVideo src={staticFile(COMP.src)} muted style={{ width: "100%", height: "100%" }} />
+        <OffthreadVideo src={staticFile(COMP.sources[COMP.baseVideo])} muted style={{ width: "100%", height: "100%" }} />
       </VideoWrapper>
       <Flare opacity={t.flareOpacity} />
       <LimeBand band={t.band} />
@@ -25,7 +25,7 @@ export const HeroOverlay: React.FC = () => {
       <FlightUpdate />
       <BookingProgress />
       <BoardingPass />
-      <ConciergeHandoff />
+      <AiConcierge />
     </AbsoluteFill>
   );
 };
