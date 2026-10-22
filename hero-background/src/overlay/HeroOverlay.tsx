@@ -9,23 +9,32 @@ import { Flare, LimeBand, VideoWrapper, transitionState } from "./transitions";
 // Fail fast if a scene drifts within the minimum gap of a cut or the loop point.
 validateTimeline();
 
-export const HeroOverlay: React.FC = () => {
+export type HeroOverlayProps = {
+  /** false renders the clean version: base video and transitions only, no cards or glass. */
+  showOverlay: boolean;
+};
+
+export const HeroOverlay: React.FC<HeroOverlayProps> = ({ showOverlay }) => {
   const frame = useCurrentFrame();
   const t = transitionState(frame);
 
   return (
     <AbsoluteFill style={{ backgroundColor: COMP.backdrop, overflow: "hidden" }}>
       <VideoWrapper state={t}>
-        {/* The merged base video, untouched: no grade, no trim, muted. */}
+        {/* Base video as selected in config: no scaling, trim or filters in Remotion, muted. */}
         <OffthreadVideo src={staticFile(COMP.sources[COMP.baseVideo])} muted style={{ width: "100%", height: "100%" }} />
       </VideoWrapper>
       <Flare opacity={t.flareOpacity} />
       <LimeBand band={t.band} />
 
-      <FlightUpdate />
-      <BookingProgress />
-      <BoardingPass />
-      <AiConcierge />
+      {showOverlay ? (
+        <>
+          <FlightUpdate />
+          <BookingProgress />
+          <BoardingPass />
+          <AiConcierge />
+        </>
+      ) : null}
     </AbsoluteFill>
   );
 };

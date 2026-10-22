@@ -14,6 +14,7 @@ export const RemotionRoot: React.FC = () => {
         fps={COMP.fps}
         width={COMP.width}
         height={COMP.height}
+        defaultProps={{ showOverlay: COMP.showOverlay }}
       />
       <Composition
         id={VIDEO.id}

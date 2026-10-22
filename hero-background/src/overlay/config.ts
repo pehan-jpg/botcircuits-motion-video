@@ -12,9 +12,14 @@ export const COMP = {
   height: 1080,
   fps: 30,
   durationInFrames: 614,
-  /** "original" plays public/hero_base.mp4 exactly as delivered: no grading of any kind. */
-  baseVideo: "original",
-  sources: { original: "hero_base.mp4" },
+  /**
+   * "original" plays public/hero_base.mp4 exactly as delivered; "graded" plays
+   * public/hero_base_graded.mp4 (made with ffmpeg, see README). Remotion adds no filters either way.
+   */
+  baseVideo: "graded" as "original" | "graded",
+  sources: { original: "hero_base.mp4", graded: "hero_base_graded.mp4" },
+  /** Default for the composition's `showOverlay` input prop; false renders the clean version. */
+  showOverlay: true,
   /** Only visible if a transition ever exposes a frame edge; light, never black. */
   backdrop: "#F2F0EC",
 } as const;
@@ -122,7 +127,7 @@ export const MOTION = {
   revealEasing: [0.22, 1, 0.36, 1],
   progressEasing: [0.45, 0, 0.55, 1],
   enter: { frames: 20, translatePx: 24, blurPx: 8, scaleFrom: 0.97 },
-  exit: { frames: 12, translatePx: -12, blurPx: 6, queryLeadFrames: 3 },
+  exit: { frames: 14, translatePx: -12, blurPx: 6, queryLeadFrames: 3 },
   float: { amplitudePx: 3, periodFrames: 96 },
   press: { scale: 0.96, downFrames: 3, upFrames: 5 },
   query: { wordDelay: 4, wordStagger: 2, wordFrames: 8, wordBlurPx: 4, dimTo: 0.8, dimFrames: 12 },

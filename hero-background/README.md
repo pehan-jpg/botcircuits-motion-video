@@ -44,42 +44,50 @@ render commands, or set `REMOTION_BROWSER` for `npm run stills`.
 
 ---
 
-# Hero overlay (`HeroOverlay`, v3)
+# Hero video (`HeroOverlay`): graded base + glass UI overlay, and a clean version
 
-Motion-graphics overlay on the merged hero video: 1920x1080, 30 fps, 614 frames.
-`COMP.baseVideo = "original"` plays `public/hero_base.mp4` exactly as delivered with `OffthreadVideo`, muted:
-no grading of any kind, in ffmpeg or Remotion.
+1920x1080, 30 fps, 614 frames, no audio. All copy, timings, positions, heights, glass tints,
+colours and spring values are in [`src/overlay/config.ts`](src/overlay/config.ts).
+`BRAND_LIME` is a placeholder (`#B5E61D`).
 
-All copy, timings, positions, heights, glass tints, colours and spring values are in
-[`src/overlay/config.ts`](src/overlay/config.ts). `BRAND_LIME` is a placeholder (`#B5E61D`).
+## Base video
+- `public/hero_base.mp4` is the delivered merged clip, kept untouched.
+- `public/hero_base_graded.mp4` is made by `npm run grade` (`scripts/grade-base.sh`): light luma-only
+  sharpening everywhere, a midtone lift with deep blacks on the keyboard and headset scenes, a warm
+  colour mix on the sofa scene only. Scene ranges use the exact cuts from ffmpeg scene detection:
+  **153, 303, 463** (first frame of each new shot).
+- `COMP.baseVideo` selects `"original"` or `"graded"` (default `"graded"`). Remotion plays it with
+  `OffthreadVideo`, muted, with no scaling or filters.
+- `scripts/measure-grade.py` reports average RGB, luma, 5th/95th luma percentiles and sharpness
+  (variance of the Laplacian) per scene, measured on the left 68% of the frame scaled to 1881px wide
+  (nearest neighbour) and cropped from y=88.
 
-- Layout: one right-aligned, bottom-anchored column (x 1400–1840, 440px wide). Each scene's bottom
-  edge is `SCENES.*.stackBottom`; nothing sits above y 110 (nav bar).
-- Chat-style stacking: the customer query appears in the bottom slot; each new card rises into the
-  bottom slot (24px below, blur 8 → 0) while everything above glides up by its height + 12px gap,
-  on one spring (damping 22, stiffness 120, mass 0.9). A rising card is clipped at the top so it
-  emerges out of its slot without overlapping the element above.
-- Cards that grow (booking steps, transfer card) animate their height with the same spring from
-  fixed per-state heights in config, so every position is computed deterministically per frame.
-- Scene 4: the AI concierge arranges the transfer itself (route, two steps, confirmation).
-- Cuts (ffmpeg scene detection, first frame of each new shot): **153, 303, 463**.
-- Transitions, 24 frames centred on each cut: blur dip + warm flare (cut 1 and the loop point),
-  whip pan with horizontal SVG motion blur (cut 2), lime sweep with 4% push-in (cut 3).
-- `validateTimeline()` fails the render if an element is within 16 frames of a cut, a stack's
-  tallest state reaches above the nav line, or a card is left on the last frame.
+## Overlay and clean version
+- The composition's `showOverlay` input prop (default `COMP.showOverlay`) switches the glass UI on or off.
+  With `false` only the base video and the four transitions render.
+- Layout: one right-aligned, bottom-anchored column (x 1400–1840). Each new card rises into the bottom
+  slot while everything above glides up on one spring (damping 22, stiffness 120, mass 0.9); growing
+  cards animate their height from fixed per-state heights.
+- Transitions, 24 frames centred on each cut: blur dip + warm flare (cut 1 and the loop point), whip pan
+  (cut 2), lime sweep with 4% push-in (cut 3).
+- `validateTimeline()` fails the render if a card is within 16 frames of a cut, a stack reaches above
+  the nav line (y 110), or a card is left on the last frame.
 
 ```bash
-npm run overlay:stills    # verification stills (STILLS_DIR, REMOTION_GL=swangle)
-npm run overlay:preview   # half-resolution preview
-npm run overlay:mp4       # 1080p H.264, CRF 18, no audio → out/hero-overlay-v3.mp4 (scanned, retried)
-npm run overlay:webm      # VP9 WebM, no audio → out/hero-overlay-v3.webm (scanned, retried)
-npm run overlay:check     # scan the MP4 for single-frame render glitches
+npm run grade            # build and measure public/hero_base_graded.mp4
+npm run overlay:stills   # verification stills (STILLS_DIR, STILLS_PROPS='{"showOverlay":false}')
+npm run overlay:preview  # half-resolution preview
+npm run overlay:mp4      # out/hero-overlay-v3.mp4  (H.264, CRF 14)
+npm run overlay:webm     # out/hero-overlay-v3.webm (VP9, CRF 30)
+npm run clean:mp4        # out/hero-clean-v3.mp4
+npm run clean:webm       # out/hero-clean-v3.webm
+npm run clean:poster     # out/hero-clean-poster.jpg (frame 380, JPEG quality 92)
 ```
 
-Fonts load from Google Fonts at render time. Behind a TLS-intercepting proxy, render with a full
-Chromium that trusts the proxy CA: `--browser-executable=<chrome> --chrome-mode=chrome-for-testing`
-(for the stills script: `REMOTION_BROWSER` and `REMOTION_CHROME_MODE=chrome-for-testing`).
+Render settings live in `remotion.config.ts`: PNG frames, bt709 colour space, yuv420p, CRF 14.
 
-Render with `--gl=swangle`: with the default GL backend, Chrome occasionally captured a frame before
-all compositing tiles were painted, leaving blank patches behind the frosted glass.
-`scripts/render-final.sh` renders, scans every frame for that signature, and retries on a glitch or a hang.
+Fonts load from Google Fonts at render time. Behind a TLS-intercepting proxy, render with a full
+Chromium that trusts the proxy CA: `--browser-executable=<chrome> --chrome-mode=chrome-for-testing`.
+Render with `--gl=swangle`; Chrome can still occasionally capture a frame before the glass content is
+painted, so `scripts/render-final.sh` scans every frame (whole frame and overlay column) and re-renders
+on a glitch or a hang.

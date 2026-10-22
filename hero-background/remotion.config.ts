@@ -8,6 +8,9 @@
 import { Config } from "@remotion/cli/config";
 
 Config.setRspack(true);
-Config.setVideoImageFormat("jpeg");
+Config.setVideoImageFormat("png");
+Config.setColorSpace("bt709");
+Config.setPixelFormat("yuv420p");
+Config.setCrf(14);
 Config.setOverwriteOutput(true);
 Config.setDefaultPremountInSeconds(2);
