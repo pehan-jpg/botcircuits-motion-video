@@ -32,11 +32,11 @@ export const INTRO = {
   sublineAt: 1.55,
 };
 
-// T1: the headline shrinks into a pill, the pill grows into a glass phone,
-// and the glass resolves into the Chats list.
+// T1: the headline clears, a frosted glass phone rises, and the glass
+// resolves into the Chats list.
 export const MORPH_IN = {
   start: 3.0,
-  pillAt: 3.4,
+  glassAt: 3.15,
   phoneAt: 3.95,
   resolveDuration: 0.2, // 12 frames at 60 fps
   chatFadeInAt: 3.7,

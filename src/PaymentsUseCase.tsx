@@ -324,44 +324,30 @@ const World: React.FC = () => {
   );
 };
 
-// T1: a white pill with a send button grows into a frosted glass phone,
-// then hands over to the real chat.
+// T1: as the headline clears, a frosted glass phone rises over the pale
+// atmosphere, then hands over to the real screen.
 const GlassMorph: React.FC = () => {
   const { p, t } = useTimeline();
   const end = MORPH_IN.phoneAt + MORPH_IN.resolveDuration;
-  if (t < MORPH_IN.start || t > end) return null;
-  const toPill = p(
-    MORPH_IN.start,
-    MORPH_IN.pillAt - MORPH_IN.start,
-    EASE_CAMERA,
-  );
-  const toPhone = p(
-    MORPH_IN.pillAt,
-    MORPH_IN.phoneAt - MORPH_IN.pillAt,
+  if (t < MORPH_IN.glassAt || t > end) return null;
+  const rise = p(
+    MORPH_IN.glassAt,
+    MORPH_IN.phoneAt - MORPH_IN.glassAt,
     EASE_CAMERA,
   );
   const resolve = p(MORPH_IN.phoneAt, MORPH_IN.resolveDuration);
-  const box = {
-    cx: 540,
-    cy: mix(960, ANCHOR.y, toPhone),
-    w: mix(mix(900, 680, toPill), PHONE.width, toPhone),
-    h: mix(mix(360, 120, toPill), PHONE.height, toPhone),
-    r: mix(mix(120, 60, toPill), R.phone, toPhone),
-  };
-  const send =
-    p(MORPH_IN.start + 0.15, 0.2) * (1 - p(MORPH_IN.pillAt + 0.05, 0.15));
   return (
     <div
       style={{
         position: "absolute",
-        left: box.cx - box.w / 2,
-        top: box.cy - box.h / 2,
-        width: box.w,
-        height: box.h,
-        borderRadius: box.r,
-        backgroundColor: `rgba(255, 255, 255, ${mix(1, 0.3, toPhone)})`,
-        backdropFilter: `blur(${mix(0, 28, toPhone)}px) saturate(140%)`,
-        WebkitBackdropFilter: `blur(${mix(0, 28, toPhone)}px) saturate(140%)`,
+        left: (1080 - PHONE.width) / 2,
+        top: PHONE.top,
+        width: PHONE.width,
+        height: PHONE.height,
+        borderRadius: R.phone,
+        backgroundColor: "rgba(255, 255, 255, 0.3)",
+        backdropFilter: "blur(28px) saturate(140%)",
+        WebkitBackdropFilter: "blur(28px) saturate(140%)",
         border: "1.5px solid rgba(255, 255, 255, 0.9)",
         boxShadow: [
           "0 0 0 1px rgba(29, 33, 37, 0.06)",
@@ -369,40 +355,11 @@ const GlassMorph: React.FC = () => {
           "inset 0 -20px 40px rgba(255, 255, 255, 0.25)",
           "0 24px 60px rgba(29, 33, 37, 0.08)",
         ].join(", "),
-        opacity: toPill * (1 - resolve),
+        opacity: Math.min(1, rise * 1.6) * (1 - resolve),
+        scale: String(mix(0.94, 1, rise)),
+        translate: `0px ${mix(60, 0, rise)}px`,
       }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          right: 18,
-          top: "50%",
-          width: 84,
-          height: 84,
-          marginTop: -42,
-          borderRadius: 42,
-          backgroundColor: C.ink,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: send,
-        }}
-      >
-        <svg
-          width={38}
-          height={38}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke={C.bg}
-          strokeWidth={2.4}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="12" y1="19" x2="12" y2="5" />
-          <polyline points="5 12 12 5 19 12" />
-        </svg>
-      </div>
-    </div>
+    />
   );
 };
 
