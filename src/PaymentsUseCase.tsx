@@ -6,6 +6,7 @@ import {
   CAMERA_DRIFT,
   CAMERA_SHOTS,
   CLOSING,
+  JOURNEY,
   LIST,
   MAIN_CHAT,
   MORPH_IN,
@@ -25,6 +26,7 @@ import { ChatsList, rowAvatar } from "./scenes/ChatsList";
 import { Closing } from "./scenes/Closing";
 import { Intro } from "./scenes/Intro";
 import { MainChat, useFocusBlur } from "./scenes/MainChat";
+import { PaymentJourney } from "./scenes/PaymentJourney";
 import { ScenarioChat } from "./scenes/ScenarioChat";
 import { C, EASE_CAMERA, EASE_IN, PHONE, R, SCREEN, WA } from "./theme";
 
@@ -41,10 +43,8 @@ const BLUR_WINDOWS: [number, number][] = [
     s.at,
     s.at + s.duration,
   ]),
-  [
-    MAIN_CHAT.approveToStep.at,
-    MAIN_CHAT.approveToStep.at + MAIN_CHAT.approveToStep.duration,
-  ],
+  [JOURNEY.start, JOURNEY.start + JOURNEY.phoneAway],
+  [JOURNEY.returnAt, JOURNEY.returnAt + JOURNEY.phoneBack],
   [LIST.pushAt, LIST.pushAt + LIST.pushDuration],
 ];
 
@@ -262,6 +262,10 @@ const Phone: React.FC = () => {
     0.45 * p(MORPH_IN.phoneAt, MORPH_IN.resolveDuration);
   // T6: the phone fades out and settles back slightly before the logo.
   const out = p(CLOSING.phoneOutAt, CLOSING.phoneOutDuration, EASE_CAMERA);
+  // Payment journey: the phone softens, blurs and scales away, then returns.
+  const away =
+    p(JOURNEY.start, JOURNEY.phoneAway, EASE_CAMERA) *
+    (1 - p(JOURNEY.returnAt, JOURNEY.phoneBack, EASE_CAMERA));
   return (
     <div
       style={{
@@ -280,8 +284,9 @@ const Phone: React.FC = () => {
           `0 22px 44px rgba(29, 33, 37, ${0.07})`,
           `0 60px 120px rgba(29, 33, 37, ${0.09})`,
         ].join(", "),
-        opacity: appear * (1 - out),
-        scale: String(mix(1, 0.96, out)),
+        opacity: appear * (1 - out) * (1 - away),
+        scale: String(mix(1, 0.96, out) * mix(1, 0.7, away)),
+        filter: away > 0.01 ? `blur(${10 * away}px)` : undefined,
       }}
     >
       <PhoneScreen>
@@ -391,6 +396,7 @@ export const PaymentsUseCase: React.FC = () => {
           )}
         </AbsoluteFill>
       ) : null}
+      <PaymentJourney />
       <Captions />
       <Closing />
     </AbsoluteFill>

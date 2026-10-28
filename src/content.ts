@@ -117,7 +117,7 @@ export const LIST = {
 // Soft atmosphere: the only times colour appears behind the white frame.
 export const ATMOSPHERE = [
   { at: 3.25, peak: 3.75, end: 4.28, cx: 540, cy: 820 },
-  { at: 15.65, peak: 16.15, end: 16.65, cx: 540, cy: 760 },
+  { at: 15.7, peak: 16.1, end: 16.7, cx: 500, cy: 1140 },
 ];
 
 // Caption segments. `highlight.at` wipes the underline in; `until` removes it.
@@ -259,42 +259,53 @@ export const MAIN_CHAT = {
     time: "10:43",
   },
   approveReply: { at: 13.05, text: "Approve", time: "10:43", readAt: 13.2 },
-  // T3: the Approve button shrinks into a lime circle that lands on step 1.
-  approveToStep: { at: 13.4, duration: 0.55 },
-  payment: {
-    at: 13.35,
-    title: "Payment status",
-    chipBefore: "Sent",
-    chipAfter: "Paid",
-    steps: ["Initiated", "Sent to provider", "Paid"],
-    stepAt: [13.95, 14.85, 15.35],
-    nodes: ["Your account", "Payment provider", "Supplier"],
-    nodesAt: 14.0,
-    nodeStagger: 0.12,
-    linesAt: 14.1,
-    lineDuration: 0.35,
-    orb: {
-      leaveAt: 14.45,
-      providerAt: 14.85,
-      leaveProviderAt: 14.95,
-      supplierAt: 15.35,
-    },
-    chipFlipAt: 15.45,
-    confirmAt: 15.85,
-    confirmRows: [
-      { label: "Amount", value: "USD 12,450.00" },
-      { label: "Reference", value: "PAY 90316" },
-      { label: "Status", value: "Paid" },
-    ],
+  // After the payment journey: a business message and the proof document.
+  paymentSent: {
+    at: 16.9,
+    title: "Payment sent.",
+    body: ["USD 12,450.00 to Northwind Supplies Ltd.", "Reference PAY 90316."],
     time: "10:44",
   },
   proof: {
-    at: 16.75,
+    at: 17.0,
     fileName: "Proof of payment.pdf",
-    fileMeta: "64 KB",
+    fileMeta: "218 KB",
     fileType: "PDF",
     time: "10:44",
   },
+};
+
+// Payment journey, shown full frame outside the phone with one track.
+// Screen coordinates are for the 1080 x 1920 frame.
+export const JOURNEY = {
+  start: 13.15, // Approve becomes the orb; the phone shrinks and blurs away
+  phoneAway: 0.8,
+  // Screen rect of the Approve button at `start` (measured from a still).
+  approveRect: { x: 140, y: 916, w: 773, h: 95 },
+  orbMorph: 0.4, // button shrinks into the orb
+  toTop: { leave: 13.55, arrive: 14.0 }, // orb moves to the first node
+  drawAt: 13.9, // nodes appear and the curves draw from the top
+  x: 500,
+  nodeY: [300, 720, 1140],
+  nodeSize: 150,
+  nodes: [
+    { label: "Your account", icon: "bank" },
+    { label: "Payment provider", icon: "exchange" },
+    { label: "Supplier", icon: "store" },
+  ] as const,
+  legs: [
+    { leave: 14.35, arrive: 14.95 },
+    { leave: 15.1, arrive: 15.7 },
+  ],
+  amount: "USD 12,450.00",
+  status: ["Payment initiated", "Sent to payment provider", "Paid"],
+  statusY: 1345,
+  checkAt: 15.8,
+  returnAt: 16.55, // Supplier node morphs into the chat bubble
+  returnDuration: 0.45,
+  phoneBack: 0.6,
+  // Screen rect of the "Payment sent" bubble once the phone is back.
+  bubbleRect: { x: 180, y: 830, w: 624, h: 221 },
 };
 
 // Scene 5: four short scenarios. `start` is when the screen blurs through;
@@ -393,7 +404,7 @@ export const CAMERA_SHOTS = [
   { at: 7.85, duration: 0.8, scale: 1.22, fx: 500, fy: 830 },
   { at: 10.1, duration: 0.8, scale: 1.16, fx: 515, fy: 905 },
   { at: 12.2, duration: 0.7, scale: 1.2, fx: 515, fy: 1010 },
-  { at: 13.35, duration: 0.8, scale: 1.0, fx: 540, fy: 795 },
+  { at: 13.15, duration: 0.8, scale: 1.0, fx: 540, fy: 795 },
   { at: 17.4, duration: 0.5, scale: 1.12, fx: 540, fy: 740 },
   { at: 23.0, duration: 0.5, scale: 1.0, fx: 540, fy: 795 },
 ];
@@ -403,7 +414,5 @@ export const CHAT_SCROLL = [
   { at: 7.85, duration: 0.6, y: 150 },
   { at: 10.1, duration: 0.5, y: 480 },
   { at: 12.2, duration: 0.5, y: 640 },
-  { at: 13.35, duration: 0.5, y: 900 },
-  { at: 15.85, duration: 0.45, y: 1100 },
-  { at: 16.75, duration: 0.4, y: 1270 },
+  { at: 15.0, duration: 0.05, y: 900 },
 ];

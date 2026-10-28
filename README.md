@@ -41,7 +41,7 @@ scripts/contact-sheet.sh out/stills out/sheet.png 5
 | `src/components/WhatsAppChat.tsx` | Phone screen, conversation screen and message parts |
 | `src/components/Icons.tsx` | Original UI icons and the Northbridge Payments avatar |
 | `src/scenes/ChatsList.tsx` | Chats list with tap and tab bar |
-| `src/components/PaymentRoute.tsx` | Payment route, stepper and Paid chip |
+| `src/scenes/PaymentJourney.tsx` | Full frame payment journey: orb, one track of three nodes, status line |
 | `src/components/Background.tsx` | Flat white with two brief pale atmosphere moments |
 | `src/scenes/` | Intro, main conversation, scenarios, closing logo |
 

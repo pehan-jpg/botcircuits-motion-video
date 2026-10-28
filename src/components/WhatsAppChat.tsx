@@ -577,8 +577,10 @@ export const QuickReply: React.FC<{
   label: string;
   tapAt?: number;
   dimmed?: number;
+  // Hidden while the button is away as the payment orb.
+  hidden?: boolean;
   ref?: React.Ref<HTMLDivElement>;
-}> = ({ label, tapAt, dimmed = 0, ref }) => {
+}> = ({ label, tapAt, dimmed = 0, hidden = false, ref }) => {
   const { since } = useTimeline();
   const s = tapAt === undefined ? -1 : since(tapAt);
   const ripple = s >= 0 && s <= 0.4 ? s / 0.4 : s > 0.4 ? 1 : 0;
@@ -602,7 +604,7 @@ export const QuickReply: React.FC<{
         backgroundColor: C.bg,
         boxShadow: "0 1px 1px rgba(11, 20, 26, 0.13)",
         scale: String(1 - dip * 0.03),
-        opacity: 1 - dimmed * 0.5,
+        opacity: hidden ? 0 : 1 - dimmed * 0.5,
       }}
     >
       {ripple > 0 && ripple < 1 ? (

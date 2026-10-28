@@ -242,3 +242,42 @@ export const DoubleTick: React.FC<{ color?: string; size?: number }> = ({
     <path d="M10 13 L12.5 15.5 L24 4" {...line(color, 2.4)} />
   </svg>
 );
+
+// Payment journey node icons (monoline).
+export const JourneyIcon: React.FC<{
+  name: "bank" | "exchange" | "store";
+  size?: number;
+}> = ({ name, size = 64 }) => {
+  const st = line(C.ink, 1.5);
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      {name === "bank" ? (
+        <>
+          <path d="M3 9 L12 4 L21 9 Z" {...st} />
+          <path
+            d="M6 11 V16.5 M10 11 V16.5 M14 11 V16.5 M18 11 V16.5"
+            {...st}
+          />
+          <path d="M4 18.5 H20 M3 20.5 H21" {...st} />
+        </>
+      ) : null}
+      {name === "exchange" ? (
+        <>
+          <path d="M4 8 H19 M15 4 L19 8 L15 12" {...st} />
+          <path d="M20 16 H5 M9 12 L5 16 L9 20" {...st} />
+        </>
+      ) : null}
+      {name === "store" ? (
+        <>
+          <path d="M4.5 4 H19.5 L21 9 H3 Z" {...st} />
+          <path
+            d="M3 9 A3 3 0 0 0 9 9 A3 3 0 0 0 15 9 A3 3 0 0 0 21 9"
+            {...st}
+          />
+          <path d="M5 11.5 V20 H19 V11.5" {...st} />
+          <path d="M10 20 V15 H14 V20" {...st} />
+        </>
+      ) : null}
+    </svg>
+  );
+};

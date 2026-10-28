@@ -1,9 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
-import { interpolateColors } from "remotion";
 import { mix, useTimeline } from "../anim";
-import { CHAT_SCROLL, MAIN_CHAT } from "../content";
+import { CHAT_SCROLL, JOURNEY, MAIN_CHAT } from "../content";
 import { C, EASE_CAMERA } from "../theme";
-import { FlipChip, PaymentRoute, Stepper } from "../components/PaymentRoute";
 import { Pointer } from "../components/Pointer";
 import {
   Bubble,
@@ -126,7 +124,7 @@ const AgentReply: React.FC = () => {
 const Checks: React.FC<{ approveRef: React.Ref<HTMLDivElement> }> = ({
   approveRef,
 }) => {
-  const { p } = useTimeline();
+  const { p, t } = useTimeline();
   const ch = M.checks;
   const question = p(ch.question.at - 0.05, 0.3);
   const buttons = p(ch.buttonsAt, 0.4);
@@ -149,6 +147,7 @@ const Checks: React.FC<{ approveRef: React.Ref<HTMLDivElement> }> = ({
               label={ch.approveLabel}
               tapAt={ch.tapAt}
               dimmed={dimmed}
+              hidden={t >= JOURNEY.start && t < JOURNEY.returnAt}
             />
             <QuickReply label={ch.rejectLabel} dimmed={dimmed} />
           </div>
@@ -191,119 +190,19 @@ const Checks: React.FC<{ approveRef: React.Ref<HTMLDivElement> }> = ({
   );
 };
 
-const PaymentStatus: React.FC<{ stepRef: React.Ref<HTMLDivElement> }> = ({
-  stepRef,
-}) => {
-  const { p } = useTimeline();
-  const pay = M.payment;
-  const route = p(pay.nodesAt - 0.1, 0.45);
-  const confirm = p(pay.confirmAt, 0.45);
-  return (
-    <Bubble side="in" at={pay.at} width={640}>
-      <div
-        style={{
-          position: "relative",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: 22,
-        }}
-      >
-        <div style={{ fontWeight: 600 }}>{pay.title}</div>
-        <FlipChip />
-      </div>
-      <div style={{ position: "relative" }}>
-        <Stepper firstStepRef={stepRef} />
-      </div>
-      <Reveal progress={route}>
-        <div
-          style={{
-            position: "relative",
-            marginTop: 18,
-            paddingTop: 18,
-            borderTop: `1px solid ${C.line}`,
-          }}
-        >
-          <PaymentRoute />
-        </div>
-      </Reveal>
-      <Reveal progress={confirm}>
-        <DataCard>
-          {pay.confirmRows.map((row, i) => (
-            <DataRow
-              key={row.label}
-              label={row.label}
-              at={pay.confirmAt + 0.1 + i * 0.08}
-            >
-              {row.label === "Status" ? (
-                <span
-                  style={{
-                    padding: "4px 16px",
-                    borderRadius: 999,
-                    backgroundColor: C.lime,
-                  }}
-                >
-                  {row.value}
-                </span>
-              ) : (
-                row.value
-              )}
-            </DataRow>
-          ))}
-        </DataCard>
-      </Reveal>
-      <Meta time={pay.time} />
-    </Bubble>
-  );
-};
-
-// T3: the Approve button's fill shrinks into a lime circle and lands on
-// step 1 of the stepper.
-const ApproveToStep: React.FC<{ from: Box; to: Box }> = ({ from, to }) => {
-  const { p } = useTimeline();
-  const m = p(M.approveToStep.at, M.approveToStep.duration, EASE_CAMERA);
-  const gone = p(M.payment.stepAt[0], 0.05);
-  if (m <= 0 || gone >= 1) return null;
-  const size = { w: mix(from.w, to.w, m), h: mix(from.h, to.h, m) };
-  const cx = mix(from.x + from.w / 2, to.x + to.w / 2, m);
-  const cy =
-    mix(from.y + from.h / 2, to.y + to.h / 2, m) - Math.sin(m * Math.PI) * 60;
-  return (
-    <div
-      style={{
-        position: "absolute",
-        left: cx - size.w / 2,
-        top: cy - size.h / 2,
-        width: size.w,
-        height: size.h,
-        borderRadius: mix(16, to.h / 2, m),
-        backgroundColor: interpolateColors(m, [0, 0.35], [C.bg, C.lime]),
-        boxShadow: `0 6px 18px rgba(11, 20, 26, ${0.15 * (1 - m)})`,
-        opacity: 1 - gone,
-      }}
-    />
-  );
-};
-
 export const MainChat: React.FC = () => {
   const y = useScroll();
   const blur = useFocusBlur();
   const inv = M.invoice;
   const container = useRef<HTMLDivElement>(null);
   const approveRef = useRef<HTMLDivElement>(null);
-  const stepRef = useRef<HTMLDivElement>(null);
-  const [anchors, setAnchors] = useState<{ approve: Box; step: Box } | null>(
-    null,
-  );
+  const [anchors, setAnchors] = useState<{ approve: Box } | null>(null);
   // Measure after every render; only store when the layout changed, so this
   // settles after one extra pass.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
-    if (!container.current || !approveRef.current || !stepRef.current) return;
-    const next = {
-      approve: boxIn(approveRef.current, container.current),
-      step: boxIn(stepRef.current, container.current),
-    };
+    if (!container.current || !approveRef.current) return;
+    const next = { approve: boxIn(approveRef.current, container.current) };
     if (JSON.stringify(next) !== JSON.stringify(anchors)) setAnchors(next);
   });
   return (
@@ -352,7 +251,13 @@ export const MainChat: React.FC = () => {
           />
         </div>
       </Bubble>
-      <PaymentStatus stepRef={stepRef} />
+      <Bubble side="in" at={M.paymentSent.at} width={600}>
+        <div style={{ fontWeight: 600 }}>{M.paymentSent.title}</div>
+        {M.paymentSent.body.map((line) => (
+          <div key={line}>{line}</div>
+        ))}
+        <Meta time={M.paymentSent.time} />
+      </Bubble>
       <Bubble side="in" at={M.proof.at} padding="14px 14px 10px 14px">
         <FileCard
           name={M.proof.fileName}
@@ -366,7 +271,6 @@ export const MainChat: React.FC = () => {
       </Bubble>
       {anchors ? (
         <>
-          <ApproveToStep from={anchors.approve} to={anchors.step} />
           <Pointer
             target={{
               x: anchors.approve.x + anchors.approve.w * 0.42,
