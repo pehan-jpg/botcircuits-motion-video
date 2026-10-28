@@ -33,7 +33,7 @@ const ANCHOR = { x: 540, y: PHONE.top + PHONE.height / 2 };
 // Keep at least this much space above the phone so its header stays in frame.
 const HEADER_MARGIN = 60;
 
-const PHONE_END = CLOSING.coverAt + CLOSING.coverDuration;
+const PHONE_END = CLOSING.phoneOutAt + CLOSING.phoneOutDuration;
 
 // Fast moves that get camera motion blur.
 const BLUR_WINDOWS: [number, number][] = [
@@ -45,7 +45,6 @@ const BLUR_WINDOWS: [number, number][] = [
     MAIN_CHAT.approveToStep.at,
     MAIN_CHAT.approveToStep.at + MAIN_CHAT.approveToStep.duration,
   ],
-  [CLOSING.circleAt, PHONE_END],
   [LIST.pushAt, LIST.pushAt + LIST.pushDuration],
 ];
 
@@ -71,7 +70,7 @@ const useCamera = () => {
       shot.at + shot.duration,
       MORPH_IN.phoneAt + MORPH_IN.resolveDuration,
     );
-    const to = CAMERA_SHOTS[i + 1]?.at ?? CLOSING.circleAt;
+    const to = CAMERA_SHOTS[i + 1]?.at ?? CLOSING.phoneOutAt;
     const d =
       to > from ? Math.min(1, Math.max(0, (t - from) / (to - from))) : 0;
     cur = { ...cur, scale: cur.scale * (1 + CAMERA_DRIFT * d) };
@@ -261,47 +260,33 @@ const Phone: React.FC = () => {
   const appear =
     0.55 * p(MORPH_IN.chatFadeInAt, MORPH_IN.phoneAt - MORPH_IN.chatFadeInAt) +
     0.45 * p(MORPH_IN.phoneAt, MORPH_IN.resolveDuration);
-  // T6: content fades, frame softens into a circle, circle covers the frame.
-  const contentOut = p(CLOSING.contentOutAt, 0.25);
-  const circle = p(CLOSING.circleAt, CLOSING.circleDuration, EASE_CAMERA);
-  const cover = p(CLOSING.coverAt, CLOSING.coverDuration, EASE_CAMERA);
-  const h = mix(PHONE.height, PHONE.width, circle);
+  // T6: the phone fades out and settles back slightly before the logo.
+  const out = p(CLOSING.phoneOutAt, CLOSING.phoneOutDuration, EASE_CAMERA);
   return (
     <div
       style={{
         position: "absolute",
         left: (1080 - PHONE.width) / 2,
-        top: PHONE.top + (PHONE.height - h) / 2,
+        top: PHONE.top,
         width: PHONE.width,
-        height: h,
-        borderRadius: mix(R.phone, PHONE.width / 2, circle),
+        height: PHONE.height,
+        borderRadius: R.phone,
         padding: PHONE.border,
         overflow: "hidden",
         // iPhone style dark bezel.
         background: `linear-gradient(150deg, #42464C 0%, ${WA.bezel} 38%, #2C3035 100%)`,
         boxShadow: [
-          `0 2px 6px rgba(29, 33, 37, ${0.05 * (1 - cover)})`,
-          `0 22px 44px rgba(29, 33, 37, ${0.07 * (1 - cover)})`,
-          `0 60px 120px rgba(29, 33, 37, ${0.09 * (1 - cover)})`,
+          `0 2px 6px rgba(29, 33, 37, ${0.05})`,
+          `0 22px 44px rgba(29, 33, 37, ${0.07})`,
+          `0 60px 120px rgba(29, 33, 37, ${0.09})`,
         ].join(", "),
-        opacity: appear,
-        scale: String(mix(1, 3.4, cover)),
+        opacity: appear * (1 - out),
+        scale: String(mix(1, 0.96, out)),
       }}
     >
-      <div style={{ opacity: 1 - contentOut }}>
-        <PhoneScreen>
-          <NavigationPush />
-        </PhoneScreen>
-      </div>
-      {/* The frame turns white as it becomes a circle. */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundColor: C.bg,
-          opacity: Math.max(contentOut, circle),
-        }}
-      />
+      <PhoneScreen>
+        <NavigationPush />
+      </PhoneScreen>
       {/* Faint specular highlight on the frame edge. */}
       <div
         style={{
@@ -309,7 +294,6 @@ const Phone: React.FC = () => {
           inset: 0,
           borderRadius: "inherit",
           padding: 2,
-          opacity: 1 - circle,
           background:
             "linear-gradient(160deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.2) 28%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.5) 100%)",
           WebkitMask:

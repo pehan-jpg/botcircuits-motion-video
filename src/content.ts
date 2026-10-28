@@ -93,14 +93,6 @@ export const CHATS: ChatRow[] = [
     preview: "Truck 12 arrives at 3 pm",
   },
   {
-    name: "Suresh Traders",
-    initials: "ST",
-    color: "#F5DEE3",
-    time: "Monday",
-    fromMe: true,
-    preview: "Thanks, the order was received",
-  },
-  {
     name: "Procurement",
     initials: "PR",
     color: "#E9EDF1",
@@ -381,13 +373,10 @@ export const SCENARIO_TIMING = {
   extraAt: 0.72,
 };
 
-// T6 and the closing logo.
+// T6: the phone fades out, then the closing logo.
 export const CLOSING = {
-  contentOutAt: 23.0,
-  circleAt: 23.15, // frame softens into a squircle, then a circle
-  circleDuration: 0.65,
-  coverAt: 23.8, // circle grows to cover the frame in white
-  coverDuration: 0.55,
+  phoneOutAt: 23.0, // the phone fades out and settles back slightly
+  phoneOutDuration: 0.6,
   logoAt: 24.35,
   logoDuration: 0.6,
   logoWidthRatio: 0.4,

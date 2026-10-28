@@ -37,7 +37,7 @@ scripts/contact-sheet.sh out/stills out/sheet.png 5
 | Path | Purpose |
 |---|---|
 | `src/content.ts` | Copy, placeholders, scene and camera timings |
-| `src/PaymentsUseCase.tsx` | Camera, glass morph (T1), blur through screens, circle morph (T6), motion blur |
+| `src/PaymentsUseCase.tsx` | Camera, glass morph (T1), list push, blur through screens, phone fade out (T6), motion blur |
 | `src/components/WhatsAppChat.tsx` | Phone screen, conversation screen and message parts |
 | `src/components/Icons.tsx` | Original UI icons and the Northbridge Payments avatar |
 | `src/scenes/ChatsList.tsx` | Chats list with tap and tab bar |
