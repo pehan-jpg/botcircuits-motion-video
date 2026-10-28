@@ -6,6 +6,7 @@ import {
   CAMERA_DRIFT,
   CAMERA_SHOTS,
   CLOSING,
+  LIST,
   MAIN_CHAT,
   MORPH_IN,
   SCENARIO_TRANSITION,
@@ -13,12 +14,19 @@ import {
 } from "./content";
 import { Background } from "./components/Background";
 import { Captions } from "./components/Captions";
-import { Chip, WhatsAppChat } from "./components/WhatsAppChat";
+import { AgentAvatar } from "./components/Icons";
+import {
+  Chip,
+  Conversation,
+  HEADER_AVATAR,
+  PhoneScreen,
+} from "./components/WhatsAppChat";
+import { ChatsList, rowAvatar } from "./scenes/ChatsList";
 import { Closing } from "./scenes/Closing";
 import { Intro } from "./scenes/Intro";
 import { MainChat, useFocusBlur } from "./scenes/MainChat";
 import { ScenarioChat } from "./scenes/ScenarioChat";
-import { C, EASE_CAMERA, PHONE, R } from "./theme";
+import { C, EASE_CAMERA, EASE_IN, PHONE, R, SCREEN, WA } from "./theme";
 
 // Screen point the camera focus is placed on (phone centre at scale 1).
 const ANCHOR = { x: 540, y: PHONE.top + PHONE.height / 2 };
@@ -38,6 +46,7 @@ const BLUR_WINDOWS: [number, number][] = [
     MAIN_CHAT.approveToStep.at + MAIN_CHAT.approveToStep.duration,
   ],
   [CLOSING.circleAt, PHONE_END],
+  [LIST.pushAt, LIST.pushAt + LIST.pushDuration],
 ];
 
 const useCamera = () => {
@@ -175,9 +184,79 @@ const ScenarioChip: React.FC = () => {
   );
 };
 
+// Chats list, then an iOS navigation push into the conversation: the list
+// moves left at 30 percent with a dim, the conversation slides in from the
+// right, and the agent avatar flies from its row into the header.
+const NavigationPush: React.FC = () => {
+  const { p, t } = useTimeline();
+  const edgeBlur = useFocusBlur();
+  const push = p(LIST.pushAt, LIST.pushDuration, EASE_IN);
+  const W = SCREEN.width;
+  const from = rowAvatar(LIST.agentRow);
+  const to = HEADER_AVATAR;
+  const started = t >= LIST.pushAt;
+  return (
+    <>
+      {push < 1 ? (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            translate: `${-0.3 * W * push}px 0px`,
+          }}
+        >
+          <ChatsList />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor: `rgba(0, 0, 0, ${0.08 * push})`,
+            }}
+          />
+        </div>
+      ) : null}
+      {started ? (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            translate: `${W * (1 - push)}px 0px`,
+            boxShadow:
+              push < 1 ? "-16px 0 40px rgba(11, 20, 26, 0.14)" : undefined,
+          }}
+        >
+          <Conversation
+            edgeBlur={edgeBlur}
+            avatarVisible={push >= 1}
+            attachFlashes={[
+              MAIN_CHAT.invoice.attachFlashAt,
+              ...SCENARIOS.filter((s) => s.outgoing.kind === "file").map(
+                (s) => s.start + 0.05,
+              ),
+            ]}
+          >
+            <Screens />
+            <ScenarioChip />
+          </Conversation>
+        </div>
+      ) : null}
+      {started && push < 1 ? (
+        <div
+          style={{
+            position: "absolute",
+            left: mix(from.x, to.x, push),
+            top: mix(from.y, to.y, push),
+          }}
+        >
+          <AgentAvatar size={mix(from.size, to.size, push)} />
+        </div>
+      ) : null}
+    </>
+  );
+};
+
 const Phone: React.FC = () => {
   const { p } = useTimeline();
-  const edgeBlur = useFocusBlur();
   // Appears inside the glass, then fully as the glass resolves.
   const appear =
     0.55 * p(MORPH_IN.chatFadeInAt, MORPH_IN.phoneAt - MORPH_IN.chatFadeInAt) +
@@ -198,7 +277,8 @@ const Phone: React.FC = () => {
         borderRadius: mix(R.phone, PHONE.width / 2, circle),
         padding: PHONE.border,
         overflow: "hidden",
-        background: `linear-gradient(150deg, #F6F7F8 0%, ${C.frame} 45%, #E2E5E8 100%)`,
+        // iPhone style dark bezel.
+        background: `linear-gradient(150deg, #42464C 0%, ${WA.bezel} 38%, #2C3035 100%)`,
         boxShadow: [
           `0 2px 6px rgba(29, 33, 37, ${0.05 * (1 - cover)})`,
           `0 22px 44px rgba(29, 33, 37, ${0.07 * (1 - cover)})`,
@@ -209,18 +289,9 @@ const Phone: React.FC = () => {
       }}
     >
       <div style={{ opacity: 1 - contentOut }}>
-        <WhatsAppChat
-          edgeBlur={edgeBlur}
-          attachFlashes={[
-            MAIN_CHAT.invoice.attachFlashAt,
-            ...SCENARIOS.filter((s) => s.outgoing.kind === "file").map(
-              (s) => s.start + 0.05,
-            ),
-          ]}
-        >
-          <Screens />
-          <ScenarioChip />
-        </WhatsAppChat>
+        <PhoneScreen>
+          <NavigationPush />
+        </PhoneScreen>
       </div>
       {/* The frame turns white as it becomes a circle. */}
       <div
@@ -228,7 +299,7 @@ const Phone: React.FC = () => {
           position: "absolute",
           inset: 0,
           backgroundColor: C.bg,
-          opacity: Math.max(contentOut * 0.6, circle),
+          opacity: Math.max(contentOut, circle),
         }}
       />
       {/* Faint specular highlight on the frame edge. */}

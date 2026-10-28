@@ -2,102 +2,146 @@ import React from "react";
 import { interpolateColors } from "remotion";
 import { useTimeline, mix, typedCount } from "../anim";
 import { CHAT_HEADER } from "../content";
-import { C, FONT, PHONE, R } from "../theme";
+import { C, FONT, PHONE, R, SCREEN, WA } from "../theme";
+import {
+  AgentAvatar,
+  CameraIcon,
+  ChevronLeft,
+  DocIcon,
+  MicIcon,
+  PhoneIcon,
+  PlusIcon,
+  ReplyArrow,
+  StatusIcons,
+  StickerIcon,
+  VideoIcon,
+} from "./Icons";
 
-// WhatsApp style conversation: phone frame, header, chat area, input bar.
-// No official logo or brand assets are used.
+// iOS style messaging UI matched to the reference screens. Icons are
+// original drawings; no official logo or brand asset is used.
 
-const ICON = {
-  stroke: C.muted,
-  strokeWidth: 2,
-  fill: "none",
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-};
+// ---------------------------------------------------------------------------
+// Phone screen: status bar and home indicator over the current screen(s).
 
-const BackIcon = () => (
-  <svg width={40} height={40} viewBox="0 0 24 24" {...ICON} stroke={C.ink}>
-    <line x1="19" y1="12" x2="5" y2="12" />
-    <polyline points="12 19 5 12 12 5" />
-  </svg>
-);
-
-const VideoIcon = () => (
-  <svg width={42} height={42} viewBox="0 0 24 24" {...ICON}>
-    <polygon points="23 7 16 12 23 17 23 7" />
-    <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
-  </svg>
-);
-
-const CallIcon = () => (
-  <svg width={38} height={38} viewBox="0 0 24 24" {...ICON}>
-    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-  </svg>
-);
-
-const ClipIcon: React.FC<{ color: string }> = ({ color }) => (
-  <svg width={38} height={38} viewBox="0 0 24 24" {...ICON} stroke={color}>
-    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
-  </svg>
-);
-
-const MicIcon = () => (
-  <svg width={36} height={36} viewBox="0 0 24 24" {...ICON} stroke={C.ink}>
-    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-    <line x1="12" y1="19" x2="12" y2="23" />
-    <line x1="8" y1="23" x2="16" y2="23" />
-  </svg>
-);
-
-const Header: React.FC = () => (
+export const PhoneScreen: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
   <div
     style={{
-      height: PHONE.headerHeight,
-      flexShrink: 0,
-      display: "flex",
-      alignItems: "center",
-      gap: 18,
-      padding: "28px 34px 0 26px",
+      position: "relative",
+      width: SCREEN.width,
+      height: SCREEN.height,
+      borderRadius: R.phone - PHONE.border,
+      overflow: "hidden",
       backgroundColor: C.bg,
-      borderBottom: `1px solid ${C.line}`,
+      fontFamily: FONT,
+      color: C.ink,
+      fontVariantNumeric: "tabular-nums",
     }}
   >
-    <BackIcon />
+    {children}
     <div
       style={{
-        width: 76,
-        height: 76,
-        borderRadius: 38,
-        backgroundColor: C.lime,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: PHONE.statusBar,
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
-        fontSize: 34,
-        fontWeight: 600,
-        color: C.ink,
+        justifyContent: "space-between",
+        padding: "14px 52px 0 76px",
+        pointerEvents: "none",
       }}
     >
-      {CHAT_HEADER.avatarLetter}
+      <div style={{ fontSize: 33, fontWeight: 600, letterSpacing: -0.5 }}>
+        9:41
+      </div>
+      <StatusIcons />
     </div>
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
-      <div style={{ fontSize: 32, fontWeight: 500, letterSpacing: -0.4 }}>
+    <div
+      style={{
+        position: "absolute",
+        bottom: 14,
+        left: (SCREEN.width - 270) / 2,
+        width: 270,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: C.ink,
+      }}
+    />
+  </div>
+);
+
+// ---------------------------------------------------------------------------
+// Conversation screen
+
+// Header avatar geometry, shared with the avatar that flies in from the list.
+export const HEADER_AVATAR = {
+  size: 72,
+  x: 66,
+  y: PHONE.statusBar + (PHONE.headerHeight - 72) / 2,
+};
+
+const Header: React.FC<{ avatarVisible: boolean }> = ({ avatarVisible }) => (
+  <div
+    style={{
+      position: "relative",
+      height: PHONE.statusBar + PHONE.headerHeight,
+      flexShrink: 0,
+      backgroundColor: WA.bar,
+      borderBottom: `1px solid ${WA.hairline}`,
+    }}
+  >
+    <div style={{ position: "absolute", left: 22, top: PHONE.statusBar + 28 }}>
+      <ChevronLeft />
+    </div>
+    <div
+      style={{
+        position: "absolute",
+        left: HEADER_AVATAR.x,
+        top: HEADER_AVATAR.y,
+        opacity: avatarVisible ? 1 : 0,
+      }}
+    >
+      <AgentAvatar size={HEADER_AVATAR.size} />
+    </div>
+    <div
+      style={{
+        position: "absolute",
+        left: HEADER_AVATAR.x + HEADER_AVATAR.size + 18,
+        top: PHONE.statusBar + 16,
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+      }}
+    >
+      <div style={{ fontSize: 31, fontWeight: 600, letterSpacing: -0.4 }}>
         {CHAT_HEADER.name}
       </div>
-      <div style={{ fontSize: 23, fontWeight: 400, color: C.muted }}>
+      <div style={{ fontSize: 21, fontWeight: 400, color: WA.listGrey }}>
         {CHAT_HEADER.status}
       </div>
     </div>
-    <div style={{ display: "flex", gap: 34, alignItems: "center" }}>
+    <div
+      style={{
+        position: "absolute",
+        right: 30,
+        top: PHONE.statusBar + 26,
+        display: "flex",
+        gap: 34,
+        alignItems: "center",
+      }}
+    >
       <VideoIcon />
-      <CallIcon />
+      <PhoneIcon />
     </div>
   </div>
 );
 
 const InputBar: React.FC<{ flashes: number[] }> = ({ flashes }) => {
   const { since } = useTimeline();
-  // A single flash: lime disc behind the icon fades in and out over 0.45 s.
+  // The attach (plus) button flashes once when a file is sent.
   const flash = Math.max(
     0,
     ...flashes.map((at) => {
@@ -108,56 +152,49 @@ const InputBar: React.FC<{ flashes: number[] }> = ({ flashes }) => {
   return (
     <div
       style={{
-        height: PHONE.inputHeight,
+        height: PHONE.inputHeight + PHONE.homeArea,
         flexShrink: 0,
         display: "flex",
-        alignItems: "center",
-        gap: 16,
-        padding: "0 22px 18px",
-        backgroundColor: C.wallpaper,
+        alignItems: "flex-start",
+        gap: 20,
+        padding: "20px 26px 0 22px",
+        backgroundColor: WA.bar,
+        borderTop: `1px solid ${WA.hairline}`,
       }}
     >
       <div
         style={{
-          flex: 1,
-          height: 82,
-          borderRadius: 41,
-          backgroundColor: C.bg,
-          display: "flex",
-          alignItems: "center",
-          padding: "0 18px 0 34px",
-          fontSize: 29,
-          color: C.muted,
-          fontWeight: 300,
-        }}
-      >
-        <div style={{ flex: 1 }}>{CHAT_HEADER.placeholder}</div>
-        <div
-          style={{
-            width: 62,
-            height: 62,
-            borderRadius: 31,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: `rgba(180, 240, 0, ${flash})`,
-            scale: String(1 + flash * 0.06),
-          }}
-        >
-          <ClipIcon color={flash > 0.3 ? C.ink : C.muted} />
-        </div>
-      </div>
-      <div
-        style={{
-          width: 82,
-          height: 82,
-          borderRadius: 41,
-          backgroundColor: C.lime,
+          width: 60,
+          height: 60,
+          borderRadius: 30,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          backgroundColor: `rgba(33, 192, 99, ${flash * 0.18})`,
+          scale: String(1 + flash * 0.08),
         }}
       >
+        <PlusIcon />
+      </div>
+      <div
+        style={{
+          flex: 1,
+          height: 62,
+          borderRadius: 31,
+          backgroundColor: C.bg,
+          border: `1px solid ${WA.hairline}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          padding: "0 14px",
+        }}
+      >
+        <StickerIcon />
+      </div>
+      <div
+        style={{ display: "flex", gap: 22, alignItems: "center", height: 60 }}
+      >
+        <CameraIcon />
         <MicIcon />
       </div>
     </div>
@@ -165,30 +202,66 @@ const InputBar: React.FC<{ flashes: number[] }> = ({ flashes }) => {
 };
 
 export const CHAT_AREA_HEIGHT =
-  PHONE.height - PHONE.border * 2 - PHONE.headerHeight - PHONE.inputHeight;
+  SCREEN.height -
+  PHONE.statusBar -
+  PHONE.headerHeight -
+  PHONE.inputHeight -
+  PHONE.homeArea;
 
-export const WhatsAppChat: React.FC<{
+// Low contrast doodle wallpaper built from simple original shapes.
+const Wallpaper: React.FC = () => (
+  <svg width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
+    <defs>
+      <pattern
+        id="doodles"
+        width="220"
+        height="220"
+        patternUnits="userSpaceOnUse"
+      >
+        <g
+          fill="none"
+          stroke={WA.doodle}
+          strokeWidth={3}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="34" cy="36" r="16" />
+          <path d="M28 36 H40 M34 30 V42" />
+          <path d="M92 22 l8 16 l18 2 l-13 12 l3 18 l-16 -9 l-16 9 l3 -18 l-13 -12 l18 -2 Z" />
+          <rect x="160" y="22" width="40" height="28" rx="8" />
+          <path d="M168 50 l-6 10 l14 -10" />
+          <path d="M20 120 q18 -24 36 0 t36 0" />
+          <circle cx="150" cy="110" r="10" />
+          <circle cx="178" cy="128" r="6" />
+          <path d="M120 170 l14 -14 l14 14 l-14 14 Z" />
+          <path d="M40 186 h30 M40 198 h18" />
+          <path d="M190 180 a14 14 0 1 1 -28 0 q14 -8 28 0" />
+        </g>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill={WA.wallpaper} />
+    <rect width="100%" height="100%" fill="url(#doodles)" />
+  </svg>
+);
+
+export const Conversation: React.FC<{
   children: React.ReactNode;
   attachFlashes?: number[];
   // Depth of field: blurs the header and input bar (px).
   edgeBlur?: number;
-}> = ({ children, attachFlashes = [], edgeBlur = 0 }) => (
+  avatarVisible?: boolean;
+}> = ({ children, attachFlashes = [], edgeBlur = 0, avatarVisible = true }) => (
   <div
     style={{
-      width: PHONE.width - PHONE.border * 2,
-      height: PHONE.height - PHONE.border * 2,
-      borderRadius: R.phone - PHONE.border,
-      overflow: "hidden",
+      position: "absolute",
+      inset: 0,
       display: "flex",
       flexDirection: "column",
-      backgroundColor: C.wallpaper,
-      fontFamily: FONT,
-      color: C.ink,
-      fontVariantNumeric: "tabular-nums",
+      backgroundColor: WA.wallpaper,
     }}
   >
     <div style={{ filter: edgeBlur > 0 ? `blur(${edgeBlur}px)` : undefined }}>
-      <Header />
+      <Header avatarVisible={avatarVisible} />
     </div>
     <div
       style={{
@@ -197,6 +270,7 @@ export const WhatsAppChat: React.FC<{
         overflow: "hidden",
       }}
     >
+      <Wallpaper />
       {children}
     </div>
     <div style={{ filter: edgeBlur > 0 ? `blur(${edgeBlur}px)` : undefined }}>
@@ -215,11 +289,11 @@ export const Ticks: React.FC<{ deliveredAt: number; readAt: number }> = ({
   const { p } = useTimeline();
   const second = p(deliveredAt, 0.2);
   const read = p(readAt, 0.25);
-  const color = read > 0.5 ? C.read : "#8A9099";
+  const color = interpolateColors(read, [0, 1], [WA.tickGrey, WA.tick]);
   return (
     <svg width={34} height={20} viewBox="0 0 34 20" style={{ marginLeft: 6 }}>
       <path
-        d="M3 10.5 L8 15.5 L19 4"
+        d="M2 10.5 L7 15.5 L18 4"
         fill="none"
         stroke={color}
         strokeWidth={2.4}
@@ -227,21 +301,13 @@ export const Ticks: React.FC<{ deliveredAt: number; readAt: number }> = ({
         strokeLinejoin="round"
       />
       <path
-        d="M14 15.5 L25 4"
+        d="M12.5 15.5 L23.5 4"
         fill="none"
         stroke={color}
         strokeWidth={2.4}
         strokeLinecap="round"
         strokeDasharray={16}
         strokeDashoffset={16 * (1 - second)}
-        opacity={second}
-      />
-      <path
-        d="M11.5 13 L14 15.5"
-        fill="none"
-        stroke={color}
-        strokeWidth={2.4}
-        strokeLinecap="round"
         opacity={second}
       />
     </svg>
@@ -257,10 +323,10 @@ export const Meta: React.FC<{
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
-      marginTop: 6,
+      marginTop: 4,
       fontSize: 20,
       fontWeight: 400,
-      color: C.muted,
+      color: WA.time,
     }}
   >
     {time}
@@ -272,43 +338,42 @@ const Tail: React.FC<{ side: "in" | "out" }> = ({ side }) =>
   side === "out" ? (
     <svg
       width={20}
-      height={26}
-      viewBox="0 0 20 26"
-      style={{ position: "absolute", right: -16, bottom: 0 }}
+      height={24}
+      viewBox="0 0 20 24"
+      style={{ position: "absolute", right: -13, bottom: 0 }}
     >
-      <path d="M0 0 C0 15 6 22 18 26 L0 26 Z" fill={C.limeSoft} />
+      <path d="M0 0 C1 14 6 20 18 24 L0 24 Z" fill={WA.bubbleOut} />
     </svg>
   ) : (
     <svg
-      width={22}
-      height={26}
-      viewBox="0 0 22 26"
-      style={{
-        position: "absolute",
-        left: -17,
-        bottom: 0,
-        overflow: "visible",
-      }}
+      width={20}
+      height={24}
+      viewBox="0 0 20 24"
+      style={{ position: "absolute", left: -13, bottom: 0 }}
     >
-      <path d="M18 0 C18 15 12 22 0 25.5 L19 25.5 L19 0 Z" fill={C.bg} />
-      <path
-        d="M17.5 0 C17.5 15 12 22 0.5 25.5 L19 25.5"
-        fill="none"
-        stroke={C.line}
-        strokeWidth={1}
-      />
+      <path d="M20 0 C19 14 14 20 2 24 L20 24 Z" fill={C.bg} />
     </svg>
   );
 
-// Chat bubble. Hidden (but laid out) until `at`, then scales in from the tail.
+// Chat bubble. Hidden (but laid out) until `at`, then scales in from the
+// tail. `footer` renders below the bubble (quick reply buttons).
 export const Bubble: React.FC<{
   side: "in" | "out";
   at: number;
   width?: number;
   padding?: string;
   blur?: number;
+  footer?: React.ReactNode;
   children: React.ReactNode;
-}> = ({ side, at, width, padding = "18px 24px 12px", blur = 0, children }) => {
+}> = ({
+  side,
+  at,
+  width,
+  padding = "14px 22px 10px",
+  blur = 0,
+  footer,
+  children,
+}) => {
   const { p } = useTimeline();
   const e = p(at, 0.33);
   const out = side === "out";
@@ -316,30 +381,35 @@ export const Bubble: React.FC<{
     <div
       style={{
         alignSelf: out ? "flex-end" : "flex-start",
-        position: "relative",
         width,
         maxWidth: 620,
-        marginLeft: out ? 0 : 16,
-        marginRight: out ? 16 : 0,
-        padding,
-        backgroundColor: out ? C.limeSoft : C.bg,
-        border: out ? "none" : `1px solid ${C.line}`,
-        borderRadius: R.bubble,
-        borderBottomRightRadius: out ? 0 : R.bubble,
-        borderBottomLeftRadius: out ? R.bubble : 0,
-        fontSize: 30,
-        lineHeight: 1.32,
-        fontWeight: 300,
+        marginLeft: out ? 0 : 14,
+        marginRight: out ? 14 : 0,
         opacity: e,
         filter: blur > 0 ? `blur(${blur}px)` : undefined,
         scale: String(mix(0.92, 1, e)),
         transformOrigin: out ? "100% 100%" : "0% 100%",
         visibility: e <= 0 ? "hidden" : "visible",
-        boxShadow: "0 1px 1px rgba(29, 33, 37, 0.04)",
       }}
     >
-      <Tail side={side} />
-      {children}
+      <div
+        style={{
+          position: "relative",
+          padding,
+          backgroundColor: out ? WA.bubbleOut : C.bg,
+          borderRadius: R.bubble,
+          borderBottomRightRadius: out ? 0 : R.bubble,
+          borderBottomLeftRadius: out ? R.bubble : 0,
+          fontSize: 30,
+          lineHeight: 1.32,
+          fontWeight: 400,
+          boxShadow: "0 1px 1px rgba(11, 20, 26, 0.13)",
+        }}
+      >
+        <Tail side={side} />
+        {children}
+      </div>
+      {footer}
     </div>
   );
 };
@@ -373,8 +443,8 @@ export const TypingDots: React.FC<{ at: number }> = ({ at }) => {
               width: 14,
               height: 14,
               borderRadius: 7,
-              backgroundColor: C.muted,
-              opacity: 0.35 + lift * 0.45,
+              backgroundColor: WA.tickGrey,
+              opacity: 0.45 + lift * 0.45,
               translate: `0px ${-lift * 7}px`,
             }}
           />
@@ -403,6 +473,7 @@ export const TypedLine: React.FC<{
   );
 };
 
+// Document message: file icon, name, then "PDF · 218 KB".
 export const FileCard: React.FC<{
   name: string;
   meta: string;
@@ -413,43 +484,26 @@ export const FileCard: React.FC<{
     style={{
       display: "flex",
       alignItems: "center",
-      gap: 20,
-      padding: "16px 22px 16px 16px",
-      borderRadius: 20,
-      backgroundColor: tone === "out" ? "rgba(29, 33, 37, 0.05)" : C.panel,
-      width: 460,
+      gap: 18,
+      padding: "14px 22px 14px 14px",
+      borderRadius: 12,
+      backgroundColor: tone === "out" ? "rgba(11, 20, 26, 0.05)" : "#F5F6F6",
+      width: 470,
     }}
   >
-    <div
-      style={{
-        position: "relative",
-        width: 60,
-        height: 74,
-        borderRadius: 10,
-        backgroundColor: C.bg,
-        border: `1.5px solid ${C.line}`,
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "center",
-        paddingBottom: 10,
-        fontSize: 15,
-        fontWeight: 600,
-        letterSpacing: 0.5,
-      }}
-    >
-      {type}
-    </div>
+    <DocIcon type={type} />
     <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
       <div style={{ fontSize: 28, fontWeight: 500, letterSpacing: -0.3 }}>
         {name}
       </div>
-      <div style={{ fontSize: 22, color: C.muted, fontWeight: 400 }}>
+      <div style={{ fontSize: 22, color: WA.time, fontWeight: 400 }}>
         {meta}
       </div>
     </div>
   </div>
 );
 
+// Business message body row: label and extracted value.
 export const DataRow: React.FC<{
   label: string;
   at: number;
@@ -466,10 +520,11 @@ export const DataRow: React.FC<{
           alignItems: "center",
           height: 54,
           gap: 24,
+          borderTop: `1px solid ${WA.separator}`,
         }}
       >
         <div
-          style={{ fontSize: 24, color: C.muted, fontWeight: 400, opacity: e }}
+          style={{ fontSize: 24, color: WA.time, fontWeight: 400, opacity: e }}
         >
           {label}
         </div>
@@ -491,18 +546,7 @@ export const DataRow: React.FC<{
 
 export const DataCard: React.FC<{ children: React.ReactNode }> = ({
   children,
-}) => (
-  <div
-    style={{
-      marginTop: 14,
-      padding: "10px 24px",
-      borderRadius: R.card,
-      backgroundColor: C.panel,
-    }}
-  >
-    {children}
-  </div>
-);
+}) => <div style={{ marginTop: 10 }}>{children}</div>;
 
 export const Chip: React.FC<{
   children: React.ReactNode;
@@ -527,16 +571,14 @@ export const Chip: React.FC<{
   </div>
 );
 
-// WhatsApp reply style button, with a tap ripple and a 3 percent dip.
-export const ChatButton: React.FC<{
+// Quick reply button: a separate white bar below the bubble with blue text.
+// Taps show a ripple and a 3 percent dip.
+export const QuickReply: React.FC<{
   label: string;
-  primary?: boolean;
   tapAt?: number;
   dimmed?: number;
-  // 0 to 1: the lime fill has left the button (it became the payment orb).
-  fillGone?: number;
   ref?: React.Ref<HTMLDivElement>;
-}> = ({ label, primary = false, tapAt, dimmed = 0, fillGone = 0, ref }) => {
+}> = ({ label, tapAt, dimmed = 0, ref }) => {
   const { since } = useTimeline();
   const s = tapAt === undefined ? -1 : since(tapAt);
   const ripple = s >= 0 && s <= 0.4 ? s / 0.4 : s > 0.4 ? 1 : 0;
@@ -546,37 +588,37 @@ export const ChatButton: React.FC<{
       ref={ref}
       style={{
         position: "relative",
-        flex: 1,
-        height: 74,
-        borderRadius: 20,
+        marginTop: 5,
+        height: 76,
+        borderRadius: 16,
         overflow: "hidden",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        gap: 10,
         fontSize: 28,
         fontWeight: 500,
-        backgroundColor: primary
-          ? interpolateColors(fillGone, [0, 1], [C.lime, C.bg])
-          : C.bg,
-        boxShadow:
-          primary && fillGone === 0 ? "none" : `inset 0 0 0 1.5px ${C.line}`,
+        color: WA.replyBlue,
+        backgroundColor: C.bg,
+        boxShadow: "0 1px 1px rgba(11, 20, 26, 0.13)",
         scale: String(1 - dip * 0.03),
-        opacity: 1 - dimmed * 0.55,
+        opacity: 1 - dimmed * 0.5,
       }}
     >
       {ripple > 0 && ripple < 1 ? (
         <div
           style={{
             position: "absolute",
-            width: 260,
-            height: 260,
-            borderRadius: 130,
+            width: 300,
+            height: 300,
+            borderRadius: 150,
             backgroundColor: C.ink,
             opacity: 0.12 * (1 - ripple),
             scale: String(mix(0.5, 1.4, ripple)),
           }}
         />
       ) : null}
+      <ReplyArrow />
       <span style={{ position: "relative" }}>{label}</span>
     </div>
   );

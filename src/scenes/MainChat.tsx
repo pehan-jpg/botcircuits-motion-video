@@ -1,16 +1,18 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
+import { interpolateColors } from "remotion";
 import { mix, useTimeline } from "../anim";
 import { CHAT_SCROLL, MAIN_CHAT } from "../content";
 import { C, EASE_CAMERA } from "../theme";
 import { FlipChip, PaymentRoute, Stepper } from "../components/PaymentRoute";
+import { Pointer } from "../components/Pointer";
 import {
   Bubble,
-  ChatButton,
   CheckCircle,
   DataCard,
   DataRow,
   FileCard,
   Meta,
+  QuickReply,
   Reveal,
   TypedLine,
   TypingDots,
@@ -98,7 +100,12 @@ const AgentReply: React.FC = () => {
   return (
     <Bubble side="in" at={M.reply.at - 0.33} width={620}>
       <div style={{ filter: soft }}>
-        <TypedLine at={M.reply.at} cps={M.reply.cps} text={M.reply.text} />
+        <TypedLine
+          at={M.reply.at}
+          cps={M.reply.cps}
+          text={M.reply.text}
+          style={{ fontWeight: 600 }}
+        />
       </div>
       <Reveal progress={card}>
         <DataCard>
@@ -125,8 +132,30 @@ const Checks: React.FC<{ approveRef: React.Ref<HTMLDivElement> }> = ({
   const buttons = p(ch.buttonsAt, 0.4);
   const dimmed = p(M.approveReply.at, 0.3);
   return (
-    <Bubble side="in" at={ch.at} width={620}>
-      <div style={{ fontWeight: 500, marginBottom: 10 }}>{ch.title}</div>
+    <Bubble
+      side="in"
+      at={ch.at}
+      width={620}
+      footer={
+        <Reveal progress={buttons}>
+          <div
+            style={{
+              opacity: buttons,
+              translate: `0px ${mix(24, 0, buttons)}px`,
+            }}
+          >
+            <QuickReply
+              ref={approveRef}
+              label={ch.approveLabel}
+              tapAt={ch.tapAt}
+              dimmed={dimmed}
+            />
+            <QuickReply label={ch.rejectLabel} dimmed={dimmed} />
+          </div>
+        </Reveal>
+      }
+    >
+      <div style={{ fontWeight: 600, marginBottom: 10 }}>{ch.title}</div>
       {ch.items.map((item) => (
         <Reveal key={item.label} progress={p(item.at - 0.08, 0.3)}>
           <div
@@ -157,27 +186,6 @@ const Checks: React.FC<{ approveRef: React.Ref<HTMLDivElement> }> = ({
           style={{ marginTop: 18, fontWeight: 400 }}
         />
       </Reveal>
-      <Reveal progress={buttons}>
-        <div
-          style={{
-            display: "flex",
-            gap: 14,
-            marginTop: 18,
-            opacity: buttons,
-            translate: `0px ${mix(24, 0, buttons)}px`,
-          }}
-        >
-          <ChatButton
-            ref={approveRef}
-            label={ch.approveLabel}
-            primary
-            tapAt={ch.tapAt}
-            dimmed={dimmed}
-            fillGone={p(M.approveToStep.at, 0.12)}
-          />
-          <ChatButton label={ch.rejectLabel} dimmed={dimmed} />
-        </div>
-      </Reveal>
       <Meta time={ch.time} />
     </Bubble>
   );
@@ -201,7 +209,7 @@ const PaymentStatus: React.FC<{ stepRef: React.Ref<HTMLDivElement> }> = ({
           marginBottom: 22,
         }}
       >
-        <div style={{ fontWeight: 500 }}>{pay.title}</div>
+        <div style={{ fontWeight: 600 }}>{pay.title}</div>
         <FlipChip />
       </div>
       <div style={{ position: "relative" }}>
@@ -249,49 +257,6 @@ const PaymentStatus: React.FC<{ stepRef: React.Ref<HTMLDivElement> }> = ({
   );
 };
 
-// Hand pointer (finger tip at 0,0) that travels to the Approve button.
-const POINTER_TIP = { x: 27, y: 8 };
-const Pointer: React.FC<{ target: Box }> = ({ target }) => {
-  const { p, since } = useTimeline();
-  const pt = M.checks.pointer;
-  const move = p(pt.in, pt.arrive - pt.in, EASE_CAMERA);
-  const show = p(pt.in, 0.2) * (1 - p(pt.out, 0.3));
-  if (show <= 0) return null;
-  const end = { x: target.x + target.w * 0.42, y: target.y + target.h * 0.62 };
-  const start = { x: end.x + 230, y: end.y + 320 };
-  const ctrl = { x: end.x + 250, y: end.y + 60 };
-  const u = 1 - move;
-  const x = u * u * start.x + 2 * u * move * ctrl.x + move * move * end.x;
-  const y = u * u * start.y + 2 * u * move * ctrl.y + move * move * end.y;
-  const s = since(M.checks.tapAt);
-  const press = s >= 0 && s <= 0.26 ? Math.sin((s / 0.26) * Math.PI) : 0;
-  return (
-    <svg
-      width={80}
-      height={80}
-      viewBox="0 0 24 24"
-      style={{
-        position: "absolute",
-        left: x - POINTER_TIP.x,
-        top: y - POINTER_TIP.y,
-        opacity: show,
-        scale: String(1 - press * 0.08),
-        transformOrigin: `${POINTER_TIP.x}px ${POINTER_TIP.y}px`,
-        filter: "drop-shadow(0 6px 10px rgba(29, 33, 37, 0.18))",
-        overflow: "visible",
-      }}
-      fill={C.bg}
-      stroke={C.ink}
-      strokeWidth={1.4}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M6 14V4a2 2 0 0 1 4 0v5a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L6 14z" />
-      <path d="M10 9v2.5M14 10v2M18 11v1.5" fill="none" />
-    </svg>
-  );
-};
-
 // T3: the Approve button's fill shrinks into a lime circle and lands on
 // step 1 of the stepper.
 const ApproveToStep: React.FC<{ from: Box; to: Box }> = ({ from, to }) => {
@@ -311,8 +276,9 @@ const ApproveToStep: React.FC<{ from: Box; to: Box }> = ({ from, to }) => {
         top: cy - size.h / 2,
         width: size.w,
         height: size.h,
-        borderRadius: mix(20, to.h / 2, m),
-        backgroundColor: C.lime,
+        borderRadius: mix(16, to.h / 2, m),
+        backgroundColor: interpolateColors(m, [0, 0.35], [C.bg, C.lime]),
+        boxShadow: `0 6px 18px rgba(11, 20, 26, ${0.15 * (1 - m)})`,
         opacity: 1 - gone,
       }}
     />
@@ -355,6 +321,10 @@ export const MainChat: React.FC = () => {
         translate: `0px ${-y}px`,
       }}
     >
+      <Bubble side="in" at={M.greeting.at} blur={blur}>
+        <span>{M.greeting.text}</span>
+        <Meta time={M.greeting.time} />
+      </Bubble>
       <Bubble side="out" at={inv.at} padding="14px 14px 10px 14px" blur={blur}>
         <FileCard
           name={inv.fileName}
@@ -397,7 +367,16 @@ export const MainChat: React.FC = () => {
       {anchors ? (
         <>
           <ApproveToStep from={anchors.approve} to={anchors.step} />
-          <Pointer target={anchors.approve} />
+          <Pointer
+            target={{
+              x: anchors.approve.x + anchors.approve.w * 0.42,
+              y: anchors.approve.y + anchors.approve.h * 0.62,
+            }}
+            inAt={M.checks.pointer.in}
+            arriveAt={M.checks.pointer.arrive}
+            outAt={M.checks.pointer.out}
+            tapAt={M.checks.tapAt}
+          />
         </>
       ) : null}
     </div>

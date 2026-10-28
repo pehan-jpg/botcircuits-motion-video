@@ -4,7 +4,7 @@ import { SCENARIO_TIMING, SCENARIOS } from "../content";
 import { Highlight } from "../components/Highlight";
 import {
   Bubble,
-  ChatButton,
+  QuickReply,
   Chip,
   FileCard,
   Meta,
@@ -61,7 +61,23 @@ export const ScenarioChat: React.FC<{ scenario: Scenario }> = ({
           </div>
         </Bubble>
       )}
-      <Bubble side="in" at={at(T.replyAt)} width={600}>
+      <Bubble
+        side="in"
+        at={at(T.replyAt)}
+        width={600}
+        footer={
+          "button" in reply ? (
+            <div
+              style={{
+                opacity: extra,
+                translate: `0px ${(1 - extra) * 16}px`,
+              }}
+            >
+              <QuickReply label={reply.button} tapAt={at(reply.tapAt)} />
+            </div>
+          ) : null
+        }
+      >
         <div style={{ fontWeight: 400 }}>
           {"highlight" in reply ? (
             <>
@@ -82,18 +98,6 @@ export const ScenarioChat: React.FC<{ scenario: Scenario }> = ({
             }}
           >
             <Chip size={22}>{reply.chip}</Chip>
-          </div>
-        ) : null}
-        {"button" in reply ? (
-          <div
-            style={{
-              display: "flex",
-              marginTop: 16,
-              opacity: extra,
-              translate: `0px ${(1 - extra) * 16}px`,
-            }}
-          >
-            <ChatButton label={reply.button} primary tapAt={at(reply.tapAt)} />
           </div>
         ) : null}
         <Meta time={reply.time} />

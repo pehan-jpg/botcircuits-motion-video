@@ -4,10 +4,12 @@ Remotion project for BotCircuits product motion videos.
 
 ## PaymentsUseCase
 
-A 26.8 second, silent, vertical (1080 x 1920, 60 fps) video about B2B payments,
-made easier: an explainer intro, then an AI agent pays a supplier invoice
-inside a chat, handles four related scenarios (status, bulk, duplicate,
-scheduled), and the video closes on the BotCircuits logo on pure white.
+A 27.35 second, silent, vertical (1080 x 1920, 60 fps) video about B2B
+payments, made easier: an explainer intro, an iOS style Chats list where the
+user opens a fictional payments agent (Northbridge Payments), then the agent
+pays a supplier invoice inside the chat, handles four related scenarios
+(status, bulk, duplicate, scheduled), and the video closes on the BotCircuits
+logo on pure white.
 
 All copy, names, amounts and timings (in seconds) live in `src/content.ts`.
 Design tokens and easings live in `src/theme.ts`.
@@ -36,7 +38,9 @@ scripts/contact-sheet.sh out/stills out/sheet.png 5
 |---|---|
 | `src/content.ts` | Copy, placeholders, scene and camera timings |
 | `src/PaymentsUseCase.tsx` | Camera, glass morph (T1), blur through screens, circle morph (T6), motion blur |
-| `src/components/WhatsAppChat.tsx` | Reusable WhatsApp style chat and message parts |
+| `src/components/WhatsAppChat.tsx` | Phone screen, conversation screen and message parts |
+| `src/components/Icons.tsx` | Original UI icons and the Northbridge Payments avatar |
+| `src/scenes/ChatsList.tsx` | Chats list with tap and tab bar |
 | `src/components/PaymentRoute.tsx` | Payment route, stepper and Paid chip |
 | `src/components/Background.tsx` | Flat white with two brief pale atmosphere moments |
 | `src/scenes/` | Intro, main conversation, scenarios, closing logo |
@@ -45,3 +49,5 @@ scripts/contact-sheet.sh out/stills out/sheet.png 5
 
 1. Inter (SIL Open Font License) is bundled in `public/fonts` so renders work offline.
 2. The closing logo is `public/botcircuits-logo.png`, used unaltered.
+3. All chat names are fictional and avatars are initials or original drawings.
+   No photographs and no official messaging app logo are used.

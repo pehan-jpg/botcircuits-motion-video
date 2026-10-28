@@ -4,7 +4,7 @@
 
 export const VIDEO = {
   fps: 60,
-  durationSeconds: 26.8,
+  durationSeconds: 27.35,
   width: 1080,
   height: 1920,
 };
@@ -12,12 +12,13 @@ export const VIDEO = {
 // Scene boundaries (seconds).
 export const SCENES = {
   intro: { start: 0, end: 3.4 },
-  reads: { start: 3.4, end: 8.4 },
-  approve: { start: 8.4, end: 12.2 },
-  pay: { start: 12.2, end: 16.4 },
-  more: { start: 16.4, end: 22.45 },
-  toLogo: { start: 22.45, end: 23.8 },
-  logo: { start: 23.8, end: 26.8 },
+  chats: { start: 3.4, end: 6.25 },
+  reads: { start: 6.25, end: 10.1 },
+  approve: { start: 10.1, end: 13.35 },
+  pay: { start: 13.35, end: 17.4 },
+  more: { start: 17.4, end: 23.0 },
+  toLogo: { start: 23.0, end: 24.35 },
+  logo: { start: 24.35, end: 27.35 },
 };
 
 // Opening explainer. The headline resolves from blur, character by character.
@@ -32,7 +33,7 @@ export const INTRO = {
 };
 
 // T1: the headline shrinks into a pill, the pill grows into a glass phone,
-// and the glass resolves into the chat.
+// and the glass resolves into the Chats list.
 export const MORPH_IN = {
   start: 3.0,
   pillAt: 3.4,
@@ -41,10 +42,90 @@ export const MORPH_IN = {
   chatFadeInAt: 3.7,
 };
 
+// Chats list. All names are fictional; avatars are initials, never photos.
+export type ChatRow = {
+  name: string;
+  preview: string;
+  time: string;
+  initials?: string;
+  color?: string;
+  fromMe?: boolean;
+  unread?: number;
+  agent?: boolean;
+};
+
+export const CHATS: ChatRow[] = [
+  {
+    name: "Accounts Team",
+    initials: "AT",
+    color: "#DCE8F7",
+    time: "10:38",
+    fromMe: true,
+    preview: "Payment run for this week is ready",
+  },
+  {
+    name: "Northbridge Payments",
+    agent: true,
+    time: "10:41",
+    unread: 1,
+    preview: "Send me an invoice and I will take care of it.",
+  },
+  {
+    name: "Warehouse Ops",
+    initials: "WO",
+    color: "#F7E6D3",
+    time: "Yesterday",
+    preview: "Stock count finished for aisle 4",
+  },
+  {
+    name: "Finance Group",
+    initials: "FG",
+    color: "#E7E0F5",
+    time: "Yesterday",
+    fromMe: true,
+    preview: "Month end close starts on Friday",
+  },
+  {
+    name: "Logistics Desk",
+    initials: "LD",
+    color: "#D9F0EC",
+    time: "Tuesday",
+    preview: "Truck 12 arrives at 3 pm",
+  },
+  {
+    name: "Suresh Traders",
+    initials: "ST",
+    color: "#F5DEE3",
+    time: "Monday",
+    fromMe: true,
+    preview: "Thanks, the order was received",
+  },
+  {
+    name: "Procurement",
+    initials: "PR",
+    color: "#E9EDF1",
+    time: "Sunday",
+    preview: "New supplier form attached",
+  },
+];
+
+export const CHATS_TAB_BADGE = 1;
+
+export const LIST = {
+  rowsAt: 4.1,
+  rowStagger: 0.07,
+  rowDuration: 0.35,
+  agentRow: 1, // zero based: Northbridge Payments is row 2
+  pointer: { in: 4.85, arrive: 5.4, out: 5.75 },
+  tapAt: 5.45,
+  pushAt: 5.7,
+  pushDuration: 0.55,
+};
+
 // Soft atmosphere: the only times colour appears behind the white frame.
 export const ATMOSPHERE = [
   { at: 3.25, peak: 3.75, end: 4.28, cx: 540, cy: 820 },
-  { at: 14.85, peak: 15.35, end: 15.85, cx: 540, cy: 760 },
+  { at: 15.65, peak: 16.15, end: 16.65, cx: 540, cy: 760 },
 ];
 
 // Caption segments. `highlight.at` wipes the underline in; `until` removes it.
@@ -66,144 +147,148 @@ export const CAPTION_FADE = 0.2;
 export const CAPTIONS: Caption[] = [
   {
     id: "reads",
-    typeAt: 4.6,
+    typeAt: 6.85,
     cps: 32,
-    fadeAt: 8.2,
+    fadeAt: 9.95,
     lines: [
       [{ text: "Send the invoice." }],
       [
         { text: "The agent " },
-        { text: "reads it", highlight: { at: 5.8 } },
+        { text: "reads it", highlight: { at: 8.05 } },
         { text: "." },
       ],
     ],
   },
   {
     id: "approve",
-    typeAt: 8.45,
+    typeAt: 10.2,
     cps: 32,
-    fadeAt: 12.05,
+    fadeAt: 13.3,
     lines: [
       [{ text: "It checks the details." }],
-      [{ text: "You approve.", highlight: { at: 9.6 } }],
+      [{ text: "You approve.", highlight: { at: 11.35 } }],
     ],
   },
   {
     id: "pay",
-    typeAt: 12.3,
+    typeAt: 13.55,
     cps: 32,
-    fadeAt: 16.25,
+    fadeAt: 17.25,
     lines: [
       [{ text: "The payment is made." }],
-      [{ text: "You get proof.", highlight: { at: 13.45 } }],
+      [{ text: "You get proof.", highlight: { at: 14.7 } }],
     ],
   },
   {
     id: "more",
-    typeAt: 16.5,
+    typeAt: 17.5,
     cps: 40,
-    fadeAt: 22.4,
+    fadeAt: 22.95,
     lines: [
       [
-        { text: "Check status.", highlight: { at: 16.85, until: 17.95 } },
+        { text: "Check status.", highlight: { at: 17.85, until: 18.75 } },
         { text: " " },
-        { text: "Pay in bulk.", highlight: { at: 18.0, until: 19.45 } },
+        { text: "Pay in bulk.", highlight: { at: 18.8, until: 20.15 } },
       ],
-      [{ text: "Catch duplicates.", highlight: { at: 19.5, until: 20.95 } }],
-      [{ text: "Schedule payments.", highlight: { at: 21.0 } }],
+      [{ text: "Catch duplicates.", highlight: { at: 20.2, until: 21.55 } }],
+      [{ text: "Schedule payments.", highlight: { at: 21.6 } }],
     ],
   },
 ];
 
-// Phone header and input bar.
+// Conversation header.
 export const CHAT_HEADER = {
-  name: "Payments Agent",
-  status: "online",
-  avatarLetter: "B",
-  placeholder: "Message",
+  name: "Northbridge Payments",
+  status: "tap here for contact info",
 };
 
-// Scenes 2 to 4: one continuous conversation.
+// Scenes 3 and 4: one continuous conversation.
 export const MAIN_CHAT = {
+  // Matches the Chats list preview; already there when the chat opens.
+  greeting: {
+    at: 4.0,
+    text: "Send me an invoice and I will take care of it.",
+    time: "10:41",
+  },
   invoice: {
-    attachFlashAt: 4.22,
-    at: 4.35,
+    attachFlashAt: 6.45,
+    at: 6.6,
     fileName: "INV 2041.pdf",
     fileMeta: "218 KB",
     fileType: "PDF",
     time: "10:42",
-    deliveredAt: 4.8,
-    readAt: 5.05,
+    deliveredAt: 6.95,
+    readAt: 7.15,
   },
-  typingAt: 5.2,
+  typingAt: 7.25,
   reply: {
-    at: 5.7,
+    at: 7.6,
     cps: 70,
     text: "I read the invoice. Here is what I found:",
     time: "10:42",
   },
   dataCard: {
-    at: 6.25,
+    at: 8.0,
     // Everything outside the card blurs slightly while the camera is in.
-    focus: { in: 6.0, out: 8.35, blur: 6 },
+    focus: { in: 7.85, out: 10.05, blur: 6 },
     rows: [
-      { label: "Supplier", value: "Northwind Supplies Ltd", at: 6.45 },
-      { label: "Invoice", value: "INV 2041", at: 6.7 },
-      { label: "Amount", value: "amount", at: 6.95 },
-      { label: "Due date", value: "05 Nov 2026", at: 8.0 },
-      { label: "Pay to", value: "Account ending 4821", at: 8.2 },
+      { label: "Supplier", value: "Northwind Supplies Ltd", at: 8.15 },
+      { label: "Invoice", value: "INV 2041", at: 8.35 },
+      { label: "Amount", value: "amount", at: 8.55 },
+      { label: "Due date", value: "05 Nov 2026", at: 9.6 },
+      { label: "Pay to", value: "Account ending 4821", at: 9.75 },
     ],
   },
   amount: {
     currency: "USD",
     value: 12450,
-    countAt: 6.95,
-    countDuration: 0.6,
-    pillAt: 7.55,
+    countAt: 8.55,
+    countDuration: 0.55,
+    pillAt: 9.1,
   },
   checks: {
-    at: 8.7,
+    at: 10.3,
     title: "Checks complete for INV 2041.",
     items: [
-      { label: "Supplier verified", at: 9.05 },
-      { label: "No duplicate found", at: 9.55 },
-      { label: "Amount matches PO 7710", at: 10.05 },
+      { label: "Supplier verified", at: 10.6 },
+      { label: "No duplicate found", at: 11.0 },
+      { label: "Amount matches PO 7710", at: 11.4 },
     ],
     question: {
-      at: 10.45,
+      at: 11.75,
       cps: 80,
       text: "Pay USD 12,450.00 to Northwind Supplies Ltd?",
     },
-    buttonsAt: 10.95,
+    buttonsAt: 12.25,
     approveLabel: "Approve",
     rejectLabel: "Reject",
-    pointer: { in: 11.05, arrive: 11.6, out: 12.0 },
-    tapAt: 11.7,
+    pointer: { in: 12.3, arrive: 12.8, out: 13.2 },
+    tapAt: 12.9,
     time: "10:43",
   },
-  approveReply: { at: 11.9, text: "Approve", time: "10:43", readAt: 12.05 },
+  approveReply: { at: 13.05, text: "Approve", time: "10:43", readAt: 13.2 },
   // T3: the Approve button shrinks into a lime circle that lands on step 1.
-  approveToStep: { at: 12.3, duration: 0.6 },
+  approveToStep: { at: 13.4, duration: 0.55 },
   payment: {
-    at: 12.2,
+    at: 13.35,
     title: "Payment status",
     chipBefore: "Sent",
     chipAfter: "Paid",
     steps: ["Initiated", "Sent to provider", "Paid"],
-    stepAt: [12.9, 14.0, 14.55],
+    stepAt: [13.95, 14.85, 15.35],
     nodes: ["Your account", "Payment provider", "Supplier"],
-    nodesAt: 13.0,
+    nodesAt: 14.0,
     nodeStagger: 0.12,
-    linesAt: 13.15,
-    lineDuration: 0.4,
+    linesAt: 14.1,
+    lineDuration: 0.35,
     orb: {
-      leaveAt: 13.55,
-      providerAt: 14.0,
-      leaveProviderAt: 14.1,
-      supplierAt: 14.55,
+      leaveAt: 14.45,
+      providerAt: 14.85,
+      leaveProviderAt: 14.95,
+      supplierAt: 15.35,
     },
-    chipFlipAt: 14.65,
-    confirmAt: 15.0,
+    chipFlipAt: 15.45,
+    confirmAt: 15.85,
     confirmRows: [
       { label: "Amount", value: "USD 12,450.00" },
       { label: "Reference", value: "PAY 90316" },
@@ -212,7 +297,7 @@ export const MAIN_CHAT = {
     time: "10:44",
   },
   proof: {
-    at: 15.85,
+    at: 16.75,
     fileName: "Proof of payment.pdf",
     fileMeta: "64 KB",
     fileType: "PDF",
@@ -227,7 +312,7 @@ export const SCENARIO_TRANSITION = 0.35;
 export const SCENARIOS = [
   {
     id: "status",
-    start: 16.4,
+    start: 17.4,
     chip: "Status",
     outgoing: {
       kind: "text",
@@ -242,29 +327,29 @@ export const SCENARIOS = [
   },
   {
     id: "bulk",
-    start: 17.9,
+    start: 18.8,
     chip: "Bulk",
     outgoing: {
       kind: "file",
       text: "5 invoices attached",
-      meta: "5 files",
+      meta: "PDF · 5 files",
       time: "11:02",
     },
     reply: {
       text: "Pay all 5 invoices, total USD 38,920.00?",
       time: "11:02",
       button: "Approve",
-      tapAt: 1.1,
+      tapAt: 1.05,
     },
   },
   {
     id: "duplicate",
-    start: 19.4,
+    start: 20.2,
     chip: "Duplicate",
     outgoing: {
       kind: "file",
       text: "INV 2041.pdf",
-      meta: "218 KB",
+      meta: "PDF · 218 KB",
       time: "11:15",
     },
     reply: {
@@ -275,7 +360,7 @@ export const SCENARIOS = [
   },
   {
     id: "scheduled",
-    start: 20.9,
+    start: 21.6,
     chip: "Scheduled",
     outgoing: {
       kind: "text",
@@ -298,12 +383,12 @@ export const SCENARIO_TIMING = {
 
 // T6 and the closing logo.
 export const CLOSING = {
-  contentOutAt: 22.45,
-  circleAt: 22.6, // frame softens into a squircle, then a circle
+  contentOutAt: 23.0,
+  circleAt: 23.15, // frame softens into a squircle, then a circle
   circleDuration: 0.65,
-  coverAt: 23.25, // circle grows to cover the frame in white
+  coverAt: 23.8, // circle grows to cover the frame in white
   coverDuration: 0.55,
-  logoAt: 23.8,
+  logoAt: 24.35,
   logoDuration: 0.6,
   logoWidthRatio: 0.4,
 };
@@ -316,19 +401,20 @@ export const CAMERA_DRIFT = 0.04;
 
 export const CAMERA_SHOTS = [
   { at: 0, duration: 0, scale: 1, fx: 540, fy: 795 },
-  { at: 6.0, duration: 0.8, scale: 1.22, fx: 500, fy: 830 },
-  { at: 8.4, duration: 0.8, scale: 1.16, fx: 515, fy: 905 },
-  { at: 10.35, duration: 0.8, scale: 1.2, fx: 515, fy: 1010 },
-  { at: 12.2, duration: 0.8, scale: 1.0, fx: 540, fy: 795 },
-  { at: 16.4, duration: 0.5, scale: 1.12, fx: 540, fy: 740 },
-  { at: 22.45, duration: 0.5, scale: 1.0, fx: 540, fy: 795 },
+  { at: 7.85, duration: 0.8, scale: 1.22, fx: 500, fy: 830 },
+  { at: 10.1, duration: 0.8, scale: 1.16, fx: 515, fy: 905 },
+  { at: 12.2, duration: 0.7, scale: 1.2, fx: 515, fy: 1010 },
+  { at: 13.35, duration: 0.8, scale: 1.0, fx: 540, fy: 795 },
+  { at: 17.4, duration: 0.5, scale: 1.12, fx: 540, fy: 740 },
+  { at: 23.0, duration: 0.5, scale: 1.0, fx: 540, fy: 795 },
 ];
 
 // Chat scroll keyframes for scenes 2 to 4 (pixels the chat moves up).
 export const CHAT_SCROLL = [
-  { at: 8.4, duration: 0.5, y: 330 },
-  { at: 10.35, duration: 0.5, y: 470 },
-  { at: 12.2, duration: 0.5, y: 680 },
-  { at: 15.0, duration: 0.45, y: 880 },
-  { at: 15.85, duration: 0.4, y: 1050 },
+  { at: 7.85, duration: 0.6, y: 150 },
+  { at: 10.1, duration: 0.5, y: 480 },
+  { at: 12.2, duration: 0.5, y: 640 },
+  { at: 13.35, duration: 0.5, y: 900 },
+  { at: 15.85, duration: 0.45, y: 1100 },
+  { at: 16.75, duration: 0.4, y: 1270 },
 ];
