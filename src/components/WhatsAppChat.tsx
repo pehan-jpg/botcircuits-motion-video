@@ -1,4 +1,5 @@
 import React from "react";
+import { interpolateColors } from "remotion";
 import { useTimeline, mix, typedCount } from "../anim";
 import { CHAT_HEADER } from "../content";
 import { C, FONT, PHONE, R } from "../theme";
@@ -169,7 +170,9 @@ export const CHAT_AREA_HEIGHT =
 export const WhatsAppChat: React.FC<{
   children: React.ReactNode;
   attachFlashes?: number[];
-}> = ({ children, attachFlashes = [] }) => (
+  // Depth of field: blurs the header and input bar (px).
+  edgeBlur?: number;
+}> = ({ children, attachFlashes = [], edgeBlur = 0 }) => (
   <div
     style={{
       width: PHONE.width - PHONE.border * 2,
@@ -184,7 +187,9 @@ export const WhatsAppChat: React.FC<{
       fontVariantNumeric: "tabular-nums",
     }}
   >
-    <Header />
+    <div style={{ filter: edgeBlur > 0 ? `blur(${edgeBlur}px)` : undefined }}>
+      <Header />
+    </div>
     <div
       style={{
         position: "relative",
@@ -194,7 +199,9 @@ export const WhatsAppChat: React.FC<{
     >
       {children}
     </div>
-    <InputBar flashes={attachFlashes} />
+    <div style={{ filter: edgeBlur > 0 ? `blur(${edgeBlur}px)` : undefined }}>
+      <InputBar flashes={attachFlashes} />
+    </div>
   </div>
 );
 
@@ -299,8 +306,9 @@ export const Bubble: React.FC<{
   at: number;
   width?: number;
   padding?: string;
+  blur?: number;
   children: React.ReactNode;
-}> = ({ side, at, width, padding = "18px 24px 12px", children }) => {
+}> = ({ side, at, width, padding = "18px 24px 12px", blur = 0, children }) => {
   const { p } = useTimeline();
   const e = p(at, 0.33);
   const out = side === "out";
@@ -323,6 +331,7 @@ export const Bubble: React.FC<{
         lineHeight: 1.32,
         fontWeight: 300,
         opacity: e,
+        filter: blur > 0 ? `blur(${blur}px)` : undefined,
         scale: String(mix(0.92, 1, e)),
         transformOrigin: out ? "100% 100%" : "0% 100%",
         visibility: e <= 0 ? "hidden" : "visible",
@@ -524,13 +533,17 @@ export const ChatButton: React.FC<{
   primary?: boolean;
   tapAt?: number;
   dimmed?: number;
-}> = ({ label, primary = false, tapAt, dimmed = 0 }) => {
+  // 0 to 1: the lime fill has left the button (it became the payment orb).
+  fillGone?: number;
+  ref?: React.Ref<HTMLDivElement>;
+}> = ({ label, primary = false, tapAt, dimmed = 0, fillGone = 0, ref }) => {
   const { since } = useTimeline();
   const s = tapAt === undefined ? -1 : since(tapAt);
   const ripple = s >= 0 && s <= 0.4 ? s / 0.4 : s > 0.4 ? 1 : 0;
   const dip = s >= 0 && s <= 0.26 ? Math.sin((s / 0.26) * Math.PI) : 0;
   return (
     <div
+      ref={ref}
       style={{
         position: "relative",
         flex: 1,
@@ -542,8 +555,11 @@ export const ChatButton: React.FC<{
         justifyContent: "center",
         fontSize: 28,
         fontWeight: 500,
-        backgroundColor: primary ? C.lime : C.bg,
-        border: primary ? "none" : `1.5px solid ${C.line}`,
+        backgroundColor: primary
+          ? interpolateColors(fillGone, [0, 1], [C.lime, C.bg])
+          : C.bg,
+        boxShadow:
+          primary && fillGone === 0 ? "none" : `inset 0 0 0 1.5px ${C.line}`,
         scale: String(1 - dip * 0.03),
         opacity: 1 - dimmed * 0.55,
       }}

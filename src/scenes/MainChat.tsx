@@ -1,8 +1,7 @@
-import React from "react";
-import { interpolate } from "remotion";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { mix, useTimeline } from "../anim";
 import { CHAT_SCROLL, MAIN_CHAT } from "../content";
-import { C, EASE_IN, R } from "../theme";
+import { C, EASE_CAMERA } from "../theme";
 import { FlipChip, PaymentRoute, Stepper } from "../components/PaymentRoute";
 import {
   Bubble,
@@ -18,6 +17,29 @@ import {
 } from "../components/WhatsAppChat";
 
 const M = MAIN_CHAT;
+
+// Depth of field around the data card (px of blur outside the card).
+export const useFocusBlur = () => {
+  const { p } = useTimeline();
+  const f = M.dataCard.focus;
+  return f.blur * p(f.in, 0.6, EASE_CAMERA) * (1 - p(f.out, 0.5, EASE_CAMERA));
+};
+
+type Box = { x: number; y: number; w: number; h: number };
+
+// Layout box of `el` relative to `container`. Uses offsets, so camera
+// transforms and entrance scales do not affect it.
+const boxIn = (el: HTMLElement, container: HTMLElement): Box => {
+  let x = 0;
+  let y = 0;
+  let n: HTMLElement | null = el;
+  while (n && n !== container) {
+    x += n.offsetLeft;
+    y += n.offsetTop;
+    n = n.offsetParent as HTMLElement | null;
+  }
+  return { x, y, w: el.offsetWidth, h: el.offsetHeight };
+};
 
 const useScroll = () => {
   const { p } = useTimeline();
@@ -63,6 +85,8 @@ const Amount: React.FC = () => {
 
 const AgentReply: React.FC = () => {
   const { t, p } = useTimeline();
+  const blur = useFocusBlur();
+  const soft = blur > 0 ? `blur(${blur}px)` : undefined;
   const card = p(M.dataCard.at, 0.45);
   if (t < M.reply.at) {
     return (
@@ -73,7 +97,9 @@ const AgentReply: React.FC = () => {
   }
   return (
     <Bubble side="in" at={M.reply.at - 0.33} width={620}>
-      <TypedLine at={M.reply.at} cps={M.reply.cps} text={M.reply.text} />
+      <div style={{ filter: soft }}>
+        <TypedLine at={M.reply.at} cps={M.reply.cps} text={M.reply.text} />
+      </div>
       <Reveal progress={card}>
         <DataCard>
           {M.dataCard.rows.map((row) => (
@@ -83,12 +109,16 @@ const AgentReply: React.FC = () => {
           ))}
         </DataCard>
       </Reveal>
-      <Meta time={M.reply.time} />
+      <div style={{ filter: soft }}>
+        <Meta time={M.reply.time} />
+      </div>
     </Bubble>
   );
 };
 
-const Checks: React.FC = () => {
+const Checks: React.FC<{ approveRef: React.Ref<HTMLDivElement> }> = ({
+  approveRef,
+}) => {
   const { p } = useTimeline();
   const ch = M.checks;
   const question = p(ch.question.at - 0.05, 0.3);
@@ -138,10 +168,12 @@ const Checks: React.FC = () => {
           }}
         >
           <ChatButton
+            ref={approveRef}
             label={ch.approveLabel}
             primary
             tapAt={ch.tapAt}
             dimmed={dimmed}
+            fillGone={p(M.approveToStep.at, 0.12)}
           />
           <ChatButton label={ch.rejectLabel} dimmed={dimmed} />
         </div>
@@ -151,40 +183,15 @@ const Checks: React.FC = () => {
   );
 };
 
-const PaymentStatus: React.FC = () => {
-  const { p, since } = useTimeline();
+const PaymentStatus: React.FC<{ stepRef: React.Ref<HTMLDivElement> }> = ({
+  stepRef,
+}) => {
+  const { p } = useTimeline();
   const pay = M.payment;
   const route = p(pay.nodesAt - 0.1, 0.45);
   const confirm = p(pay.confirmAt, 0.45);
-  const flashS = since(pay.orb.supplierAt);
-  const flash =
-    flashS >= 0 && flashS <= 0.7 ? Math.sin((flashS / 0.7) * Math.PI) : 0;
-  const flashX = interpolate(flashS, [0, 0.7], [70, 30], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: EASE_IN,
-  });
   return (
     <Bubble side="in" at={pay.at} width={640}>
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          borderRadius: R.bubble,
-          borderBottomLeftRadius: 0,
-          overflow: "hidden",
-          pointerEvents: "none",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: flash * 0.9,
-            background: `radial-gradient(70% 60% at ${flashX + 20}% 45%, rgba(180,240,0,0.38) 0%, rgba(234,249,184,0.25) 45%, rgba(234,249,184,0) 100%)`,
-          }}
-        />
-      </div>
       <div
         style={{
           position: "relative",
@@ -198,7 +205,7 @@ const PaymentStatus: React.FC = () => {
         <FlipChip />
       </div>
       <div style={{ position: "relative" }}>
-        <Stepper />
+        <Stepper firstStepRef={stepRef} />
       </div>
       <Reveal progress={route}>
         <div
@@ -242,11 +249,100 @@ const PaymentStatus: React.FC = () => {
   );
 };
 
-export const MainChat: React.FC = () => {
-  const y = useScroll();
-  const inv = M.invoice;
+// Hand pointer (finger tip at 0,0) that travels to the Approve button.
+const POINTER_TIP = { x: 27, y: 8 };
+const Pointer: React.FC<{ target: Box }> = ({ target }) => {
+  const { p, since } = useTimeline();
+  const pt = M.checks.pointer;
+  const move = p(pt.in, pt.arrive - pt.in, EASE_CAMERA);
+  const show = p(pt.in, 0.2) * (1 - p(pt.out, 0.3));
+  if (show <= 0) return null;
+  const end = { x: target.x + target.w * 0.42, y: target.y + target.h * 0.62 };
+  const start = { x: end.x + 230, y: end.y + 320 };
+  const ctrl = { x: end.x + 250, y: end.y + 60 };
+  const u = 1 - move;
+  const x = u * u * start.x + 2 * u * move * ctrl.x + move * move * end.x;
+  const y = u * u * start.y + 2 * u * move * ctrl.y + move * move * end.y;
+  const s = since(M.checks.tapAt);
+  const press = s >= 0 && s <= 0.26 ? Math.sin((s / 0.26) * Math.PI) : 0;
+  return (
+    <svg
+      width={80}
+      height={80}
+      viewBox="0 0 24 24"
+      style={{
+        position: "absolute",
+        left: x - POINTER_TIP.x,
+        top: y - POINTER_TIP.y,
+        opacity: show,
+        scale: String(1 - press * 0.08),
+        transformOrigin: `${POINTER_TIP.x}px ${POINTER_TIP.y}px`,
+        filter: "drop-shadow(0 6px 10px rgba(29, 33, 37, 0.18))",
+        overflow: "visible",
+      }}
+      fill={C.bg}
+      stroke={C.ink}
+      strokeWidth={1.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M6 14V4a2 2 0 0 1 4 0v5a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L6 14z" />
+      <path d="M10 9v2.5M14 10v2M18 11v1.5" fill="none" />
+    </svg>
+  );
+};
+
+// T3: the Approve button's fill shrinks into a lime circle and lands on
+// step 1 of the stepper.
+const ApproveToStep: React.FC<{ from: Box; to: Box }> = ({ from, to }) => {
+  const { p } = useTimeline();
+  const m = p(M.approveToStep.at, M.approveToStep.duration, EASE_CAMERA);
+  const gone = p(M.payment.stepAt[0], 0.05);
+  if (m <= 0 || gone >= 1) return null;
+  const size = { w: mix(from.w, to.w, m), h: mix(from.h, to.h, m) };
+  const cx = mix(from.x + from.w / 2, to.x + to.w / 2, m);
+  const cy =
+    mix(from.y + from.h / 2, to.y + to.h / 2, m) - Math.sin(m * Math.PI) * 60;
   return (
     <div
+      style={{
+        position: "absolute",
+        left: cx - size.w / 2,
+        top: cy - size.h / 2,
+        width: size.w,
+        height: size.h,
+        borderRadius: mix(20, to.h / 2, m),
+        backgroundColor: C.lime,
+        opacity: 1 - gone,
+      }}
+    />
+  );
+};
+
+export const MainChat: React.FC = () => {
+  const y = useScroll();
+  const blur = useFocusBlur();
+  const inv = M.invoice;
+  const container = useRef<HTMLDivElement>(null);
+  const approveRef = useRef<HTMLDivElement>(null);
+  const stepRef = useRef<HTMLDivElement>(null);
+  const [anchors, setAnchors] = useState<{ approve: Box; step: Box } | null>(
+    null,
+  );
+  // Measure after every render; only store when the layout changed, so this
+  // settles after one extra pass.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useLayoutEffect(() => {
+    if (!container.current || !approveRef.current || !stepRef.current) return;
+    const next = {
+      approve: boxIn(approveRef.current, container.current),
+      step: boxIn(stepRef.current, container.current),
+    };
+    if (JSON.stringify(next) !== JSON.stringify(anchors)) setAnchors(next);
+  });
+  return (
+    <div
+      ref={container}
       style={{
         position: "absolute",
         left: 0,
@@ -259,7 +355,7 @@ export const MainChat: React.FC = () => {
         translate: `0px ${-y}px`,
       }}
     >
-      <Bubble side="out" at={inv.at} padding="14px 14px 10px 14px">
+      <Bubble side="out" at={inv.at} padding="14px 14px 10px 14px" blur={blur}>
         <FileCard
           name={inv.fileName}
           meta={`${inv.fileType} · ${inv.fileMeta}`}
@@ -273,7 +369,7 @@ export const MainChat: React.FC = () => {
         </div>
       </Bubble>
       <AgentReply />
-      <Checks />
+      <Checks approveRef={approveRef} />
       <Bubble side="out" at={M.approveReply.at}>
         <div style={{ display: "flex", alignItems: "flex-end", gap: 18 }}>
           <span style={{ fontWeight: 400 }}>{M.approveReply.text}</span>
@@ -286,7 +382,7 @@ export const MainChat: React.FC = () => {
           />
         </div>
       </Bubble>
-      <PaymentStatus />
+      <PaymentStatus stepRef={stepRef} />
       <Bubble side="in" at={M.proof.at} padding="14px 14px 10px 14px">
         <FileCard
           name={M.proof.fileName}
@@ -298,6 +394,12 @@ export const MainChat: React.FC = () => {
           <Meta time={M.proof.time} />
         </div>
       </Bubble>
+      {anchors ? (
+        <>
+          <ApproveToStep from={anchors.approve} to={anchors.step} />
+          <Pointer target={anchors.approve} />
+        </>
+      ) : null}
     </div>
   );
 };

@@ -32,9 +32,8 @@ export const ScenarioChat: React.FC<{ scenario: Scenario }> = ({
         gap: 16,
       }}
     >
-      <div style={{ alignSelf: "center", marginBottom: 10 }}>
-        <Chip size={24}>{scenario.chip}</Chip>
-      </div>
+      {/* Space for the scenario chip, which lives above the screens. */}
+      <div style={{ height: 56, flexShrink: 0 }} />
       {outgoing.kind === "file" ? (
         <Bubble side="out" at={at(T.outgoingAt)} padding="14px 14px 10px 14px">
           <FileCard name={outgoing.text} meta={outgoing.meta} type="PDF" />

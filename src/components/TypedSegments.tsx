@@ -3,6 +3,7 @@ import { typedCount, useTimeline } from "../anim";
 import type { CaptionSegment } from "../content";
 import { C } from "../theme";
 import { Highlight } from "./Highlight";
+import { TintedText } from "./TintedText";
 
 const lengthOf = (line: CaptionSegment[]) =>
   line.reduce((n, s) => n + s.text.length, 0);
@@ -34,24 +35,31 @@ export const TypedSegments: React.FC<{
     }
   }
 
-  let remaining = count;
+  let offset = 0;
   return (
     <>
       {lines.map((line, li) => (
         <div key={li} style={{ whiteSpace: "pre", minHeight: "1.18em" }}>
           {line.map((seg, si) => {
-            const shown = seg.text.slice(0, Math.max(0, remaining));
-            remaining -= seg.text.length;
+            const start = offset;
+            offset += seg.text.length;
+            const shown = seg.text.slice(0, Math.max(0, count - start));
+            const text = (
+              <TintedText
+                text={shown}
+                ageOf={(i) => since(typeAt) - (start + i) / cps}
+              />
+            );
             return seg.highlight ? (
               <Highlight
                 key={si}
                 at={seg.highlight.at}
                 until={seg.highlight.until}
               >
-                {shown}
+                {text}
               </Highlight>
             ) : (
-              <span key={si}>{shown}</span>
+              <span key={si}>{text}</span>
             );
           })}
           {li === cursorLine ? (

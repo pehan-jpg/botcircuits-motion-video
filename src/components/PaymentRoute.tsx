@@ -16,7 +16,34 @@ const NODE_X = [80, ROUTE_WIDTH / 2, ROUTE_WIDTH - 80];
 const LABEL_WIDTH = 160;
 const ARRIVALS = [ORB.leaveAt, ORB.providerAt, ORB.supplierAt];
 
-// Orb x position along the route at the current (possibly frozen) frame.
+// S shaped connector between two node centres (cubic bezier).
+const S_DEPTH = 30;
+const curve = (i: number) => {
+  const x1 = NODE_X[i];
+  const x2 = NODE_X[i + 1];
+  const d = x2 - x1;
+  return [
+    [x1, LINE_Y],
+    [x1 + d * 0.45, LINE_Y + S_DEPTH],
+    [x2 - d * 0.45, LINE_Y - S_DEPTH],
+    [x2, LINE_Y],
+  ];
+};
+const curvePath = (i: number) => {
+  const [a, b, c, d] = curve(i);
+  return `M ${a[0]} ${a[1]} C ${b[0]} ${b[1]}, ${c[0]} ${c[1]}, ${d[0]} ${d[1]}`;
+};
+const pointOn = (i: number, t: number) => {
+  const [a, b, c, d] = curve(i);
+  const u = 1 - t;
+  const w = [u * u * u, 3 * u * u * t, 3 * u * t * t, t * t * t];
+  return {
+    x: w[0] * a[0] + w[1] * b[0] + w[2] * c[0] + w[3] * d[0],
+    y: w[0] * a[1] + w[1] * b[1] + w[2] * c[1] + w[3] * d[1],
+  };
+};
+
+// Orb position along the route at the current (possibly frozen) frame.
 const useOrb = () => {
   const { p, t } = useTimeline();
   const a = p(ORB.leaveAt, ORB.providerAt - ORB.leaveAt, EASE_CAMERA);
@@ -25,24 +52,25 @@ const useOrb = () => {
     ORB.supplierAt - ORB.leaveProviderAt,
     EASE_CAMERA,
   );
-  const x =
-    t < ORB.leaveProviderAt
-      ? mix(NODE_X[0], NODE_X[1], a)
-      : mix(NODE_X[1], NODE_X[2], b);
+  const pos = t < ORB.leaveProviderAt ? pointOn(0, a) : pointOn(1, b);
   const appear = p(ORB.leaveAt - 0.2, 0.2);
   const dissolve = p(ORB.supplierAt, 0.35);
-  return { x, opacity: appear * (1 - dissolve), scale: mix(1, 2.2, dissolve) };
+  return {
+    ...pos,
+    opacity: appear * (1 - dissolve),
+    scale: mix(1, 2.2, dissolve),
+  };
 };
 
 const Orb: React.FC = () => {
-  const { x, opacity, scale } = useOrb();
+  const { x, y, opacity, scale } = useOrb();
   if (opacity <= 0) return null;
   return (
     <div
       style={{
         position: "absolute",
         left: x - 22,
-        top: LINE_Y - 22,
+        top: y - 22,
         width: 44,
         height: 44,
         borderRadius: 22,
@@ -152,12 +180,6 @@ const Node: React.FC<{ index: number; label: string }> = ({ index, label }) => {
 
 export const PaymentRoute: React.FC = () => {
   const { p } = useTimeline();
-  const seg = (i: number) => {
-    const from = NODE_X[i] + NODE / 2 + 8;
-    const to = NODE_X[i + 1] - NODE / 2 - 8;
-    return { from, to, len: to - from };
-  };
-  const segs = [seg(0), seg(1)];
   const draw = [
     p(PAY.linesAt, PAY.lineDuration / 2),
     p(PAY.linesAt + PAY.lineDuration / 2, PAY.lineDuration / 2),
@@ -176,29 +198,27 @@ export const PaymentRoute: React.FC = () => {
         height={ROUTE_HEIGHT}
         style={{ position: "absolute", left: 0, top: 0 }}
       >
-        {segs.map((s, i) => (
+        {[0, 1].map((i) => (
           <React.Fragment key={i}>
-            <line
-              x1={s.from}
-              x2={s.to}
-              y1={LINE_Y}
-              y2={LINE_Y}
+            <path
+              d={curvePath(i)}
+              fill="none"
               stroke={C.line}
               strokeWidth={3}
               strokeLinecap="round"
-              strokeDasharray={s.len}
-              strokeDashoffset={s.len * (1 - draw[i])}
+              pathLength={1}
+              strokeDasharray={1}
+              strokeDashoffset={1 - draw[i]}
             />
-            <line
-              x1={s.from}
-              x2={s.to}
-              y1={LINE_Y}
-              y2={LINE_Y}
+            <path
+              d={curvePath(i)}
+              fill="none"
               stroke={C.lime}
               strokeWidth={4}
               strokeLinecap="round"
-              strokeDasharray={s.len}
-              strokeDashoffset={s.len * (1 - travelled[i])}
+              pathLength={1}
+              strokeDasharray={1}
+              strokeDashoffset={1 - travelled[i]}
               opacity={travelled[i] > 0 ? 1 : 0}
             />
           </React.Fragment>
@@ -216,7 +236,9 @@ export const PaymentRoute: React.FC = () => {
   );
 };
 
-export const Stepper: React.FC = () => {
+export const Stepper: React.FC<{
+  firstStepRef?: React.Ref<HTMLDivElement>;
+}> = ({ firstStepRef }) => {
   const { p } = useTimeline();
   const bars = [
     p(ORB.leaveAt, ORB.providerAt - ORB.leaveAt, EASE_CAMERA),
@@ -249,7 +271,8 @@ export const Stepper: React.FC = () => {
         </div>
       ))}
       {PAY.steps.map((label, i) => {
-        const on = p(PAY.stepAt[i], 0.3);
+        // Step 1 is filled by the circle that lands on it, so it switches at once.
+        const on = p(PAY.stepAt[i], i === 0 ? 0.03 : 0.3);
         return (
           <div
             key={label}
@@ -264,6 +287,7 @@ export const Stepper: React.FC = () => {
             }}
           >
             <div
+              ref={i === 0 ? firstStepRef : undefined}
               style={{
                 width: 34,
                 height: 34,

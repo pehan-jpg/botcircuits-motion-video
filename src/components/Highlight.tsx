@@ -1,7 +1,9 @@
 import React from "react";
 import { useTimeline } from "../anim";
+import { C } from "../theme";
 
-// Lime marker that wipes in left to right, and fades when `until` is reached.
+// Thin lime underline (5 px) that wipes in left to right, and fades when
+// `until` is reached.
 export const Highlight: React.FC<{
   at: number;
   until?: number;
@@ -11,21 +13,21 @@ export const Highlight: React.FC<{
   const { p } = useTimeline();
   const wipe = p(at, duration);
   const alpha = until === undefined ? 1 : 1 - p(until, 0.25);
-  const color = `rgba(180, 240, 0, ${alpha})`;
   return (
-    <span
-      style={{
-        backgroundImage: `linear-gradient(${color}, ${color})`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "0 85%",
-        backgroundSize: `${wipe * 100}% 58%`,
-        boxDecorationBreak: "clone",
-        WebkitBoxDecorationBreak: "clone",
-        padding: "0 0.06em",
-        margin: "0 -0.06em",
-      }}
-    >
+    <span style={{ position: "relative", display: "inline-block" }}>
       {children}
+      <span
+        style={{
+          position: "absolute",
+          left: 0,
+          bottom: "-0.04em",
+          height: 5,
+          borderRadius: 3,
+          width: `${wipe * 100}%`,
+          backgroundColor: C.lime,
+          opacity: alpha,
+        }}
+      />
     </span>
   );
 };
