@@ -390,7 +390,7 @@ export const CLOSING = {
   phoneOutDuration: 0.6,
   logoAt: 24.35,
   logoDuration: 0.6,
-  logoWidthRatio: 0.4,
+  logoWidthRatio: 0.55,
 };
 
 // Virtual camera. Each shot moves from the previous shot over `duration`
