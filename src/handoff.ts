@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
-// Hand-off contract between the Build scenes (4-8). Every morphing object is
-// defined here once, so the last frame of one scene and the first frame of
-// the next use the very same numbers. All values are screen px unless noted.
+// Hand-off contract between the Build scenes (4-8). Each morphing object is
+// defined once here, so the last frame of a scene and the first frame of the
+// next use the same numbers. Screen px unless noted.
 // ---------------------------------------------------------------------------
 import {Camera} from './camera';
 import {sec} from './timeline';
@@ -9,7 +9,6 @@ import {PILL} from './layout';
 
 export {PILL};
 
-/** Build-stage scene durations. */
 export const BUILD_DURATIONS = {
   scene04: sec(5),
   scene05: sec(8),
@@ -18,44 +17,46 @@ export const BUILD_DURATIONS = {
   scene08: sec(6),
 } as const;
 
-/** BotCircuits lockup: oversized in scene 4, then parked top-left. */
-export const LOCKUP_BIG = {markH: 198, cx: 960, cy: 510};
-export const LOCKUP_SMALL = {markH: 52, left: 80, top: 56};
+/** Backdrop images (fallbacks are procedural). */
+export const BACKDROPS = {
+  sky5a: 'backdrops/bd-5a-periwinkle-sky.jpg',
+  night5b: 'backdrops/bd-5b-night-violet.jpg',
+  peach6: 'backdrops/bd-6-peach-clouds.jpg',
+} as const;
 
-/** Console prompt bar (centre + scale; geometry in components/PromptBar). */
-export const PROMPT_BIG = {cx: 960, cy: 830};
-export const PROMPT_S4_END_SCALE = 1.03; // slow camera push in scene 4
-export const PROMPT_SLIM = {cx: 960, cy: 96, scale: 0.66};
+/** Scene 4 lockup (oversized, centred). */
+export const LOCKUP = {markH: 198, cx: 960, cy: 520};
 
-/** Agent card in scene 5 (WORLD coords) and scene 5's final camera. */
-export const AGENT_CARD = {left: 550, top: 390, width: 820, height: 260};
-export const AGENT_CARD_AVATAR = {cx: 108, cy: 130, size: 120}; // card-local
-export const AGENT_CARD_TITLE = {left: 196, cy: 98, fontSize: 44}; // card-local
-export const AGENT_CARD_CHIP = {left: 196, top: 140};
-export const CAM_S5_END: Camera = {x: 1030, y: 520, scale: 1.2, rotation: 0};
+/** One-time input field (scenes 4-5), WORLD coords. */
+export const FIELD = {cx: 960, cy: 540, width: 1300, height: 120, radius: 28, fontSize: 64, padX: 56};
+/** Scene 4 ends on a wide shot; scene 5 starts from it and pushes in. */
+export const CAM_S4_END: Camera = {x: 960, y: 540, scale: 0.6, rotation: 0};
+/** Periwinkle sky timeline: appears at scene-4 3.1 s, until scene-5 ~4.6 s. */
+export const SKY5A_START_S4 = 3.1;
+export const SKY5A_SPAN = 7;
 
-/** Agent chip (top-left from scene 6). Width depends on the measured name. */
-export const AGENT_NAME = 'Card Support Agent';
-export const AGENT_CHIP = {left: 80, cy: 98, height: 84, avatar: 60, pad: 12, gap: 16, fontSize: 26, padRight: 30};
-/** Agent chip parked on the left in scene 7 (centre + scale). */
-export const AGENT_CHIP_S7 = {cx: 420, cy: 500, scale: 1.15};
+/** The agent orb. */
+export const ORB = {size: 220, ring: 3};
+/** Scene 5 ends with the orb in the left third (camera at identity). */
+export const ORB_S5_END = {cx: 640, cy: 540, scale: 1};
+/** Scenes 6 -> 7 -> 8: the orb sits dead centre at 0.8. */
+export const ORB_CENTER = {cx: 960, cy: 540, scale: 0.8};
 
-/** Procedure page frame in WORLD coords (scene 6 camera ends at identity). */
-export const PAGE = {x: 60, y: 150, width: 1800, height: 850};
-export const PAGE_CENTER = {x: PAGE.x + PAGE.width / 2, y: PAGE.y + PAGE.height / 2};
-/** Page transform at the end of scene 6 and as a card in scene 7. */
-export const PAGE_S6_END = {cx: 560, cy: 610, scale: 0.5, opacity: 0.85};
-export const PAGE_S7_CARD = {cx: 420, cy: 760, scale: 0.3};
+/** Night backdrop starts at scene-5 4.2 s. */
+export const NIGHT_START_S5 = 4.2;
 
 // ---------------------------------------------------------------------------
-// HAND-OFF TO SCENE 9: the agent avatar at the last frame of scene 8.
+// HAND-OFF TO SCENE 9: the WhatsApp tile at the last frame of scene 8. It has
+// expanded to fill the frame and becomes the chat window of scene 9.
 // ---------------------------------------------------------------------------
-export const AGENT_NODE = {avatarCx: 960, avatarCy: 330, avatarSize: 160}; // scene-8 world
-export const CAM_S8_END: Camera = {x: 960, y: 330, scale: 1.3, rotation: 0};
-export const AGENT_AVATAR_FINAL = {
-  centerX: 960,
-  centerY: 540,
-  size: 208, // 160 * 1.3
-  x: 856,
-  y: 436,
+export const WHATSAPP_TILE_FINAL = {
+  x: 0,
+  y: 0,
+  width: 1920,
+  height: 1080,
+  borderRadius: 0,
+  /** WhatsApp logo inside the tile at the last frame (centre + size). */
+  logo: {centerX: 960, centerY: 540, size: 168},
+  /** Notification badge (now "0") at the last frame. */
+  badge: {centerX: 1800, centerY: 120, size: 72},
 } as const;

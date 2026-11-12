@@ -18,12 +18,14 @@ All timing goes through `sec(n)` (`src/timeline.ts`). Scenes 1-3 keep their 30 f
 Scenes 4-8 author keyframes in seconds with `kf(frame, [seconds], [values])` (`src/theme.ts`).
 
 ## Structure
-- `src/theme.ts` tokens (lime is a single constant), fonts (bundled in `public/fonts`), easing, `kf`/`tween`/`press`
+- `src/theme.ts` tokens (lime is a single constant, used only as an accent), Build palette, fonts, easing, `kf`/`tween`/`press`/`popIn`
 - `src/timeline.ts` fps, `sec`, scenes 1-3 bounds and beats
-- `src/handoff.ts` hand-off contract between Build scenes (morph positions, cameras, `AGENT_AVATAR_FINAL` for scene 9)
+- `src/handoff.ts` hand-off contract between Build scenes (field, orb positions, backdrops, `WHATSAPP_TILE_FINAL` for scene 9)
+- `src/constants.ts` `TAGLINE` for the end card (`TypedLine`)
 - `src/layout.ts` scenes 1-3 world layout and the `PILL` hand-off into scene 4
 - `src/scenes/` scenes 1-3 (+ persistent `ThreadStage`)
-- `src/build/` scenes 4-8 and their backgrounds
-- `src/components/` ChatWindow, Bubble/Avatar, PromptBar, StatusChip/VariableChip/Tag, Cursor, TypingText/Caret, TypingDots, StrokeLine, Sweep, Logo, Agent, Stage (camera/world/blobs), Icons, procedure/ (Procedure editor)
-- `public/botcircuits-logo.svg`, `public/botcircuits-wordmark.svg` vectorised from the supplied logo PNG
+- `src/build/` scenes 4-8
+- `src/components/` shared: Cursor (arrow + hand), Orb, LogoTile + logos, FieldInput, PetalSpinner, StepRow, VariableChip/Tag, TypedLine, Backdrop (image with procedural fallback), ProceduralSky (cream, lilac, dusk), CircleReveal, StrokeLine, Glyphs, Logo, Stage (camera/world)
+- `public/backdrops/` sky images; `public/logos/<name>.svg` official logos (optional; simple-icons fallback otherwise)
+- `public/botcircuits-logo.svg`, `public/botcircuits-wordmark.svg`
 - `scripts/stills.mjs` renders FullVideo stills: `node scripts/stills.mjs out/stills 960 1110 ...`

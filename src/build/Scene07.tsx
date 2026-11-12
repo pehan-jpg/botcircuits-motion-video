@@ -1,160 +1,155 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
-import {COLORS, FONT_SANS, alpha, kf, tween} from '../theme';
-import {sec} from '../timeline';
-import {AGENT_CHIP_S7, BUILD_DURATIONS, PAGE_S6_END, PAGE_S7_CARD, PROMPT_SLIM} from '../handoff';
-import {PromptBar} from '../components/PromptBar';
-import {camAt, CamKeys, IDENTITY, World} from '../components/Stage';
-import {typingEnd} from '../components/TypingText';
-import {AgentChip, agentChipHome, agentChipWidth} from '../components/Agent';
-import {StatusChip} from '../components/Chip';
-import {StrokeLine, sCurve} from '../components/StrokeLine';
-import {IconBank, IconBook, IconCard, IconDatabase, IconPayments, IconUsers} from '../components/Icons';
-import {ProcedurePage} from '../components/procedure/ProcedurePage';
-import {Dissolve, Scene06Bg, Scene07Bg} from './backgrounds';
-import {pageWrap, procedureAnim} from './Scene06';
+import {COLORS, alpha, kf, popIn, tween} from '../theme';
+import {ORB_CENTER} from '../handoff';
+import {camAt, CamKeys, toScreen, World} from '../components/Stage';
+import {DuskSky, LilacSky} from '../components/ProceduralSky';
+import {Cursor} from '../components/Cursor';
+import {Orb} from '../components/Orb';
+import {LogoTile} from '../components/LogoTile';
+import {LogoName} from '../components/logos';
+import {Cubic, Pt, StrokeLine, cubicPoint} from '../components/StrokeLine';
+import {Camera} from '../camera';
 
-/** SCENE 7 (6 s) "Connect your systems". */
-export const S7_PROMPT = 'Connect the card system, customer database and knowledge base.';
+/** SCENE 7 (6 s) "Connect your systems". No text on screen. */
+export const SYSTEMS: LogoName[] = ['salesforce', 'zendesk', 'hubspot', 'stripe', 'notion', 'google-drive', 'shopify', 'jira'];
 export const S7_CAM: CamKeys = {
-  t: [0, 1.8, 3.4, 4.6, 5.6],
-  x: [960, 960, 1100, 1100, 960],
-  y: [540, 540, 470, 470, 540],
-  s: [1, 1, 1.1, 1.1, 1],
-  r: {t: [0, 1.2, 4.8], v: [0, 1.5, 0]},
+  t: [0, 0.8, 3.8, 4.5, 5.2, 5.98],
+  x: [960, 960, 960, 960, 960, 960],
+  y: [540, 540, 540, 500, 520, 540],
+  s: [1, 0.95, 0.95, 1.45, 1.45, 1],
+  r: {t: [0, 3.8, 4.5, 5.2], v: [0, 0, 1.5, 0]},
+};
+const RING_R = 380;
+const TAPS = [1.0, 1.55, 2.1];
+const LAUNCH = [...TAPS.map((t) => t + 0.05), 2.45, 2.65, 2.85, 3.05, 3.25];
+const FLIGHT = [0.6, 0.6, 0.6, 0.45, 0.45, 0.45, 0.45, 0.45];
+/** Screen points in the marquee where each tile launches from. */
+const STARTS: Pt[] = [
+  {x: 420, y: 318},
+  {x: 1380, y: 792},
+  {x: 1560, y: 288},
+  {x: 260, y: 808},
+  {x: 900, y: 330},
+  {x: 1700, y: 760},
+  {x: 640, y: 780},
+  {x: 1180, y: 300},
+];
+
+const fromScreen = (c: Camera, p: Pt): Pt => ({x: c.x + (p.x - 960) / c.scale, y: c.y + (p.y - 540) / c.scale});
+
+const Marquee: React.FC<{t: number; opacity: number; blur: number}> = ({t, opacity, blur}) => {
+  const step = 180;
+  const row = (y: number, dir: 1 | -1, offset: number) => {
+    const shift = ((dir * 110 * t + offset) % (step * SYSTEMS.length) + step * SYSTEMS.length) % (step * SYSTEMS.length);
+    return Array.from({length: 22}).map((_, i) => {
+      const name = SYSTEMS[(i + (dir === 1 ? 3 : 0)) % SYSTEMS.length];
+      return <LogoTile key={`${y}-${i}`} name={name} cx={-step * 4 + i * step + shift} cy={y} size={124} />;
+    });
+  };
+  return (
+    <AbsoluteFill style={{opacity, filter: `blur(${blur}px)`, transform: 'rotate(-4deg) scale(1.1)'}}>
+      {row(330, -1, 0)}
+      {row(770, 1, 90)}
+    </AbsoluteFill>
+  );
 };
 
-const SYSTEMS = [
-  {name: 'Card system', Icon: IconCard},
-  {name: 'Customer database', Icon: IconDatabase},
-  {name: 'Knowledge base', Icon: IconBook},
-  {name: 'Core banking', Icon: IconBank},
-  {name: 'CRM', Icon: IconUsers},
-  {name: 'Payments', Icon: IconPayments},
-];
-const ROWS = {x: 1020, width: 760, height: 100, firstCy: 300, step: 124, drift: 34};
-const ROW_IN = 1.8;
-const FLIP0 = 2.3;
-const FLIP_GAP = 0.13;
-
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+export const tileDock = (i: number): Pt => {
+  const a = ((-90 + i * 45) * Math.PI) / 180;
+  return {x: 960 + RING_R * Math.cos(a), y: 540 + RING_R * Math.sin(a)};
+};
 
 export const Scene07: React.FC = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const seconds = f / fps;
+  const s = f / fps;
   const cam = camAt(f, S7_CAM);
-  const prevEnd = BUILD_DURATIONS.scene06 - 1;
-
-  // procedure page -> card on the left; agent chip -> left column
-  const shrink = tween(f, 0, 0.7);
-  const home = agentChipHome();
-  const chip = {
-    cx: lerp(home.cx, AGENT_CHIP_S7.cx, shrink),
-    cy: lerp(home.cy, AGENT_CHIP_S7.cy, shrink),
-    scale: lerp(1, AGENT_CHIP_S7.scale, shrink),
-  };
-  const chipRight = AGENT_CHIP_S7.cx + (agentChipWidth() / 2) * AGENT_CHIP_S7.scale;
-  const out = 1 - tween(f, 5.4, 5.98);
-
-  const typeStart = sec(0.3);
-  const typedUntil = typingEnd(typeStart, S7_PROMPT.length, 1.2);
-  const enter = kf(f, [1.65, 1.73, 1.85], [0, 1, 0]);
-  const drift = ROWS.drift * Math.max(0, seconds - ROW_IN);
+  const spin = 10 * tween(f, 3.8, 5.2);
+  const pullIn = (i: number) => tween(f, 5.2 + i * 0.03, 5.65 + i * 0.03);
+  const lastDock = LAUNCH[7] + FLIGHT[7];
+  const orbPulse = LAUNCH.reduce((m, l, i) => {
+    const d = l + FLIGHT[i];
+    return s >= d && s < d + 0.5 ? tween(f, d, d + 0.5) : m;
+  }, 0);
 
   return (
     <AbsoluteFill>
-      <Dissolve
-        from={<Scene06Bg seconds={prevEnd / fps} cam={IDENTITY} />}
-        to={<Scene07Bg seconds={seconds} cam={cam} />}
-        progress={tween(f, 0, 0.5)}
-      />
+      <LilacSky t={s + 0.7} cam={cam} />
+      <AbsoluteFill style={{opacity: tween(f, 5.3, 5.98)}}>
+        <DuskSky t={s - 5.3} cam={cam} frame={f} />
+      </AbsoluteFill>
+
+      <Marquee t={s} opacity={0.4 * tween(f, 0, 0.45) * (1 - tween(f, 2.0, lastDock))} blur={6 + 12 * tween(f, 2.0, lastDock)} />
 
       <World cam={cam}>
-        {/* procedure as a card */}
-        <div
-          style={{
-            ...pageWrap(
-              lerp(PAGE_S6_END.cx, PAGE_S7_CARD.cx, shrink),
-              lerp(PAGE_S6_END.cy, PAGE_S7_CARD.cy, shrink),
-              lerp(PAGE_S6_END.scale, PAGE_S7_CARD.scale, shrink),
-            ),
-            opacity: lerp(PAGE_S6_END.opacity, 1, shrink) * out,
-          }}
-        >
-          <ProcedurePage a={procedureAnim(prevEnd)} />
-        </div>
-
-        {/* lines from connected systems to the agent */}
-        {SYSTEMS.map((s, i) => {
-          const t = FLIP0 + i * FLIP_GAP;
-          const cy = ROWS.firstCy + i * ROWS.step - drift;
+        {SYSTEMS.map((name, i) => {
+          const L = LAUNCH[i];
+          const d = L + FLIGHT[i];
+          if (s < L) return null;
+          const launchCam = camAt(Math.round(L * fps), S7_CAM);
+          const from = fromScreen(launchCam, STARTS[i]);
+          const dockA = tileDock(i);
+          // slow ring rotation during the macro shot
+          const ang = (Math.atan2(dockA.y - 540, dockA.x - 960) * 180) / Math.PI + spin;
+          const dock = {x: 960 + RING_R * Math.cos((ang * Math.PI) / 180), y: 540 + RING_R * Math.sin((ang * Math.PI) / 180)};
+          const fl = tween(f, L, d);
+          const curve: Cubic = [from, {x: from.x, y: from.y + (540 - from.y) * 0.6}, {x: dock.x + (dock.x - 960) * 0.4, y: dock.y + (dock.y - 540) * 0.4}, dock];
+          const p = cubicPoint(curve, fl);
+          const k = pullIn(i);
+          const q = {x: p.x + (960 - p.x) * k, y: p.y + (540 - p.y) * k};
+          const line = tween(f, d, d + 0.3) * (1 - k);
+          const settle = kf(f, [d, d + 0.12, d + 0.3], [1, 1.04, 1]);
           return (
-            <div key={s.name} style={{opacity: out}}>
+            <React.Fragment key={name}>
               <StrokeLine
-                curve={sCurve({x: ROWS.x - 8, y: cy}, {x: chipRight + 6, y: AGENT_CHIP_S7.cy}, 'h', 0.55)}
-                draw={tween(f, t + 0.05, t + 0.45)}
-                dot={kf(f, [t + 0.45, t + 0.95], [0, 1])}
-                dotOpacity={kf(f, [t + 0.45, t + 0.5, t + 0.9, t + 0.98], [0, 1, 1, 0])}
-                color={alpha(COLORS.ink, 0.28)}
-                dotColor={COLORS.lime}
+                curve={[q, q, {x: 960, y: 540}, {x: 960, y: 540}]}
+                draw={line}
+                dot={s > 3.9 && s < 5.1 ? (((s - 3.9 - i * 0.07) % 0.6) + 0.6) % 0.6 / 0.6 : undefined}
+                dotOpacity={0.9}
+                color={alpha(COLORS.ink, 0.45)}
+                dotColor={COLORS.white}
                 width={2}
-                dotSize={14}
+                dotSize={10}
               />
-            </div>
+              <LogoTile
+                name={name}
+                cx={q.x}
+                cy={q.y}
+                size={140}
+                scale={kf(f, [L, L + 0.15], [0.85, 1]) * settle * (1 - k)}
+                badge={popIn(f, d + 0.05, 0.3, 1.04)}
+                badgeDraw={tween(f, d + 0.15, d + 0.4)}
+              />
+            </React.Fragment>
           );
         })}
-
-        {/* system rows, drifting upward */}
-        {SYSTEMS.map((s, i) => {
-          const t = FLIP0 + i * FLIP_GAP;
-          const inP = tween(f, ROW_IN + i * 0.08, ROW_IN + i * 0.08 + 0.35);
-          const cy = ROWS.firstCy + i * ROWS.step - drift;
-          return (
-            <div
-              key={s.name}
-              style={{
-                position: 'absolute',
-                left: ROWS.x,
-                top: cy - ROWS.height / 2,
-                width: ROWS.width,
-                height: ROWS.height,
-                borderRadius: ROWS.height / 2,
-                background: COLORS.white,
-                border: `1px solid ${COLORS.line}`,
-                boxShadow: '0 18px 44px rgba(11,13,12,0.07)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 22,
-                paddingLeft: 20,
-                paddingRight: 24,
-                boxSizing: 'border-box',
-                opacity: inP * out,
-                transform: `translateY(${(1 - inP) * 24}px)`,
-              }}
-            >
-              <div style={{width: 60, height: 60, borderRadius: 30, background: COLORS.tagGrey, display: 'flex', alignItems: 'center', justifyContent: 'center', color: COLORS.ink}}>
-                <s.Icon size={30} stroke={1.9} />
-              </div>
-              <div style={{flex: 1, fontFamily: FONT_SANS, fontWeight: 600, fontSize: 28, color: COLORS.ink, whiteSpace: 'nowrap'}}>{s.name}</div>
-              <StatusChip pending="Connecting" done="Connected" flip={tween(f, t, t + 0.2)} check={tween(f, t + 0.1, t + 0.35)} frame={f} fontSize={21} />
-            </div>
-          );
-        })}
-
-        <AgentChip cx={chip.cx} cy={chip.cy} scale={chip.scale} glow={kf(f, [2.8, 3.1, 3.7], [0, 1, 0])} />
+        <Orb
+          cx={ORB_CENTER.cx}
+          cy={ORB_CENTER.cy}
+          scale={ORB_CENTER.scale}
+          pulse={orbPulse}
+          glow={0.6}
+          whiteGlow={tween(f, 5.35, 5.9)}
+        />
       </World>
 
-      <PromptBar
-        state={{cx: PROMPT_SLIM.cx, cy: PROMPT_SLIM.cy, scale: PROMPT_SLIM.scale, opacity: 1}}
+      <Cursor
         frame={f}
-        text={S7_PROMPT}
-        typeStart={typeStart}
-        perChar={1.2}
-        typingUntil={typedUntil}
-        enterPress={enter}
-        textOpacity={1 - tween(f, 1.9, 2.1)}
+        keys={[
+          {t: 0.4, x: 1960, y: 980},
+          {t: 0.95, x: STARTS[0].x, y: STARTS[0].y},
+          {t: 1.5, x: STARTS[1].x, y: STARTS[1].y},
+          {t: 2.05, x: STARTS[2].x, y: STARTS[2].y},
+          {t: 2.8, x: 1500, y: 1200},
+        ]}
+        clicks={TAPS}
+        hand={[[0.8, 2.3]]}
+        rippleColor={COLORS.white}
+        opacity={tween(f, 0.4, 0.6) * (1 - tween(f, 2.5, 2.8))}
       />
     </AbsoluteFill>
   );
 };
+
+export const s7OrbScreen = () => toScreen(camAt(0, S7_CAM), {x: ORB_CENTER.cx, y: ORB_CENTER.cy});

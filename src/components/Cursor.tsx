@@ -1,73 +1,110 @@
 import React from 'react';
-import {COLORS, ease, alpha} from '../theme';
+import {COLORS, alpha, ease, kf} from '../theme';
 import {sec} from '../timeline';
-import {Pt} from './StrokeLine';
+
+export type CursorKey = {t: number; x: number; y: number};
+
+/** Position along eased, curved segments between waypoints (seconds). */
+export const cursorAt = (frame: number, keys: CursorKey[], bend = 0.18) => {
+  const s = frame / sec(1);
+  if (s <= keys[0].t) return {x: keys[0].x, y: keys[0].y};
+  for (let i = 0; i < keys.length - 1; i++) {
+    const a = keys[i];
+    const b = keys[i + 1];
+    if (s <= b.t) {
+      const t = ease(frame, [sec(a.t), sec(b.t)], [0, 1]);
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const c = {x: (a.x + b.x) / 2 - dy * bend, y: (a.y + b.y) / 2 + dx * bend};
+      const u = 1 - t;
+      return {x: u * u * a.x + 2 * u * t * c.x + t * t * b.x, y: u * u * a.y + 2 * u * t * c.y + t * t * b.y};
+    }
+  }
+  const z = keys[keys.length - 1];
+  return {x: z.x, y: z.y};
+};
+
+const Arrow: React.FC = () => (
+  <path
+    d="M3 2 L3 25.5 L9.2 19.8 L13.2 28.8 L17.3 27.1 L13.3 18.2 L21.8 18.2 Z"
+    fill={COLORS.ink}
+    stroke={COLORS.white}
+    strokeWidth={1.8}
+    strokeLinejoin="round"
+  />
+);
+
+/** Pointing hand: white-stroked silhouette under a black fill. Hotspot at the fingertip (12, 2). */
+const HandShapes: React.FC<{fill: string; stroke?: string; sw?: number}> = ({fill, stroke = 'none', sw = 0}) => (
+  <g fill={fill} stroke={stroke} strokeWidth={sw} strokeLinejoin="round">
+    <rect x="9.6" y="1.6" width="5" height="16" rx="2.5" />
+    <rect x="14.2" y="9.6" width="4.4" height="9" rx="2.2" />
+    <rect x="18.2" y="10.8" width="4.2" height="8.6" rx="2.1" />
+    <rect x="21.8" y="12.6" width="3.8" height="7.8" rx="1.9" />
+    <rect x="3.2" y="13.4" width="4.6" height="9.4" rx="2.3" transform="rotate(-38 5.5 18)" />
+    <rect x="7.2" y="14.6" width="18.4" height="14" rx="6" />
+  </g>
+);
 
 /**
- * Pointer that glides along an eased, curved path (quadratic bezier) and
- * clicks with a ripple. Screen/world coordinates of the parent.
+ * macOS-style cursor. Moves along curved eased paths, becomes a pointing hand
+ * over buttons/tiles, scales to 0.92 on click with a soft ripple at the tip.
  */
 export const Cursor: React.FC<{
   frame: number;
-  from: Pt;
-  to: Pt;
-  moveStart: number; // frames
-  moveEnd: number; // frames
-  clickAt: number; // frames
+  keys: CursorKey[];
+  clicks?: number[]; // seconds
+  hand?: [number, number][]; // seconds ranges
   opacity?: number;
-  bend?: number; // curve amount (fraction of distance)
+  bend?: number;
   rippleColor?: string;
-}> = ({frame, from, to, moveStart, moveEnd, clickAt, opacity = 1, bend = 0.22, rippleColor = COLORS.ink}) => {
-  const t = ease(frame, [moveStart, moveEnd], [0, 1]);
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
-  const ctrl = {x: (from.x + to.x) / 2 - dy * bend, y: (from.y + to.y) / 2 + dx * bend};
-  const u = 1 - t;
-  const x = u * u * from.x + 2 * u * t * ctrl.x + t * t * to.x;
-  const y = u * u * from.y + 2 * u * t * ctrl.y + t * t * to.y;
-  const pressScale = ease(frame, [clickAt, clickAt + sec(0.08), clickAt + sec(0.22)], [1, 0.86, 1]);
-  const ripple = ease(frame, [clickAt, clickAt + sec(0.5)], [0, 1]);
-  const appear = ease(frame, [moveStart - sec(0.15), moveStart + sec(0.1)], [0, 1]);
+}> = ({frame, keys, clicks = [], hand = [], opacity = 1, bend, rippleColor = COLORS.white}) => {
+  const p = cursorAt(frame, keys, bend);
+  const s = frame / sec(1);
+  const h = hand.reduce((m, [a, b]) => Math.max(m, kf(frame, [a, a + 0.1, b - 0.1, b], [0, 1, 1, 0])), 0);
+  const press = clicks.reduce((m, c) => Math.min(m, kf(frame, [c, c + 0.07, c + 0.22], [1, 0.92, 1])), 1);
   return (
     <>
-      {frame >= clickAt ? (
-        <div
-          style={{
-            position: 'absolute',
-            left: to.x - 40,
-            top: to.y - 40,
-            width: 80,
-            height: 80,
-            borderRadius: 40,
-            border: `3px solid ${alpha(rippleColor, 0.55)}`,
-            boxSizing: 'border-box',
-            opacity: (1 - ripple) * opacity,
-            transform: `scale(${0.2 + ripple * 1.4})`,
-          }}
-        />
-      ) : null}
+      {clicks.map((c) =>
+        s >= c && s < c + 0.6 ? (
+          <div
+            key={c}
+            style={{
+              position: 'absolute',
+              left: p.x - 50,
+              top: p.y - 50,
+              width: 100,
+              height: 100,
+              borderRadius: 50,
+              background: `radial-gradient(circle, ${alpha(rippleColor, 0)} 40%, ${alpha(rippleColor, 0.55)} 62%, ${alpha(rippleColor, 0)} 72%)`,
+              opacity: (1 - kf(frame, [c, c + 0.55], [0, 1])) * opacity,
+              transform: `scale(${kf(frame, [c, c + 0.55], [0.2, 1.6])})`,
+            }}
+          />
+        ) : null,
+      )}
       <svg
-        width={44}
-        height={52}
-        viewBox="0 0 22 26"
+        width={60}
+        height={60}
+        viewBox="0 0 30 30"
         style={{
           position: 'absolute',
           left: 0,
           top: 0,
           overflow: 'visible',
-          opacity: appear * opacity,
-          transformOrigin: '2px 2px',
-          transform: `translate(${x - 4}px, ${y - 4}px) scale(${pressScale})`,
-          filter: 'drop-shadow(0 6px 10px rgba(11,13,12,0.25))',
+          opacity,
+          transformOrigin: '0 0',
+          transform: `translate(${p.x}px, ${p.y}px) scale(${press})`,
+          filter: 'drop-shadow(0 5px 8px rgba(13,18,36,0.35))',
         }}
       >
-        <path
-          d="M2 2 L2 21 L7.2 16.4 L10.6 24 L14 22.5 L10.7 15.1 L17.6 15.1 Z"
-          fill={COLORS.ink}
-          stroke={COLORS.white}
-          strokeWidth={1.6}
-          strokeLinejoin="round"
-        />
+        <g transform="translate(-3 -2)" opacity={1 - h}>
+          <Arrow />
+        </g>
+        <g transform="translate(-12 -1.6)" opacity={h}>
+          <HandShapes fill="none" stroke={COLORS.white} sw={3.2} />
+          <HandShapes fill={COLORS.ink} />
+        </g>
       </svg>
     </>
   );

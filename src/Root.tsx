@@ -9,6 +9,10 @@ import {Scene05} from './build/Scene05';
 import {Scene06} from './build/Scene06';
 import {Scene07} from './build/Scene07';
 import {Scene08} from './build/Scene08';
+import {TypedLine, typedLineDuration} from './components/TypedLine';
+import {TAGLINE} from './constants';
+
+const SAMPLE_LINE = 'Your tagline types out here.';
 
 const common = {fps: FPS, width: WIDTH, height: HEIGHT};
 
@@ -22,6 +26,22 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="Scene06" component={Scene06} durationInFrames={BUILD_DURATIONS.scene06} {...common} />
       <Composition id="Scene07" component={Scene07} durationInFrames={BUILD_DURATIONS.scene07} {...common} />
       <Composition id="Scene08" component={Scene08} durationInFrames={BUILD_DURATIONS.scene08} {...common} />
+    </Folder>
+    <Folder name="Components">
+      <Composition
+        id="TypedLineTest"
+        component={TypedLine}
+        durationInFrames={typedLineDuration(SAMPLE_LINE)}
+        defaultProps={{text: SAMPLE_LINE}}
+        {...common}
+      />
+      <Composition
+        id="TypedLineTagline"
+        component={TypedLine}
+        durationInFrames={typedLineDuration(TAGLINE)}
+        defaultProps={{text: TAGLINE}}
+        {...common}
+      />
     </Folder>
     {/* Scenes 9+ will be added to FullVideo later. */}
   </>

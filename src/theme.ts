@@ -30,6 +30,27 @@ export const COLORS = {
   tagBlueText: '#4B5B69',
   faint: '#A7ADAB', // light grey numbers
   buttonGrey: '#2E3234', // dark grey Save button
+  // Build-stage palette (scenes 4-8)
+  cream: '#F5EFE6',
+  peach: '#FFD3B5',
+  blush: '#F7B7C8',
+  lilac: '#D9D0FF',
+  periwinkle: '#B9C6FF',
+  sky: '#CDE7FF',
+  inkNavy: '#0D1224',
+  deepViolet: '#2B2466',
+  glowViolet: '#3A2F8F',
+  spinnerViolet: '#7C6CF0',
+  coral: '#FF7A59',
+  magenta: '#B4558F',
+  lilacFloor: '#F8F6FF',
+  // accent colours for drawn icons
+  iconBlue: '#3B6FF5',
+  iconOrange: '#FF8A3D',
+  iconPink: '#EC4F9A',
+  iconViolet: '#7C6CF0',
+  iconDeepBlue: '#2A3FB8',
+  badgeRed: '#FF3B30',
 } as const;
 
 /** Colour with alpha, from a #RRGGBB token (so lime is never hardcoded). */
@@ -92,3 +113,7 @@ export const tween = (frame: number, from: number, to: number): number => kf(fra
 
 /** Press: 1 -> 0.96 -> 1 starting at `at` seconds (target scale on click). */
 export const press = (frame: number, at: number): number => kf(frame, [at, at + 0.08, at + 0.24], [1, 0.96, 1]);
+
+/** Pop with overshoot (tiles and logos only): 0 -> over -> 1. */
+export const popIn = (frame: number, at: number, dur = 0.35, over = 1.04): number =>
+  kf(frame, [at, at + dur * 0.65, at + dur], [0, over, 1]);
