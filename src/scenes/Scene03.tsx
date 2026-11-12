@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {COLORS, FONT_MONO, ease} from '../theme';
-import {BEATS, SEQUENCE_STARTS} from '../timeline';
+import {BEATS, SEQUENCE_STARTS, f30} from '../timeline';
 import {DriftShapes, Shape} from '../components/Atmosphere';
 import {Roll} from '../components/Roll';
 import {SceneProps} from './types';
@@ -27,8 +27,8 @@ export const Scene03: React.FC<SceneProps> = ({layer}) => {
   const local = g - SEQUENCE_STARTS.scene03;
 
   if (layer === 'background') {
-    const vignette = ease(g, [264, BEATS.settle], [0.25, 0.9]);
-    const pulse = 0.5 - 0.5 * Math.cos(((g - 270) / 72) * Math.PI * 2); // ~2.4 s period
+    const vignette = ease(g, [f30(264), BEATS.settle], [0.25, 0.9]);
+    const pulse = 0.5 - 0.5 * Math.cos(((g - f30(270)) / f30(72)) * Math.PI * 2); // ~2.4 s period
     return (
       <AbsoluteFill style={{background: COLORS.ink, overflow: 'hidden'}}>
         <DriftShapes shapes={SHAPES} frame={local} globalFrame={g} />
@@ -46,8 +46,8 @@ export const Scene03: React.FC<SceneProps> = ({layer}) => {
   }
 
   // ---- HUD: wait counter chip ------------------------------------------------
-  const chipIn = ease(g, [BEATS.followUps[0] - 6, BEATS.followUps[0] + 6], [0, 1]);
-  const chipOut = ease(g, [BEATS.compress, BEATS.compress + 18], [0, 1]);
+  const chipIn = ease(g, [BEATS.followUps[0] - f30(6), BEATS.followUps[0] + f30(6)], [0, 1]);
+  const chipOut = ease(g, [BEATS.compress, BEATS.compress + f30(18)], [0, 1]);
   const FS = 32;
   return (
     <AbsoluteFill>
@@ -73,7 +73,7 @@ export const Scene03: React.FC<SceneProps> = ({layer}) => {
       >
         <span style={{width: 10, height: 10, borderRadius: 5, background: COLORS.muted}} />
         <span style={{lineHeight: '44px'}}>Waiting</span>
-        <Roll values={WAITS} at={BEATS.followUps} frame={g} duration={10} lineHeight={44} charWidth={FS * 0.6} />
+        <Roll values={WAITS} at={BEATS.followUps} frame={g} duration={f30(10)} lineHeight={44} charWidth={FS * 0.6} />
       </div>
     </AbsoluteFill>
   );

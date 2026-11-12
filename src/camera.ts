@@ -1,5 +1,5 @@
 import {ease} from './theme';
-import {WIDTH, HEIGHT} from './timeline';
+import {WIDTH, HEIGHT, f30} from './timeline';
 import {STACK_CENTER} from './layout';
 
 export type Camera = {
@@ -11,14 +11,14 @@ export type Camera = {
   rotation: number;
 };
 
-// Keyframes in absolute frames. Each segment is eased with the global curve.
-const X = {f: [0, 120, 138, 270, 300, 430, 466], v: [700, 700, 780, 780, 760, 760, STACK_CENTER.x]};
+// Keyframes in storyboard frames (30 fps), converted with f30. Eased per segment.
+const X = {f: [0, 120, 138, 270, 300, 430, 466].map(f30), v: [700, 700, 780, 780, 760, 760, STACK_CENTER.x]};
 const Y = {
-  f: [0, 120, 138, 270, 300, 330, 344, 370, 384, 430, 466],
+  f: [0, 120, 138, 270, 300, 330, 344, 370, 384, 430, 466].map(f30),
   v: [273, 273, 440, 800, 1040, 1040, 1250, 1250, 1400, 1400, STACK_CENTER.y],
 };
-const S = {f: [0, 120, 138, 270, 300, 430, 466], v: [1, 1.12, 0.95, 1.06, 1.16, 1.2, 1]};
-const R = {f: [0, 270, 300, 466], v: [0, 0, 1.5, 0]};
+const S = {f: [0, 120, 138, 270, 300, 430, 466].map(f30), v: [1, 1.12, 0.95, 1.06, 1.16, 1.2, 1]};
+const R = {f: [0, 270, 300, 466].map(f30), v: [0, 0, 1.5, 0]};
 
 export const getCamera = (frame: number): Camera => ({
   x: ease(frame, X.f, X.v),

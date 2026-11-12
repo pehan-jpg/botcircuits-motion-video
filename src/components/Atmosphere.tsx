@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, random} from 'remotion';
 import {CAMERA_ORIGIN, getCamera} from '../camera';
+import {f30, sec} from '../timeline';
 
 export type Shape = {
   /** Screen-space centre at frame 0 of the scene. */
@@ -27,8 +28,10 @@ export const DriftShapes: React.FC<{shapes: Shape[]; frame: number; globalFrame:
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
       {shapes.map((s, i) => {
-        const px = (cam.x - CAMERA_ORIGIN.x) * s.depth * 0.35 + s.drift[0] * frame;
-        const py = (cam.y - CAMERA_ORIGIN.y) * s.depth * 0.2 + s.drift[1] * frame;
+        // drift is authored in px per storyboard frame (1/30 s)
+        const t30 = frame / f30(1);
+        const px = (cam.x - CAMERA_ORIGIN.x) * s.depth * 0.35 + s.drift[0] * t30;
+        const py = (cam.y - CAMERA_ORIGIN.y) * s.depth * 0.2 + s.drift[1] * t30;
         const sc = 1 - (cam.scale - 1) * s.depth * 0.6;
         return (
           <div
@@ -52,8 +55,10 @@ export const DriftShapes: React.FC<{shapes: Shape[]; frame: number; globalFrame:
 
 /** Film grain. The noise tile is static; it jitters via transform each frame. */
 export const Grain: React.FC<{frame: number; opacity: number}> = ({frame, opacity}) => {
-  const dx = Math.round((random(`gx${frame}`) - 0.5) * 120);
-  const dy = Math.round((random(`gy${frame}`) - 0.5) * 120);
+  // grain re-seeds 30 times per second regardless of the project fps
+  const tick = Math.floor((frame / sec(1)) * 30);
+  const dx = Math.round((random(`gx${tick}`) - 0.5) * 120);
+  const dy = Math.round((random(`gy${tick}`) - 0.5) * 120);
   return (
     <AbsoluteFill style={{overflow: 'hidden', opacity}}>
       <svg

@@ -1,5 +1,6 @@
 import React from 'react';
 import {ease} from '../theme';
+import {f30} from '../timeline';
 
 /**
  * Vertical "roll" between a list of values. Each value change slides the old
@@ -19,7 +20,7 @@ export const Roll: React.FC<{
   style?: React.CSSProperties;
   /** Fixed character cell width (monospace). */
   charWidth: number;
-}> = ({values, at, frame, duration = 10, lineHeight, stagger = 1, style, charWidth}) => {
+}> = ({values, at, frame, duration = f30(10), lineHeight, stagger = f30(1), style, charWidth}) => {
   let idx = -1;
   for (let i = 0; i < at.length; i++) if (frame >= at[i]) idx = i;
   if (idx < 0) return null;

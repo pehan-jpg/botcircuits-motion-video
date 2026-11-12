@@ -2,6 +2,7 @@ import React from 'react';
 import {COLORS, FONT_MONO, FONT_SANS, FONT_SANS_FAMILY, ease} from '../theme';
 import {AVATAR, BUBBLE, BUBBLE_X, META_GAP, META_H, ROW_X} from '../layout';
 import {measureText} from './measure';
+import {f30} from '../timeline';
 
 export type Speaker = 'customer' | 'agent';
 
@@ -84,11 +85,11 @@ export const Bubble: React.FC<BubbleProps> = ({
   text,
   frame,
   enterAt = 0,
-  enterDur = 8,
+  enterDur = f30(8),
   morphAt,
-  morphDur = 10,
+  morphDur = f30(10),
   wordsAt,
-  wordStagger = 2,
+  wordStagger = f30(2),
   pop = false,
   avatar,
   x = ROW_X,
@@ -102,18 +103,18 @@ export const Bubble: React.FC<BubbleProps> = ({
   const H = BUBBLE.height;
   const R = BUBBLE.radius;
 
-  const enter = ease(frame, [enterAt, enterAt + (pop ? 6 : enterDur)], [0, 1]);
+  const enter = ease(frame, [enterAt, enterAt + (pop ? f30(6) : enterDur)], [0, 1]);
   const morph = morphAt === undefined ? 1 : ease(frame, [morphAt, morphAt + morphDur], [0, 1]);
   const w = BUBBLE.typingWidth + (fullW - BUBBLE.typingWidth) * morph;
 
-  const popScale = pop ? ease(frame, [enterAt, enterAt + 8], [0.96, 1]) : 1;
-  const rise = pop ? ease(frame, [enterAt, enterAt + 8], [-18, 0]) : (1 - enter) * 24;
+  const popScale = pop ? ease(frame, [enterAt, enterAt + f30(8)], [0.96, 1]) : 1;
+  const rise = pop ? ease(frame, [enterAt, enterAt + f30(8)], [-18, 0]) : (1 - enter) * 24;
 
   const bg = customer ? COLORS.charcoal : COLORS.charcoal2;
   const border = customer ? 'none' : '1px solid rgba(255,255,255,0.14)';
 
   // Typing dots, pulsing in sequence, fading out as the bubble widens.
-  const dotsOpacity = morphAt === undefined ? 0 : 1 - ease(frame, [morphAt, morphAt + 6], [0, 1]);
+  const dotsOpacity = morphAt === undefined ? 0 : 1 - ease(frame, [morphAt, morphAt + f30(6)], [0, 1]);
   const words = text.split(' ');
   const bubbleLeft = BUBBLE_X - ROW_X;
 
@@ -206,8 +207,8 @@ export const Bubble: React.FC<BubbleProps> = ({
         {morphAt !== undefined ? (
           <div style={{position: 'absolute', left: 40, top: H / 2 - 8, opacity: dotsOpacity}}>
             {[0, 1, 2].map((i) => {
-              const cycle = 14;
-              const t = (((frame - enterAt - i * 4) % cycle) + cycle) % cycle;
+              const cycle = f30(14);
+              const t = (((frame - enterAt - i * f30(4)) % cycle) + cycle) % cycle;
               const pulse = 0.5 - 0.5 * Math.cos((t / cycle) * Math.PI * 2);
               return (
                 <div
@@ -248,7 +249,7 @@ export const Bubble: React.FC<BubbleProps> = ({
         >
           {words.map((word, i) => {
             const start = wordsAt + i * wordStagger;
-            const p = ease(frame, [start, start + 6], [0, 1]);
+            const p = ease(frame, [start, start + f30(6)], [0, 1]);
             return (
               <span
                 key={i}

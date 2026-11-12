@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {COLORS, FONT_MONO, ease} from '../theme';
-import {BEATS, CLOCK_TIMES, SEQUENCE_STARTS} from '../timeline';
+import {BEATS, CLOCK_TIMES, SEQUENCE_STARTS, f30} from '../timeline';
 import {DriftShapes, Shape} from '../components/Atmosphere';
 import {Roll} from '../components/Roll';
 import {SceneProps} from './types';
@@ -27,7 +27,7 @@ export const Scene02: React.FC<SceneProps> = ({layer}) => {
   const g = frame + SEQUENCE_STARTS.scene02;
 
   if (layer === 'background') {
-    const sweep = ease(g, [114, 276], [-1500, 1900]);
+    const sweep = ease(g, [f30(114), f30(276)], [-1500, 1900]);
     return (
       <AbsoluteFill style={{background: COLORS.slate, overflow: 'hidden'}}>
         <AbsoluteFill
@@ -55,8 +55,8 @@ export const Scene02: React.FC<SceneProps> = ({layer}) => {
 
   // ---- HUD -----------------------------------------------------------------
   const [s0, s1, s2, s3] = BEATS.clockSwaps;
-  const hudIn = ease(g, [s0, s0 + 10], [0, 1]);
-  const head = ease(g, [s0, s0 + 12, s1, s2, s3, 270], [0, MARKS[0], MARKS[1], MARKS[2], MARKS[3], 0.97]);
+  const hudIn = ease(g, [s0, s0 + f30(10)], [0, 1]);
+  const head = ease(g, [s0, s0 + f30(12), s1, s2, s3, f30(270)], [0, MARKS[0], MARKS[1], MARKS[2], MARKS[3], 0.97]);
   const len = LINE.x2 - LINE.x1;
 
   return (
@@ -91,7 +91,7 @@ export const Scene02: React.FC<SceneProps> = ({layer}) => {
           opacity={0.75}
         />
         {BEATS.clockSwaps.map((t, i) => {
-          const p = ease(g, [t, t + 8], [0, 1]);
+          const p = ease(g, [t, t + f30(8)], [0, 1]);
           return (
             <line
               key={t}
@@ -144,10 +144,10 @@ export const Scene02: React.FC<SceneProps> = ({layer}) => {
           values={CLOCK_TIMES}
           at={BEATS.clockSwaps}
           frame={g}
-          duration={10}
+          duration={f30(10)}
           lineHeight={140}
           charWidth={128 * 0.6 - 128 * 0.02}
-          stagger={1}
+          stagger={f30(1)}
         />
       </div>
     </AbsoluteFill>

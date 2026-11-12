@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {COLORS, FONT_SANS, ease} from '../theme';
-import {BEATS} from '../timeline';
+import {BEATS, f30} from '../timeline';
 import {cameraTransform, getCamera} from '../camera';
 import {
   BUBBLE,
@@ -39,23 +39,23 @@ export const ThreadStage: React.FC = () => {
   const cam = getCamera(f);
 
   // ---- window & chrome ------------------------------------------------------
-  const enter = ease(f, [BEATS.windowIn, BEATS.windowIn + 14], [0, 1]);
-  const ui = 1 - ease(f, [BEATS.compress, BEATS.compress + 20], [0, 1]);
-  const agentPresence = ease(f, [120, 132], [0, 1]);
-  const away = ease(f, [BEATS.away, BEATS.away + 16], [0, 1]);
-  const agentDim = ease(f, [270, 290], [0, 1]);
+  const enter = ease(f, [BEATS.windowIn, BEATS.windowIn + f30(14)], [0, 1]);
+  const ui = 1 - ease(f, [BEATS.compress, BEATS.compress + f30(20)], [0, 1]);
+  const agentPresence = ease(f, [f30(120), f30(132)], [0, 1]);
+  const away = ease(f, [BEATS.away, BEATS.away + f30(16)], [0, 1]);
+  const agentDim = ease(f, [f30(270), f30(290)], [0, 1]);
 
   // ---- the silence: gap widens, rows push the composer down ------------------
-  const gap = ease(f, [BEATS.silence, 270], [GAP_BASE, GAP_MAX]);
-  const revealed = BEATS.followUps.reduce((acc, t) => acc + ease(f, [t, t + 10], [0, 1]), 0);
+  const gap = ease(f, [BEATS.silence, f30(270)], [GAP_BASE, GAP_MAX]);
+  const revealed = BEATS.followUps.reduce((acc, t) => acc + ease(f, [t, t + f30(10)], [0, 1]), 0);
   const composerY = GAP_START + gap + revealed * ROW_STEP + COMPOSER_OFFSET;
-  const presenceLine = ease(f, [176, 190], [0, 1]);
+  const presenceLine = ease(f, [f30(176), f30(190)], [0, 1]);
 
   // ---- compression into the pill (scene 3, local 160-200) ---------------------
-  const squeeze = ease(f, [BEATS.compress, BEATS.compress + 32], [0, 1]);
-  const bubblesOut = ease(f, [BEATS.compress + 16, BEATS.compress + 32], [0, 1]);
-  const pillIn = ease(f, [BEATS.compress + 18, BEATS.compress + 34], [0, 1]);
-  const pillScale = ease(f, [BEATS.compress + 18, BEATS.compress + 38], [1.08, 1]);
+  const squeeze = ease(f, [BEATS.compress, BEATS.compress + f30(32)], [0, 1]);
+  const bubblesOut = ease(f, [BEATS.compress + f30(16), BEATS.compress + f30(32)], [0, 1]);
+  const pillIn = ease(f, [BEATS.compress + f30(18), BEATS.compress + f30(34)], [0, 1]);
+  const pillScale = ease(f, [BEATS.compress + f30(18), BEATS.compress + f30(38)], [1.08, 1]);
 
   return (
     <AbsoluteFill>
@@ -87,10 +87,10 @@ export const ThreadStage: React.FC = () => {
               text={MAYA_FIRST}
               frame={f}
               enterAt={BEATS.mayaTyping}
-              enterDur={6}
+              enterDur={f30(6)}
               morphAt={BEATS.mayaMorph}
               wordsAt={BEATS.mayaWords}
-              wordStagger={2}
+              wordStagger={f30(2)}
               avatar={{initials: 'M'}}
               y={ROW_A_Y}
               opacity={ui}
@@ -98,11 +98,11 @@ export const ThreadStage: React.FC = () => {
             <BubbleMeta
               y={ROW_A_Y}
               time="9:02 AM"
-              timeIn={ease(f, [BEATS.mayaTime, BEATS.mayaTime + 8], [0, 1])}
-              statusIn={ease(f, [BEATS.mayaDelivered, BEATS.mayaDelivered + 6], [0, 1])}
-              seen={ease(f, [BEATS.seen, BEATS.seen + 8], [0, 1])}
-              check1={ease(f, [BEATS.mayaCheck, BEATS.mayaCheck + 10], [0, 1])}
-              check2={ease(f, [BEATS.seen + 6, BEATS.seen + 16], [0, 1])}
+              timeIn={ease(f, [BEATS.mayaTime, BEATS.mayaTime + f30(8)], [0, 1])}
+              statusIn={ease(f, [BEATS.mayaDelivered, BEATS.mayaDelivered + f30(6)], [0, 1])}
+              seen={ease(f, [BEATS.seen, BEATS.seen + f30(8)], [0, 1])}
+              check1={ease(f, [BEATS.mayaCheck, BEATS.mayaCheck + f30(10)], [0, 1])}
+              check2={ease(f, [BEATS.seen + f30(6), BEATS.seen + f30(16)], [0, 1])}
               opacity={ui}
             />
 
@@ -112,10 +112,10 @@ export const ThreadStage: React.FC = () => {
               text={AGENT_REPLY}
               frame={f}
               enterAt={BEATS.agentTyping}
-              enterDur={6}
+              enterDur={f30(6)}
               morphAt={BEATS.agentMorph}
               wordsAt={BEATS.agentWords}
-              wordStagger={2}
+              wordStagger={f30(2)}
               avatar={{initials: 'SA', dim: agentDim}}
               y={ROW_B_Y}
               opacity={ui}
@@ -123,7 +123,7 @@ export const ThreadStage: React.FC = () => {
             <BubbleMeta
               y={ROW_B_Y}
               time="9:03 AM"
-              timeIn={ease(f, [150, 158], [0, 1])}
+              timeIn={ease(f, [f30(150), f30(158)], [0, 1])}
               statusIn={0}
               seen={0}
               check1={0}
@@ -161,11 +161,11 @@ export const ThreadStage: React.FC = () => {
                   <BubbleMeta
                     y={y}
                     time={m.time}
-                    timeIn={ease(f, [t + 8, t + 14], [0, 1])}
-                    statusIn={ease(f, [t + 12, t + 18], [0, 1])}
+                    timeIn={ease(f, [t + f30(8), t + f30(14)], [0, 1])}
+                    statusIn={ease(f, [t + f30(12), t + f30(18)], [0, 1])}
                     seen={1}
-                    check1={ease(f, [t + 14, t + 24], [0, 1])}
-                    check2={ease(f, [t + 18, t + 28], [0, 1])}
+                    check1={ease(f, [t + f30(14), t + f30(24)], [0, 1])}
+                    check2={ease(f, [t + f30(18), t + f30(28)], [0, 1])}
                     opacity={ui}
                   />
                 </React.Fragment>
