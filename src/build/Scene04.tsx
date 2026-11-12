@@ -48,9 +48,11 @@ export const Scene04: React.FC = () => {
   const underline = tween(f, 1.05, 1.5);
   // 2.8 - 3.8: wordmark slides left and fades, the mark grows into an iris
   const wordOut = tween(f, 2.8, 3.2);
-  const iris = tween(f, 3.0, 3.8);
-  const markGrow = kf(f, [2.9, 3.8], [1, 7]);
-  const markFade = 1 - tween(f, 3.35, 3.75);
+  // the mark's dots swell and merge into one solid, opaque circle (the sky
+  // inside it), which then expands to fill the frame with a crisp edge
+  const markGrow = kf(f, [2.9, 3.25], [1, 1.35]);
+  const markFade = 1 - tween(f, 3.08, 3.25);
+  const iris = kf(f, [3.0, 3.25, 3.95], [0, 0.11, 1]);
   // 3.8 - 5.0: the input field rises in the sky, camera pulls back wide
   const fieldIn = tween(f, 3.8, 4.4);
 

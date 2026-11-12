@@ -8,7 +8,7 @@ import {COLORS, alpha} from '../theme';
 export const Sweep: React.FC<{progress: number; width: number; color?: string; strength?: number}> = ({
   progress,
   width,
-  color = COLORS.lime,
+  color = COLORS.white,
   strength = 0.45,
 }) => {
   if (progress <= 0 || progress >= 1) return null;

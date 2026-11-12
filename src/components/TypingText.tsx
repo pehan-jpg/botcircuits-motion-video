@@ -52,7 +52,7 @@ export const Caret: React.FC<{frame: number; height: number; typingUntil?: numbe
   frame,
   height,
   typingUntil = -1,
-  color = COLORS.lime,
+  color = COLORS.inkNavy,
   opacity = 1,
 }) => {
   const period = sec(1);

@@ -58,6 +58,12 @@ export const GChat: React.FC<G> = (p) => (
     <path d="M8.5 9.5h.01M12 9.5h.01M15.5 9.5h.01" strokeWidth={2.8} />
   </Svg>
 );
+/** Chat bubble outline without dots (dots are animated separately). */
+export const GChatBubble: React.FC<G> = (p) => (
+  <Svg {...p}>
+    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A1.5 1.5 0 0 1 4 14.5z" />
+  </Svg>
+);
 export const GShieldCheck: React.FC<G> = (p) => (
   <Svg {...p}>
     <path d="M12 2.8l7.5 3v5.6c0 4.6-3.2 8.3-7.5 9.8-4.3-1.5-7.5-5.2-7.5-9.8V5.8z" />

@@ -20,7 +20,8 @@ export const LogoTile: React.FC<{
   badgeDraw?: number;
   children?: React.ReactNode; // custom glyph instead of a logo
   logoScale?: number;
-}> = ({name, cx, cy, size = 140, scale = 1, opacity = 1, glow = 0, glowColor = COLORS.white, badge = 0, badgeDraw = 1, children, logoScale = 0.5}) => (
+  rotate?: number;
+}> = ({name, cx, cy, size = 140, scale = 1, opacity = 1, glow = 0, glowColor = COLORS.white, badge = 0, badgeDraw = 1, children, logoScale = 0.5, rotate = 0}) => (
   <div
     style={{
       position: 'absolute',
@@ -29,7 +30,7 @@ export const LogoTile: React.FC<{
       width: size,
       height: size,
       opacity,
-      transform: `scale(${scale})`,
+      transform: `scale(${scale}) rotate(${rotate}deg)`,
     }}
   >
     {glow > 0 ? (

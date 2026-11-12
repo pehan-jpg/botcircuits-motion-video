@@ -71,11 +71,11 @@ export const Cursor: React.FC<{
             key={c}
             style={{
               position: 'absolute',
-              left: p.x - 50,
-              top: p.y - 50,
-              width: 100,
-              height: 100,
-              borderRadius: 50,
+              left: p.x - 75,
+              top: p.y - 75,
+              width: 150,
+              height: 150,
+              borderRadius: 75,
               background: `radial-gradient(circle, ${alpha(rippleColor, 0)} 40%, ${alpha(rippleColor, 0.55)} 62%, ${alpha(rippleColor, 0)} 72%)`,
               opacity: (1 - kf(frame, [c, c + 0.55], [0, 1])) * opacity,
               transform: `scale(${kf(frame, [c, c + 0.55], [0.2, 1.6])})`,
@@ -84,8 +84,8 @@ export const Cursor: React.FC<{
         ) : null,
       )}
       <svg
-        width={60}
-        height={60}
+        width={90}
+        height={90}
         viewBox="0 0 30 30"
         style={{
           position: 'absolute',

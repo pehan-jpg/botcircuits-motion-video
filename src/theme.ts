@@ -117,3 +117,13 @@ export const press = (frame: number, at: number): number => kf(frame, [at, at + 
 /** Pop with overshoot (tiles and logos only): 0 -> over -> 1. */
 export const popIn = (frame: number, at: number, dur = 0.35, over = 1.04): number =>
   kf(frame, [at, at + dur * 0.65, at + dur], [0, over, 1]);
+
+/** Ease-in-out for camera travel (1.2 - 1.6 s moves). */
+export const EASE_IO = Easing.bezier(0.65, 0, 0.35, 1);
+export const kfIO = (frame: number, seconds: readonly number[], values: readonly number[]): number =>
+  interpolate(frame, seconds.map(sec), values as number[], {easing: EASE_IO, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+/** Gentle idle bob: 6px, 3 s loop. */
+export const bob = (frame: number, phase = 0, amp = 6): number => amp * Math.sin((frame / sec(3)) * Math.PI * 2 + phase);
+/** Linear (no easing) interpolation in seconds, clamped. */
+export const lin = (frame: number, seconds: readonly number[], values: readonly number[]): number =>
+  interpolate(frame, seconds.map(sec), values as number[], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});

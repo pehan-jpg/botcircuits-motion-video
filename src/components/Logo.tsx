@@ -37,32 +37,30 @@ export const Lockup: React.FC<{markHeight: number; markOpacity?: number; wordOpa
   </div>
 );
 
-/** The AI agent: always lime, with the logo mark. */
-export const AgentAvatar: React.FC<{size: number; ring?: boolean; style?: React.CSSProperties}> = ({
-  size,
-  ring = false,
-  style,
-}) => (
+/** The AI agent: always a white orb/avatar with the ink mark. */
+export const AgentAvatar: React.FC<{size: number; dark?: boolean; style?: React.CSSProperties}> = ({size, dark = false, style}) => (
   <div
     style={{
       width: size,
       height: size,
       borderRadius: size / 2,
-      background: COLORS.lime,
+      background: COLORS.white,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      boxShadow: ring ? `0 0 0 ${Math.max(3, size * 0.04)}px ${COLORS.white}, 0 18px 50px rgba(11,13,12,0.18)` : 'none',
+      boxShadow: dark
+        ? `0 0 0 ${Math.max(1.5, size * 0.012)}px ${COLORS.periwinkle}, 0 0 ${size * 0.5}px rgba(255,255,255,0.3)`
+        : `0 0 0 ${Math.max(1.5, size * 0.012)}px ${COLORS.periwinkle}, 0 ${size * 0.08}px ${size * 0.25}px rgba(13,18,36,0.18)`,
       flexShrink: 0,
       ...style,
     }}
   >
-    <LogoMark height={size * 0.56} />
+    <LogoMark height={size * 0.54} />
   </div>
 );
 
-/** A human: always ink with white initials. */
-export const HumanAvatar: React.FC<{size: number; initials: string}> = ({size, initials}) => (
+/** A human: always ink with white initials (thin white border on dark backgrounds). */
+export const HumanAvatar: React.FC<{size: number; initials: string; dark?: boolean}> = ({size, initials, dark = false}) => (
   <div
     style={{
       width: size,
@@ -70,6 +68,8 @@ export const HumanAvatar: React.FC<{size: number; initials: string}> = ({size, i
       borderRadius: size / 2,
       background: COLORS.ink,
       color: COLORS.white,
+      border: dark ? `2px solid ${COLORS.white}` : 'none',
+      boxSizing: 'border-box',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

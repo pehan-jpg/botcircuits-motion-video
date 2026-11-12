@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {Camera, cameraTransform} from '../camera';
-import {kf} from '../theme';
+import {kfIO} from '../theme';
 import {WIDTH, HEIGHT} from '../timeline';
 import {Pt} from './StrokeLine';
 
@@ -11,10 +11,10 @@ export const IDENTITY: Camera = {x: WIDTH / 2, y: HEIGHT / 2, scale: 1, rotation
 export type CamKeys = {t: number[]; x: number[]; y: number[]; s: number[]; r?: {t: number[]; v: number[]}};
 
 export const camAt = (frame: number, k: CamKeys): Camera => ({
-  x: kf(frame, k.t, k.x),
-  y: kf(frame, k.t, k.y),
-  scale: kf(frame, k.t, k.s),
-  rotation: k.r ? kf(frame, k.r.t, k.r.v) : 0,
+  x: kfIO(frame, k.t, k.x),
+  y: kfIO(frame, k.t, k.y),
+  scale: kfIO(frame, k.t, k.s),
+  rotation: k.r ? kfIO(frame, k.r.t, k.r.v) : 0,
 });
 
 /** World -> screen for a camera (matches cameraTransform). */

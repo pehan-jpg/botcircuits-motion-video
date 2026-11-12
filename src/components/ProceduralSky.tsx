@@ -5,10 +5,17 @@ import {Camera} from '../camera';
 import {Grain} from './Atmosphere';
 import {sec} from '../timeline';
 
+const rgb = (hex: string) => {
+  const n = parseInt(hex.slice(1), 16);
+  return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+};
+
 /**
- * Soft cloud band from SVG feTurbulence (baseFrequency ~0.008, 4 octaves),
- * rendered at half resolution and scaled 2x (so the 20px blur reads as 40px).
- * Drifts horizontally via transform.
+ * Smooth cloud band from SVG feTurbulence (baseFrequency 0.004, 5 octaves,
+ * 60px blur at full resolution). Rendered at quarter resolution and scaled
+ * 4x for speed. No compositing against the rect (that caused hard edges);
+ * the band is faded top and bottom with a CSS mask and is wider than the
+ * frame, so no rectangular edge is ever visible.
  */
 export const CloudLayer: React.FC<{
   id: string;
@@ -19,43 +26,42 @@ export const CloudLayer: React.FC<{
   opacity: number;
   dx: number; // horizontal offset (px)
   rim?: string; // optional light catching the lower edges
-}> = ({id, seed, y, height, color, opacity, dx, rim}) => {
-  const W = 1300; // half-res width (2600 px on screen)
-  const H = height / 2;
-  const layer = (fill: string, fid: string) => (
-    <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}>
-      <defs>
-        <filter id={fid} x="-10%" y="-30%" width="120%" height="160%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves={4} seed={seed} />
-          <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2.6 0 0 0 -1.15" />
-          <feGaussianBlur stdDeviation={24} />
-          <feComposite in2="SourceGraphic" operator="in" />
-        </filter>
-        <linearGradient id={`${fid}-m`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#fff" stopOpacity={0} />
-          <stop offset="0.35" stopColor="#fff" stopOpacity={1} />
-          <stop offset="0.7" stopColor="#fff" stopOpacity={1} />
-          <stop offset="1" stopColor="#fff" stopOpacity={0} />
-        </linearGradient>
-      </defs>
-      <rect width={W} height={H} fill={fill} filter={`url(#${fid})`} mask={undefined} />
-    </svg>
-  );
+  density?: number; // 0.8 - 1.4
+}> = ({id, seed, y, height, color, opacity, dx, rim, density = 1}) => {
+  const Q = 4;
+  const W = 3200 / Q;
+  const H = height / Q;
+  const layer = (hex: string, fid: string) => {
+    const [r, g, b] = rgb(hex);
+    return (
+      <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
+        <defs>
+          <filter id={fid} x="0" y="0" width="100%" height="100%" filterUnits="objectBoundingBox" colorInterpolationFilters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency={0.004 * Q} numOctaves={5} seed={seed} />
+            <feColorMatrix type="matrix" values={`0 0 0 0 ${r}  0 0 0 0 ${g}  0 0 0 0 ${b}  ${2.4 * density} 0 0 0 ${-0.95 * density}`} />
+            <feGaussianBlur stdDeviation={60 / Q} />
+          </filter>
+        </defs>
+        <rect width={W} height={H} filter={`url(#${fid})`} />
+      </svg>
+    );
+  };
+  const mask = 'linear-gradient(180deg, transparent 0%, #000 28%, #000 72%, transparent 100%)';
   return (
     <div
       style={{
         position: 'absolute',
-        left: -340,
+        left: -640,
         top: y,
         width: W,
         height: H,
         transformOrigin: '0 0',
-        transform: `translateX(${dx}px) scale(2)`,
-        WebkitMaskImage: 'linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%)',
-        maskImage: 'linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%)',
+        transform: `translateX(${dx}px) scale(${Q})`,
+        WebkitMaskImage: mask,
+        maskImage: mask,
       }}
     >
-      {rim ? <div style={{position: 'absolute', left: 0, top: 6, opacity: opacity * 0.9}}>{layer(rim, `${id}-rim`)}</div> : null}
+      {rim ? <div style={{position: 'absolute', left: 0, top: 3, opacity: opacity * 0.8}}>{layer(rim, `${id}-rim`)}</div> : null}
       <div style={{position: 'absolute', left: 0, top: 0, opacity}}>{layer(color, id)}</div>
     </div>
   );
@@ -112,47 +118,55 @@ export const LilacSky: React.FC<SkyProps> = ({t, cam}) => {
   return (
     <AbsoluteFill style={{background: `linear-gradient(180deg, ${COLORS.lilac} 0%, ${COLORS.lilacFloor} 100%)`, overflow: 'hidden'}}>
       <div style={{position: 'absolute', inset: 0, transform: `translate(${p1.x}px, ${p1.y}px)`}}>
-        <CloudLayer id="lil1" seed={3} y={-40} height={560} color="#fff" opacity={0.45} dx={-8 * t} />
+        <CloudLayer id="lil1" seed={3} y={-80} height={620} color="#FFFFFF" opacity={0.45} dx={-8 * t} />
       </div>
       <div style={{position: 'absolute', inset: 0, transform: `translate(${p2.x}px, ${p2.y}px)`}}>
-        <CloudLayer id="lil2" seed={11} y={340} height={520} color="#fff" opacity={0.52} dx={-18 * t - 120} />
+        <CloudLayer id="lil2" seed={11} y={300} height={600} color="#FFFFFF" opacity={0.52} dx={-16 * t - 120} />
       </div>
       <div style={{position: 'absolute', inset: 0, transform: `translate(${p3.x}px, ${p3.y}px)`}}>
-        <CloudLayer id="lil3" seed={27} y={660} height={560} color="#fff" opacity={0.6} dx={-32 * t - 240} />
+        <CloudLayer id="lil3" seed={27} y={640} height={620} color="#FFFFFF" opacity={0.6} dx={-28 * t - 240} />
       </div>
-      <Vignette color={COLORS.spinnerViolet} strength={0.16} />
+      <Vignette color={COLORS.spinnerViolet} strength={0.14} />
     </AbsoluteFill>
   );
 };
 
-/** Scene 8: dusk sky (navy -> violet -> magenta -> coral/peach horizon). */
-export const DuskSky: React.FC<SkyProps & {frame: number; bloom?: number}> = ({t, cam, frame, bloom = 0}) => {
-  const p1 = par(cam, 0.08);
-  const p2 = par(cam, 0.18);
+/** Scene 8 fallback: smooth dusk (navy -> violet -> magenta -> coral/peach). */
+export const DuskSky: React.FC<SkyProps & {frame: number; bloom?: number}> = ({t, cam, bloom = 0}) => {
+  const p1 = par(cam, 0.05);
+  const p2 = par(cam, 0.1);
   return (
     <AbsoluteFill
       style={{
-        background: `linear-gradient(180deg, ${COLORS.inkNavy} 0%, ${COLORS.deepViolet} 45%, ${COLORS.magenta} 75%, ${COLORS.coral} 92%, ${COLORS.peach} 100%)`,
+        background: `linear-gradient(180deg, ${COLORS.inkNavy} 0%, ${COLORS.deepViolet} 42%, ${COLORS.magenta} 74%, ${COLORS.coral} 91%, ${COLORS.peach} 100%)`,
         overflow: 'hidden',
       }}
     >
       <div style={{position: 'absolute', inset: 0, transform: `translate(${p1.x}px, ${p1.y}px)`}}>
-        <CloudLayer id="dusk1" seed={7} y={180} height={480} color={COLORS.deepViolet} rim={COLORS.coral} opacity={0.35} dx={-10 * t} />
+        <CloudLayer id="dusk1" seed={7} y={120} height={560} color={COLORS.deepViolet} rim={COLORS.coral} opacity={0.35} dx={-8 * t} density={0.9} />
       </div>
       <div style={{position: 'absolute', inset: 0, transform: `translate(${p2.x}px, ${p2.y}px)`}}>
-        <CloudLayer id="dusk2" seed={19} y={520} height={520} color={COLORS.deepViolet} rim={COLORS.coral} opacity={0.35} dx={-24 * t - 200} />
+        <CloudLayer id="dusk2" seed={19} y={480} height={560} color={COLORS.deepViolet} rim={COLORS.coral} opacity={0.35} dx={-18 * t - 200} density={0.9} />
       </div>
-      {/* peach light bloom opening along the horizon */}
       <AbsoluteFill
         style={{
-          background: `radial-gradient(ellipse 70% 45% at 50% 100%, ${alpha(COLORS.peach, 0.85)} 0%, ${alpha(COLORS.coral, 0.4)} 40%, ${alpha(COLORS.coral, 0)} 75%)`,
+          background: `radial-gradient(ellipse 70% 45% at 50% 100%, ${alpha(COLORS.peach, 0.8)} 0%, ${alpha(COLORS.coral, 0.35)} 40%, ${alpha(COLORS.coral, 0)} 75%)`,
           opacity: bloom,
           transformOrigin: '50% 100%',
           transform: `scaleX(${0.6 + 0.4 * bloom})`,
         }}
       />
-      <Grain frame={frame} opacity={0.04} />
-      <Vignette color={COLORS.inkNavy} strength={0.45} />
+      <Vignette color={COLORS.inkNavy} strength={0.4} />
+    </AbsoluteFill>
+  );
+};
+
+/** Fast foreground cloud wisps (third parallax layer), white at ~20%. */
+export const ForegroundClouds: React.FC<{t: number; cam: Camera; opacity?: number; y?: number; id?: string}> = ({t, cam, opacity = 0.2, y = 700, id = 'fg'}) => {
+  const p = par(cam, 1.35);
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none', transform: `translate(${p.x}px, ${p.y}px)`}}>
+      <CloudLayer id={id} seed={41} y={y} height={520} color="#FFFFFF" opacity={opacity} dx={-60 * t} density={0.85} />
     </AbsoluteFill>
   );
 };

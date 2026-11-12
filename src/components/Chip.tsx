@@ -26,10 +26,11 @@ export const CheckStroke: React.FC<{size: number; draw: number; color?: string; 
 );
 
 /** Pale mint variable chip: "Aa" glyph + monospace name, 6px radius. */
-export const VariableChip: React.FC<{name: string; fontSize?: number; glow?: number; style?: React.CSSProperties}> = ({
+export const VariableChip: React.FC<{name: string; fontSize?: number; glow?: number; height?: number; style?: React.CSSProperties}> = ({
   name,
   fontSize = 20,
   glow = 0,
+  height,
   style,
 }) => (
   <span
@@ -37,7 +38,7 @@ export const VariableChip: React.FC<{name: string; fontSize?: number; glow?: num
       display: 'inline-flex',
       alignItems: 'center',
       gap: fontSize * 0.4,
-      height: fontSize * 1.8,
+      height: height ?? fontSize * 1.8,
       padding: `0 ${fontSize * 0.55}px`,
       borderRadius: 6,
       background: COLORS.chipMint,
@@ -46,7 +47,7 @@ export const VariableChip: React.FC<{name: string; fontSize?: number; glow?: num
       fontSize,
       fontWeight: 500,
       whiteSpace: 'nowrap',
-      boxShadow: `0 0 0 ${2 + 6 * glow}px ${alpha(COLORS.lime, 0.35 * glow)}, 0 0 ${28 * glow}px ${alpha(COLORS.lime, 0.55 * glow)}`,
+      boxShadow: `0 0 0 ${2 + 6 * glow}px ${alpha(COLORS.white, 0.7 * glow)}, 0 0 ${40 * glow}px ${alpha(COLORS.chipMint, 0.9 * glow)}`,
       position: 'relative',
       overflow: 'hidden',
       ...style,

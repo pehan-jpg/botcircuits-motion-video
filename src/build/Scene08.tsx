@@ -1,193 +1,153 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
-import {COLORS, FONT_SANS, alpha, ease, kf, popIn, press, tween} from '../theme';
+import {COLORS, FONT_SANS, alpha, bob, ease, kf, kfIO, lin, popIn, press, tween} from '../theme';
 import {sec} from '../timeline';
-import {ORB_CENTER, WHATSAPP_TILE_FINAL} from '../handoff';
+import {COMET, WHATSAPP_CARD_FINAL} from '../handoff';
 import {camAt, CamKeys, toScreen, World} from '../components/Stage';
-import {DuskSky} from '../components/ProceduralSky';
+import {ForegroundClouds} from '../components/ProceduralSky';
 import {Cursor} from '../components/Cursor';
 import {Orb} from '../components/Orb';
-import {LogoTile} from '../components/LogoTile';
-import {BRAND_HEX, Logo, LogoName} from '../components/logos';
-import {StrokeLine, Pt} from '../components/StrokeLine';
+import {Logo, LogoName} from '../components/logos';
+import {BRAND_GLOW, CARD, ChannelCard, cardLift} from '../components/ChannelCard';
+import {CometSky, CometTrail, Dusk, cometOrb} from './comet';
 
-/** SCENE 8 (6 s) "Publish everywhere". */
-export const CHANNELS: LogoName[] = ['messenger', 'whatsapp', 'instagram', 'telegram', 'slack', 'webchat', 'voice', 'mobile'];
-const WA = 1;
-const CENTER = {x: 960, y: 470};
-const RX = 520;
-const RY = 320;
-const TILE = 140;
-const BUTTON = {cx: 960, cy: 650, w: 300, h: 88};
-const CLICK = 3.1;
-const POP0 = 0.8;
-
-export const channelPos = (i: number): Pt => {
-  const a = ((-90 + i * 45) * Math.PI) / 180;
-  return {x: CENTER.x + RX * Math.cos(a), y: CENTER.y + RY * Math.sin(a)};
-};
+/** SCENE 8 (7 s) "Publish everywhere": a travelling shot along tall channel cards. */
+export const CHANNELS: LogoName[] = ['whatsapp', 'messenger', 'instagram', 'telegram', 'slack', 'webchat', 'voice', 'mobile'];
+const ORB_P = {x: COMET.to.x, y: COMET.to.y};
+const BUTTON = {cx: 640, cy: 640, w: 380, h: 96};
+const CLICK = 1.75;
+const cardX = (i: number) => 1040 + i * (CARD.width + CARD.gap);
+const CARD_Y = 540;
+const RISE = CHANNELS.map((_, i) => 2.05 + i * 0.12);
+const WIDE = {x: 2235, y: 540, s: 0.45};
 
 export const S8_CAM: CamKeys = {
-  t: [0, 0.8, 2.2, 3.4, 4.6, 5.2],
-  x: [960, 960, 960, 960, 960, channelPos(WA).x],
-  y: [540, 530, 520, 520, 520, channelPos(WA).y],
-  s: [1, 1, 1.02, 1.0, 1.03, 2.4],
+  t: [0, 3.0, 5.4, 6.05, 6.45, 6.98],
+  x: [960, 960, 3300, WIDE.x, cardX(0), cardX(0)],
+  y: [540, 540, 540, WIDE.y, CARD_Y, CARD_Y],
+  s: [1, 1, 1, WIDE.s, 1.4, 1.4],
 };
+const EXPAND: [number, number] = [6.45, 6.98];
+const BADGE_IN = 6.05;
+const ROLL = [6.65, 6.77, 6.89];
 
-const SHOCK = {t0: 3.4, t1: 4.3, r0: 110, r1: 820};
-const shockR = (f: number) => ease(f, [sec(SHOCK.t0), sec(SHOCK.t1)], [SHOCK.r0, SHOCK.r1]);
-/** First second at which the shockwave reaches a distance. */
-const reachAt = (d: number) => {
-  for (let fr = sec(SHOCK.t0); fr <= sec(SHOCK.t1); fr++) if (shockR(fr) >= d) return fr / sec(1);
-  return SHOCK.t1;
-};
-
-/** Badge digit column rolling 3 -> 0 (0.12 s per step, blur while moving). */
-const BadgeDigits: React.FC<{f: number; size: number}> = ({f, size}) => {
-  const steps = [4.95, 5.07, 5.19];
-  const pos = steps.reduce((m, t) => m + tween(f, t, t + 0.1), 0); // 0..3
-  const moving = steps.some((t) => f > sec(t) && f < sec(t + 0.1));
-  const h = size * 0.95;
+/** Badge with a vertical 3 -> 0 roll (slight blur on the moving digits). */
+const Badge: React.FC<{f: number; cx: number; cy: number; size: number; scale: number}> = ({f, cx, cy, size, scale}) => {
+  const pos = ROLL.reduce((m, t) => m + tween(f, t, t + 0.09), 0);
+  const moving = ROLL.some((t) => f > sec(t) && f < sec(t + 0.09));
+  const h = size * 0.6;
   return (
-    <div style={{height: h, overflow: 'hidden', position: 'relative', width: size}}>
-      <div style={{position: 'absolute', left: 0, top: 0, width: size, transform: `translateY(${-pos * h}px)`, filter: moving ? 'blur(1.6px)' : 'none'}}>
-        {['3', '2', '1', '0'].map((d) => (
-          <div key={d} style={{height: h, lineHeight: `${h}px`, textAlign: 'center'}}>
-            {d}
-          </div>
-        ))}
+    <div
+      style={{
+        position: 'absolute',
+        left: cx - size / 2,
+        top: cy - size / 2,
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        background: COLORS.badgeRed,
+        border: `${size * 0.05}px solid ${COLORS.white}`,
+        boxSizing: 'border-box',
+        boxShadow: '0 8px 20px rgba(13,18,36,0.3)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transform: `scale(${scale})`,
+      }}
+    >
+      <div style={{height: h, overflow: 'hidden', position: 'relative', width: size * 0.6}}>
+        <div style={{position: 'absolute', left: 0, top: 0, width: '100%', transform: `translateY(${-pos * h}px)`, filter: moving ? 'blur(1.4px)' : 'none'}}>
+          {['3', '2', '1', '0'].map((d) => (
+            <div key={d} style={{height: h, lineHeight: `${h}px`, textAlign: 'center', fontFamily: FONT_SANS, fontWeight: 700, fontSize: size * 0.52, color: COLORS.white}}>
+              {d}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
-
-const Badge: React.FC<{f: number; cx: number; cy: number; size: number; scale: number}> = ({f, cx, cy, size, scale}) => (
-  <div
-    style={{
-      position: 'absolute',
-      left: cx - size / 2,
-      top: cy - size / 2,
-      width: size,
-      height: size,
-      borderRadius: size / 2,
-      background: COLORS.badgeRed,
-      border: `${Math.max(2, size * 0.06)}px solid ${COLORS.white}`,
-      boxSizing: 'border-box',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: COLORS.white,
-      fontFamily: FONT_SANS,
-      fontWeight: 700,
-      fontSize: size * 0.56,
-      boxShadow: '0 6px 16px rgba(13,18,36,0.3)',
-      transform: `scale(${scale})`,
-    }}
-  >
-    <BadgeDigits f={f} size={size * 0.62} />
-  </div>
-);
 
 export const Scene08: React.FC = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const s = f / fps;
   const cam = camAt(f, S8_CAM);
+  const c = s + (COMET.duration - 1.0); // comet clock (continues from scene 7)
+  const inComet = c < COMET.duration;
+  const comet = cometOrb(Math.min(c, COMET.duration));
 
-  const settle = tween(f, 0, 0.8);
-  const orb = {cx: 960, cy: 540 + (CENTER.y - 540) * settle, scale: ORB_CENTER.scale + (1 - ORB_CENTER.scale) * settle};
-  const ring = shockR(f);
-  const btnIn = tween(f, 1.6, 1.95);
-  const hoverGlow = tween(f, 2.75, 3.1);
-  const expand = tween(f, 5.2, 5.98);
-  const waScreen0 = toScreen(camAt(sec(5.2), S8_CAM), channelPos(WA));
-  const waSize0 = TILE * S8_CAM.s[S8_CAM.s.length - 1];
+  // activation of cards passing the centre during the travelling shot
+  const act = (i: number, fr: number) => {
+    const cm = camAt(fr, S8_CAM);
+    const sx = toScreen(cm, {x: cardX(i), y: CARD_Y}).x;
+    return Math.max(0, 1 - Math.abs(sx - 960) / 380) * (fr >= sec(2.95) && fr <= sec(5.45) ? 1 : 0);
+  };
+  const chatAt = CHANNELS.map((_, i) => {
+    for (let fr = sec(2.95); fr <= sec(5.45); fr++) if (act(i, fr) > 0.55) return fr / fps;
+    return undefined;
+  });
+  const beamHead = lin(f, [2.0, ...RISE], [ORB_P.x + 110, ...CHANNELS.map((_, i) => cardX(i))]);
+  const beamOn = tween(f, 2.0, 2.08) * (1 - tween(f, 2.95, 3.25));
+  const hover = tween(f, 1.35, 1.65);
+  const expand = kfIO(f, EXPAND, [0, 1]);
+  const ex0 = camAt(sec(EXPAND[0]), S8_CAM);
+  const wa0 = toScreen(ex0, {x: cardX(0), y: CARD_Y});
+  const F = WHATSAPP_CARD_FINAL;
   const lerp = (a: number, b: number) => a + (b - a) * expand;
-  const badgeIn = popIn(f, 4.7, 0.3, 1.04);
-  const B = WHATSAPP_TILE_FINAL;
 
   return (
     <AbsoluteFill>
-      <DuskSky t={s + 0.7} cam={cam} frame={f} bloom={tween(f, 3.4, 4.8)} />
+      {inComet ? <CometSky c={c} lilacT={s + 6.7} duskT={c} cam={cam} frame={f} /> : <Dusk t={c} cam={cam} frame={f} bloom={tween(f, 2.0, 3.2) * 0.6} />}
 
       <World cam={cam}>
-        {/* glow behind the orb */}
+        {/* warm glow behind Publish */}
         <div
           style={{
             position: 'absolute',
-            left: orb.cx - 520,
-            top: orb.cy - 520,
-            width: 1040,
-            height: 1040,
+            left: BUTTON.cx - 700,
+            top: BUTTON.cy - 700,
+            width: 1400,
+            height: 1400,
             borderRadius: '50%',
-            background: `radial-gradient(circle, ${alpha(COLORS.spinnerViolet, 0.55)} 0%, ${alpha(COLORS.glowViolet, 0.25)} 35%, ${alpha(COLORS.glowViolet, 0)} 65%)`,
-            opacity: tween(f, 0, 0.8),
+            background: `radial-gradient(circle, ${alpha(COLORS.peach, 0.7)} 0%, ${alpha(COLORS.coral, 0.4)} 32%, ${alpha(COLORS.coral, 0)} 66%)`,
+            opacity: hover * (1 - 0.4 * tween(f, 2.4, 3.2)),
+            transform: `scale(${0.8 + 0.2 * hover})`,
           }}
         />
-        {CHANNELS.map((c, i) => {
-          const p = channelPos(i);
-          const t = POP0 + i * 0.1;
+        {/* cards */}
+        {CHANNELS.map((name, i) => {
+          if (i === 0 && s >= EXPAND[0]) return null;
+          const r = RISE[i];
+          if (s < r) return null;
+          const y = CARD_Y + 980 * cardLift(f, r) + bob(f, i * 0.9, 4) * tween(f, r + 0.5, r + 1);
+          const a = act(i, f);
+          const ripple = kf(f, [5.85 + i * 0.07, 5.97 + i * 0.07, 6.3 + i * 0.07], [0, 1, 0]);
+          const at = chatAt[i];
           return (
-            <StrokeLine
-              key={c}
-              curve={[CENTER, CENTER, p, p]}
-              draw={tween(f, t - 0.05, t + 0.25)}
-              color={alpha(COLORS.white, 0.3)}
-              width={2}
+            <ChannelCard
+              key={name}
+              name={name}
+              frame={f}
+              cx={cardX(i)}
+              cy={y}
+              scale={1 + 0.08 * a}
+              glow={Math.max(a, ripple)}
+              chatAt={at}
+              logoPop={at === undefined ? 1 : kf(f, [at, at + 0.12, at + 0.3], [1, 1.12, 1])}
             />
           );
         })}
-        {/* shockwave */}
-        {s > SHOCK.t0 && s < SHOCK.t1 + 0.2 ? (
-          <div
-            style={{
-              position: 'absolute',
-              left: CENTER.x - ring,
-              top: CENTER.y - ring,
-              width: ring * 2,
-              height: ring * 2,
-              borderRadius: '50%',
-              border: `4px solid ${alpha(COLORS.white, 0.75 * (1 - tween(f, SHOCK.t0 + 0.4, SHOCK.t1 + 0.2)))}`,
-              boxShadow: `0 0 40px ${alpha(COLORS.peach, 0.5 * (1 - tween(f, SHOCK.t0 + 0.4, SHOCK.t1 + 0.2)))}`,
-              boxSizing: 'border-box',
-            }}
-          />
+        {s >= BADGE_IN && s < EXPAND[0] ? (
+          <Badge f={f} cx={cardX(0) + CARD.width / 2 - 34} cy={CARD_Y - CARD.height / 2 + 34} size={72 / 1.4} scale={popIn(f, BADGE_IN, 0.3, 1.04)} />
         ) : null}
-        {CHANNELS.map((c, i) => {
-          const p = channelPos(i);
-          const t = POP0 + i * 0.1;
-          const d = Math.hypot(p.x - CENTER.x, p.y - CENTER.y);
-          const hit = reachAt(d - TILE / 2);
-          const hide = i === WA && s >= 5.2;
-          return hide ? null : (
-            <LogoTile
-              key={c}
-              name={c}
-              cx={p.x}
-              cy={p.y}
-              size={TILE}
-              scale={popIn(f, t, 0.35, 1.04) * kf(f, [hit, hit + 0.15, hit + 0.45], [1, 1.15, 1])}
-              glow={tween(f, hit, hit + 0.3) * (i === WA ? 1 : 1 - tween(f, 4.7, 5.2))}
-              glowColor={BRAND_HEX[c]}
-            />
-          );
-        })}
-        {s < 5.2 ? <Badge f={f} cx={channelPos(WA).x + 56} cy={channelPos(WA).y - 56} size={44} scale={badgeIn} /> : null}
 
-        {/* warm glow behind the button, then the Publish pill */}
-        <div
-          style={{
-            position: 'absolute',
-            left: BUTTON.cx - 360,
-            top: BUTTON.cy - 220,
-            width: 720,
-            height: 440,
-            borderRadius: '50%',
-            background: `radial-gradient(ellipse, ${alpha(COLORS.peach, 0.75)} 0%, ${alpha(COLORS.coral, 0.45)} 35%, ${alpha(COLORS.coral, 0)} 68%)`,
-            opacity: hoverGlow,
-            transform: `scale(${1 + 1.6 * tween(f, 3.4, 4.6)})`,
-          }}
-        />
+        {/* beam of light shooting right from the orb */}
+        {beamOn > 0 ? (
+          <div style={{position: 'absolute', left: ORB_P.x + 110, top: ORB_P.y - 3, width: Math.max(0, beamHead - ORB_P.x - 110), height: 6, borderRadius: 3, background: alpha(COLORS.white, 0.6), boxShadow: `0 0 24px 6px ${alpha(COLORS.white, 0.45)}`, opacity: beamOn}} />
+        ) : null}
+
+        {/* Publish button */}
         <div
           style={{
             position: 'absolute',
@@ -195,75 +155,92 @@ export const Scene08: React.FC = () => {
             top: BUTTON.cy - BUTTON.h / 2,
             width: BUTTON.w,
             height: BUTTON.h,
-            borderRadius: BUTTON.h / 2,
-            background: COLORS.white,
-            boxShadow: `0 ${16 - 10 * (1 - press(f, CLICK))}px 40px rgba(13,18,36,0.3)`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 14,
-            fontFamily: FONT_SANS,
-            fontWeight: 600,
-            fontSize: 34,
-            color: COLORS.ink,
-            opacity: btnIn,
-            transform: `translateY(${(1 - btnIn) * 20}px) scale(${press(f, CLICK)})`,
+            opacity: tween(f, 0.45, 1.0),
+            transform: `translateY(${(1 - tween(f, 0.45, 1.0)) * 24}px) scale(${press(f, CLICK)})`,
           }}
         >
-          Publish
-          <svg width={30} height={30} viewBox="0 0 24 24" fill="none" stroke={COLORS.ink} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12h13M13 6l6 6-6 6" />
-          </svg>
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: BUTTON.h / 2,
+              background: COLORS.white,
+              border: `1.5px solid ${COLORS.inkNavy}`,
+              boxSizing: 'border-box',
+              boxShadow: '0 18px 44px rgba(13,18,36,0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 16,
+              fontFamily: FONT_SANS,
+              fontWeight: 500,
+              fontSize: 36,
+              color: COLORS.inkNavy,
+            }}
+          >
+            Publish
+            <svg width={32} height={32} viewBox="0 0 24 24" fill="none" stroke={COLORS.inkNavy} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h13M13 6l6 6-6 6" />
+            </svg>
+          </div>
         </div>
-
-        <Orb cx={orb.cx} cy={orb.cy} scale={orb.scale} glow={0.6 + 0.4 * settle} pulse={tween(f, SHOCK.t0, SHOCK.t0 + 0.5)} opacity={1 - tween(f, 4.6, 4.95)} />
+        {!inComet ? <Orb cx={ORB_P.x} cy={ORB_P.y + bob(f, 0, 6)} scale={1} pulse={tween(f, 2.0, 2.5)} /> : null}
       </World>
+
+      {inComet ? (
+        <>
+          <CometTrail c={c} />
+          <Orb cx={comet.x} cy={comet.y} scale={comet.scale} light={1 - comet.k} glow={comet.k} />
+        </>
+      ) : null}
+
+      <ForegroundClouds t={s} cam={cam} opacity={0.18 * tween(f, 0, 0.8)} y={760} id="fg8" />
 
       <Cursor
         frame={f}
         keys={[
-          {t: 2.2, x: 1960, y: 1140},
-          {t: 2.85, x: BUTTON.cx + 40, y: BUTTON.cy + 14},
-          {t: 3.3, x: BUTTON.cx + 40, y: BUTTON.cy + 14},
-          {t: 3.9, x: 1560, y: 1180},
+          {t: 0.9, x: 1500, y: 1140},
+          {t: 1.4, x: BUTTON.cx + 60, y: BUTTON.cy + 16},
+          {t: 2.0, x: BUTTON.cx + 60, y: BUTTON.cy + 16},
+          {t: 2.6, x: 1200, y: 1200},
         ]}
         clicks={[CLICK]}
-        hand={[[2.7, 3.4]]}
+        hand={[[1.3, 2.05]]}
         rippleColor={COLORS.white}
-        opacity={tween(f, 2.2, 2.4) * (1 - tween(f, 3.6, 3.9))}
+        opacity={tween(f, 0.9, 1.1) * (1 - tween(f, 2.3, 2.6))}
       />
 
-      {/* WhatsApp tile expands to fill the frame (morph into scene 9) */}
-      {s >= 5.2 ? (
+      {/* WhatsApp card -> full frame (morph into scene 9) */}
+      {s >= EXPAND[0] ? (
         <>
           <div
             style={{
               position: 'absolute',
-              left: lerp(waScreen0.x - waSize0 / 2, B.x),
-              top: lerp(waScreen0.y - waSize0 / 2, B.y),
-              width: lerp(waSize0, B.width),
-              height: lerp(waSize0, B.height),
-              borderRadius: lerp(waSize0 * 0.26, B.borderRadius),
-              background: COLORS.white,
-              boxShadow: '0 30px 80px rgba(13,18,36,0.3)',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              left: lerp(waScreen0.x, B.logo.centerX) - B.logo.size / 2,
-              top: lerp(waScreen0.y, B.logo.centerY) - B.logo.size / 2,
-              width: B.logo.size,
-              height: B.logo.size,
+              left: lerp(wa0.x - (CARD.width * ex0.scale) / 2, F.x),
+              top: lerp(wa0.y - (CARD.height * ex0.scale) / 2, F.y),
+              width: lerp(CARD.width * ex0.scale, F.width),
+              height: lerp(CARD.height * ex0.scale, F.height),
+              borderRadius: lerp(CARD.radius * ex0.scale, F.borderRadius),
+              overflow: 'hidden',
+              background: `linear-gradient(160deg, #1FAF5A, #128C7E)`,
             }}
           >
-            <Logo name="whatsapp" size={B.logo.size} />
+            <div style={{position: 'absolute', inset: 0, background: COLORS.white, opacity: ease(f, [sec(EXPAND[0]), sec(EXPAND[0] + 0.35)], [0, 1])}} />
           </div>
+          {(() => {
+            const logo0 = {x: wa0.x, y: wa0.y + (-CARD.height / 2 + 70 + CARD.logoCircle / 2) * ex0.scale, size: CARD.logo * ex0.scale};
+            const size = lerp(logo0.size, F.logo.size);
+            return (
+              <div style={{position: 'absolute', left: lerp(logo0.x, F.logo.centerX) - size / 2, top: lerp(logo0.y, F.logo.centerY) - size / 2, width: size, height: size}}>
+                <Logo name="whatsapp" size={size} />
+              </div>
+            );
+          })()}
           <Badge
             f={f}
-            cx={lerp(waScreen0.x + 56 * 2.4, B.badge.centerX)}
-            cy={lerp(waScreen0.y - 56 * 2.4, B.badge.centerY)}
-            size={lerp(44 * 2.4, B.badge.size)}
+            cx={lerp(wa0.x + (CARD.width / 2 - 34) * ex0.scale, F.badge.centerX)}
+            cy={lerp(wa0.y + (-CARD.height / 2 + 34) * ex0.scale, F.badge.centerY)}
+            size={F.badge.size}
             scale={1}
           />
         </>
@@ -271,3 +248,5 @@ export const Scene08: React.FC = () => {
     </AbsoluteFill>
   );
 };
+
+export const glowColor = (n: LogoName) => BRAND_GLOW[n];
