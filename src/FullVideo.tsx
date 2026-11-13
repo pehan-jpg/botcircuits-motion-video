@@ -14,8 +14,9 @@ import {Scene06Procedures} from './scenes/Scene06Procedures';
 import {Scene07Knowledge} from './scenes/Scene07Knowledge';
 import {Scene08Simulator} from './scenes/Scene08Simulator';
 import {Scene09Publish} from './scenes/Scene09Publish';
+import {SafeAreaGuard} from './components/SafeAreaGuard';
 
-/** Scenes 1-9: 16 s problem sequence + 39.5 s build stage = 55.5 s. */
+/** Scenes 1-9: 16 s problem sequence + 42 s build stage = 58 s. */
 export const FULL_VIDEO_DURATION = PROBLEM_SEQUENCE_DURATION + BUILD7_FRAMES.total;
 
 const BUILD = [
@@ -35,7 +36,7 @@ const BUILD = [
  *    and blur-dissolve while shared elements (pill, chat card, app shell,
  *    cursor, Publish button) are handed over without a cut.
  */
-export const FullVideo: React.FC = () => {
+export const FullVideo: React.FC<{qa?: boolean}> = ({qa = false}) => {
   const {fps} = useVideoConfig();
   const t1 = dissolve();
   const t2 = dissolve();
@@ -72,6 +73,7 @@ export const FullVideo: React.FC = () => {
           </Sequence>
         )),
       )}
+      <SafeAreaGuard enabled={qa} />
     </AbsoluteFill>
   );
 };

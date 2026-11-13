@@ -46,6 +46,18 @@ const HandShapes: React.FC<{fill: string; stroke?: string; sw?: number}> = ({fil
   </g>
 );
 
+/** Closed hand (grabbing): fist with curled fingers. */
+const FistShapes: React.FC<{fill: string; stroke?: string; sw?: number}> = ({fill, stroke = 'none', sw = 0}) => (
+  <g fill={fill} stroke={stroke} strokeWidth={sw} strokeLinejoin="round">
+    <rect x="8.2" y="10.4" width="4.4" height="6" rx="2.2" />
+    <rect x="12.2" y="9.8" width="4.4" height="6.6" rx="2.2" />
+    <rect x="16.2" y="10.4" width="4.2" height="6" rx="2.1" />
+    <rect x="19.8" y="11.6" width="3.8" height="5.4" rx="1.9" />
+    <rect x="5.2" y="13.6" width="4.4" height="7.4" rx="2.2" transform="rotate(-30 7.4 17)" />
+    <rect x="7.2" y="13.4" width="16.6" height="13" rx="5.6" />
+  </g>
+);
+
 /**
  * macOS-style cursor. Moves along curved eased paths, becomes a pointing hand
  * over buttons/tiles, scales to 0.92 on click with a soft ripple at the tip.
@@ -55,13 +67,15 @@ export const Cursor: React.FC<{
   keys: CursorKey[];
   clicks?: number[]; // seconds
   hand?: [number, number][]; // seconds ranges
+  grab?: [number, number][]; // closed hand (dragging)
   opacity?: number;
   bend?: number;
   rippleColor?: string;
-}> = ({frame, keys, clicks = [], hand = [], opacity = 1, bend, rippleColor = COLORS.white}) => {
+}> = ({frame, keys, clicks = [], hand = [], grab = [], opacity = 1, bend, rippleColor = COLORS.white}) => {
   const p = cursorAt(frame, keys, bend);
   const s = frame / sec(1);
-  const h = hand.reduce((m, [a, b]) => Math.max(m, kf(frame, [a, a + 0.1, b - 0.1, b], [0, 1, 1, 0])), 0);
+  const g = grab.reduce((m, [a, b]) => Math.max(m, kf(frame, [a, a + 0.08, b - 0.08, b], [0, 1, 1, 0])), 0);
+  const h = Math.max(0, hand.reduce((m, [a, b]) => Math.max(m, kf(frame, [a, a + 0.1, b - 0.1, b], [0, 1, 1, 0])), 0) - g);
   const press = clicks.reduce((m, c) => Math.min(m, kf(frame, [c, c + 0.07, c + 0.22], [1, 0.92, 1])), 1);
   return (
     <>
@@ -98,12 +112,16 @@ export const Cursor: React.FC<{
           filter: 'drop-shadow(0 5px 8px rgba(13,18,36,0.35))',
         }}
       >
-        <g transform="translate(-3 -2)" opacity={1 - h}>
+        <g transform="translate(-3 -2)" opacity={1 - h - g}>
           <Arrow />
         </g>
         <g transform="translate(-12 -1.6)" opacity={h}>
           <HandShapes fill="none" stroke={COLORS.white} sw={3.2} />
           <HandShapes fill={COLORS.ink} />
+        </g>
+        <g transform="translate(-14 -10)" opacity={g}>
+          <FistShapes fill="none" stroke={COLORS.white} sw={3.2} />
+          <FistShapes fill={COLORS.ink} />
         </g>
       </svg>
     </>

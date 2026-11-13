@@ -40,12 +40,14 @@ const ICONS: Record<NavItem, string> = {
   Settings: 'M12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1',
 };
 
-const ROW = 48;
-const LABEL = 42;
+const ROW = 52;
+const LABEL = 24;
+const GROUP_GAP = 24;
 /** y (relative to the sidebar top) of each item's row centre. */
 export const navY = (item: NavItem) => {
-  let y = 24;
-  for (const g of GROUPS) {
+  let y = 18;
+  for (const [gi, g] of GROUPS.entries()) {
+    if (gi > 0) y += GROUP_GAP;
     y += LABEL;
     for (const it of g.items) {
       if (it === item) return y + ROW / 2;
@@ -55,7 +57,7 @@ export const navY = (item: NavItem) => {
   return y;
 };
 /** World position of a sidebar item (for the cursor). */
-export const navPoint = (item: NavItem) => ({x: SHELL.x + 120, y: SHELL.y + navY(item)});
+export const navPoint = (item: NavItem) => ({x: SHELL.x + 110, y: SHELL.y + navY(item)});
 
 /**
  * App shell frame: sidebar (with a highlight pill that slides between items)
@@ -65,11 +67,12 @@ export const navPoint = (item: NavItem) => ({x: SHELL.x + 120, y: SHELL.y + navY
 export const AppShell: React.FC<{from: NavItem; to: NavItem; slide: number; opacity?: number}> = ({from, to, slide, opacity = 1}) => {
   const pillY = navY(from) + (navY(to) - navY(from)) * slide;
   const active = slide < 0.5 ? from : to;
-  let y = 24;
+  let y = 18;
   const rows: React.ReactNode[] = [];
-  GROUPS.forEach((g) => {
+  GROUPS.forEach((g, gi) => {
+    if (gi > 0) y += GROUP_GAP;
     rows.push(
-      <div key={g.label} style={{position: 'absolute', left: 28, top: y, height: LABEL, display: 'flex', alignItems: 'center', fontSize: 28, fontWeight: 600, color: UI.text2}}>
+      <div key={g.label} style={{position: 'absolute', left: 28, top: y, height: LABEL, display: 'flex', alignItems: 'center', fontSize: 16, fontWeight: 600, letterSpacing: '0.02em', color: UI.text2}}>
         {g.label}
       </div>,
     );
@@ -77,8 +80,8 @@ export const AppShell: React.FC<{from: NavItem; to: NavItem; slide: number; opac
     g.items.forEach((it) => {
       const on = it === active;
       rows.push(
-        <div key={it} style={{position: 'absolute', left: 28, top: y, height: ROW, display: 'flex', alignItems: 'center', gap: 16, fontSize: 31, fontWeight: on ? 600 : 500, color: on ? UI.ink : '#374151', whiteSpace: 'nowrap'}}>
-          <svg width={28} height={28} viewBox="0 0 24 24" fill="none" stroke={on ? UI.ink : '#6B7280'} strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+        <div key={it} style={{position: 'absolute', left: 28, top: y, height: ROW, display: 'flex', alignItems: 'center', gap: 14, fontSize: 22, fontWeight: on ? 600 : 500, color: on ? UI.ink : '#374151', whiteSpace: 'nowrap'}}>
+          <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke={on ? UI.ink : '#6B7280'} strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
             <path d={ICONS[it]} />
           </svg>
           {it}
@@ -88,15 +91,11 @@ export const AppShell: React.FC<{from: NavItem; to: NavItem; slide: number; opac
     });
   });
   return (
-    <div style={{position: 'absolute', left: SHELL.x, top: SHELL.y, width: SHELL.width, height: SHELL.height, opacity, fontFamily: UI_FONT}}>
+    <div data-safe="app window" style={{position: 'absolute', left: SHELL.x, top: SHELL.y, width: SHELL.width, height: SHELL.height, opacity, fontFamily: UI_FONT}}>
       <div style={{position: 'absolute', inset: 0, borderRadius: 24, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: UI.shadow, overflow: 'hidden'}}>
         <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: SHELL.sidebar, background: UI.sidebar, borderRight: `1px solid ${UI.border}`}}>
           <div style={{position: 'absolute', left: 14, right: 14, top: pillY - ROW / 2, height: ROW, borderRadius: 12, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: '0 4px 12px rgba(13,18,36,0.06)'}} />
           {rows}
-          <div style={{position: 'absolute', left: 24, bottom: 22, display: 'flex', alignItems: 'center', gap: 14}}>
-            <div style={{width: 46, height: 46, borderRadius: 23, background: COLORS.ink, color: COLORS.white, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, fontSize: 24}}>B</div>
-            <span style={{fontSize: 30, fontWeight: 600, color: UI.ink, whiteSpace: 'nowrap'}}>BotCircuits Team</span>
-          </div>
         </div>
         <div style={{position: 'absolute', left: SHELL.sidebar, right: 0, top: 0, height: SHELL.header, borderBottom: `1px solid ${UI.border}`}} />
       </div>

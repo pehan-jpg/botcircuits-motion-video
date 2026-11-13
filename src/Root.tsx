@@ -18,7 +18,7 @@ const SAMPLE_LINE = 'Your tagline types out here.';
 
 export const RemotionRoot: React.FC = () => (
   <>
-    <Composition id="FullVideo" component={FullVideo} durationInFrames={FULL_VIDEO_DURATION} {...common} />
+    <Composition id="FullVideo" component={FullVideo} durationInFrames={FULL_VIDEO_DURATION} defaultProps={{qa: false}} {...common} />
     <Composition id="ProblemSequence" component={ProblemSequence} durationInFrames={PROBLEM_SEQUENCE_DURATION} {...common} />
     <Folder name="Build-scenes">
       <Composition id="Scene04Intro" component={Scene04Intro} durationInFrames={BUILD7_FRAMES.dur.s4} {...common} />

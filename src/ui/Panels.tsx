@@ -58,7 +58,7 @@ export const SourceIcon: React.FC<{kind: SourceKind; size: number}> = ({kind, si
 export const SourceRow: React.FC<{kind: SourceKind; name: string; frame: number; readyAt: number; width: number; focus?: number; dim?: number}> = ({kind, name, frame, readyAt, width, focus = 0, dim = 0}) => {
   const ready = tween(frame, readyAt, readyAt + 0.2);
   return (
-    <div style={{position: 'relative', width, height: 100, fontFamily: UI_FONT, opacity: 1 - dim}}>
+    <div data-safe="source row" style={{position: 'relative', width, height: 88, fontFamily: UI_FONT, opacity: 1 - dim}}>
       <div
         style={{
           position: 'absolute',
@@ -69,17 +69,17 @@ export const SourceRow: React.FC<{kind: SourceKind; name: string; frame: number;
           boxShadow: `0 10px 30px rgba(13,18,36,0.06), 0 0 0 ${3 * focus}px ${alpha('#7EE2B8', 0.9 * focus)}`,
         }}
       />
-      <div style={{position: 'absolute', left: 22, top: 16, width: 68, height: 68, borderRadius: 16, background: '#F4F5F7', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-        <SourceIcon kind={kind} size={68} />
+      <div style={{position: 'absolute', left: 22, top: 14, width: 60, height: 60, borderRadius: 16, background: '#F4F5F7', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <SourceIcon kind={kind} size={60} />
       </div>
-      <div style={{position: 'absolute', left: 112, top: 0, height: 100, display: 'flex', alignItems: 'center', fontSize: 31, fontWeight: 600, color: UI.ink}}>{name}</div>
-      <div style={{position: 'absolute', right: 22, top: 26, height: 48}}>
-        <div style={{position: 'absolute', right: 0, top: 0, height: 48, padding: '0 18px', borderRadius: 24, background: '#F1F2F4', color: UI.text2, display: 'flex', alignItems: 'center', gap: 10, fontSize: 28, fontWeight: 600, opacity: 1 - ready, whiteSpace: 'nowrap'}}>
-          <Spinner size={30} frame={frame} />
+      <div style={{position: 'absolute', left: 104, top: 0, height: 88, display: 'flex', alignItems: 'center', fontSize: 24, fontWeight: 600, color: UI.ink, whiteSpace: 'nowrap'}}>{name}</div>
+      <div style={{position: 'absolute', right: 22, top: 22, height: 44}}>
+        <div style={{position: 'absolute', right: 0, top: 0, height: 44, padding: '0 16px', borderRadius: 22, background: '#F1F2F4', color: UI.text2, display: 'flex', alignItems: 'center', gap: 10, fontSize: 22, fontWeight: 600, opacity: 1 - ready, whiteSpace: 'nowrap'}}>
+          <Spinner size={26} frame={frame} />
           Indexing
         </div>
-        <div style={{position: 'absolute', right: 0, top: 0, height: 48, padding: '0 18px', borderRadius: 24, background: UI.chipMint, color: UI.chipText, display: 'flex', alignItems: 'center', gap: 10, fontSize: 28, fontWeight: 600, opacity: ready, whiteSpace: 'nowrap'}}>
-          <CheckStroke size={28} draw={tween(frame, readyAt + 0.05, readyAt + 0.35)} color={UI.chipText} width={3} />
+        <div style={{position: 'absolute', right: 0, top: 0, height: 44, padding: '0 16px', borderRadius: 22, background: UI.chipMint, color: UI.chipText, display: 'flex', alignItems: 'center', gap: 10, fontSize: 22, fontWeight: 600, opacity: ready, whiteSpace: 'nowrap'}}>
+          <CheckStroke size={24} draw={tween(frame, readyAt + 0.05, readyAt + 0.35)} color={UI.chipText} width={3} />
           Ready
         </div>
       </div>
@@ -90,19 +90,19 @@ export const SourceRow: React.FC<{kind: SourceKind; name: string; frame: number;
 // ---- scene 8: test ---------------------------------------------------------------
 export const TRACE_STEPS = ['Understood request', 'Asked to verify', 'Could not verify', 'Handed over'];
 export const TracePanel: React.FC<{frame: number; ticks: number[]; width: number; height: number}> = ({frame, ticks, width, height}) => (
-  <div style={{position: 'relative', width, height, fontFamily: UI_FONT}}>
+  <div data-safe="trace panel" style={{position: 'relative', width, height, fontFamily: UI_FONT}}>
     <div style={{position: 'absolute', inset: 0, borderRadius: 22, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: UI.shadow}} />
-    <div style={{position: 'absolute', left: 32, top: 26, fontSize: 34, fontWeight: 700, color: UI.ink}}>Trace</div>
-    <div style={{position: 'absolute', left: 52, top: 110, bottom: 60, width: 3, background: UI.border}} />
+    <div style={{position: 'absolute', left: 32, top: 26, fontSize: 28, fontWeight: 700, color: UI.ink}}>Trace</div>
+    <div style={{position: 'absolute', left: 53, top: 120, height: 3 * 84, width: 3, background: UI.border}} />
     {TRACE_STEPS.map((t, i) => {
       const on = popIn(frame, ticks[i], 0.3, 1.04);
       const draw = tween(frame, ticks[i] + 0.08, ticks[i] + 0.35);
       return (
-        <div key={t} style={{position: 'absolute', left: 30, top: 100 + i * 96, height: 52, display: 'flex', alignItems: 'center', gap: 22}}>
+        <div key={t} style={{position: 'absolute', left: 30, top: 96 + i * 84, height: 52, display: 'flex', alignItems: 'center', gap: 20, whiteSpace: 'nowrap'}}>
           <div style={{width: 48, height: 48, borderRadius: 24, background: on > 0 ? '#4F7CFF' : '#F1F2F4', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: `scale(${Math.max(0.85, on)})`}}>
             {on > 0 ? <CheckStroke size={28} draw={draw} color={COLORS.white} width={3} /> : null}
           </div>
-          <span style={{fontSize: 31, fontWeight: 600, color: on > 0 ? UI.ink : '#9CA3AF', opacity: 0.4 + 0.6 * Math.min(1, on)}}>{t}</span>
+          <span style={{fontSize: 24, fontWeight: 600, color: on > 0 ? UI.ink : '#9CA3AF', opacity: 0.4 + 0.6 * Math.min(1, on)}}>{t}</span>
         </div>
       );
     })}
@@ -111,26 +111,26 @@ export const TracePanel: React.FC<{frame: number; ticks: number[]; width: number
 
 export const RESULTS = ['Verification passed', 'Card blocked', 'Handover on failure'];
 export const TestResultCard: React.FC<{frame: number; at: number; width: number}> = ({frame, at, width}) => (
-  <div style={{position: 'relative', width, height: 560, fontFamily: UI_FONT}}>
+  <div data-safe="test result" style={{position: 'relative', width, height: 500, fontFamily: UI_FONT}}>
     <div style={{position: 'absolute', inset: 0, borderRadius: 26, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: '0 40px 100px rgba(13,18,36,0.3)'}} />
-    <div style={{position: 'absolute', left: 40, top: 32, fontSize: 40, fontWeight: 700, color: UI.ink}}>Test result</div>
+    <div style={{position: 'absolute', left: 40, top: 30, fontSize: 32, fontWeight: 700, color: UI.ink}}>Test result</div>
     {RESULTS.map((r, i) => {
       const t = at + 0.3 + i * 0.2;
       const p = popIn(frame, t, 0.3, 1.03);
       return (
-        <div key={r} style={{position: 'absolute', left: 40, right: 40, top: 120 + i * 92, height: 72, display: 'flex', alignItems: 'center', justifyContent: 'space-between', opacity: Math.min(1, p), transform: `translateY(${(1 - Math.min(1, p)) * 16}px)`}}>
-          <span style={{display: 'inline-flex', alignItems: 'center', gap: 12, height: 62, padding: '0 22px', borderRadius: 31, background: '#E6EEFF', color: '#2F5BEA', fontSize: 31, fontWeight: 600}}>
-            <CheckStroke size={30} draw={tween(frame, t + 0.1, t + 0.4)} color="#2F5BEA" width={3} />
+        <div key={r} style={{position: 'absolute', left: 40, right: 40, top: 104 + i * 80, height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', opacity: Math.min(1, p), transform: `translateY(${(1 - Math.min(1, p)) * 16}px)`}}>
+          <span style={{display: 'inline-flex', alignItems: 'center', gap: 12, height: 54, padding: '0 20px', borderRadius: 27, background: '#E6EEFF', color: '#2F5BEA', fontSize: 24, fontWeight: 600, whiteSpace: 'nowrap'}}>
+            <CheckStroke size={26} draw={tween(frame, t + 0.1, t + 0.4)} color="#2F5BEA" width={3} />
             {r}
           </span>
-          <span style={{fontSize: 30, fontWeight: 600, color: '#2F5BEA'}}>Success</span>
+          <span style={{fontSize: 24, fontWeight: 600, color: '#2F5BEA'}}>Success</span>
         </div>
       );
     })}
     <div style={{position: 'absolute', left: 40, bottom: 34, display: 'flex', alignItems: 'baseline', gap: 14, fontSize: 64, fontWeight: 700, color: UI.ink}}>
       <FlipCounter value={3} at={at + 0.9} frame={frame} size={64} />
       <span>/ 3</span>
-      <span style={{fontSize: 36, fontWeight: 600, color: UI.text2}}>passed</span>
+      <span style={{fontSize: 30, fontWeight: 600, color: UI.text2}}>passed</span>
     </div>
   </div>
 );

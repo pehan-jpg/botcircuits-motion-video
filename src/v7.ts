@@ -6,7 +6,7 @@ import {sec} from './timeline';
 import {Camera} from './camera';
 
 export const OVERLAP = 0.5;
-const DUR = {s4: 3.5, s5: 7.0, s6: 10.5, s7: 8.0, s8: 6.0, s9: 7.0};
+const DUR = {s4: 4.5, s5: 7.0, s6: 10.5, s7: 9.5, s8: 6.0, s9: 7.0};
 const start = (() => {
   const o: Record<string, number> = {};
   let t = 0;
@@ -17,7 +17,7 @@ const start = (() => {
   return o as Record<keyof typeof DUR, number>;
 })();
 export const BUILD7 = {dur: DUR, start};
-export const BUILD7_TOTAL = start.s9 + DUR.s9; // 39.5 s
+export const BUILD7_TOTAL = start.s9 + DUR.s9; // 42 s
 export const BUILD7_FRAMES = {
   start: Object.fromEntries(Object.entries(start).map(([k, v]) => [k, sec(v)])) as Record<keyof typeof DUR, number>,
   dur: Object.fromEntries(Object.entries(DUR).map(([k, v]) => [k, sec(v)])) as Record<keyof typeof DUR, number>,
@@ -25,19 +25,23 @@ export const BUILD7_FRAMES = {
 };
 
 // ---------------------------------------------------------------------------
-// Stage world (scenes 5-8): chat card on the left, app shell on the right.
+// Stage world (scenes 5-8). Chat card on the left, app window on the right,
+// far enough apart that each view shows ONE card fully, with the other card
+// fully out of frame (no clipped cards). Both views are unzoomed (1.0).
 // ---------------------------------------------------------------------------
-export const CHAT = {x: 0, y: 140, width: 480, height: 800, radius: 28};
-export const SHELL = {x: 560, y: 90, width: 1400, height: 900, sidebar: 340, header: 100};
+export const SAFE = 96; // px safe margin on every side
+export const CHAT = {x: 0, y: 110, width: 640, height: 860, radius: 32};
+export const SHELL = {x: 1340, y: 100, width: 1500, height: 880, sidebar: 300, header: 88};
 export const CONTENT = {x: SHELL.x + SHELL.sidebar, y: SHELL.y + SHELL.header, width: SHELL.width - SHELL.sidebar, height: SHELL.height - SHELL.header};
-/** Camera that frames the chat card (chat active). */
-export const CHAT_VIEW: Camera = {x: 240, y: 540, scale: 1.2, rotation: 0};
-/** Camera that frames chat + shell, shell active (wide, about 70% width). */
-export const CONFIG_VIEW: Camera = {x: 980, y: 540, scale: 0.92, rotation: 0};
+/** Camera that frames the chat card. */
+export const CHAT_VIEW: Camera = {x: CHAT.x + CHAT.width / 2, y: 540, scale: 1, rotation: 0};
+/** Camera that frames the whole app window (78% of frame width). */
+export const CONFIG_VIEW: Camera = {x: SHELL.x + SHELL.width / 2, y: 540, scale: 1, rotation: 0};
+export const AGENT = 'Card Services Agent';
 
-/** Console pill (shared S4 -> S5), screen px at the S4/S5 seam. */
-export const CONSOLE_CARD = {cx: 960, cy: 540, width: 1300, height: 900};
-export const PILL_S5 = {cx: 960 - 1300 / 2 + 70 + 44, cy: 540 - 900 / 2 + 150 + 22, width: 88, height: 44};
+/** Console card (scene 5) and its pill, shared from scene 4 (screen px). */
+export const CONSOLE_CARD = {cx: 960, cy: 540, width: 1280, height: 760};
+export const PILL_S5 = {cx: 960 - 1280 / 2 + 60 + 40, cy: 540 - 760 / 2 + 136 + 20, width: 80, height: 40};
 
 /** S8 -> S9: the dark Publish button (screen px). */
 export const PUBLISH_BTN = {cx: 960, cy: 690, width: 340, height: 96};
@@ -45,13 +49,8 @@ export const PUBLISH_BTN = {cx: 960, cy: 690, width: 340, height: 96};
 // ---------------------------------------------------------------------------
 // HAND-OFF TO SCENE 10: the WhatsApp card at the last frame of scene 9.
 // ---------------------------------------------------------------------------
-export const WHATSAPP_CARD_FINAL = {
-  x: 0,
-  y: 0,
-  width: 1920,
-  height: 1080,
-  borderRadius: 0,
-  background: '#FFFFFF',
-  logo: {centerX: 960, centerY: 300, size: 160},
-  badge: {centerX: 1800, centerY: 120, size: 72},
+/** Last frame of scene 9: the WhatsApp logo alone, centred, on WhatsApp green. */
+export const WHATSAPP_FINAL = {
+  background: '#25D366',
+  logo: {centerX: 960, centerY: 540, size: 200, color: '#FFFFFF'},
 } as const;
