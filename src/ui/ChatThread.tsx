@@ -140,7 +140,6 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
             ? `linear-gradient(#F7F9F8, #F7F9F8) padding-box, linear-gradient(120deg, #6FD3A4, #CDE7FF) border-box`
             : '#EEF0F3',
           boxSizing: 'border-box',
-          overflow: 'hidden',
         }}
       >
         <div style={{position: 'absolute', left: PAD_X, top: PAD_Y - (isAgent ? 1.5 : 0), fontFamily: FONT_SANS, fontSize: FS, lineHeight: `${LH}px`, color: UI.ink, whiteSpace: 'pre'}}>
@@ -364,13 +363,13 @@ export const CONVO = {
     {from: 'agent', text: "Sorry, I can't help with that yet.", at: 5.85, time: '9:02 AM'},
   ] as Msg[],
   s6: [
-    {from: 'agent', text: "I'm sorry to hear that, Maya. Can you confirm the last four digits of the card?", at: 7.15, time: '9:05 AM'},
-    {from: 'maya', text: '4821', at: 8.25, time: '9:05 AM'},
-    {from: 'agent', text: "Thanks Maya, you're verified. I'll block your card now.", at: 8.45, time: '9:06 AM', chip: 'Card blocked', instant: true},
+    {from: 'agent', text: "I'm sorry to hear that, Maya. Can you confirm the last four digits of the card?", at: 5.95, time: '9:05 AM'},
+    {from: 'maya', text: '4821', at: 7.05, time: '9:05 AM'},
+    {from: 'agent', text: "Thanks Maya, you're verified. I'll block your card now.", at: 7.25, time: '9:06 AM', chip: 'Card blocked', instant: true},
   ] as Msg[],
   s7: [
-    {from: 'maya', text: 'When will my new card arrive?', at: 6.9, time: '9:07 AM'},
-    {from: 'agent', text: 'Your new card should arrive in 5 to 7 business days.', at: 7.1, time: '9:07 AM', source: 'Card policy.pdf'},
+    {from: 'maya', text: 'When will my new card arrive?', at: 5.95, time: '9:07 AM'},
+    {from: 'agent', text: 'Your new card should arrive in 5 to 7 business days.', at: 6.15, time: '9:07 AM', source: 'Card policy.pdf'},
   ] as Msg[],
 };
 export const past = (...lists: Msg[][]) => lists.flat().map((m) => ({...m, at: -Infinity}));

@@ -13,9 +13,9 @@ import {envelope, SceneLayerProps} from './kit';
 // end line: two centred lines at 80px (one line would be wider than the safe area)
 const FS = 80;
 const LINE_FONT = `600 ${FS}px "${UI_FAMILY}"`;
-const BREAK = TAGLINE.indexOf(', ') >= 0 ? TAGLINE.indexOf(', ') + 1 : -1;
+const BREAK = TAGLINE.indexOf('. ', TAGLINE.indexOf('. ') + 1) >= 0 ? TAGLINE.indexOf('. ', TAGLINE.indexOf('. ') + 1) + 1 : -1;
 const LINES = BREAK > 0 ? [TAGLINE.slice(0, BREAK), TAGLINE.slice(BREAK + 1)] : [TAGLINE];
-const UNDERLINE = 'a person';
+const UNDERLINE = 'everywhere';
 const TYPE_AT = 0.7;
 const PER_WORD = 0.16;
 
@@ -39,23 +39,25 @@ export const Scene13End: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const show = (k: 'bg' | 'shell' | 'fg') => layer === 'all' || layer === k;
   const {fps} = useVideoConfig();
   const s = f / fps;
-  const env = envelope(f, BUILD7.dur.s13, true, false);
+  const env = envelope(f, BUILD7.dur.s13, true, false, BUILD7.ov.s13);
   const expand = kfIO(f, [0.3, 1.0], [0, 1]);
   const orbOut = tween(f, 0.3, 0.8);
-  const lineOut = tween(f, 2.9, 3.3);
+  const lineOut = tween(f, 3.4, 3.8);
   // the ring expands and fades as the line types, then returns to flow into the symbol
-  const back = kfIO(f, [2.9, 3.2], [0, 1]);
-  const toDots = kfIO(f, [3.15, 3.7], [0, 1]);
+  const back = kfIO(f, [3.4, 3.7], [0, 1]);
+  const toDots = kfIO(f, [3.65, 4.2], [0, 1]);
   const ringR = LOOP_RING.r + 310 * expand * (1 - back);
-  const ringOp = (1 - expand) * (1 - back) + back * (1 - tween(f, 3.15, 3.3));
-  const markIn = tween(f, 3.55, 3.8);
-  const wordIn = tween(f, 3.65, 3.85);
+  const ringOp = (1 - expand) * (1 - back) + back * (1 - tween(f, 3.65, 3.8));
+  const markIn = tween(f, 4.05, 4.3);
+  const wordIn = tween(f, 4.15, 4.35);
 
   // words with their typing time
   let wi = 0;
   const lineEls = LINES.map((ln) => ln.split(' ').map((w) => ({w, i: wi++})));
   const total = wi;
   const underlineAt = TYPE_AT + total * PER_WORD + 0.1;
+  // the first word starts grey and darkens as the rest types; the final state is all ink
+  const firstDark = tween(f, TYPE_AT + PER_WORD, TYPE_AT + total * PER_WORD + 0.3);
   const ulDraw = kfIO(f, [underlineAt, underlineAt + 0.3], [0, 1]);
   // underline geometry on the line that contains it
   const ulLine = LINES.findIndex((l) => l.includes(UNDERLINE));
@@ -63,7 +65,7 @@ export const Scene13End: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const ulStart = measureText(ulText.slice(0, ulText.indexOf(UNDERLINE)), LINE_FONT, FS * 0.55);
   const ulW = measureText(UNDERLINE, LINE_FONT, FS * 0.55);
   const ulLineW = measureText(ulText, LINE_FONT, FS * 0.55);
-  const LH = 100;
+  const LH = Math.round(FS * 1.35);
   const top = 540 - (LINES.length * LH) / 2;
 
   return (
@@ -86,13 +88,13 @@ export const Scene13End: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             <div style={{position: 'absolute', left: 0, right: 0, top, height: LINES.length * LH, opacity: 1 - lineOut, filter: lineOut > 0.01 ? `blur(${14 * lineOut}px)` : undefined}}>
               {lineEls.map((ws, li) => (
                 <div key={li} style={{height: LH, display: 'flex', justifyContent: 'center', alignItems: 'center', fontFamily: UI_FONT, fontSize: FS, fontWeight: 600, letterSpacing: '-0.02em', whiteSpace: 'pre'}}>
-                  <span data-safe={`end line ${li + 1}`} style={{display: 'inline-block'}}>
+                  <span data-safe={`end line ${li + 1}`} style={{display: 'inline-block', lineHeight: `${LH}px`, padding: `${Math.round(FS * 0.3)}px 0`}}>
                   {ws.map(({w, i}, j) => {
                     const at = TYPE_AT + i * PER_WORD;
                     const vis = s >= at ? 1 : 0;
                     const dark = i === 0 ? 0 : tween(f, at, at + 0.35);
                     return (
-                      <span key={j} style={{opacity: vis, color: i === 0 ? '#9CA3AF' : `color-mix(in srgb, #0D1224 ${Math.round(100 * dark)}%, #9CA3AF)`}}>
+                      <span key={j} style={{opacity: vis, color: `color-mix(in srgb, #0D1224 ${Math.round(100 * (i === 0 ? firstDark : dark))}%, #9CA3AF)`}}>
                         {w}
                         {j < ws.length - 1 ? ' ' : ''}
                       </span>
@@ -102,7 +104,7 @@ export const Scene13End: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
                 </div>
               ))}
               {ulLine >= 0 ? (
-                <div style={{position: 'absolute', left: 960 - ulLineW / 2 + ulStart, top: ulLine * LH + LH / 2 + FS * 0.52, width: ulW * ulDraw, height: 6, borderRadius: 3, background: '#8FD03C'}} />
+                <div style={{position: 'absolute', left: 960 - ulLineW / 2 + ulStart, top: ulLine * LH + LH / 2 + FS * 0.66, width: ulW * ulDraw, height: 6, borderRadius: 3, background: '#8FD03C'}} />
               ) : null}
             </div>
           ) : null}
@@ -122,8 +124,8 @@ export const Scene13End: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             </div>
           ) : null}
           {URL ? (
-            <div data-safe="end url" style={{position: 'absolute', left: 0, right: 0, top: 540 + MARK_H / 2 + 40, textAlign: 'center', fontFamily: FONT_MONO, fontSize: 28, color: UI.text2, opacity: tween(f, 4.0, 4.3)}}>
-              {URL.slice(0, Math.max(0, Math.floor((s - 4.0) / 0.03)))}
+            <div data-safe="end url" style={{position: 'absolute', left: 0, right: 0, top: 540 + MARK_H / 2 + 40, textAlign: 'center', fontFamily: FONT_MONO, fontSize: 28, color: UI.text2, opacity: tween(f, 4.4, 4.6)}}>
+              {URL.slice(0, Math.max(0, Math.floor((s - 4.4) / 0.03)))}
             </div>
           ) : null}
         </>

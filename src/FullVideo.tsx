@@ -3,7 +3,9 @@ import {AbsoluteFill, Sequence, useVideoConfig} from 'remotion';
 import {TransitionSeries} from '@remotion/transitions';
 import {COLORS} from './theme';
 import {PROBLEM_SEQUENCE_DURATION, SCENE_DURATIONS} from './timeline';
-import {BUILD7_FRAMES} from './v7';
+import {BUILD7_FRAMES, BUILD_KEYS, BuildKey} from './v7';
+import {makeBeat} from './scenes/Beats';
+import {SceneLayerProps} from './scenes/kit';
 import {ProblemOverlays, dissolve} from './ProblemSequence';
 import {Scene01} from './scenes/Scene01';
 import {Scene02} from './scenes/Scene02';
@@ -20,21 +22,22 @@ import {Scene12Loop} from './scenes/Scene12Loop';
 import {Scene13End} from './scenes/Scene13End';
 import {SafeAreaGuard} from './components/SafeAreaGuard';
 
-/** Scenes 1-13: 16 s problem sequence + 67 s build stage = 83 s. */
+/** Scenes 1-13 with seven TextBeats: 16 s problem sequence + the build stage. */
 export const FULL_VIDEO_DURATION = PROBLEM_SEQUENCE_DURATION + BUILD7_FRAMES.total;
 
-const BUILD = [
-  {key: 's4', C: Scene04Intro},
-  {key: 's5', C: Scene05Console},
-  {key: 's6', C: Scene06Procedures},
-  {key: 's7', C: Scene07Knowledge},
-  {key: 's8', C: Scene08Simulator},
-  {key: 's9', C: Scene09Publish},
-  {key: 's10', C: Scene10WhatsApp},
-  {key: 's11', C: Scene11Voice},
-  {key: 's12', C: Scene12Loop},
-  {key: 's13', C: Scene13End},
-] as const;
+const SCENES: Partial<Record<BuildKey, React.FC<SceneLayerProps>>> = {
+  s4: Scene04Intro,
+  s5: Scene05Console,
+  s6: Scene06Procedures,
+  s7: Scene07Knowledge,
+  s8: Scene08Simulator,
+  s9: Scene09Publish,
+  s10: Scene10WhatsApp,
+  s11: Scene11Voice,
+  s12: Scene12Loop,
+  s13: Scene13End,
+};
+const BUILD = BUILD_KEYS.map((key) => ({key, C: SCENES[key] ?? makeBeat(key)}));
 
 /**
  * Main composition.
@@ -72,7 +75,7 @@ export const FullVideo: React.FC<{qa?: boolean}> = ({qa = false}) => {
         BUILD.map(({key, C}) => (
           <Sequence
             key={`${layer}-${key}`}
-            name={`Scene ${key.slice(1)} ${layer}`}
+            name={`${key[0] === 'b' ? 'Beat' : 'Scene'} ${key.slice(1)} ${layer}`}
             from={PROBLEM_SEQUENCE_DURATION + BUILD7_FRAMES.start[key]}
             durationInFrames={BUILD7_FRAMES.dur[key]}
             premountFor={fps}

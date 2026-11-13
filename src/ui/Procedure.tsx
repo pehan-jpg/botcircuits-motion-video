@@ -142,7 +142,7 @@ export const StepRow: React.FC<{r: Row; frame: number; dim: number}> = ({r, fram
     );
   }
   return (
-    <div style={{position: 'relative', height: h, opacity: vis * (1 - 0.55 * dim), fontFamily: UI_FONT, overflow: 'hidden'}}>
+    <div style={{position: 'relative', height: h, opacity: vis * (1 - 0.55 * dim), fontFamily: UI_FONT}}>
       <div style={{position: 'absolute', left: 32, top: PAD + 6, fontSize: 22, color: '#9CA3AF', fontWeight: 500}}>{r.id}</div>
       <div style={{position: 'absolute', left: 0, right: 0, top: PAD}}>{body}</div>
     </div>
@@ -157,13 +157,15 @@ export const bodyHeightAt = (sections: Section[], frame: number) =>
  * The Steps card: header (title + subtitle fully visible), sections whose
  * rows grow as they type. `active` spotlights one row (others at 45%).
  */
-export const StepsCard: React.FC<{frame: number; sections: Section[]; active?: string; spotlight?: number; skeleton?: number}> = ({frame, sections, active, spotlight = 0, skeleton = 0}) => {
+export const StepsCard: React.FC<{frame: number; sections: Section[]; active?: string; spotlight?: number; skeleton?: number; unroll?: number}> = ({frame, sections, active, spotlight = 0, skeleton = 0, unroll = 1}) => {
   const viewport = STEPS_CARD.height - STEPS_CARD.head - 24;
   const total = bodyHeightAt(sections, frame);
   const scroll = Math.max(0, total - viewport);
   return (
-    <div data-safe="steps card" style={{position: 'absolute', left: STEPS_CARD.x, top: STEPS_CARD.y, width: STEPS_CARD.width, height: STEPS_CARD.height, fontFamily: UI_FONT, color: UI.ink}}>
+    <div data-safe="steps card" style={{position: 'absolute', left: STEPS_CARD.x, top: STEPS_CARD.y, width: STEPS_CARD.width, height: STEPS_CARD.height, fontFamily: UI_FONT, color: UI.ink, clipPath: unroll < 1 ? `inset(0 0 ${(1 - unroll) * 100}% 0 round 24px)` : undefined}}>
       <div style={{position: 'absolute', inset: 0, borderRadius: UI.radius + 6, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: UI.shadow}} />
+      {/* text appears only once the card has unrolled (never clipped) */}
+      <div style={{position: 'absolute', inset: 0, opacity: unroll < 1 ? Math.max(0, (unroll - 0.85) / 0.15) : 1}}>
       <div style={{position: 'absolute', left: 32, top: 24, fontSize: 30, fontWeight: 700}}>Steps</div>
       <div style={{position: 'absolute', left: 32, top: 66, fontSize: 22, color: UI.text2, whiteSpace: 'nowrap'}}>Guide your agent with clear instructions, one step at a time.</div>
       <div style={{position: 'absolute', left: 0, right: 0, top: STEPS_CARD.head, height: 1, background: UI.border}} />
@@ -197,6 +199,7 @@ export const StepsCard: React.FC<{frame: number; sections: Section[]; active?: s
             );
           })}
         </div>
+      </div>
       </div>
     </div>
   );

@@ -2,7 +2,8 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {COLORS, alpha, kf, kfIO, popIn, tween} from '../theme';
 import {BACKDROPS} from '../handoff';
-import {BUILD7, CHAT, CHAT_VIEW, CONFIG_VIEW, CONTENT, CURSOR_S7_END, SHELL} from '../v7';
+import {BUILD7, CHAT, CHAT_VIEW, CONFIG_VIEW, CONTENT, SHELL} from '../v7';
+import {beatUnderline} from '../ui/TextBeat';
 import {camAt, CamKeys, toScreen} from '../components/Stage';
 import {CameraRig, dissolve, isPanning} from '../components/CameraRig';
 import {Backdrop} from '../components/Backdrop';
@@ -42,24 +43,24 @@ const URL = 'https://yourbank.com/help';
 
 // ---- timeline (scene seconds) ----------------------------------------------------
 const T = {
-  grab: 1.3,
-  drop: 2.1,
-  row1: 2.25,
-  addWeb: 2.85,
-  field: 3.35,
-  type: 3.45,
-  add: 4.15,
-  row2: 4.3,
-  connect: 4.7,
-  hover: 5.1,
-  pick: 5.35,
-  row3: 5.75,
+  grab: 1.2,
+  drop: 1.9,
+  row1: 2.05,
+  addWeb: 2.5,
+  field: 2.9,
+  type: 3.0,
+  add: 3.6,
+  row2: 3.75,
+  connect: 4.05,
+  hover: 4.4,
+  pick: 4.6,
+  row3: 4.95,
 };
-const READY = [T.row1 + 0.75, T.row2 + 0.7, T.row3 + 0.65];
+const READY = [T.row1 + 0.65, T.row2 + 0.65, T.row3 + 0.65];
 const ROW_IN = [T.row1, T.row2, T.row3];
 
 const CAM: CamKeys = {
-  t: [0, 6.3, 7.0, 8.15, 8.65],
+  t: [0, 5.4, 6.0, 7.2, 7.65],
   x: [CONFIG_VIEW.x, CONFIG_VIEW.x, CHAT_VIEW.x, CHAT_VIEW.x, CONFIG_VIEW.x],
   y: [540, 540, 540, 540, 540],
   s: [1, 1, 1, 1, 1],
@@ -129,10 +130,12 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
   const {fps} = useVideoConfig();
   const s = f / fps;
   const dur = BUILD7.dur.s7;
-  const env = envelope(f, dur);
+  const env = envelope(f, dur, true, true, BUILD7.ov.s7);
   const cam = camAt(f, CAM);
   const panning = isPanning((fr) => camAt(fr, CAM), f);
-  const config = kfIO(f, [6.3, 7.0, 8.15, 8.65], [1, 0, 0, 1]);
+  const config = kfIO(f, [5.4, 6.0, 7.2, 7.65], [1, 0, 0, 1]);
+  const shellIn = tween(f, 0.1, 0.55);
+  const dzMorph = kfIO(f, [0, 0.5], [0, 1]);
 
   // ---- step 1: drag a COPY of the PDF tile into the dropzone ----
   const pdfC = c(PDF_TILE);
@@ -141,10 +144,10 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
   const drag = kfIO(f, [T.grab + 0.05, T.drop], [0, 1]);
   const dragPt = cubicPoint(dragCurve, drag);
   const lift = tween(f, T.grab, T.grab + 0.15);
-  const hover = kf(f, [1.75, 1.9, T.drop + 0.05, T.drop + 0.2], [0, 1, 1, 0]);
+  const hover = kf(f, [T.drop - 0.35, T.drop - 0.2, T.drop + 0.05, T.drop + 0.2], [0, 1, 1, 0]);
   const arcDraw = tween(f, T.grab + 0.05, T.grab + 0.4);
   const arcFade = 1 - tween(f, T.drop - 0.05, T.drop + 0.25);
-  const tray = tween(f, 0.45, 0.85) * (1 - tween(f, 2.4, 2.8));
+  const tray = tween(f, 0.45, 0.85) * (1 - tween(f, 2.2, 2.6));
 
   // ---- step 2: website (click, type, Add) ----
   const fieldOpen = kfIO(f, [T.addWeb + 0.05, T.addWeb + 0.3, T.add + 0.05, T.add + 0.3], [0, 1, 1, 0]);
@@ -180,31 +183,29 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
     {t: T.connect + 0.1, ...W(c(CONNECT))},
     {t: T.hover, ...W({x: POP.x + 250, y: POP.y + 10 + 36})},
     {t: T.pick + 0.15, ...W({x: POP.x + 250, y: POP.y + 10 + 36})},
-    {t: 6.2, x: 1620, y: 1000},
-    {t: 8.75, x: 1100, y: 1000},
-    {t: 9.0, ...CURSOR_S7_END},
+    {t: 5.2, x: 1620, y: 1000},
   ];
   // shared element: the "Card policy.pdf" chip lifts from row 1 and lands as the source chip
   const msgs7 = [...past(CONVO.s5, CONVO.s6), ...CONVO.s7];
   const ans = CONVO.s7[1];
   const srcLand = lastBlockGeom(msgs7, CHAT.height, true).source;
   const srcScreen = toScreen(CHAT_VIEW, {x: CHAT.x + srcLand.x, y: CHAT.y + srcLand.y});
-  const LIFT = 6.1;
+  const LIFT = 5.2;
   const chip0 = W({x: DROP.x + 96, y: rowTop(0) + 21});
   const LAND = ans.at + ans.text.split(' ').length * 0.06 + 0.1;
   const chipKeys = [
     {t: LIFT, x: chip0.x, y: chip0.y, w: 250, o: 0},
     {t: LIFT + 0.2, x: chip0.x, y: chip0.y - 30, w: 250},
-    {t: 7.0, x: 1320, y: 640, w: 250, s: 0.95},
+    {t: 6.0, x: 1320, y: 640, w: 250, s: 0.95},
     {t: LAND - 0.15, x: 1310, y: 625, w: 250, s: 0.95},
     {t: LAND, x: srcScreen.x, y: srcScreen.y, w: 230},
     {t: LAND + 0.15, x: srcScreen.x, y: srcScreen.y, w: 230, o: 0},
   ];
   // Knowledge -> Simulator: the three rows collapse along dotted arcs into the orb, which flies to "Simulator"
   const ORB_W = {x: DROP_C.x, y: DROP.y + 40};
-  const orbPop = popIn(f, 8.65, 0.3, 1.04);
-  const collapse = (i: number) => kfIO(f, [8.8 + i * 0.1, 9.1 + i * 0.1], [0, 1]);
-  const orbFly = kfIO(f, [9.12, 9.4], [0, 1]);
+  const orbPop = popIn(f, 7.62, 0.3, 1.04);
+  const collapse = (i: number) => kfIO(f, [7.72 + i * 0.08, 7.98 + i * 0.08], [0, 1]);
+  const orbFly = kfIO(f, [8.08, 8.4], [0, 1]);
   const navW = navPoint('Simulator');
   const orbPos = {x: ORB_W.x + (navW.x - ORB_W.x) * orbFly, y: ORB_W.y + (navW.y - ORB_W.y) * orbFly - Math.sin(orbFly * Math.PI) * 60};
   const cur = s < T.grab + 0.05 ? cursorAt(f, keys) : s < T.drop ? W(dragPt) : cursorAt(f, after);
@@ -223,8 +224,10 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
             <ChatThread frame={f} msgs={[...past(CONVO.s5, CONVO.s6), ...CONVO.s7]} orbColor={1} />
           </CameraRig>
           <CameraRig cam={cam} dim={1 - config} panning={panning}>
-            <div style={{position: 'absolute', left: DROP.x - 300, top: DROP.y - 220, width: DROP.width + 600, height: 900, borderRadius: '50%', background: `radial-gradient(ellipse, ${alpha(UI.glow.knowledge, 0.45)} 0%, ${alpha(UI.glow.knowledge, 0)} 62%)`, opacity: tween(f, 1.0, 1.8)}} />
-            <AppShell from="Procedures" to="Data Sources" slide={kfIO(f, [0.05, 0.35], [0, 1])} />
+            <div style={{position: 'absolute', left: DROP.x - 300, top: DROP.y - 220, width: DROP.width + 600, height: 900, borderRadius: '50%', background: `radial-gradient(ellipse, ${alpha(UI.glow.knowledge, 0.45)} 0%, ${alpha(UI.glow.knowledge, 0)} 62%)`, opacity: tween(f, 0.4, 1.2)}} />
+            <div style={{position: 'absolute', left: 0, top: 0, opacity: shellIn, filter: shellIn < 0.99 ? `blur(${12 * (1 - shellIn)}px)` : undefined}}>
+              <AppShell from="Procedures" to="Data Sources" slide={kfIO(f, [0.15, 0.45], [0, 1])} />
+            </div>
           </CameraRig>
         </>
       ) : null}
@@ -240,10 +243,11 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
                 <span style={{color: UI.text2, fontWeight: 500}}>{ROW_IN.filter((t) => s >= t + 0.12).length === 1 ? 'source' : 'sources'}</span>
               </div>
 
-              {/* dropzone */}
+              {/* dropzone (its border is drawn from TextBeat 3's underline first) */}
               <div
                 data-safe="dropzone"
                 style={{
+                  opacity: tween(f, 0.38, 0.6),
                   position: 'absolute',
                   left: DROP.x,
                   top: DROP.y,
@@ -263,14 +267,14 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
                 <div style={{position: 'absolute', left: 0, right: 0, top: 100, textAlign: 'center', fontSize: 24, fontWeight: 500, color: UI.text2, opacity: 1 - hover}}>Drag files here, or add a source</div>
                 <div style={{position: 'absolute', left: 0, right: 0, top: 96, textAlign: 'center', fontSize: 28, fontWeight: 700, color: '#1E6A45', opacity: hover}}>Drop to add</div>
               </div>
-              <div style={{position: 'absolute', left: 0, top: 0, opacity: 1 - hover}}>
+              <div style={{position: 'absolute', left: 0, top: 0, opacity: (1 - hover) * tween(f, 0.45, 0.7)}}>
                 <Btn r={ADD_WEB} label="Add website" frame={f} pressAt={T.addWeb} icon={<SourceIcon kind="web" size={40} />} />
                 <Btn r={CONNECT} label="Connect app" frame={f} pressAt={T.connect} icon={<svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke={UI.ink} strokeWidth={2} strokeLinecap="round"><path d="M9 15l6-6M10 6l1-1a4 4 0 0 1 6 6l-1 1M14 18l-1 1a4 4 0 0 1-6-6l1-1" /></svg>} />
               </div>
 
               {/* URL field: slides open under the dropzone, then collapses */}
               {fieldOpen > 0.001 ? (
-                <div data-safe="url field" style={{position: 'absolute', left: FIELD.x, top: FIELD.y, width: FIELD.width, height: FIELD.height * fieldOpen, overflow: 'hidden', opacity: Math.min(1, fieldOpen * 1.5)}}>
+                <div data-safe="url field" style={{position: 'absolute', left: FIELD.x, top: FIELD.y, width: FIELD.width, height: FIELD.height, opacity: fieldOpen, filter: fieldOpen < 0.99 ? `blur(${8 * (1 - fieldOpen)}px)` : undefined, transform: `translateY(${-24 * (1 - fieldOpen)}px)`}}>
                   <div style={{position: 'absolute', left: 0, top: 0, width: FIELD.width, height: FIELD.height, borderRadius: 18, background: COLORS.white, border: `2px solid ${fieldFocus > 0.5 ? '#3CC37A' : UI.border}`, boxShadow: `0 0 0 ${5 * fieldFocus}px ${alpha('#3CC37A', 0.15 * fieldFocus)}`, boxSizing: 'border-box'}}>
                     <div style={{position: 'absolute', left: 18, top: 0, height: FIELD.height - 4, display: 'flex', alignItems: 'center', gap: 12, fontSize: 26, fontWeight: 500, color: UI.ink, whiteSpace: 'pre'}}>
                       <SourceIcon kind="web" size={44} />
@@ -308,7 +312,7 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
 
               {/* dotted arcs from each row into the orb */}
               {[0, 1, 2].map((i) => {
-                const d = tween(f, 8.72 + i * 0.1, 8.92 + i * 0.1) * (1 - tween(f, 9.05 + i * 0.1, 9.2 + i * 0.1));
+                const d = tween(f, 7.66 + i * 0.08, 7.84 + i * 0.08) * (1 - tween(f, 7.95 + i * 0.08, 8.1 + i * 0.08));
                 if (d <= 0) return null;
                 const r0 = {x: DROP.x + DROP.width / 2, y: rowTop(i) + ROW_H / 2};
                 const curve: Cubic = [r0, {x: r0.x + 260, y: r0.y}, {x: ORB_W.x + 260, y: ORB_W.y}, ORB_W];
@@ -377,11 +381,23 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
               ) : null}
             </div>
           </CameraRig>
-          {orbPop > 0 && s < 9.45 ? (
+          {orbPop > 0 && s < 8.45 ? (
             <CameraRig cam={cam}>
-              <Orb cx={orbPos.x} cy={orbPos.y} size={64 * (1 - 0.55 * orbFly)} scale={orbPop} frame={f} glow={tween(f, 8.9, 9.2) * (1 - orbFly)} pulse={tween(f, 9.0, 9.4)} opacity={1 - tween(f, 9.3, 9.45)} />
+              <Orb cx={orbPos.x} cy={orbPos.y} size={64 * (1 - 0.55 * orbFly)} scale={orbPop} frame={f} glow={tween(f, 7.85, 8.1) * (1 - orbFly)} pulse={tween(f, 7.95, 8.35)} opacity={1 - tween(f, 8.3, 8.45)} />
             </CameraRig>
           ) : null}
+          {s < 0.62 ? (() => {
+            const u = beatUnderline('b3');
+            const d = W({x: DROP.x, y: DROP.y});
+            const L = (a: number, b: number) => a + (b - a) * dzMorph;
+            const x = L(u.x, d.x), y = L(u.y, d.y), w = L(u.w, DROP.width), h = L(u.h, DROP.height), r = L(3, 24);
+            const dashes = tween(f, 0.2, 0.5);
+            return (
+              <svg width={1920} height={1080} style={{position: 'absolute', left: 0, top: 0, opacity: 1 - tween(f, 0.48, 0.62)}}>
+                <rect x={x} y={y} width={w} height={h} rx={r} fill={`rgba(143,208,60,${1 - dzMorph})`} stroke={`color-mix(in srgb, rgba(13,18,36,0.22) ${Math.round(100 * dzMorph)}%, #8FD03C)`} strokeWidth={3} strokeDasharray={dashes > 0 ? `${12 - 2 * dashes} ${8 * dashes}` : undefined} />
+              </svg>
+            );
+          })() : null}
           <FlyChip frame={f} keys={chipKeys} variant="pill" fontSize={22}>
             <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="#E5484D" strokeWidth={2}><path d="M6 2.8h8l4.5 4.5V20a1.2 1.2 0 0 1-1.2 1.2H6A1.2 1.2 0 0 1 4.8 20V4A1.2 1.2 0 0 1 6 2.8z" /></svg>
             Card policy.pdf
@@ -390,11 +406,11 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
             <Cursor
               frame={f}
               keys={[{t: 0, x: cur.x, y: cur.y}]}
-              clicks={[0.0, T.addWeb, T.field, T.add, T.connect, T.pick]}
-              hand={[[0, 0.25], [0.95, T.grab + 0.02], [T.addWeb - 0.25, T.addWeb + 0.2], [T.add - 0.25, T.add + 0.2], [T.connect - 0.25, T.connect + 0.2], [T.hover - 0.1, T.pick + 0.2]]}
+              clicks={[T.addWeb, T.field, T.add, T.connect, T.pick]}
+              hand={[[0.95, T.grab + 0.02], [T.addWeb - 0.25, T.addWeb + 0.2], [T.add - 0.25, T.add + 0.2], [T.connect - 0.25, T.connect + 0.2], [T.hover - 0.1, T.pick + 0.2]]}
               grab={[[T.grab, T.drop + 0.05]]}
               rippleColor={COLORS.inkNavy}
-              opacity={1 - kf(f, [6.0, 6.25, 8.65, 8.85], [0, 1, 1, 0])}
+              opacity={tween(f, 0.3, 0.55) * (1 - tween(f, 5.0, 5.25))}
             />
           ) : null}
         </>

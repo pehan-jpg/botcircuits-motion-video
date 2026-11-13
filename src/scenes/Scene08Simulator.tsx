@@ -2,23 +2,23 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {COLORS, alpha, kf, kfIO, tween} from '../theme';
 import {sec} from '../timeline';
-import {BACKDROPS, NIGHT_START_S5} from '../handoff';
-import {BUILD7, CHAT, CONFIG_VIEW, CONTENT, CURSOR_S7_END, PUBLISH_BTN, SHELL} from '../v7';
+import {BUILD7, CHAT, CONFIG_VIEW, CONTENT, PUBLISH_BTN, SHELL} from '../v7';
 import {toScreen} from '../components/Stage';
 import {CameraRig, dissolve} from '../components/CameraRig';
-import {Backdrop} from '../components/Backdrop';
-import {FallbackNight} from '../components/ProceduralSky';
+import {CreamSky} from '../components/ProceduralSky';
+import {IDENTITY} from '../components/Stage';
 import {Cursor} from '../components/Cursor';
 import {typedCount} from '../components/TypingText';
-import {AppShell, navPoint} from '../ui/AppShell';
+import {AppShell} from '../ui/AppShell';
 import {ChatThread, chatFieldPoints, Msg} from '../ui/ChatThread';
 import {PublishButton, RESULT_H, TestResultCard, TracePanel} from '../ui/Panels';
 import {UI, UI_FONT} from '../ui/tokens';
 import {CheckStroke} from '../components/Chip';
+import {beatUnderline} from '../ui/TextBeat';
 import {envelope, SceneLayerProps} from './kit';
 
 // ---- timeline (scene seconds) ----
-const NAV_CLICK = 0.35;
+const NAV_CLICK = 0.2; // the pill slides to Simulator as the page arrives (TextBeat 4 introduces it)
 const PAGE_IN: [number, number] = [0.4, 0.85];
 const FIELD_CLICK = 1.1;
 const TYPE_AT = 1.2;
@@ -33,7 +33,7 @@ const SIM_MSGS: Msg[] = [
 ];
 const TICKS = [2.4, 2.75, 4.0, 4.65];
 const RESULT_AT = 5.0;
-const TO_BUTTON: [number, number] = [6.9, 7.5];
+const TO_BUTTON: [number, number] = [99, 100]; // the Publish button now forms from TextBeat 5's underline
 
 // ---- layout (world): whole window, camera locked at 1.0 ----
 const SIM = {x: CONTENT.x + 32, y: CONTENT.y + 28, height: CONTENT.height - 56};
@@ -54,7 +54,7 @@ export const Scene08Simulator: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
   const {fps} = useVideoConfig();
   const s = f / fps;
   const dur = BUILD7.dur.s8;
-  const env = envelope(f, dur);
+  const env = envelope(f, dur, true, true, BUILD7.ov.s8);
   const pageIn = tween(f, PAGE_IN[0], PAGE_IN[1]);
   const resultIn = kfIO(f, [RESULT_AT, RESULT_AT + 0.5], [0, 1]);
   const toButton = kfIO(f, TO_BUTTON, [0, 1]);
@@ -70,19 +70,18 @@ export const Scene08Simulator: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
   const pts = chatFieldPoints(SIM.height);
   const fieldPt = W({x: SIM.x + pts.field.x, y: SIM.y + pts.field.y});
   const sendPt = W({x: SIM.x + pts.send.x, y: SIM.y + pts.send.y});
-  const navPt = W(navPoint('Simulator'));
 
   return (
     <AbsoluteFill>
       {show('bg') ? (
         <AbsoluteFill style={{opacity: env.inP, filter: env.inP < 0.99 ? `blur(${14 * (1 - env.inP)}px)` : undefined}}>
-          <Backdrop src={BACKDROPS.night5b} t={s + NIGHT_START_S5} span={8} cam={{...cam, x: 960, y: 540}} scrim="dark" pan={[4, -3]} fallback={<FallbackNight />} />
+          <CreamSky t={s} cam={IDENTITY} frame={f} />
         </AbsoluteFill>
       ) : null}
 
       {show('shell') ? (
         <CameraRig cam={cam}>
-          <div style={{position: 'absolute', left: 0, top: 0, ...dissolve(1, env.outP)}}>
+          <div style={{position: 'absolute', left: 0, top: 0, ...dissolve(tween(f, 0.1, 0.55), env.outP)}}>
             <div style={{position: 'absolute', left: TRACE.x - 200, top: TRACE.y - 180, width: TRACE_W + 400, height: 800, borderRadius: '50%', background: `radial-gradient(ellipse, ${alpha(UI.glow.testing, 0.45)} 0%, ${alpha(UI.glow.testing, 0)} 62%)`, opacity: tween(f, 2.2, 2.8)}} />
             <AppShell from="Data Sources" to="Simulator" slide={kfIO(f, [NAV_CLICK, NAV_CLICK + 0.3], [0, 1])} />
           </div>
@@ -98,7 +97,7 @@ export const Scene08Simulator: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
                 <ChatThread frame={f} msgs={SIM_MSGS} orbColor={1} x={SIM.x} y={SIM.y} height={SIM.height} draft={FIRST.slice(0, n)} focus={focus} sendPress={kf(f, [SEND, SEND + 0.07, SEND + 0.22], [0, 1, 0])} />
               </div>
               <div style={{position: 'absolute', left: TRACE.x, top: TRACE.y, opacity: 1 - 0.55 * spot}}>
-                <TracePanel frame={f} ticks={TICKS} width={TRACE_W} height={TRACE.height} />
+                <TracePanel frame={f} ticks={TICKS} width={TRACE_W} height={TRACE.height} lineOpacity={tween(f, 0.45, 0.55)} markersAt={0.5} />
               </div>
               {/* the Trace check marks fly into the result chips */}
               {[0, 1, 3].map((step, i) => {
@@ -139,13 +138,23 @@ export const Scene08Simulator: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
             </div>
           ) : null}
 
-          {/* cursor: Simulator in the sidebar, the Message field, the send arrow */}
+          {/* TextBeat 4's underline rotates vertical and becomes the Trace timeline */}
+          {s < 0.6 ? (() => {
+            const u = beatUnderline('b4');
+            const p = kfIO(f, [0, 0.5], [0, 1]);
+            const a = W({x: TRACE.x + 53 + 1.5, y: TRACE.y + 120 + 126});
+            const c0 = {x: u.x + u.w / 2, y: u.y + u.h / 2};
+            const cx = c0.x + (a.x - c0.x) * p;
+            const cy = c0.y + (a.y - c0.y) * p;
+            const len = u.w + (252 - u.w) * p;
+            const th = 6 + (3 - 6) * p;
+            return <div style={{position: 'absolute', left: cx - len / 2, top: cy - th / 2, width: len, height: th, borderRadius: th / 2, background: `color-mix(in srgb, ${UI.border} ${Math.round(100 * p)}%, #8FD03C)`, transform: `rotate(${90 * p}deg)`, opacity: 1 - tween(f, 0.5, 0.6)}} />;
+          })() : null}
+          {/* cursor: the Message field, the send arrow */}
           <Cursor
             frame={f}
             keys={[
-              {t: 0, ...CURSOR_S7_END},
-              {t: NAV_CLICK - 0.05, ...navPt},
-              {t: NAV_CLICK + 0.15, ...navPt},
+              {t: 0.5, x: 1500, y: 1000},
               {t: FIELD_CLICK - 0.05, ...fieldPt},
               {t: FIELD_CLICK + 0.15, ...fieldPt},
               {t: TYPE_AT + 0.4, x: fieldPt.x + 40, y: fieldPt.y + 110},
@@ -153,10 +162,10 @@ export const Scene08Simulator: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
               {t: SEND + 0.15, ...sendPt},
               {t: SEND + 0.8, x: 1500, y: 1000},
             ]}
-            clicks={[NAV_CLICK, FIELD_CLICK, SEND]}
-            hand={[[NAV_CLICK - 0.2, NAV_CLICK + 0.15], [FIELD_CLICK - 0.15, FIELD_CLICK + 0.15], [SEND - 0.25, SEND + 0.2]]}
+            clicks={[FIELD_CLICK, SEND]}
+            hand={[[FIELD_CLICK - 0.15, FIELD_CLICK + 0.15], [SEND - 0.25, SEND + 0.2]]}
             rippleColor={COLORS.inkNavy}
-            opacity={1 - tween(f, SEND + 0.35, SEND + 0.7)}
+            opacity={tween(f, 0.5, 0.7) * (1 - tween(f, SEND + 0.35, SEND + 0.7))}
           />
         </>
       ) : null}

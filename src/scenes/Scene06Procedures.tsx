@@ -10,6 +10,8 @@ import {Cursor} from '../components/Cursor';
 import {AppShell, navPoint} from '../ui/AppShell';
 import {ChatThread, CONVO, lastBlockGeom, past} from '../ui/ChatThread';
 import {FlyChip} from '../ui/FlyChip';
+import {RectMorph} from '../components/Morph';
+import {beatUnderline} from '../ui/TextBeat';
 import {StepsCard, STEPS_CARD, Section, rowTextAnchor, rowTextEnd} from '../ui/Procedure';
 import {UI, UI_FONT} from '../ui/tokens';
 import {envelope, SceneLayerProps} from './kit';
@@ -19,32 +21,32 @@ const VERIFIED_TEXT = "Thanks Maya, you're verified. I'll block your card now.";
 export const SECTIONS: Section[] = [
   {
     title: 'Verify the customer',
-    at: 2.2,
+    at: 1.0,
     rows: [
-      {id: '1.1', kind: 'RUN', text: 'Ask for the last four digits of the card and the date of birth. Confirm they match the account.', into: 'verified', at: 2.3},
-      {id: '1.2', kind: 'IF', cond: 'verified', condIs: 'is yes', send: VERIFIED_TEXT, at: 3.45},
-      {id: '1.3', kind: 'ELSE', send: "I can't verify you here. Let me bring in a teammate.", at: 4.05},
+      {id: '1.1', kind: 'RUN', text: 'Ask for the last four digits of the card and the date of birth. Confirm they match the account.', into: 'verified', at: 1.1},
+      {id: '1.2', kind: 'IF', cond: 'verified', condIs: 'is yes', send: VERIFIED_TEXT, at: 2.25},
+      {id: '1.3', kind: 'ELSE', send: "I can't verify you here. Let me bring in a teammate.", at: 2.85},
     ],
   },
   {
     title: 'Block the card',
-    at: 4.65,
+    at: 3.45,
     rows: [
-      {id: '2.1', kind: 'RUN', text: 'Block the card using the card system.', into: 'card_status', at: 4.75},
-      {id: '2.2', kind: 'SEND', text: 'Your card ending 4821 is blocked. A new one is on its way.', at: 5.3},
+      {id: '2.1', kind: 'RUN', text: 'Block the card using the card system.', into: 'card_status', at: 3.55},
+      {id: '2.2', kind: 'SEND', text: 'Your card ending 4821 is blocked. A new one is on its way.', at: 4.1},
     ],
   },
 ];
 const ALL_ROWS = SECTIONS.flatMap((s) => s.rows);
-const SAVE_AT = 6.0;
+const SAVE_AT = 4.8;
 export const SAVE = {x: SHELL.x + SHELL.width - 28 - 60, y: SHELL.y + SHELL.header / 2, w: 120, h: 52};
 export const TOGGLE = {x: SAVE.x - 60 - 28 - 32, y: SAVE.y};
 
 const CAM: CamKeys = {
-  t: [0, 0.6, 1.4, 6.3, 7.1, 9.5, 10.0],
-  x: [CHAT_VIEW.x, CHAT_VIEW.x, CONFIG_VIEW.x, CONFIG_VIEW.x, CHAT_VIEW.x, CHAT_VIEW.x, CONFIG_VIEW.x],
-  y: [540, 540, 540, 540, 540, 540, 540],
-  s: [1, 1, 1, 1, 1, 1, 1],
+  t: [0, 5.1, 5.9, 8.3, 8.9],
+  x: [CONFIG_VIEW.x, CONFIG_VIEW.x, CHAT_VIEW.x, CHAT_VIEW.x, CONFIG_VIEW.x],
+  y: [540, 540, 540, 540, 540],
+  s: [1, 1, 1, 1, 1],
 };
 
 /** Page header of the Procedure editor (inside the window header bar). */
@@ -79,23 +81,26 @@ export const Scene06Procedures: React.FC<SceneLayerProps> = ({layer = 'all'}) =>
   const {fps} = useVideoConfig();
   const s = f / fps;
   const dur = BUILD7.dur.s6;
-  const env = envelope(f, dur);
+  const env = envelope(f, dur, true, true, BUILD7.ov.s6);
   const cam = camAt(f, CAM);
   const panning = isPanning((fr) => camAt(fr, CAM), f);
 
-  const config = kfIO(f, [0.6, 1.4, 6.3, 7.1, 9.5, 10.0], [0, 1, 1, 0, 0, 1]);
-  const pageIn = tween(f, 1.85, 2.2); // skeleton -> live page after the click
-  const orbColor = tween(f, 6.95, 7.3);
-  const orbPulse = tween(f, 7.0, 7.6);
+  const config = kfIO(f, [5.1, 5.9, 8.3, 8.9], [1, 0, 0, 1]);
+  const shellIn = tween(f, 0.1, 0.55);
+  const pageIn = tween(f, 0.75, 1.0); // skeleton -> live page after the click
+  const unroll = kfIO(f, [0.35, 0.8], [0, 1]);
+  const ulMorph = kfIO(f, [0, 0.4], [0, 1]);
+  const orbColor = tween(f, 5.75, 6.1);
+  const orbPulse = tween(f, 5.8, 6.4);
   const active = ALL_ROWS.reduce((a, r) => (s >= r.at ? r.id : a), ALL_ROWS[0].id);
-  const spotlight = kf(f, [2.3, 2.5, rowTextEnd(ALL_ROWS[ALL_ROWS.length - 1]) + 0.2, rowTextEnd(ALL_ROWS[ALL_ROWS.length - 1]) + 0.5], [0, 1, 1, 0]);
+  const spotlight = kf(f, [1.1, 1.3, rowTextEnd(ALL_ROWS[ALL_ROWS.length - 1]) + 0.2, rowTextEnd(ALL_ROWS[ALL_ROWS.length - 1]) + 0.5], [0, 1, 1, 0]);
 
   const P = (p: {x: number; y: number}, t: number) => toScreen(camAt(sec(t), CAM), p);
-  const nav = P(navPoint('Procedures'), 1.8);
+  const nav = P(navPoint('Procedures'), 0.7);
   const save = P({x: SAVE.x, y: SAVE.y}, SAVE_AT);
-  const ds = P(navPoint('Data Sources'), 10.0);
+  const ds = P(navPoint('Data Sources'), 8.95);
   // shared element: the SEND text of step 1.2 lifts out and lands as the verified bubble
-  const LIFT = 6.2;
+  const LIFT = 5.0;
   const anchor = rowTextAnchor(SECTIONS, '1.2', sec(LIFT));
   const a0 = P({x: anchor.x - 20, y: anchor.y - 16}, LIFT);
   const msgs6 = [...past(CONVO.s5), ...CONVO.s6];
@@ -105,7 +110,7 @@ export const Scene06Procedures: React.FC<SceneLayerProps> = ({layer = 'all'}) =>
   const flyKeys = [
     {t: LIFT, x: a0.x, y: a0.y, w: anchor.w + 40, o: 0},
     {t: LIFT + 0.2, x: a0.x, y: a0.y - 30, w: anchor.w + 40},
-    {t: 7.1, x: 1300, y: 470, w: g.bubble.w, s: 0.92},
+    {t: 5.9, x: 1300, y: 470, w: g.bubble.w, s: 0.92},
     {t: LAND - 0.2, x: 1290, y: 455, w: g.bubble.w, s: 0.92},
     {t: LAND, x: land.x, y: land.y, w: g.bubble.w},
     {t: LAND + 0.12, x: land.x, y: land.y, w: g.bubble.w, o: 0},
@@ -125,8 +130,10 @@ export const Scene06Procedures: React.FC<SceneLayerProps> = ({layer = 'all'}) =>
             <ChatThread frame={f} msgs={msgs6} orbColor={orbColor} orbPulse={orbPulse} />
           </CameraRig>
           <CameraRig cam={cam} dim={1 - config} panning={panning}>
-            <div style={{position: 'absolute', left: SHELL.x - 200, top: SHELL.y - 160, width: SHELL.width + 400, height: SHELL.height + 320, borderRadius: '50%', background: `radial-gradient(ellipse, ${alpha(UI.glow.procedure, 0.4)} 0%, ${alpha(UI.glow.procedure, 0)} 62%)`, opacity: tween(f, 2.0, 2.6)}} />
-            <AppShell from="Agent" to="Procedures" slide={kfIO(f, [1.85, 2.15], [0, 1])} />
+            <div style={{position: 'absolute', left: SHELL.x - 200, top: SHELL.y - 160, width: SHELL.width + 400, height: SHELL.height + 320, borderRadius: '50%', background: `radial-gradient(ellipse, ${alpha(UI.glow.procedure, 0.4)} 0%, ${alpha(UI.glow.procedure, 0)} 62%)`, opacity: tween(f, 0.6, 1.2)}} />
+            <div style={{position: 'absolute', left: 0, top: 0, opacity: shellIn, filter: shellIn < 0.99 ? `blur(${12 * (1 - shellIn)}px)` : undefined}}>
+              <AppShell from="Agent" to="Procedures" slide={kfIO(f, [0.7, 1.0], [0, 1])} />
+            </div>
           </CameraRig>
         </>
       ) : null}
@@ -134,31 +141,34 @@ export const Scene06Procedures: React.FC<SceneLayerProps> = ({layer = 'all'}) =>
       {show('fg') ? (
         <>
           <CameraRig cam={cam} dim={1 - config} panning={panning}>
-            <div style={{position: 'absolute', left: 0, top: 0, ...dissolve(1, env.outP), opacity: (0.45 + 0.55 * pageIn) * (1 - env.outP)}}>
-              <ProcedureHeader frame={f} saveAt={SAVE_AT} />
-              <StepsCard frame={f} sections={SECTIONS} active={active} spotlight={spotlight} skeleton={1 - pageIn} />
+            <div style={{position: 'absolute', left: 0, top: 0, ...dissolve(1, env.outP), opacity: (0.6 + 0.4 * pageIn) * (1 - env.outP)}}>
+              <div style={{opacity: shellIn}}><ProcedureHeader frame={f} saveAt={SAVE_AT} /></div>
+              <StepsCard frame={f} sections={SECTIONS} active={active} spotlight={spotlight} skeleton={1 - pageIn} unroll={unroll} />
             </div>
           </CameraRig>
+          {s < 0.65 ? (
+            <RectMorph from={beatUnderline('b2')} to={{...P({x: STEPS_CARD.x, y: STEPS_CARD.y}, 0), w: STEPS_CARD.width, h: 6}} t={ulMorph} r0={3} r1={3} fill0="#8FD03C" fill1="#8FD03C" opacity={1 - tween(f, 0.45, 0.65)} />
+          ) : null}
           <FlyChip frame={f} keys={flyKeys}>{VERIFIED_TEXT}</FlyChip>
           {env.ownsShared ? (
             <Cursor
               frame={f}
               keys={[
-                {t: 1.0, x: 1500, y: 1120},
-                {t: 1.75, x: nav.x, y: nav.y},
-                {t: 1.95, x: nav.x, y: nav.y},
-                {t: 2.6, x: 1640, y: 1000},
-                {t: 5.4, x: 1660, y: 990},
-                {t: 5.9, x: save.x, y: save.y + 6},
-                {t: 6.2, x: save.x, y: save.y + 6},
-                {t: 6.7, x: 1780, y: 1010},
-                {t: 9.5, x: 1500, y: 1000},
-                {t: 10.0, x: ds.x, y: ds.y},
+                {t: 0.3, x: 1500, y: 1000},
+                {t: 0.65, x: nav.x, y: nav.y},
+                {t: 0.85, x: nav.x, y: nav.y},
+                {t: 1.4, x: 1640, y: 1000},
+                {t: 4.2, x: 1660, y: 990},
+                {t: SAVE_AT - 0.1, x: save.x, y: save.y + 6},
+                {t: SAVE_AT + 0.2, x: save.x, y: save.y + 6},
+                {t: 5.5, x: 1780, y: 1010},
+                {t: 8.4, x: 1500, y: 1000},
+                {t: 8.9, x: ds.x, y: ds.y},
               ]}
-              clicks={[1.8, SAVE_AT]}
-              hand={[[1.55, 2.05], [5.75, 6.25], [9.75, 10.0]]}
+              clicks={[0.7, SAVE_AT, 8.95]}
+              hand={[[0.5, 0.9], [SAVE_AT - 0.25, SAVE_AT + 0.25], [8.7, 9.1]]}
               rippleColor={COLORS.inkNavy}
-              opacity={tween(f, 1.0, 1.2) * (1 - kf(f, [6.35, 6.7, 9.35, 9.6], [0, 1, 1, 0]))}
+              opacity={tween(f, 0.3, 0.5) * (1 - kf(f, [5.15, 5.5, 8.3, 8.5], [0, 1, 1, 0]))}
             />
           ) : null}
         </>

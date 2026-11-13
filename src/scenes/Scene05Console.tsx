@@ -14,6 +14,8 @@ import {PetalSpinner} from '../components/PetalSpinner';
 import {ConsoleCard, ConsolePill, CONSOLE_INPUT, inputHeight, liftDuration} from '../ui/ConsoleCard';
 import {ChatThread, CONVO} from '../ui/ChatThread';
 import {UI} from '../ui/tokens';
+import {RectMorph} from '../components/Morph';
+import {beatUnderline} from '../ui/TextBeat';
 import {envelope, SceneLayerProps} from './kit';
 
 export const PROMPT = "Build an agent for card services. It checks who the customer is, blocks lost cards, and hands over to a person when it can't.";
@@ -40,12 +42,14 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const {fps} = useVideoConfig();
   const s = f / fps;
   const dur = BUILD7.dur.s5;
-  const env = envelope(f, dur);
+  const env = envelope(f, dur, true, true, BUILD7.ov.s5);
   const cam = camAt(f, CAM);
 
   const tilt = kfIO(f, [0, 0.6], [3, 0]);
-  const cardIn = tween(f, 0, 0.5);
-  const focus = tween(f, 1.0, 1.2);
+  // TextBeat 1's underline stretches into the input (lime border + glow); the card tilts in around it
+  const morph = kfIO(f, [0, 0.5], [0, 1]);
+  const cardIn = tween(f, 0.15, 0.6);
+  const focus = 1;
   const cardGone = tween(f, COLLAPSE[0] + 0.1, TRAVEL[1] + 0.15);
   const merge = kfIO(f, [COLLAPSE[0] + 0.05, TRAVEL[1]], [0, 1]);
   const collapse = kfIO(f, COLLAPSE, [0, 1]);
@@ -81,6 +85,20 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
         </AbsoluteFill>
       ) : null}
 
+      {show('fg') && s < 0.62 ? (
+        <RectMorph
+          from={beatUnderline('b1')}
+          to={{x: CARD_LEFT + CONSOLE_INPUT.x, y: CARD_TOP + CONSOLE_INPUT.y, w: CONSOLE_INPUT.width, h: CONSOLE_INPUT.lineHeight + CONSOLE_INPUT.padY * 2}}
+          t={morph}
+          r0={3}
+          r1={24}
+          fill0="#8FD03C"
+          fill1="#FFFFFF"
+          border="#8FD03C"
+          glow={`0 0 0 6px rgba(143,208,60,calc(0.16 * {t})), 0 0 28px rgba(143,208,60,0.3)`}
+          opacity={1 - tween(f, 0.5, 0.62)}
+        />
+      ) : null}
       {show('fg') ? (
         <>
           {cardGone < 1 ? (
@@ -111,7 +129,7 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
           ) : null}
           {merge < 1 ? (
             <CameraRig cam={cam}>
-              <div style={{position: 'absolute', left: PILL_S5.cx + (centre.x - PILL_S5.cx) * merge - PILL_S5.width / 2, top: PILL_S5.cy + (centre.y - PILL_S5.cy) * merge - PILL_S5.height / 2, transform: `scale(${1 - 0.6 * merge})`}}>
+              <div style={{position: 'absolute', opacity: cardIn, left: PILL_S5.cx + (centre.x - PILL_S5.cx) * merge - PILL_S5.width / 2, top: PILL_S5.cy + (centre.y - PILL_S5.cy) * merge - PILL_S5.height / 2, transform: `scale(${1 - 0.6 * merge})`}}>
                 <ConsolePill />
               </div>
             </CameraRig>

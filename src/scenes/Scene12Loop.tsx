@@ -11,6 +11,8 @@ import {GWaveform} from '../components/Glyphs';
 import {Caret} from '../components/TypingText';
 import {AppShell, navPoint} from '../ui/AppShell';
 import {UI, UI_FONT} from '../ui/tokens';
+import {LineToCircle} from '../components/Morph';
+import {beatUnderline} from '../ui/TextBeat';
 import {envelope, SceneLayerProps} from './kit';
 
 // ---- layout (screen px; the window is shown at CONFIG_VIEW, unzoomed) ----
@@ -73,9 +75,9 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const {fps} = useVideoConfig();
   const s = f / fps;
   const dur = BUILD7.dur.s12;
-  const env = envelope(f, dur);
+  const env = envelope(f, dur, true, true, BUILD7.ov.s12);
   const winIn = tween(f, 0, 0.5);
-  const panelIn = tween(f, 0.75, 1.15);
+  const panelIn = tween(f, 0.25, 0.65);
   const ui = 1 - tween(f, OUT[0], OUT[0] + 0.5);
   const camS = kfIO(f, [OUT[0] - 0.2, dur], [1, 0.96]);
   // avatar swap orb <-> N (cross rotate, 0.5 s)
@@ -88,7 +90,10 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const typed = s < SEND ? Math.max(0, Math.min(words.length, Math.floor((s - TYPE_AT) / 0.1) + 1)) : 0;
   const sent = popIn(f, SEND + 0.05, 0.3, 1.03);
   // loop ring around the header avatar, a marker travels it once: agent, person, agent
-  const ringDraw = tween(f, TAKE - 0.25, TAKE + 0.1);
+  // the dotted ring docked (dim) around the header avatar since TextBeat 7; it brightens at Take over
+  const ringDraw = s >= 0.7 ? 0.35 + 0.65 * tween(f, TAKE - 0.25, TAKE + 0.1) : 0;
+  const ulRing = kfIO(f, [0, 0.35], [0, 1]);
+  const dock = kfIO(f, [0.3, 0.72], [0, 1]);
   const marker = kfIO(f, [TAKE, BACK + 0.55], [0, 1]);
   // the ring and orb glide to the frame centre
   const glide = kfIO(f, [OUT[0] + 0.1, OUT[1] + 0.2], [0, 1]);
@@ -123,16 +128,16 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
 
             {/* conversation list (Daniel's row arrives from the call card) */}
             {CONVS.map((c, i) => {
-              const p = i === 1 ? 1 : popIn(f, 0.35 + i * 0.08, 0.3, 1.03);
+              const p = popIn(f, 0.15 + i * 0.08, 0.3, 1.03);
               if (p <= 0) return null;
-              const sel = i === 1 ? tween(f, 0.7, 0.9) : 0;
+              const sel = i === 1 ? tween(f, 0.6, 0.8) : 0;
               const resolved = i === 1 && handedBack;
               return (
                 <div key={c.name} data-safe={`conversation ${c.name}`} style={{position: 'absolute', left: LIST.x, top: LIST.y + i * (LIST.row + LIST.gap), width: LIST.width, height: LIST.row, borderRadius: 20, background: COLORS.white, border: `1px solid ${sel > 0.5 ? alpha('#23A06B', 0.5) : UI.border}`, boxShadow: sel > 0 ? `0 12px 30px rgba(13,18,36,${0.08 * sel})` : undefined, display: 'flex', alignItems: 'center', gap: 16, paddingLeft: 20, paddingRight: 20, boxSizing: 'border-box', fontFamily: UI_FONT, opacity: Math.min(1, p) * (i === 1 || s < 1.2 ? 1 : 1 - 0.55 * kf(f, [1.2, 1.4, OUT[0], OUT[0] + 0.2], [0, 1, 1, 0])), transform: `scale(${0.97 + 0.03 * Math.min(1, p)})`}}>
                   <Ink size={48} letter={c.letter} />
                   <div style={{display: 'flex', flexDirection: 'column', gap: 6, flex: 1}}>
                     <span style={{fontSize: 24, fontWeight: 600, color: UI.ink}}>{c.name}</span>
-                    <span style={{opacity: i === 1 ? tween(f, 0.5, 0.8) : 1}}>
+                    <span>
                       <StatusChip status={resolved ? 'Resolved' : c.status} />
                     </span>
                   </div>
@@ -202,6 +207,14 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             </div>
           ) : null}
 
+          {/* TextBeat 7's underline curves into a dotted ring that drifts to the header avatar */}
+          {s < 0.75 ? (() => {
+            const u = beatUnderline('b7');
+            const c0 = {x: u.x + u.w / 2, y: u.y};
+            const c = {x: c0.x + (AV.x - c0.x) * dock, y: c0.y + (AV.y - c0.y) * dock};
+            const lineAtDock = {x: u.x + (c.x - c0.x), y: u.y + (c.y - c0.y), w: u.w, h: u.h};
+            return <LineToCircle line={lineAtDock} cx={c.x} cy={c.y} r={44} t={ulRing} stroke={`color-mix(in srgb, rgba(13,18,36,0.75) ${Math.round(100 * ulRing)}%, #8FD03C)`} width={6 - 2.5 * ulRing} dash={ulRing > 0.3 ? '0.1 9' : undefined} opacity={1 - 0.65 * dock} />;
+          })() : null}
           {owns ? (
             <Cursor
               frame={f}

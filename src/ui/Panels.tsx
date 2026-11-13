@@ -89,7 +89,7 @@ export const SourceRow: React.FC<{kind: SourceKind; name: string; frame: number;
 
 // ---- scene 8: test ---------------------------------------------------------------
 export const TRACE_STEPS = ['Understood request', 'Asked to verify', 'Could not verify', 'Handed over'];
-export const TracePanel: React.FC<{frame: number; ticks: number[]; width: number; height: number}> = ({frame, ticks, width, height}) => {
+export const TracePanel: React.FC<{frame: number; ticks: number[]; width: number; height: number; lineOpacity?: number; markersAt?: number}> = ({frame, ticks, width, height, lineOpacity = 1, markersAt}) => {
   const sNow = frame / sec(1);
   const active = ticks.reduce((m, t, i) => (sNow >= t ? i : m), -1);
   // spotlight: while the sequence runs, every step except the active one sits at 45%
@@ -98,14 +98,15 @@ export const TracePanel: React.FC<{frame: number; ticks: number[]; width: number
     <div data-safe="trace panel" style={{position: 'relative', width, height, fontFamily: UI_FONT}}>
       <div style={{position: 'absolute', inset: 0, borderRadius: 22, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: UI.shadow}} />
       <div style={{position: 'absolute', left: 32, top: 26, fontSize: 28, fontWeight: 700, color: UI.ink}}>Trace</div>
-      <div style={{position: 'absolute', left: 53, top: 120, height: 3 * 84, width: 3, background: UI.border}} />
+      <div style={{position: 'absolute', left: 53, top: 120, height: 3 * 84, width: 3, background: UI.border, opacity: lineOpacity}} />
       {TRACE_STEPS.map((t, i) => {
+        const pop = markersAt === undefined ? 1 : popIn(frame, markersAt + i * 0.1, 0.3, 1.04);
         const on = popIn(frame, ticks[i], 0.3, 1.04);
         const draw = tween(frame, ticks[i] + 0.08, ticks[i] + 0.35);
         const dim = i === active ? 1 : 1 - 0.55 * spot;
         return (
           <div key={t} style={{position: 'absolute', left: 30, top: 96 + i * 84, height: 52, display: 'flex', alignItems: 'center', gap: 20, whiteSpace: 'nowrap', opacity: dim}}>
-            <div style={{width: 48, height: 48, borderRadius: 24, background: on > 0 ? '#3CC37A' : '#F1F2F4', border: on > 0 ? 'none' : `2px solid ${UI.border}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: `scale(${Math.max(0.85, on)})`}}>
+            <div style={{width: 48, height: 48, borderRadius: 24, background: on > 0 ? '#3CC37A' : '#F1F2F4', border: on > 0 ? 'none' : `2px solid ${UI.border}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: `scale(${Math.max(0.85, on) * pop})`}}>
               {on > 0 ? <CheckStroke size={28} draw={draw} color={COLORS.white} width={3} /> : null}
             </div>
             <span style={{fontSize: 24, fontWeight: 600, color: on > 0 ? UI.ink : '#9CA3AF'}}>{t}</span>

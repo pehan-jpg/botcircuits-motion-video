@@ -3,30 +3,39 @@ import {AbsoluteFill, Freeze, random, useCurrentFrame, useVideoConfig} from 'rem
 import {COLORS, FONT_SANS, kf, kfIO, tween} from '../theme';
 import {SCENE_DURATIONS} from '../timeline';
 import {PILL} from '../layout';
-import {BUILD7, PILL_S5} from '../v7';
+import {BUILD7} from '../v7';
 import {Scene03} from './Scene03';
 import {CircleReveal} from '../components/CircleReveal';
 import {CreamSky} from '../components/ProceduralSky';
 import {LogoMark, MARK_ASPECT, LOCKUP_RATIO, Wordmark, WORDMARK_ASPECT} from '../components/Logo';
-import {ConsolePill} from '../ui/ConsoleCard';
+import {Sparkle} from '../ui/ConsoleCard';
+import {beatCaretStart} from '../ui/TextBeat';
+import {UI} from '../ui/tokens';
+import {Backdrop} from '../components/Backdrop';
+import {FallbackPeriwinkle} from '../components/ProceduralSky';
+import {BACKDROPS} from '../handoff';
 import {UI_FAMILY, UI_FONT} from '../ui/tokens';
 import {measureText} from '../components/measure';
 import {IDENTITY} from '../components/Stage';
 import {SceneLayerProps} from './kit';
 
-// Title: "Introducing" / "Concierge by [lockup]". The lockup sits inline at
-// the height of the 110px line, to the right of "by".
-const L1 = {text: 'Introducing', size: 56, y: 400};
-const L2 = {size: 110, y: 560};
-const L2_FONT = `600 ${L2.size}px "${UI_FAMILY}"`;
-const MARK_H = 100;
+// Title: one line "Introducing Concierge by" + the BotCircuits lockup, all ink,
+// 84px / 600, the lockup at text height (symbol 80px), 28px gap.
+const FS = 84;
+const TITLE = 'Introducing Concierge by';
+const T_FONT = `600 ${FS}px "${UI_FAMILY}"`;
+const T_LH = Math.round(FS * 1.35);
+const T_PAD = Math.round(FS * 0.3);
+const MARK_H = 80;
 const MARK_W = MARK_H * MARK_ASPECT;
 const GAP = MARK_H * LOCKUP_RATIO.gap;
-const WORD_H = MARK_H * LOCKUP_RATIO.wordHeight;
+const WORD_H = 60; // wordmark cap height matches the 84px text
 const WORD_W = WORD_H * WORDMARK_ASPECT;
 const LOCK_W = MARK_W + GAP + WORD_W;
-const BY_GAP = 34;
-const CONCIERGE = 'Concierge';
+const BY_GAP = 28;
+const CY = 540;
+const BASELINE = CY + 31; // baseline of the 84px line centred on 540
+const WORDS = TITLE.split(' ');
 
 /**
  * Dots that flow in and merge (metaball "goo") into the symbol's ring.
@@ -66,11 +75,11 @@ export const Metaballs: React.FC<{p: number; opacity: number; cx: number; cy: nu
 };
 
 /**
- * SCENE 4 (6 s) "Introducing / Concierge by BotCircuits", cream/lilac/peach.
- * The pill from scene 3 opens a cream circle; "Introducing" resolves, then
- * "Concierge" rises letter by letter with one gradient sweep, "by" resolves,
- * dots merge into the symbol and the wordmark resolves beside it. The text
- * blurs out and drifts up while the symbol morphs into the Console pill.
+ * SCENE 4 (6 s) "Introducing Concierge by [BotCircuits]". The pill from scene 3
+ * opens a cream circle; the three words resolve one by one, dots merge into the
+ * symbol and the wordmark resolves. The text blurs out while the symbol morphs
+ * into the dark Console pill, which collapses into the lime caret that starts
+ * TextBeat 1; the backdrop dissolves to the periwinkle sky.
  */
 export const Scene04Intro: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const f = useCurrentFrame();
@@ -82,37 +91,29 @@ export const Scene04Intro: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const pulse = kf(f, [0, 0.15, 0.3], [1, 1.05, 1]);
   const reveal = tween(f, 0.12, 0.6);
   const pillOut = tween(f, 0.3, 0.7);
-  const intro = tween(f, 0.2, 0.8);
-  const by = tween(f, 1.9, 2.4);
-  const sweep = kfIO(f, [1.3, 1.9], [0, 1]);
-  const flow = kfIO(f, [2.4, 3.25], [0, 1]);
-  const blobs = kf(f, [2.4, 2.55, 3.1, 3.35], [0, 1, 1, 0]);
-  const markIn = tween(f, 3.05, 3.35);
-  const wordIn = tween(f, 3.4, 3.9);
-  const textOut = tween(f, 4.8, 5.3);
-  const markOut = tween(f, 4.95, 5.3);
-  const consoleIn = tween(f, 5.0, 5.3);
-  const rise = kfIO(f, [5.2, 5.5], [0, 1]);
+  const flow = kfIO(f, [1.6, 2.65], [0, 1]);
+  const blobs = kf(f, [1.6, 1.75, 2.5, 2.75], [0, 1, 1, 0]);
+  const markIn = tween(f, 2.45, 2.75);
+  const wordIn = tween(f, 2.7, 3.2);
+  const textOut = tween(f, 4.8, 5.2);
+  const toPill = kfIO(f, [4.85, 5.2], [0, 1]);
+  const toCaret = kfIO(f, [5.2, 5.6], [0, 1]);
+  const sky = tween(f, 4.9, 6.0);
 
-  // layout from measured text widths
-  const w2 = measureText(`${CONCIERGE} by`, L2_FONT, L2.size * 0.55);
-  const wC = measureText(CONCIERGE, L2_FONT, L2.size * 0.55);
-  const wSp = measureText(`${CONCIERGE} `, L2_FONT, L2.size * 0.55) - wC;
-  const total = w2 + BY_GAP + LOCK_W;
+  // layout from measured widths (the line is reserved at full width, so it never jumps)
+  const tw = measureText(TITLE, T_FONT, FS * 0.56);
+  const total = tw + BY_GAP + LOCK_W;
   const left = 960 - total / 2;
-  const markC = {x: left + w2 + BY_GAP + MARK_W / 2, y: L2.y};
-  const wordX = left + w2 + BY_GAP + MARK_W + GAP;
-  const letters = CONCIERGE.split('');
-  // cumulative x of each letter (prefix widths)
-  const prefix = letters.map((_, i) => measureText(CONCIERGE.slice(0, i), L2_FONT, L2.size * 0.55));
-
-  const big = {w: 120, h: 60};
-  const pw = big.w + (PILL_S5.width - big.w) * rise;
-  const ph = big.h + (PILL_S5.height - big.h) * rise;
-  const px = markC.x + (PILL_S5.cx - markC.x) * rise;
-  const py = markC.y + (PILL_S5.cy - markC.y) * rise;
-  const outStyle = (p: number): React.CSSProperties => ({opacity: 1 - p, filter: p > 0.01 ? `blur(${14 * p}px)` : undefined, transform: `translateY(${-30 * p}px)`});
-  const GRAD = 'linear-gradient(90deg, #0B3B2C 0%, #14684A 45%, #23A06B 100%)';
+  const markC = {x: left + tw + BY_GAP + MARK_W / 2, y: BASELINE - WORD_H / 2};
+  const wordX = left + tw + BY_GAP + MARK_W + GAP;
+  const prefix = WORDS.map((_, i) => measureText(WORDS.slice(0, i).join(' ') + (i > 0 ? ' ' : ''), T_FONT, FS * 0.56));
+  const caret = beatCaretStart('b1');
+  // symbol -> dark pill -> lime caret (one continuous rect)
+  const pill = {w: 120, h: 60};
+  const rw = MARK_H + (pill.w - MARK_H) * toPill + (caret.w - pill.w) * toCaret;
+  const rh = MARK_H + (pill.h - MARK_H) * toPill + (caret.h - pill.h) * toCaret;
+  const rx = markC.x + (caret.x + caret.w / 2 - markC.x) * toCaret;
+  const ry = markC.y + (caret.y - markC.y) * toCaret;
 
   return (
     <AbsoluteFill>
@@ -124,6 +125,11 @@ export const Scene04Intro: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
           <CircleReveal cx={PILL.centerX} cy={PILL.centerY} progress={reveal}>
             <CreamSky t={s} cam={IDENTITY} frame={f} />
           </CircleReveal>
+          {sky > 0 ? (
+            <AbsoluteFill style={{opacity: sky}}>
+              <Backdrop src={BACKDROPS.sky5a} t={0} span={8} cam={IDENTITY} scrim="light" fallback={<FallbackPeriwinkle t={0} cam={IDENTITY} />} />
+            </AbsoluteFill>
+          ) : null}
         </>
       ) : null}
       {show('fg') ? (
@@ -155,91 +161,42 @@ export const Scene04Intro: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             {PILL.text}
           </div>
 
-          {/* title block */}
-          <div data-safe="title block" style={{position: 'absolute', left: left - 4, top: L1.y - 40, width: total + 8, height: L2.y + L2.size / 2 + 10 - (L1.y - 40), pointerEvents: 'none'}} />
-          <div style={{position: 'absolute', left: 0, right: 0, top: L1.y - L1.size / 2, height: L1.size, display: 'flex', justifyContent: 'center', ...outStyle(textOut)}}>
-            <div style={{fontFamily: UI_FONT, fontSize: L1.size, fontWeight: 500, lineHeight: 1, color: '#6B7280', opacity: intro, filter: intro < 0.99 ? `blur(${12 * (1 - intro)}px)` : undefined, transform: `translateY(${24 * (1 - intro)}px)`, whiteSpace: 'nowrap'}}>{L1.text}</div>
-          </div>
-          <div style={{position: 'absolute', left, top: L2.y - L2.size / 2, height: L2.size, fontFamily: UI_FONT, fontSize: L2.size, fontWeight: 600, lineHeight: 1, whiteSpace: 'pre', ...outStyle(textOut)}}>
-            {letters.map((ch, i) => {
-              const p = tween(f, 0.8 + i * 0.04, 0.8 + i * 0.04 + 0.35);
-              // one soft highlight band crossing the word
-              const band = -0.3 + 1.6 * sweep;
+          {/* the title line: words resolve one by one (opacity, blur 10 -> 0, 20px rise), no clipping */}
+          <div style={{position: 'absolute', left, top: CY - T_LH / 2 - T_PAD, width: tw, height: T_LH + 2 * T_PAD, opacity: 1 - textOut, filter: textOut > 0.01 ? `blur(${14 * textOut}px)` : undefined}}>
+            <div data-safe="title" style={{position: 'absolute', left: 0, top: 0, width: tw, height: T_LH + 2 * T_PAD}} />
+            {WORDS.map((w, i) => {
+              const p = tween(f, 0.2 + i * 0.4, 0.2 + i * 0.4 + 0.5);
               return (
-                <span
-                  key={i}
-                  style={{
-                    position: 'absolute',
-                    left: prefix[i],
-                    top: 0,
-                    display: 'inline-block',
-                    opacity: p,
-                    filter: p < 0.99 ? `blur(${10 * (1 - p)}px)` : undefined,
-                    transform: `translateY(${30 * (1 - p)}px)`,
-                    backgroundImage: `linear-gradient(100deg, rgba(255,255,255,0) ${(band - 0.12) * 100}%, rgba(190,255,220,0.85) ${band * 100}%, rgba(255,255,255,0) ${(band + 0.12) * 100}%), ${GRAD}`,
-                    backgroundSize: `${wC}px ${L2.size}px`,
-                    backgroundPosition: `${-prefix[i]}px 0`,
-                    WebkitBackgroundClip: 'text',
-                    backgroundClip: 'text',
-                    color: 'transparent',
-                    WebkitTextFillColor: 'transparent',
-                    paddingBottom: 6,
-                  }}
-                >
-                  {ch}
+                <span key={i} style={{position: 'absolute', left: prefix[i], top: T_PAD, fontFamily: UI_FONT, fontSize: FS, fontWeight: 600, lineHeight: `${T_LH}px`, color: '#0D1224', whiteSpace: 'pre', opacity: p, filter: p < 0.99 ? `blur(${10 * (1 - p)}px)` : undefined, transform: `translateY(${20 * (1 - p)}px)`}}>
+                  {w}
                 </span>
               );
             })}
-            <span style={{position: 'absolute', left: wC + wSp, top: 0, color: '#0D1224', opacity: by, filter: by < 0.99 ? `blur(${10 * (1 - by)}px)` : undefined, transform: `translateY(${16 * (1 - by)}px)`}}>by</span>
           </div>
 
           {blobs > 0 ? <Metaballs p={flow} opacity={blobs} cx={markC.x} cy={markC.y} size={MARK_H} /> : null}
 
-          {/* symbol */}
-          {markIn > 0 && markOut < 1 ? (
-            <div
-              data-safe="logo symbol"
-              style={{
-                position: 'absolute',
-                left: markC.x - MARK_W / 2,
-                top: markC.y - MARK_H / 2,
-                opacity: markIn * (1 - markOut),
-                filter: `blur(${8 * (1 - markIn) + 10 * markOut}px)`,
-                transform: `scale(${kf(f, [3.9, 4.8], [1, 1.02]) * (1 - 0.5 * markOut)})`,
-              }}
-            >
-              <LogoMark height={MARK_H} />
-            </div>
+          {/* symbol, then the dark pill, then the lime caret */}
+          {markIn > 0 && s < dur - BUILD7.ov.s4.out ? (
+            toPill <= 0 ? (
+              <div data-safe="logo symbol" style={{position: 'absolute', left: markC.x - MARK_W / 2, top: markC.y - MARK_H / 2, opacity: markIn, filter: markIn < 0.99 ? `blur(${8 * (1 - markIn)}px)` : undefined, transform: `scale(${kf(f, [3.2, 4.8], [1, 1.02])})`}}>
+                <LogoMark height={MARK_H} />
+              </div>
+            ) : (
+              <>
+                <div style={{position: 'absolute', left: markC.x - MARK_W / 2, top: markC.y - MARK_H / 2, opacity: 1 - toPill, transform: `scale(${1 - 0.3 * toPill})`, filter: `blur(${6 * toPill}px)`}}>
+                  <LogoMark height={MARK_H} />
+                </div>
+                <div style={{position: 'absolute', left: rx - rw / 2, top: ry - rh / 2, width: rw, height: rh, borderRadius: Math.min(rw, rh) / 2, background: `color-mix(in srgb, #8FD03C ${Math.round(100 * toCaret)}%, ${UI.ink})`, opacity: toPill, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                  {toCaret < 0.5 ? <div style={{opacity: 1 - 2 * toCaret}}><Sparkle size={rh * 0.72} /></div> : null}
+                </div>
+              </>
+            )
           ) : null}
-          {/* wordmark resolves in from the right (blur + 16px slide) */}
+          {/* wordmark resolves beside it (blur + 16px slide) */}
           {wordIn > 0 && textOut < 1 ? (
-            <div
-              data-safe="wordmark"
-              style={{
-                position: 'absolute',
-                left: wordX,
-                top: markC.y - WORD_H / 2,
-                opacity: wordIn * (1 - textOut),
-                filter: `blur(${12 * (1 - wordIn) + 14 * textOut}px)`,
-                transform: `translate(${16 * (1 - wordIn)}px, ${-30 * textOut}px)`,
-              }}
-            >
+            <div data-safe="wordmark" style={{position: 'absolute', left: wordX, top: BASELINE - WORD_H, opacity: wordIn * (1 - textOut), filter: `blur(${12 * (1 - wordIn) + 14 * textOut}px)`, transform: `translateX(${16 * (1 - wordIn)}px)`}}>
               <Wordmark height={WORD_H} />
-            </div>
-          ) : null}
-          {/* the Console pill (shared with scene 5 from its first frame) */}
-          {consoleIn > 0 && s < dur - 0.5 ? (
-            <div
-              style={{
-                position: 'absolute',
-                left: px - pw / 2,
-                top: py - ph / 2,
-                opacity: consoleIn,
-                filter: consoleIn < 0.99 ? `blur(${12 * (1 - consoleIn)}px)` : undefined,
-                transform: `scale(${0.6 + 0.4 * consoleIn})`,
-              }}
-            >
-              <ConsolePill width={pw} height={ph} />
             </div>
           ) : null}
         </>

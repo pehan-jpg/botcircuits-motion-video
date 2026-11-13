@@ -5,11 +5,11 @@ BotCircuits CX product explainer, built with Remotion (TypeScript, 1920x1080, **
 ```bash
 npm install
 npm run dev      # Remotion Studio preview
-npx remotion render src/index.ts FullVideo out/preview_scenes_1_to_13_final.mp4 --codec=h264 --crf=18
+npx remotion render src/index.ts FullVideo out/preview_scenes_1_to_13_v12.mp4 --codec=h264 --crf=18
 ```
 
 ## Compositions
-- `FullVideo` (main, 83 s): scenes 1-3 (16 s) + scenes 4-13 (6/7/10.5/9.5/8/7/5/6.5/7/5 s, overlapping 0.5 s). Prop `qa: true` enables the dev-only SafeAreaGuard.
+- `FullVideo` (main, 89.6 s): scenes 1-3 (16 s) + scenes 4-13 (6/7/9.5/8.5/8/7/4.5/6/7/5.5 s) with seven 1.6 s TextBeats before scenes 5, 6, 7, 8, 9, 11 and 12 (0.4 s overlaps next to a beat, 0.5 s between scenes). Order and overlaps: `src/v7.ts`. Prop `qa: true` enables the dev-only SafeAreaGuard.
 - `ProblemSequence` (16 s): scenes 1-3 only
 - `Build-scenes/Scene04..13`: each Build scene on its own
 
@@ -31,3 +31,4 @@ Scenes 4-8 author keyframes in seconds with `kf(frame, [seconds], [values])` (`s
 - `src/constants.ts`: `TAGLINE` (scene 13 end line) and `URL` (typed under the end lockup when non-empty)
 - Scenes 10-13: `Scene10WhatsApp` (frozen 9:02 AM clock callback), `Scene11Voice` (call card, waveform ring, teammate joins), `Scene12Loop` (Conversations, take over / hand back, loop ring), `Scene13End` (end line, lockup)
 - `src/ui/FlyChip.tsx`: shared-element chip that lifts out of one card and lands as another (scene 6 and 7 proofs)
+- `src/ui/TextBeat.tsx` + `src/scenes/Beats.tsx`: the seven TextBeats (typed line, lime underline that the next scene morphs into its key shape); `src/components/Morph.tsx` (RectMorph, LineToCircle)

@@ -4,6 +4,8 @@ import {COLORS, alpha, ease, kf, kfIO, popIn, press, tween} from '../theme';
 import {sec} from '../timeline';
 import {AGENT, BUILD7, CONFIG_VIEW, CONTENT, PUBLISH_BTN, SHELL, WHATSAPP_FINAL} from '../v7';
 import {AppShell} from '../ui/AppShell';
+import {RectMorph} from '../components/Morph';
+import {beatUnderline} from '../ui/TextBeat';
 import {Camera} from '../camera';
 import {CameraRig, dissolve} from '../components/CameraRig';
 import {CircleReveal} from '../components/CircleReveal';
@@ -84,7 +86,7 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const {fps} = useVideoConfig();
   const s = f / fps;
   const dur = BUILD7.dur.s9;
-  const env = envelope(f, dur, true, false);
+  const env = envelope(f, dur, true, false, BUILD7.ov.s9);
   if (s >= S9_HANDOVER) return null;
   const cam = camAt(f);
 
@@ -136,8 +138,8 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             <div style={{position: 'absolute', inset: 0, transformOrigin: `${PAGE_ORB.x}px ${PAGE_ORB.y}px`, transform: `scale(${1 - 0.9 * shrink})`, opacity: 1 - tween(f, 1.95, 2.25), filter: shrink > 0.01 ? `blur(${12 * shrink}px)` : undefined}}>
               {/* the Publish page inside the whole window (locked camera) */}
               <CameraRig cam={CONFIG_VIEW}>
-                <div style={{position: 'absolute', left: 0, top: 0}}>
-                  <AppShell from="Simulator" to="Publish" slide={kfIO(f, [0.0, 0.3], [0, 1])} />
+                <div style={{position: 'absolute', left: 0, top: 0, opacity: tween(f, 0.1, 0.55), filter: f < 33 ? `blur(${12 * (1 - tween(f, 0.1, 0.55))}px)` : undefined}}>
+                  <AppShell from="Simulator" to="Publish" slide={kfIO(f, [0.2, 0.5], [0, 1])} />
                   <div data-safe="page title" style={{position: 'absolute', left: CONTENT.x + 32, top: SHELL.y + 18, height: 52, display: 'flex', alignItems: 'center', fontFamily: UI_FONT, fontSize: 26, fontWeight: 700, color: UI.ink, whiteSpace: 'nowrap', opacity: env.inP}}>Publish</div>
                 </div>
               </CameraRig>
@@ -145,15 +147,19 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
                 <div style={{position: 'absolute', left: PAGE_ORB.x - 300, top: 300, width: 600, height: 540, borderRadius: 30, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: `0 30px 80px rgba(13,18,36,0.10), 0 0 0 2px ${alpha(UI.glow.publish, 0.35 * kf(f, [1.35, 1.6, 2.2], [0, 1, 0]))}`}} />
                 <div style={{position: 'absolute', left: PAGE_ORB.x - 300, width: 600, top: 540, textAlign: 'center', fontSize: 30, fontWeight: 700, color: UI.ink, whiteSpace: 'nowrap'}}>{AGENT}</div>
               </div>
-              <Orb cx={PAGE_ORB.x} cy={PAGE_ORB.y} size={140} frame={f} />
+              <Orb cx={PAGE_ORB.x} cy={PAGE_ORB.y} size={140} frame={f} opacity={tween(f, 0.2, 0.5)} />
             </div>
           ) : null}
           {shrink < 1 ? (
-            <div data-safe="publish button" style={{position: 'absolute', left: PUBLISH_BTN.cx - PUBLISH_BTN.width / 2, top: PUBLISH_BTN.cy - PUBLISH_BTN.height / 2, ...dissolve(1, tween(f, 1.8, 2.15)), transform: `scale(${press(f, CLICK) * (1 - 0.9 * shrink)})`, transformOrigin: `${PAGE_ORB.x - (PUBLISH_BTN.cx - PUBLISH_BTN.width / 2)}px ${PAGE_ORB.y - (PUBLISH_BTN.cy - PUBLISH_BTN.height / 2)}px`}}>
+            <div data-safe="publish button" style={{position: 'absolute', left: PUBLISH_BTN.cx - PUBLISH_BTN.width / 2, top: PUBLISH_BTN.cy - PUBLISH_BTN.height / 2, ...dissolve(1, tween(f, 1.8, 2.15)), opacity: tween(f, 0.42, 0.55) * (1 - tween(f, 1.8, 2.15)), transform: `scale(${press(f, CLICK) * (1 - 0.9 * shrink)})`, transformOrigin: `${PAGE_ORB.x - (PUBLISH_BTN.cx - PUBLISH_BTN.width / 2)}px ${PAGE_ORB.y - (PUBLISH_BTN.cy - PUBLISH_BTN.height / 2)}px`}}>
               <PublishButton width={PUBLISH_BTN.width} height={PUBLISH_BTN.height} frame={f} spin={spin} done={done} />
             </div>
           ) : null}
 
+          {/* TextBeat 5's underline thickens into the dark Publish button */}
+          {s < 0.6 ? (
+            <RectMorph from={beatUnderline('b5')} to={{x: PUBLISH_BTN.cx - PUBLISH_BTN.width / 2, y: PUBLISH_BTN.cy - PUBLISH_BTN.height / 2, w: PUBLISH_BTN.width, h: PUBLISH_BTN.height}} t={kfIO(f, [0, 0.45], [0, 1])} r0={3} r1={PUBLISH_BTN.height / 2} fill0="#8FD03C" fill1={UI.ink} opacity={1 - tween(f, 0.5, 0.6)} />
+          ) : null}
           <CameraRig cam={cam}>
             {/* the greenish orb: centred, then shrinks and fades as the logos leave it */}
             {orbIn > 0 && orbOut < 1 ? <Orb cx={PAGE_ORB.x + (ORB_C.x - PAGE_ORB.x) * toCentre} cy={PAGE_ORB.y + (ORB_C.y - PAGE_ORB.y) * toCentre} size={140 + 10 * toCentre} frame={f} scale={1 - 0.6 * orbOut} opacity={Math.max(orbIn, 1 - tween(f, 1.95, 2.25) > 0 ? 1 : orbIn) * (1 - orbOut)} pulse={tween(f, 2.25, 2.75)} glow={1 - orbOut} /> : null}

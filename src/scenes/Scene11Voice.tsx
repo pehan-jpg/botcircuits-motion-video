@@ -6,6 +6,8 @@ import {Orb} from '../components/Orb';
 import {GWaveform} from '../components/Glyphs';
 import {CheckStroke} from '../components/Chip';
 import {UI, UI_FONT} from '../ui/tokens';
+import {LineToCircle} from '../components/Morph';
+import {beatUnderline} from '../ui/TextBeat';
 import {envelope, SceneLayerProps} from './kit';
 
 const C = CENTER_CARD;
@@ -15,13 +17,13 @@ const N_POS = {x: C.width / 2 + 120, y: 330};
 const PER_WORD = 0.07;
 type Line = {who: 'D' | 'agent' | 'N'; text: string; at: number};
 const LINES: Line[] = [
-  {who: 'D', text: "I don't recognise a charge on my statement.", at: 0.5},
-  {who: 'agent', text: "I can help with that. This needs a teammate to review it, so I'm bringing one in now.", at: 1.6},
-  {who: 'N', text: "Hi Daniel, I've got the details and I'll take it from here.", at: 4.0},
+  {who: 'D', text: "I don't recognise a charge on my statement.", at: 0.8},
+  {who: 'agent', text: "I can help with that. This needs a teammate to review it, so I'm bringing one in now.", at: 1.8},
+  {who: 'N', text: "Hi Daniel, I've got the details and I'll take it from here.", at: 3.95},
 ];
 const lineEnd = (l: Line) => l.at + l.text.split(' ').length * PER_WORD;
-const HANDOFF = 3.0;
-const COLLAPSE: [number, number] = [5.3, 6.0];
+const HANDOFF = 3.05;
+const COLLAPSE: [number, number] = [4.9, 5.5];
 
 /** Who is speaking at time s (drives the waveform ring). */
 const speaker = (s: number): 'D' | 'agent' | 'N' | null => {
@@ -30,7 +32,7 @@ const speaker = (s: number): 'D' | 'agent' | 'N' | null => {
 };
 
 /** Ring of 48 thin bars around a centre, amplitude from seeded noise of the frame. */
-const BarRing: React.FC<{cx: number; cy: number; r: number; frame: number; level: number; color: string; split?: number; seed: string}> = ({cx, cy, r, frame, level, color, split = 0, seed}) => {
+const BarRing: React.FC<{cx: number; cy: number; r: number; frame: number; level: number; color: string; split?: number; seed: string; opacity?: number}> = ({cx, cy, r, frame, level, color, split = 0, seed, opacity = 1}) => {
   const bars = Array.from({length: 48}).map((_, i) => {
     const a = (i / 48) * Math.PI * 2 - Math.PI / 2;
     const q = Math.floor(frame / 3);
@@ -45,7 +47,7 @@ const BarRing: React.FC<{cx: number; cy: number; r: number; frame: number; level
     return {a, len, dx, op: 1 - split * (Math.abs(Math.sin(a)) > 0.92 ? 1 : 0.3)};
   });
   return (
-    <svg width={2 * (r + 80)} height={2 * (r + 80)} style={{position: 'absolute', left: cx - r - 80, top: cy - r - 80, overflow: 'visible'}}>
+    <svg width={2 * (r + 80)} height={2 * (r + 80)} style={{position: 'absolute', left: cx - r - 80, top: cy - r - 80, overflow: 'visible', opacity}}>
       {bars.map((b, i) => (
         <line
           key={i}
@@ -103,7 +105,7 @@ export const Scene11Voice: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const {fps} = useVideoConfig();
   const s = f / fps;
   const dur = BUILD7.dur.s11;
-  const env = envelope(f, dur);
+  const env = envelope(f, dur, true, true, BUILD7.ov.s11);
   const sp = speaker(s);
   const split = kfIO(f, [HANDOFF, HANDOFF + 0.35], [0, 1]);
   const move = kfIO(f, [HANDOFF + 0.1, HANDOFF + 0.6], [0, 1]);
@@ -134,7 +136,7 @@ export const Scene11Voice: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
         <>
           {/* deep green halo for the active call */}
           <div style={{position: 'absolute', left: C.x - 200, top: C.y - 120, width: C.width + 400, height: C.height + 240, borderRadius: '50%', background: `radial-gradient(ellipse, ${alpha('#14684A', 0.22)} 0%, ${alpha('#14684A', 0)} 62%)`, opacity: content}} />
-          <div data-safe="call card" style={{position: 'absolute', left: rect.x, top: rect.y, width: rect.w, height: rect.h, borderRadius: 32 - 12 * col, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: `0 30px 80px rgba(13,18,36,0.12), 0 0 0 2px ${alpha('#23A06B', 0.25 * content)}`, overflow: 'hidden', fontFamily: UI_FONT}}>
+          <div data-safe="call card" style={{position: 'absolute', opacity: tween(f, 0.25, 0.6), filter: f < 40 ? `blur(${10 * (1 - tween(f, 0.25, 0.6))}px)` : undefined, transform: `perspective(2400px) rotateX(${3 * (1 - kfIO(f, [0.25, 0.8], [0, 1]))}deg)`, left: rect.x, top: rect.y, width: rect.w, height: rect.h, borderRadius: 32 - 12 * col, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: `0 30px 80px rgba(13,18,36,0.12), 0 0 0 2px ${alpha('#23A06B', 0.25 * content)}`, overflow: 'hidden', fontFamily: UI_FONT}}>
             <div style={{position: 'absolute', left: 0, top: 0, width: C.width, height: C.height, opacity: content}}>
               {/* header: Voice waveform glyph, agent name, call timer */}
               <div style={{position: 'absolute', left: WA_HEADER_GLYPH.cx - C.x - 22, top: WA_HEADER_GLYPH.cy - C.y - 22}}>
@@ -147,8 +149,8 @@ export const Scene11Voice: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
               <div style={{position: 'absolute', left: 0, right: 0, top: 96, height: 1, background: UI.border}} />
 
               {/* the orb with its waveform ring (agent: green bars; customer: grey bars, orb calm) */}
-              <BarRing cx={orbC.x} cy={orbC.y} r={(orbSize / 2 + 18) * Math.min(1, popIn(f, 0.1, 0.45, 1.04))} frame={f} level={sp === 'D' ? 0.6 : agentLevel * (1 - split) + 0.15 * split} color={sp === 'D' ? '#9CA3AF' : '#14684A'} split={split} seed="agent" />
-              <Orb cx={orbC.x} cy={orbC.y} size={orbSize} frame={f} glow={sp === 'agent' ? 1 : 0} scale={popIn(f, 0.05, 0.45, 1.04)} />
+              <BarRing cx={orbC.x} cy={orbC.y} r={orbSize / 2 + 18} frame={f} level={(sp === 'D' ? 0.6 : agentLevel * (1 - split) + 0.15 * split) * tween(f, 0.5, 0.8)} opacity={tween(f, 0.5, 0.65)} color={sp === 'D' ? '#9CA3AF' : '#14684A'} split={split} seed="agent" />
+              <Orb cx={orbC.x} cy={orbC.y} size={orbSize} frame={f} glow={sp === 'agent' ? 1 : 0} scale={popIn(f, 0.3, 0.4, 1.04)} />
               {/* the teammate joins */}
               {nIn > 0 ? (
                 <>
@@ -182,6 +184,10 @@ export const Scene11Voice: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
               </div>
             ) : null}
           </div>
+          {/* TextBeat 6's underline curves into the ring around the orb, then splits into the 48 bars */}
+          {s < 0.75 ? (
+            <LineToCircle line={beatUnderline('b6')} cx={C.x + ORB0.x} cy={C.y + ORB0.y} r={220 / 2 + 18} t={kfIO(f, [0, 0.45], [0, 1])} gaps={tween(f, 0.4, 0.6)} stroke={`color-mix(in srgb, #14684A ${Math.round(100 * tween(f, 0.2, 0.5))}%, #8FD03C)`} width={6 - 2 * tween(f, 0.3, 0.6)} opacity={1 - tween(f, 0.6, 0.75)} />
+          ) : null}
         </>
       ) : null}
     </AbsoluteFill>

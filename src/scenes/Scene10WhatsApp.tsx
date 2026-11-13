@@ -10,14 +10,14 @@ import {UI, UI_FONT} from '../ui/tokens';
 import {envelope, SceneLayerProps} from './kit';
 
 const MSGS: Msg[] = [
-  {from: 'maya', text: 'Hi, I lost my credit card. Can you block it?', at: 1.1, time: '9:02 AM'},
-  {from: 'agent', text: "I'm sorry to hear that, Maya. Can you confirm the last four digits of the card?", at: 1.4, time: '9:02 AM'},
-  {from: 'maya', text: '4821', at: 2.45, time: '9:02 AM'},
-  {from: 'agent', text: "Thanks Maya, you're verified. Your card is blocked and a new one is on its way.", at: 2.7, time: '9:02 AM', chip: 'Card blocked'},
+  {from: 'maya', text: 'Hi, I lost my credit card. Can you block it?', at: 1.0, time: '9:02 AM'},
+  {from: 'agent', text: "I'm sorry to hear that, Maya. Can you confirm the last four digits of the card?", at: 1.3, time: '9:02 AM'},
+  {from: 'maya', text: '4821', at: 2.25, time: '9:02 AM'},
+  {from: 'agent', text: "Thanks Maya, you're verified. Your card is blocked and a new one is on its way.", at: 2.5, time: '9:02 AM', chip: 'Card blocked'},
 ];
-const BLOCKED = 2.7 + 16 * 0.06 + 0.05; // the "Card blocked" chip
+const BLOCKED = 2.5 + 16 * 0.06 + 0.05; // the "Card blocked" chip
 const SHRINK: [number, number] = [0.5, 1.1];
-const OUT: [number, number] = [4.3, 4.6]; // content blurs out, glyph morphs to the Voice waveform
+const OUT: [number, number] = [3.75, 4.05]; // content blurs out, glyph morphs to the Voice waveform
 
 /** The large mono clock + thin timeline line of scenes 1 to 3, frozen at 9:02 AM (light variant). */
 export const FrozenClock: React.FC<{opacity: number; pulse: number}> = ({opacity, pulse}) => (
@@ -61,7 +61,7 @@ export const Scene10WhatsApp: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const show = (k: 'bg' | 'shell' | 'fg') => layer === 'all' || layer === k;
   useVideoConfig();
   const dur = BUILD7.dur.s10;
-  const env = envelope(f, dur);
+  const env = envelope(f, dur, true, true, BUILD7.ov.s10);
   const k = kfIO(f, SHRINK, [0, 1]);
   const green = 1 - tween(f, 0.55, 1.05);
   const cardIn = tween(f, 0.6, 1.05);

@@ -6,21 +6,34 @@ import {sec} from './timeline';
 import {Camera} from './camera';
 
 export const OVERLAP = 0.5;
-const DUR = {s4: 6.0, s5: 7.0, s6: 10.5, s7: 9.5, s8: 8.0, s9: 7.0, s10: 5.0, s11: 6.5, s12: 7.0, s13: 5.0};
-const start = (() => {
-  const o: Record<string, number> = {};
+/** Overlap next to a TextBeat (both sides). */
+export const BEAT_OVERLAP = 0.4;
+/** Build stage in order: scenes and the seven TextBeats (b1..b7). */
+const ORDER = [
+  ['s4', 6.0], ['b1', 1.6], ['s5', 7.0], ['b2', 1.6], ['s6', 9.5], ['b3', 1.6], ['s7', 8.5], ['b4', 1.6],
+  ['s8', 8.0], ['b5', 1.6], ['s9', 7.0], ['s10', 4.5], ['b6', 1.6], ['s11', 6.0], ['b7', 1.6], ['s12', 7.0], ['s13', 5.5],
+] as const;
+export type BuildKey = (typeof ORDER)[number][0];
+export const BUILD_KEYS = ORDER.map(([k]) => k) as BuildKey[];
+const DUR = Object.fromEntries(ORDER) as Record<BuildKey, number>;
+const ovBetween = (a: string, b: string) => (a[0] === 'b' || b[0] === 'b' ? BEAT_OVERLAP : OVERLAP);
+const start = {} as Record<BuildKey, number>;
+const ov = {} as Record<BuildKey, {in: number; out: number}>;
+(() => {
   let t = 0;
-  (Object.keys(DUR) as (keyof typeof DUR)[]).forEach((k, i) => {
-    o[k] = i === 0 ? 0 : t - OVERLAP;
-    t = o[k] + DUR[k];
+  ORDER.forEach(([k, d], i) => {
+    const inLen = i === 0 ? 0 : ovBetween(ORDER[i - 1][0], k);
+    const outLen = i === ORDER.length - 1 ? 0 : ovBetween(k, ORDER[i + 1][0]);
+    start[k] = i === 0 ? 0 : t - inLen;
+    ov[k] = {in: inLen || OVERLAP, out: outLen || OVERLAP};
+    t = start[k] + d;
   });
-  return o as Record<keyof typeof DUR, number>;
 })();
-export const BUILD7 = {dur: DUR, start};
-export const BUILD7_TOTAL = start.s13 + DUR.s13; // 67 s
+export const BUILD7 = {dur: DUR, start, ov};
+export const BUILD7_TOTAL = start.s13 + DUR.s13;
 export const BUILD7_FRAMES = {
-  start: Object.fromEntries(Object.entries(start).map(([k, v]) => [k, sec(v)])) as Record<keyof typeof DUR, number>,
-  dur: Object.fromEntries(Object.entries(DUR).map(([k, v]) => [k, sec(v)])) as Record<keyof typeof DUR, number>,
+  start: Object.fromEntries(Object.entries(start).map(([k, v]) => [k, sec(v)])) as Record<BuildKey, number>,
+  dur: Object.fromEntries(Object.entries(DUR).map(([k, v]) => [k, sec(v)])) as Record<BuildKey, number>,
   total: sec(BUILD7_TOTAL),
 };
 
