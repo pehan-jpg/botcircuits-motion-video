@@ -14,9 +14,13 @@ import {Scene06Procedures} from './scenes/Scene06Procedures';
 import {Scene07Knowledge} from './scenes/Scene07Knowledge';
 import {Scene08Simulator} from './scenes/Scene08Simulator';
 import {Scene09Publish} from './scenes/Scene09Publish';
+import {Scene10WhatsApp} from './scenes/Scene10WhatsApp';
+import {Scene11Voice} from './scenes/Scene11Voice';
+import {Scene12Loop} from './scenes/Scene12Loop';
+import {Scene13End} from './scenes/Scene13End';
 import {SafeAreaGuard} from './components/SafeAreaGuard';
 
-/** Scenes 1-9: 16 s problem sequence + 44 s build stage = 60 s. */
+/** Scenes 1-13: 16 s problem sequence + 67 s build stage = 83 s. */
 export const FULL_VIDEO_DURATION = PROBLEM_SEQUENCE_DURATION + BUILD7_FRAMES.total;
 
 const BUILD = [
@@ -26,6 +30,10 @@ const BUILD = [
   {key: 's7', C: Scene07Knowledge},
   {key: 's8', C: Scene08Simulator},
   {key: 's9', C: Scene09Publish},
+  {key: 's10', C: Scene10WhatsApp},
+  {key: 's11', C: Scene11Voice},
+  {key: 's12', C: Scene12Loop},
+  {key: 's13', C: Scene13End},
 ] as const;
 
 /**

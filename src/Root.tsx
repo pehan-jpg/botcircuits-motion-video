@@ -10,6 +10,10 @@ import {Scene06Procedures} from './scenes/Scene06Procedures';
 import {Scene07Knowledge} from './scenes/Scene07Knowledge';
 import {Scene08Simulator} from './scenes/Scene08Simulator';
 import {Scene09Publish} from './scenes/Scene09Publish';
+import {Scene10WhatsApp} from './scenes/Scene10WhatsApp';
+import {Scene11Voice} from './scenes/Scene11Voice';
+import {Scene12Loop} from './scenes/Scene12Loop';
+import {Scene13End} from './scenes/Scene13End';
 import {TypedLine, typedLineDuration} from './components/TypedLine';
 import {TAGLINE} from './constants';
 
@@ -27,6 +31,10 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="Scene07Knowledge" component={Scene07Knowledge} durationInFrames={BUILD7_FRAMES.dur.s7} {...common} />
       <Composition id="Scene08Simulator" component={Scene08Simulator} durationInFrames={BUILD7_FRAMES.dur.s8} {...common} />
       <Composition id="Scene09Publish" component={Scene09Publish} durationInFrames={BUILD7_FRAMES.dur.s9} {...common} />
+      <Composition id="Scene10WhatsApp" component={Scene10WhatsApp} durationInFrames={BUILD7_FRAMES.dur.s10} {...common} />
+      <Composition id="Scene11Voice" component={Scene11Voice} durationInFrames={BUILD7_FRAMES.dur.s11} {...common} />
+      <Composition id="Scene12Loop" component={Scene12Loop} durationInFrames={BUILD7_FRAMES.dur.s12} {...common} />
+      <Composition id="Scene13End" component={Scene13End} durationInFrames={BUILD7_FRAMES.dur.s13} {...common} />
     </Folder>
     <Folder name="Components">
       <Composition id="TypedLineTest" component={TypedLine} durationInFrames={typedLineDuration(SAMPLE_LINE)} defaultProps={{text: SAMPLE_LINE}} {...common} />

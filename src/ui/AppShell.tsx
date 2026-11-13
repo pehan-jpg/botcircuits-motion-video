@@ -42,10 +42,12 @@ const ICONS: Record<NavItem, string> = {
 
 const ROW = 52;
 const LABEL = 24;
-const GROUP_GAP = 24;
+const GROUP_GAP = 12; // 12 + the 24px label = 36px between the last row of a group and the next group's first row
+const TOP = 8;
+const FOOTER = 58;
 /** y (relative to the sidebar top) of each item's row centre. */
 export const navY = (item: NavItem) => {
-  let y = 18;
+  let y = TOP;
   for (const [gi, g] of GROUPS.entries()) {
     if (gi > 0) y += GROUP_GAP;
     y += LABEL;
@@ -67,7 +69,7 @@ export const navPoint = (item: NavItem) => ({x: SHELL.x + 110, y: SHELL.y + navY
 export const AppShell: React.FC<{from: NavItem; to: NavItem; slide: number; opacity?: number}> = ({from, to, slide, opacity = 1}) => {
   const pillY = navY(from) + (navY(to) - navY(from)) * slide;
   const active = slide < 0.5 ? from : to;
-  let y = 18;
+  let y = TOP;
   const rows: React.ReactNode[] = [];
   GROUPS.forEach((g, gi) => {
     if (gi > 0) y += GROUP_GAP;
@@ -96,6 +98,11 @@ export const AppShell: React.FC<{from: NavItem; to: NavItem; slide: number; opac
         <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: SHELL.sidebar, background: UI.sidebar, borderRight: `1px solid ${UI.border}`}}>
           <div style={{position: 'absolute', left: 14, right: 14, top: pillY - ROW / 2, height: ROW, borderRadius: 12, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: '0 4px 12px rgba(13,18,36,0.06)'}} />
           {rows}
+          {/* workspace footer */}
+          <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: FOOTER, borderTop: `1px solid ${UI.border}`, display: 'flex', alignItems: 'center', gap: 12, paddingLeft: 24, fontSize: 22, fontWeight: 600, color: UI.ink, whiteSpace: 'nowrap'}}>
+            <div style={{width: 34, height: 34, borderRadius: 17, background: UI.ink, color: COLORS.white, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700}}>B</div>
+            BotCircuits Team
+          </div>
         </div>
         <div style={{position: 'absolute', left: SHELL.sidebar, right: 0, top: 0, height: SHELL.header, borderBottom: `1px solid ${UI.border}`}} />
       </div>

@@ -2,7 +2,8 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {COLORS, alpha, ease, kf, kfIO, popIn, press, tween} from '../theme';
 import {sec} from '../timeline';
-import {AGENT, BUILD7, PUBLISH_BTN, WHATSAPP_FINAL} from '../v7';
+import {AGENT, BUILD7, CONFIG_VIEW, CONTENT, PUBLISH_BTN, SHELL, WHATSAPP_FINAL} from '../v7';
+import {AppShell} from '../ui/AppShell';
 import {Camera} from '../camera';
 import {CameraRig, dissolve} from '../components/CameraRig';
 import {CircleReveal} from '../components/CircleReveal';
@@ -23,21 +24,23 @@ const slot = (i: number) => ({
   y: 540 + (Math.floor(i / 4) - 0.5) * (SIZE + GAP_Y),
 });
 const ORB_C = {x: 960, y: 515}; // slightly above the grid centre
-const PUB = {x: 510, y: 230, width: 900, height: 560};
+const PAGE_ORB = {x: PUBLISH_BTN.cx, y: 450}; // the agent's orb on the Publish page (screen)
 
 // ---- timeline (scene seconds) ----
-const CLICK = 1.0;
-const POP = (i: number) => 2.7 + i * 0.15;
+const CLICK = 0.8;
+const POP = (i: number) => 2.35 + i * 0.15;
 const TRAVEL = 0.36;
 const LANDED = POP(ORDER.length - 1) + TRAVEL; // ~4.11
 const GLOW = (i: number) => LANDED + i * 0.25;
-const BADGE = 4.6;
-const ROLL = [4.9, 5.05, 5.2];
-const HANDOFF = 6.1;
-const REVEAL: [number, number] = [HANDOFF + 0.15, HANDOFF + 0.7];
+const BADGE = 4.3;
+const ROLL = [4.6, 4.75, 4.9];
+const HANDOFF = 5.75;
+const REVEAL: [number, number] = [HANDOFF + 0.15, HANDOFF + 0.65];
+/** From here scene 10 draws the green frame and the white logo (shared element). */
+export const S9_HANDOVER = BUILD7.dur.s9 - 0.5;
 
 /** Gentle drift (max 1.03), back to 1.0 for the hand-off. */
-const camAt = (f: number): Camera => ({x: 960, y: 540, rotation: 0, scale: kfIO(f, [2.7, HANDOFF, HANDOFF + 0.4], [1, 1.03, 1])});
+const camAt = (f: number): Camera => ({x: 960, y: 540, rotation: 0, scale: kfIO(f, [2.35, HANDOFF, HANDOFF + 0.4], [1, 1.03, 1])});
 
 /** Point on the logo's single curved path from the orb to its slot. */
 const pathPt = (i: number, t: number) => {
@@ -58,7 +61,7 @@ const Badge: React.FC<{f: number; size: number}> = ({f, size}) => {
   const moving = ROLL.some((t) => f > sec(t) && f < sec(t + 0.09));
   const h = size * 0.62;
   return (
-    <div style={{position: 'absolute', right: -size * 0.2, top: -size * 0.2, width: size, height: size, borderRadius: size / 2, background: COLORS.badgeRed, border: `${size * 0.06}px solid ${COLORS.white}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 20px rgba(13,18,36,0.2)', transform: `scale(${popIn(f, BADGE, 0.3, 1.04)})`, opacity: 1 - tween(f, 5.4, 5.55)}}>
+    <div style={{position: 'absolute', right: -size * 0.2, top: -size * 0.2, width: size, height: size, borderRadius: size / 2, background: COLORS.badgeRed, border: `${size * 0.06}px solid ${COLORS.white}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 20px rgba(13,18,36,0.2)', transform: `scale(${popIn(f, BADGE, 0.3, 1.04)})`, opacity: 1 - tween(f, 5.1, 5.25)}}>
       <div style={{height: h, overflow: 'hidden', width: size * 0.6}}>
         <div style={{transform: `translateY(${-pos * h}px)`, filter: moving ? 'blur(1.4px)' : undefined}}>
           {['3', '2', '1', '0'].map((d) => (
@@ -82,13 +85,15 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const s = f / fps;
   const dur = BUILD7.dur.s9;
   const env = envelope(f, dur, true, false);
+  if (s >= S9_HANDOVER) return null;
   const cam = camAt(f);
 
-  const spin = tween(f, CLICK + 0.05, CLICK + 0.2) * (1 - tween(f, 1.55, 1.65));
-  const done = tween(f, 1.6, 1.85);
-  const shrink = kfIO(f, [2.1, 2.65], [0, 1]);
-  const orbIn = tween(f, 2.3, 2.6);
-  const orbOut = kfIO(f, [2.9, LANDED - 0.1], [0, 1]); // shrinks and fades as the logos appear
+  const spin = tween(f, CLICK + 0.05, CLICK + 0.2) * (1 - tween(f, 1.3, 1.4));
+  const done = tween(f, 1.35, 1.6);
+  const shrink = kfIO(f, [1.75, 2.25], [0, 1]);
+  const orbIn = tween(f, 2.0, 2.25);
+  const toCentre = kfIO(f, [2.0, 2.35], [0, 1]);
+  const orbOut = kfIO(f, [2.6, LANDED - 0.1], [0, 1]); // shrinks and fades as the logos appear
   const reveal = kfIO(f, REVEAL, [0, 1]);
   const others = tween(f, HANDOFF, HANDOFF + 0.3);
   const waGlide = kfIO(f, [HANDOFF, HANDOFF + 0.45], [0, 1]);
@@ -126,37 +131,32 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
       {show('fg') ? (
         <>
           {/* soft coral glow + the Publish page, which then shrinks into the orb */}
-          <AbsoluteFill style={{background: `radial-gradient(ellipse 40% 45% at 50% 50%, ${alpha(UI.glow.publish, 0.35)} 0%, ${alpha(UI.glow.publish, 0)} 70%)`, opacity: kf(f, [1.6, 1.85, 2.5], [0, 1, 0])}} />
+          <AbsoluteFill style={{background: `radial-gradient(ellipse 40% 45% at 50% 50%, ${alpha(UI.glow.publish, 0.35)} 0%, ${alpha(UI.glow.publish, 0)} 70%)`, opacity: kf(f, [1.35, 1.6, 2.2], [0, 1, 0])}} />
           {shrink < 1 ? (
-            <div
-              data-safe="publish page"
-              style={{
-                position: 'absolute',
-                left: PUB.x,
-                top: PUB.y,
-                width: PUB.width,
-                height: PUB.height,
-                transformOrigin: `${ORB_C.x - PUB.x}px ${ORB_C.y - PUB.y}px`,
-                transform: `scale(${1 - 0.85 * shrink})`,
-                ...dissolve(env.inP, tween(f, 2.2, 2.6)),
-                fontFamily: UI_FONT,
-              }}
-            >
-              <div style={{position: 'absolute', inset: 0, borderRadius: 30, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: '0 30px 80px rgba(13,18,36,0.14)'}} />
-              <div style={{position: 'absolute', left: 48, top: 40, fontSize: 32, fontWeight: 700, color: UI.ink}}>Publish</div>
-              <div style={{position: 'absolute', left: 48, top: 88, fontSize: 24, color: UI.text2, whiteSpace: 'nowrap'}}>{AGENT}</div>
-              <Orb cx={ORB_C.x - PUB.x} cy={ORB_C.y - PUB.y - 40} size={140} frame={f} />
+            <div style={{position: 'absolute', inset: 0, transformOrigin: `${PAGE_ORB.x}px ${PAGE_ORB.y}px`, transform: `scale(${1 - 0.9 * shrink})`, opacity: 1 - tween(f, 1.95, 2.25), filter: shrink > 0.01 ? `blur(${12 * shrink}px)` : undefined}}>
+              {/* the Publish page inside the whole window (locked camera) */}
+              <CameraRig cam={CONFIG_VIEW}>
+                <div style={{position: 'absolute', left: 0, top: 0}}>
+                  <AppShell from="Simulator" to="Publish" slide={kfIO(f, [0.0, 0.3], [0, 1])} />
+                  <div data-safe="page title" style={{position: 'absolute', left: CONTENT.x + 32, top: SHELL.y + 18, height: 52, display: 'flex', alignItems: 'center', fontFamily: UI_FONT, fontSize: 26, fontWeight: 700, color: UI.ink, whiteSpace: 'nowrap', opacity: env.inP}}>Publish</div>
+                </div>
+              </CameraRig>
+              <div style={{position: 'absolute', left: 0, top: 0, ...dissolve(tween(f, 0.15, 0.55), 0), fontFamily: UI_FONT}}>
+                <div style={{position: 'absolute', left: PAGE_ORB.x - 300, top: 300, width: 600, height: 540, borderRadius: 30, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: `0 30px 80px rgba(13,18,36,0.10), 0 0 0 2px ${alpha(UI.glow.publish, 0.35 * kf(f, [1.35, 1.6, 2.2], [0, 1, 0]))}`}} />
+                <div style={{position: 'absolute', left: PAGE_ORB.x - 300, width: 600, top: 540, textAlign: 'center', fontSize: 30, fontWeight: 700, color: UI.ink, whiteSpace: 'nowrap'}}>{AGENT}</div>
+              </div>
+              <Orb cx={PAGE_ORB.x} cy={PAGE_ORB.y} size={140} frame={f} />
             </div>
           ) : null}
           {shrink < 1 ? (
-            <div data-safe="publish button" style={{position: 'absolute', left: PUBLISH_BTN.cx - PUBLISH_BTN.width / 2, top: PUBLISH_BTN.cy - PUBLISH_BTN.height / 2, ...dissolve(1, tween(f, 2.1, 2.5)), transform: `scale(${press(f, CLICK) * (1 - 0.85 * shrink)})`, transformOrigin: `${ORB_C.x - (PUBLISH_BTN.cx - PUBLISH_BTN.width / 2)}px ${ORB_C.y - (PUBLISH_BTN.cy - PUBLISH_BTN.height / 2)}px`}}>
+            <div data-safe="publish button" style={{position: 'absolute', left: PUBLISH_BTN.cx - PUBLISH_BTN.width / 2, top: PUBLISH_BTN.cy - PUBLISH_BTN.height / 2, ...dissolve(1, tween(f, 1.8, 2.15)), transform: `scale(${press(f, CLICK) * (1 - 0.9 * shrink)})`, transformOrigin: `${PAGE_ORB.x - (PUBLISH_BTN.cx - PUBLISH_BTN.width / 2)}px ${PAGE_ORB.y - (PUBLISH_BTN.cy - PUBLISH_BTN.height / 2)}px`}}>
               <PublishButton width={PUBLISH_BTN.width} height={PUBLISH_BTN.height} frame={f} spin={spin} done={done} />
             </div>
           ) : null}
 
           <CameraRig cam={cam}>
             {/* the greenish orb: centred, then shrinks and fades as the logos leave it */}
-            {orbIn > 0 && orbOut < 1 ? <Orb cx={ORB_C.x} cy={ORB_C.y} size={150} frame={f} scale={1 - 0.6 * orbOut} opacity={orbIn * (1 - orbOut)} pulse={tween(f, 2.6, 3.1)} /> : null}
+            {orbIn > 0 && orbOut < 1 ? <Orb cx={PAGE_ORB.x + (ORB_C.x - PAGE_ORB.x) * toCentre} cy={PAGE_ORB.y + (ORB_C.y - PAGE_ORB.y) * toCentre} size={140 + 10 * toCentre} frame={f} scale={1 - 0.6 * orbOut} opacity={Math.max(orbIn, 1 - tween(f, 1.95, 2.25) > 0 ? 1 : orbIn) * (1 - orbOut)} pulse={tween(f, 2.25, 2.75)} glow={1 - orbOut} /> : null}
 
             {/* one thin dotted guide arc per logo, only while it travels (at most three at once) */}
             {ORDER.map((c, i) => {
@@ -211,7 +211,7 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
               const sc = (0.35 + 0.65 * L.p) * (waGlide > 0 ? 1 : breathe);
               return (
                 <>
-                  <ChannelLogo logo="whatsapp" cx={cx} cy={cy} size={size} scale={sc} blur={8 * Math.max(0, 1 - Math.min(1, L.p))} glow={L.glow * (1 - reveal)} opacity={(1 - waWhite) * Math.min(1, L.p * 1.4)} shadow={1 - reveal} badge={s >= BADGE && s < 5.6 ? <Badge f={f} size={58} /> : null} />
+                  <ChannelLogo logo="whatsapp" cx={cx} cy={cy} size={size} scale={sc} blur={8 * Math.max(0, 1 - Math.min(1, L.p))} glow={L.glow * (1 - reveal)} opacity={(1 - waWhite) * Math.min(1, L.p * 1.4)} shadow={1 - reveal} badge={s >= BADGE && s < 5.3 ? <Badge f={f} size={58} /> : null} />
                   {waWhite > 0 ? <ChannelLogo logo="whatsapp" cx={cx} cy={cy} size={size} color={WHATSAPP_FINAL.logo.color} opacity={waWhite} shadow={0} /> : null}
                 </>
               );
@@ -221,15 +221,15 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
           <Cursor
             frame={f}
             keys={[
-              {t: 0.3, x: 1660, y: 1060},
-              {t: 0.9, x: PUBLISH_BTN.cx + 40, y: PUBLISH_BTN.cy + 12},
-              {t: 1.45, x: PUBLISH_BTN.cx + 40, y: PUBLISH_BTN.cy + 12},
-              {t: 2.1, x: 1500, y: 1180},
+              {t: 0.2, x: 1660, y: 1060},
+              {t: CLICK - 0.1, x: PUBLISH_BTN.cx + 40, y: PUBLISH_BTN.cy + 12},
+              {t: CLICK + 0.45, x: PUBLISH_BTN.cx + 40, y: PUBLISH_BTN.cy + 12},
+              {t: 1.9, x: 1500, y: 1180},
             ]}
             clicks={[CLICK]}
-            hand={[[0.7, 1.35]]}
+            hand={[[CLICK - 0.3, CLICK + 0.35]]}
             rippleColor={COLORS.inkNavy}
-            opacity={tween(f, 0.3, 0.5) * (1 - tween(f, 1.7, 2.1))}
+            opacity={tween(f, 0.2, 0.4) * (1 - tween(f, 1.5, 1.9))}
           />
         </>
       ) : null}

@@ -201,3 +201,24 @@ export const StepsCard: React.FC<{frame: number; sections: Section[]; active?: s
     </div>
   );
 };
+
+/** World position of a row's text start (top-left of its first line) at a frame. */
+export const rowTextAnchor = (sections: Section[], id: string, frame: number) => {
+  const viewport = STEPS_CARD.height - STEPS_CARD.head - 24;
+  const scroll = Math.max(0, bodyHeightAt(sections, frame) - viewport);
+  let y = STEPS_CARD.y + STEPS_CARD.head + 1 + 12 - scroll;
+  for (const [si, s] of sections.entries()) {
+    if (frame < sec(s.at)) break;
+    if (si > 0) y += SECTION_GAP;
+    y += SECTION_H * tween(frame, s.at, s.at + 0.25);
+    for (const r of s.rows) {
+      if (r.id === id) {
+        const nested = r.kind === 'IF' || r.kind === 'ELSE';
+        return {x: STEPS_CARD.x + (nested ? NEST_X : TEXT_X), y: y + PAD + (nested ? 58 : 0), w: nested ? NEST_W : TEXT_W};
+      }
+      y += rowHeightAt(r, frame);
+    }
+  }
+  return {x: STEPS_CARD.x + TEXT_X, y, w: TEXT_W};
+};
+export const STEP_FONT = {size: FS, lineHeight: LH};

@@ -5,13 +5,13 @@ BotCircuits CX product explainer, built with Remotion (TypeScript, 1920x1080, **
 ```bash
 npm install
 npm run dev      # Remotion Studio preview
-npx remotion render src/index.ts FullVideo out/preview_scenes_1_to_9_v9.mp4 --codec=h264 --crf=18
+npx remotion render src/index.ts FullVideo out/preview_scenes_1_to_13_final.mp4 --codec=h264 --crf=18
 ```
 
 ## Compositions
-- `FullVideo` (main, 60 s): scenes 1-3 (16 s) + build stage scenes 4-9 (4.5/7/10.5/9.5/8/7 s, overlapping 0.5 s). Prop `qa: true` enables the dev-only SafeAreaGuard.
+- `FullVideo` (main, 83 s): scenes 1-3 (16 s) + scenes 4-13 (6/7/10.5/9.5/8/7/5/6.5/7/5 s, overlapping 0.5 s). Prop `qa: true` enables the dev-only SafeAreaGuard.
 - `ProblemSequence` (16 s): scenes 1-3 only
-- `Build-scenes/Scene04..09`: each Build scene on its own
+- `Build-scenes/Scene04..13`: each Build scene on its own
 
 ## Timing
 All timing goes through `sec(n)` (`src/timeline.ts`). Scenes 1-3 keep their 30 fps storyboard numbers via `f30(n) = sec(n / 30)`.
@@ -27,3 +27,7 @@ Scenes 4-8 author keyframes in seconds with `kf(frame, [seconds], [values])` (`s
 - `public/backdrops/`, `public/logos/` (optional official SVGs), `public/reference/` (screenshots, reference only)
 - `scripts/stills.mjs` renders FullVideo stills
 - `scripts/qa.mjs` (`npm run qa`) renders a still every 0.5 s with `qa: true` into `out/qa/`, writes `out/qa/safe-area-report.txt` and exits non-zero on any safe-area violation (the app window itself included)
+
+- `src/constants.ts`: `TAGLINE` (scene 13 end line) and `URL` (typed under the end lockup when non-empty)
+- Scenes 10-13: `Scene10WhatsApp` (frozen 9:02 AM clock callback), `Scene11Voice` (call card, waveform ring, teammate joins), `Scene12Loop` (Conversations, take over / hand back, loop ring), `Scene13End` (end line, lockup)
+- `src/ui/FlyChip.tsx`: shared-element chip that lifts out of one card and lands as another (scene 6 and 7 proofs)

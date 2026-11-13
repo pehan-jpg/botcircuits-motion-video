@@ -2,17 +2,19 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {COLORS, alpha, kf, kfIO, press, tween} from '../theme';
 import {sec} from '../timeline';
-import {BUILD7, CHAT_VIEW, CONFIG_VIEW, CONTENT, SHELL} from '../v7';
+import {BUILD7, CHAT, CHAT_VIEW, CONFIG_VIEW, CONTENT, SHELL} from '../v7';
 import {camAt, CamKeys, toScreen} from '../components/Stage';
 import {CameraRig, dissolve, isPanning} from '../components/CameraRig';
 import {LilacSky} from '../components/ProceduralSky';
 import {Cursor} from '../components/Cursor';
 import {AppShell, navPoint} from '../ui/AppShell';
-import {ChatThread, CONVO, past} from '../ui/ChatThread';
-import {StepsCard, STEPS_CARD, Section, rowTextEnd} from '../ui/Procedure';
+import {ChatThread, CONVO, lastBlockGeom, past} from '../ui/ChatThread';
+import {FlyChip} from '../ui/FlyChip';
+import {StepsCard, STEPS_CARD, Section, rowTextAnchor, rowTextEnd} from '../ui/Procedure';
 import {UI, UI_FONT} from '../ui/tokens';
 import {envelope, SceneLayerProps} from './kit';
 
+const VERIFIED_TEXT = "Thanks Maya, you're verified. I'll block your card now.";
 /** The procedure built in this scene. */
 export const SECTIONS: Section[] = [
   {
@@ -20,7 +22,7 @@ export const SECTIONS: Section[] = [
     at: 2.2,
     rows: [
       {id: '1.1', kind: 'RUN', text: 'Ask for the last four digits of the card and the date of birth. Confirm they match the account.', into: 'verified', at: 2.3},
-      {id: '1.2', kind: 'IF', cond: 'verified', condIs: 'is yes', send: "Thanks Maya, you're verified. I'll block your card now.", at: 3.45},
+      {id: '1.2', kind: 'IF', cond: 'verified', condIs: 'is yes', send: VERIFIED_TEXT, at: 3.45},
       {id: '1.3', kind: 'ELSE', send: "I can't verify you here. Let me bring in a teammate.", at: 4.05},
     ],
   },
@@ -92,6 +94,22 @@ export const Scene06Procedures: React.FC<SceneLayerProps> = ({layer = 'all'}) =>
   const nav = P(navPoint('Procedures'), 1.8);
   const save = P({x: SAVE.x, y: SAVE.y}, SAVE_AT);
   const ds = P(navPoint('Data Sources'), 10.0);
+  // shared element: the SEND text of step 1.2 lifts out and lands as the verified bubble
+  const LIFT = 6.2;
+  const anchor = rowTextAnchor(SECTIONS, '1.2', sec(LIFT));
+  const a0 = P({x: anchor.x - 20, y: anchor.y - 16}, LIFT);
+  const msgs6 = [...past(CONVO.s5), ...CONVO.s6];
+  const g = lastBlockGeom(msgs6, CHAT.height, false);
+  const land = toScreen(CHAT_VIEW, {x: CHAT.x + g.bubble.x, y: CHAT.y + g.bubble.y});
+  const LAND = CONVO.s6[2].at;
+  const flyKeys = [
+    {t: LIFT, x: a0.x, y: a0.y, w: anchor.w + 40, o: 0},
+    {t: LIFT + 0.2, x: a0.x, y: a0.y - 30, w: anchor.w + 40},
+    {t: 7.1, x: 1300, y: 470, w: g.bubble.w, s: 0.92},
+    {t: LAND - 0.2, x: 1290, y: 455, w: g.bubble.w, s: 0.92},
+    {t: LAND, x: land.x, y: land.y, w: g.bubble.w},
+    {t: LAND + 0.12, x: land.x, y: land.y, w: g.bubble.w, o: 0},
+  ];
 
   return (
     <AbsoluteFill>
@@ -104,7 +122,7 @@ export const Scene06Procedures: React.FC<SceneLayerProps> = ({layer = 'all'}) =>
       {show('shell') && env.ownsShared ? (
         <>
           <CameraRig cam={cam} dim={config} panning={panning}>
-            <ChatThread frame={f} msgs={[...past(CONVO.s5), ...CONVO.s6]} orbColor={orbColor} orbPulse={orbPulse} />
+            <ChatThread frame={f} msgs={msgs6} orbColor={orbColor} orbPulse={orbPulse} />
           </CameraRig>
           <CameraRig cam={cam} dim={1 - config} panning={panning}>
             <div style={{position: 'absolute', left: SHELL.x - 200, top: SHELL.y - 160, width: SHELL.width + 400, height: SHELL.height + 320, borderRadius: '50%', background: `radial-gradient(ellipse, ${alpha(UI.glow.procedure, 0.4)} 0%, ${alpha(UI.glow.procedure, 0)} 62%)`, opacity: tween(f, 2.0, 2.6)}} />
@@ -121,6 +139,7 @@ export const Scene06Procedures: React.FC<SceneLayerProps> = ({layer = 'all'}) =>
               <StepsCard frame={f} sections={SECTIONS} active={active} spotlight={spotlight} skeleton={1 - pageIn} />
             </div>
           </CameraRig>
+          <FlyChip frame={f} keys={flyKeys}>{VERIFIED_TEXT}</FlyChip>
           {env.ownsShared ? (
             <Cursor
               frame={f}

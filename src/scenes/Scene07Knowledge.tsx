@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {COLORS, alpha, kf, kfIO, popIn, tween} from '../theme';
 import {BACKDROPS} from '../handoff';
-import {BUILD7, CHAT_VIEW, CONFIG_VIEW, CONTENT, CURSOR_S7_END, SHELL} from '../v7';
+import {BUILD7, CHAT, CHAT_VIEW, CONFIG_VIEW, CONTENT, CURSOR_S7_END, SHELL} from '../v7';
 import {camAt, CamKeys, toScreen} from '../components/Stage';
 import {CameraRig, dissolve, isPanning} from '../components/CameraRig';
 import {Backdrop} from '../components/Backdrop';
@@ -12,7 +12,9 @@ import {Cubic, cubicPath, cubicPoint} from '../components/StrokeLine';
 import {Logo} from '../components/logos';
 import {Caret, typedCount} from '../components/TypingText';
 import {AppShell, navPoint} from '../ui/AppShell';
-import {ChatThread, CONVO, past} from '../ui/ChatThread';
+import {ChatThread, CONVO, lastBlockGeom, past} from '../ui/ChatThread';
+import {FlyChip} from '../ui/FlyChip';
+import {Orb} from '../components/Orb';
 import {SourceIcon, SourceRow} from '../ui/Panels';
 import {UI, UI_FONT} from '../ui/tokens';
 import {envelope, SceneLayerProps} from './kit';
@@ -57,7 +59,7 @@ const READY = [T.row1 + 0.75, T.row2 + 0.7, T.row3 + 0.65];
 const ROW_IN = [T.row1, T.row2, T.row3];
 
 const CAM: CamKeys = {
-  t: [0, 6.45, 7.15, 8.5, 9.0],
+  t: [0, 6.3, 7.0, 8.15, 8.65],
   x: [CONFIG_VIEW.x, CONFIG_VIEW.x, CHAT_VIEW.x, CHAT_VIEW.x, CONFIG_VIEW.x],
   y: [540, 540, 540, 540, 540],
   s: [1, 1, 1, 1, 1],
@@ -130,7 +132,7 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
   const env = envelope(f, dur);
   const cam = camAt(f, CAM);
   const panning = isPanning((fr) => camAt(fr, CAM), f);
-  const config = kfIO(f, [6.45, 7.15, 8.5, 9.0], [1, 0, 0, 1]);
+  const config = kfIO(f, [6.3, 7.0, 8.15, 8.65], [1, 0, 0, 1]);
 
   // ---- step 1: drag a COPY of the PDF tile into the dropzone ----
   const pdfC = c(PDF_TILE);
@@ -178,10 +180,33 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
     {t: T.connect + 0.1, ...W(c(CONNECT))},
     {t: T.hover, ...W({x: POP.x + 250, y: POP.y + 10 + 36})},
     {t: T.pick + 0.15, ...W({x: POP.x + 250, y: POP.y + 10 + 36})},
-    {t: 6.3, x: 1620, y: 1000},
+    {t: 6.2, x: 1620, y: 1000},
     {t: 8.75, x: 1100, y: 1000},
     {t: 9.0, ...CURSOR_S7_END},
   ];
+  // shared element: the "Card policy.pdf" chip lifts from row 1 and lands as the source chip
+  const msgs7 = [...past(CONVO.s5, CONVO.s6), ...CONVO.s7];
+  const ans = CONVO.s7[1];
+  const srcLand = lastBlockGeom(msgs7, CHAT.height, true).source;
+  const srcScreen = toScreen(CHAT_VIEW, {x: CHAT.x + srcLand.x, y: CHAT.y + srcLand.y});
+  const LIFT = 6.1;
+  const chip0 = W({x: DROP.x + 96, y: rowTop(0) + 21});
+  const LAND = ans.at + ans.text.split(' ').length * 0.06 + 0.1;
+  const chipKeys = [
+    {t: LIFT, x: chip0.x, y: chip0.y, w: 250, o: 0},
+    {t: LIFT + 0.2, x: chip0.x, y: chip0.y - 30, w: 250},
+    {t: 7.0, x: 1320, y: 640, w: 250, s: 0.95},
+    {t: LAND - 0.15, x: 1310, y: 625, w: 250, s: 0.95},
+    {t: LAND, x: srcScreen.x, y: srcScreen.y, w: 230},
+    {t: LAND + 0.15, x: srcScreen.x, y: srcScreen.y, w: 230, o: 0},
+  ];
+  // Knowledge -> Simulator: the three rows collapse along dotted arcs into the orb, which flies to "Simulator"
+  const ORB_W = {x: DROP_C.x, y: DROP.y + 40};
+  const orbPop = popIn(f, 8.65, 0.3, 1.04);
+  const collapse = (i: number) => kfIO(f, [8.8 + i * 0.1, 9.1 + i * 0.1], [0, 1]);
+  const orbFly = kfIO(f, [9.12, 9.4], [0, 1]);
+  const navW = navPoint('Simulator');
+  const orbPos = {x: ORB_W.x + (navW.x - ORB_W.x) * orbFly, y: ORB_W.y + (navW.y - ORB_W.y) * orbFly - Math.sin(orbFly * Math.PI) * 60};
   const cur = s < T.grab + 0.05 ? cursorAt(f, keys) : s < T.drop ? W(dragPt) : cursorAt(f, after);
 
   return (
@@ -268,10 +293,29 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
                 const p = popIn(f, ROW_IN[i], 0.35, 1.03);
                 if (p <= 0) return null;
                 const old = s < ROW_IN[i] + 0.4 ? 0 : dimOld;
+                const cl = collapse(i);
+                if (cl >= 1) return null;
+                const r0 = {x: DROP.x + DROP.width / 2, y: rowTop(i) + rowShift + ROW_H / 2};
+                const cc = {x: r0.x + 260, y: (r0.y + ORB_W.y) / 2};
+                const u = 1 - cl;
+                const pt = {x: u * u * r0.x + 2 * u * cl * cc.x + cl * cl * ORB_W.x, y: u * u * r0.y + 2 * u * cl * cc.y + cl * cl * ORB_W.y};
                 return (
-                  <div key={k} style={{position: 'absolute', left: DROP.x, top: rowTop(i) + rowShift, opacity: Math.min(1, p) * (1 - 0.55 * old), transform: `scale(${0.96 + 0.04 * p})`, transformOrigin: 'left center'}}>
+                  <div key={k} style={{position: 'absolute', left: DROP.x + (pt.x - r0.x), top: rowTop(i) + rowShift + (pt.y - r0.y), opacity: Math.min(1, p) * (1 - 0.55 * old) * (1 - cl), transform: `scale(${(0.96 + 0.04 * p) * (1 - 0.85 * cl)})`, transformOrigin: 'center center', filter: cl > 0.01 ? `blur(${4 * cl}px)` : undefined}}>
                     <SourceRow kind={k} name={['Card policy.pdf', 'Help centre', 'Support wiki'][i]} frame={f} readyAt={READY[i]} width={DROP.width} />
                   </div>
+                );
+              })}
+
+              {/* dotted arcs from each row into the orb */}
+              {[0, 1, 2].map((i) => {
+                const d = tween(f, 8.72 + i * 0.1, 8.92 + i * 0.1) * (1 - tween(f, 9.05 + i * 0.1, 9.2 + i * 0.1));
+                if (d <= 0) return null;
+                const r0 = {x: DROP.x + DROP.width / 2, y: rowTop(i) + ROW_H / 2};
+                const curve: Cubic = [r0, {x: r0.x + 260, y: r0.y}, {x: ORB_W.x + 260, y: ORB_W.y}, ORB_W];
+                return (
+                  <svg key={`a${i}`} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}} width={1} height={1} opacity={d}>
+                    <path d={cubicPath(curve)} fill="none" stroke={alpha(UI.ink, 0.35)} strokeWidth={4} strokeDasharray="0.1 14" strokeLinecap="round" pathLength={undefined} />
+                  </svg>
                 );
               })}
 
@@ -333,6 +377,15 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
               ) : null}
             </div>
           </CameraRig>
+          {orbPop > 0 && s < 9.45 ? (
+            <CameraRig cam={cam}>
+              <Orb cx={orbPos.x} cy={orbPos.y} size={64 * (1 - 0.55 * orbFly)} scale={orbPop} frame={f} glow={tween(f, 8.9, 9.2) * (1 - orbFly)} pulse={tween(f, 9.0, 9.4)} opacity={1 - tween(f, 9.3, 9.45)} />
+            </CameraRig>
+          ) : null}
+          <FlyChip frame={f} keys={chipKeys} variant="pill" fontSize={22}>
+            <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="#E5484D" strokeWidth={2}><path d="M6 2.8h8l4.5 4.5V20a1.2 1.2 0 0 1-1.2 1.2H6A1.2 1.2 0 0 1 4.8 20V4A1.2 1.2 0 0 1 6 2.8z" /></svg>
+            Card policy.pdf
+          </FlyChip>
           {env.ownsShared ? (
             <Cursor
               frame={f}
@@ -341,7 +394,7 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
               hand={[[0, 0.25], [0.95, T.grab + 0.02], [T.addWeb - 0.25, T.addWeb + 0.2], [T.add - 0.25, T.add + 0.2], [T.connect - 0.25, T.connect + 0.2], [T.hover - 0.1, T.pick + 0.2]]}
               grab={[[T.grab, T.drop + 0.05]]}
               rippleColor={COLORS.inkNavy}
-              opacity={1 - kf(f, [6.1, 6.4, 8.6, 8.8], [0, 1, 1, 0])}
+              opacity={1 - kf(f, [6.0, 6.25, 8.65, 8.85], [0, 1, 1, 0])}
             />
           ) : null}
         </>

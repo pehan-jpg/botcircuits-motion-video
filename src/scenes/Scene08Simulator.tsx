@@ -14,6 +14,7 @@ import {AppShell, navPoint} from '../ui/AppShell';
 import {ChatThread, chatFieldPoints, Msg} from '../ui/ChatThread';
 import {PublishButton, RESULT_H, TestResultCard, TracePanel} from '../ui/Panels';
 import {UI, UI_FONT} from '../ui/tokens';
+import {CheckStroke} from '../components/Chip';
 import {envelope, SceneLayerProps} from './kit';
 
 // ---- timeline (scene seconds) ----
@@ -99,6 +100,24 @@ export const Scene08Simulator: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
               <div style={{position: 'absolute', left: TRACE.x, top: TRACE.y, opacity: 1 - 0.55 * spot}}>
                 <TracePanel frame={f} ticks={TICKS} width={TRACE_W} height={TRACE.height} />
               </div>
+              {/* the Trace check marks fly into the result chips */}
+              {[0, 1, 3].map((step, i) => {
+                const land = RESULT_AT + 0.3 + i * 0.2;
+                const p = kfIO(f, [land - 0.4, land], [0, 1]);
+                if (s < land - 0.4 || s > land + 0.08) return null;
+                const a = {x: TRACE.x + 30 + 24, y: TRACE.y + 96 + step * 84 + 26};
+                const b = {x: RESULT.cx - RESULT.width / 2 + 40 + 22 + 13, y: RESULT.cy - RESULT.height / 2 + 100 + i * 78 + 30};
+                const c = {x: (a.x + b.x) / 2, y: Math.min(a.y, b.y) - 120};
+                const u = 1 - p;
+                const x = u * u * a.x + 2 * u * p * c.x + p * p * b.x;
+                const y = u * u * a.y + 2 * u * p * c.y + p * p * b.y;
+                const size = 48 + (28 - 48) * p;
+                return (
+                  <div key={step} style={{position: 'absolute', left: x - size / 2, top: y - size / 2, width: size, height: size, borderRadius: size / 2, background: '#3CC37A', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 24px rgba(13,18,36,0.2)', zIndex: 5, opacity: 1 - tween(f, land, land + 0.08)}}>
+                    <CheckStroke size={size * 0.58} draw={1} color={COLORS.white} width={3} />
+                  </div>
+                );
+              })}
               {resultIn > 0 && toButton === 0 ? (
                 <div style={{position: 'absolute', left: RESULT.cx - RESULT.width / 2, top: RESULT.cy - RESULT.height / 2, opacity: resultIn, transform: `translateY(${(1 - resultIn) * 60}px)`}}>
                   <TestResultCard frame={f} at={RESULT_AT} width={RESULT.width} />

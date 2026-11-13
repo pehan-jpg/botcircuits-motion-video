@@ -16,6 +16,7 @@ export type Msg = {
   time: string; // "9:02 AM"
   chip?: string; // tool result chip inside the agent bubble
   source?: string; // source chip under the agent bubble
+  instant?: boolean; // appears complete (a chip landed on it) instead of typing
 };
 
 // Light variant of the scenes 1-3 thread.
@@ -30,6 +31,7 @@ const BUBBLE_X = 24 + AV + 14;
 const META = 34;
 const GAP = 22;
 export const PER_WORD = 0.06;
+export const CHAT_TEXT = {fs: FS, lh: LH, padX: PAD_X, padY: PAD_Y, max: TEXT_MAX};
 const CHIP_H = 48;
 const SOURCE_H = 46;
 
@@ -42,7 +44,7 @@ const bubbleDims = (text: string) => {
 /** Typed state of an agent message: visible words (fractional) and bubble size. */
 const typedState = (m: Msg, s: number) => {
   const words = m.text.split(' ');
-  if (m.from === 'maya' || m.at === -Infinity) return {k: words.length, dims: bubbleDims(m.text), done: true};
+  if (m.from === 'maya' || m.at === -Infinity || m.instant) return {k: words.length, dims: bubbleDims(m.text), done: true};
   const t = (s - m.at) / PER_WORD; // words typed (fractional); the first word shows as the bubble appears
   const k = Math.max(1, Math.min(words.length, t + 1));
   const kf = Math.floor(k);
@@ -51,7 +53,7 @@ const typedState = (m: Msg, s: number) => {
   const p = ease(k - kf, [0, 1], [0, 1]);
   return {k: kf, dims: {lines: a.lines, w: a.w + (b.w - a.w) * p, h: a.h + (b.h - a.h) * p}, done: kf >= words.length};
 };
-export const msgEnd = (m: Msg) => m.at + m.text.split(' ').length * PER_WORD;
+export const msgEnd = (m: Msg) => m.at + (m.instant ? 0.15 : m.text.split(' ').length * PER_WORD);
 
 /** Current height of a message block (bubble, chip, source, timestamp). */
 const blockHeight = (m: Msg, s: number) => {
@@ -135,7 +137,7 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
           borderRadius: `26px 26px 26px 8px`,
           border: isAgent ? '1.5px solid transparent' : 'none',
           background: isAgent
-            ? `linear-gradient(#F7F9F8, #F7F9F8) padding-box, linear-gradient(120deg, #BDEFD3, ${COLORS.sky}, ${COLORS.blush}) border-box`
+            ? `linear-gradient(#F7F9F8, #F7F9F8) padding-box, linear-gradient(120deg, #6FD3A4, #CDE7FF) border-box`
             : '#EEF0F3',
           boxSizing: 'border-box',
           overflow: 'hidden',
@@ -216,7 +218,11 @@ export const ChatThread: React.FC<{
   draft?: string;
   focus?: number;
   sendPress?: number;
-}> = ({frame, msgs, orbColor, orbPulse = 0, x = CHAT.x, y = CHAT.y, footerOrbOpacity = 1, scale = 1, height = CHAT.height, draft, focus = 0, sendPress = 0}) => {
+  /** Replace the Maya header (e.g. the WhatsApp view of the agent). */
+  header?: React.ReactNode;
+  /** Hide the footer status line (used when the header already names the agent). */
+  hideStatus?: boolean;
+}> = ({frame, msgs, orbColor, orbPulse = 0, x = CHAT.x, y = CHAT.y, footerOrbOpacity = 1, scale = 1, height = CHAT.height, draft, focus = 0, sendPress = 0, header, hideStatus = false}) => {
   const s = frame / sec(1);
   const AREA = {top: 112, bottom: height - 160};
   const visibleH = AREA.bottom - AREA.top;
@@ -228,14 +234,18 @@ export const ChatThread: React.FC<{
     <div data-safe="chat card" style={{position: 'absolute', left: x, top: y, width: CHAT.width, height, fontFamily: FONT_SANS, transformOrigin: '0 0', transform: scale !== 1 ? `scale(${scale})` : undefined}}>
       <div style={{position: 'absolute', inset: 0, borderRadius: CHAT.radius, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: UI.shadow}} />
       {/* header */}
-      <div style={{position: 'absolute', left: 28, top: 22}}>
-        <MAvatar size={52} />
-      </div>
-      <div style={{position: 'absolute', left: 96, top: 18, fontSize: 26, fontWeight: 600, color: UI.ink}}>Maya</div>
-      <div style={{position: 'absolute', left: 96, top: 52, display: 'flex', alignItems: 'center', gap: 8, fontSize: 22, color: UI.text2}}>
-        <span style={{width: 10, height: 10, borderRadius: 5, background: '#3CC37A'}} />
-        Online
-      </div>
+      {header ?? (
+        <>
+          <div style={{position: 'absolute', left: 28, top: 22}}>
+            <MAvatar size={52} />
+          </div>
+          <div style={{position: 'absolute', left: 96, top: 18, fontSize: 26, fontWeight: 600, color: UI.ink}}>Maya</div>
+          <div style={{position: 'absolute', left: 96, top: 52, display: 'flex', alignItems: 'center', gap: 8, fontSize: 22, color: UI.text2}}>
+            <span style={{width: 10, height: 10, borderRadius: 5, background: '#3CC37A'}} />
+            Online
+          </div>
+        </>
+      )}
       <div style={{position: 'absolute', left: 0, right: 0, top: 96, height: 1, background: UI.border}} />
       {/* messages */}
       <div
@@ -258,7 +268,7 @@ export const ChatThread: React.FC<{
       </div>
       {/* footer */}
       <div style={{position: 'absolute', left: 0, right: 0, top: height - 154, height: 1, background: UI.border}} />
-      <div style={{position: 'absolute', left: 28, top: height - 142, height: 34, display: 'flex', alignItems: 'center', gap: 12, fontSize: 22, color: UI.text2, whiteSpace: 'nowrap'}}>
+      <div style={{position: 'absolute', left: 28, top: height - 142, height: 34, opacity: hideStatus ? 0 : 1, display: 'flex', alignItems: 'center', gap: 12, fontSize: 22, color: UI.text2, whiteSpace: 'nowrap'}}>
         <div style={{position: 'relative', width: 28, height: 28, opacity: footerOrbOpacity}}>
           <Orb cx={14} cy={14} size={28} color={orbColor} frame={frame} shadow={false} pulse={orbPulse} />
         </div>
@@ -327,6 +337,20 @@ export const ChatThread: React.FC<{
   );
 };
 
+/**
+ * Geometry (relative to the card) of the LAST message once complete: its
+ * bubble and the source chip under it. Messages are bottom aligned, so the
+ * last block always ends at the bottom of the message area.
+ */
+export const lastBlockGeom = (msgs: Msg[], height = CHAT.height, settled = true) => {
+  const m = msgs[msgs.length - 1];
+  const AREA = {top: 112, bottom: height - 160};
+  const bh = settled ? blockHeight({...m, at: -Infinity}, 1e6) : bubbleDims(m.text).h + META + GAP;
+  const top = AREA.bottom - 8 - bh;
+  const d = bubbleDims(m.text);
+  return {bubble: {x: BUBBLE_X, y: top, w: d.w, h: d.h}, source: {x: BUBBLE_X, y: top + d.h + 10, h: SOURCE_H}};
+};
+
 /** World position (relative to the card) of the send arrow and the message field. */
 export const chatFieldPoints = (height = CHAT.height) => ({
   field: {x: 200, y: height - 90 + 32},
@@ -342,11 +366,11 @@ export const CONVO = {
   s6: [
     {from: 'agent', text: "I'm sorry to hear that, Maya. Can you confirm the last four digits of the card?", at: 7.15, time: '9:05 AM'},
     {from: 'maya', text: '4821', at: 8.25, time: '9:05 AM'},
-    {from: 'agent', text: "Thanks, you're verified. I'll block your card now.", at: 8.45, time: '9:06 AM', chip: 'Card blocked'},
+    {from: 'agent', text: "Thanks Maya, you're verified. I'll block your card now.", at: 8.45, time: '9:06 AM', chip: 'Card blocked', instant: true},
   ] as Msg[],
   s7: [
-    {from: 'maya', text: 'When will my new card arrive?', at: 7.1, time: '9:07 AM'},
-    {from: 'agent', text: 'Your new card should arrive in 5 to 7 business days.', at: 7.35, time: '9:07 AM', source: 'Card policy.pdf'},
+    {from: 'maya', text: 'When will my new card arrive?', at: 6.9, time: '9:07 AM'},
+    {from: 'agent', text: 'Your new card should arrive in 5 to 7 business days.', at: 7.1, time: '9:07 AM', source: 'Card policy.pdf'},
   ] as Msg[],
 };
 export const past = (...lists: Msg[][]) => lists.flat().map((m) => ({...m, at: -Infinity}));
