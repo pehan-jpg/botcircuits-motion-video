@@ -16,19 +16,19 @@ export type TransitionState = {
 };
 
 /**
- * Per-frame state of the video wrapper and overlay elements. Every transition is
- * centred on its cut frame; the loop transition (frame === duration) wraps to frame 0.
+ * State of the video wrapper and overlay elements at time t (seconds). Every transition is
+ * centred on its cut time; the loop transition (time === duration) wraps to time 0.
  */
-export const transitionState = (frame: number): TransitionState => {
+export const transitionState = (t: number): TransitionState => {
   const s: TransitionState = { scale: 1, translateX: 0, blurPx: 0, motionBlurX: 0, flareOpacity: 0, band: null };
 
-  for (const t of TRANSITIONS) {
-    const half = t.duration / 2;
-    let d = frame - t.frame;
-    if (t.frame >= COMP.durationInFrames && frame < half) d = frame + COMP.durationInFrames - t.frame;
+  for (const tr of TRANSITIONS) {
+    const half = tr.duration / 2;
+    let d = t - tr.time;
+    if (tr.time >= COMP.durationSec && t < half) d = t + COMP.durationSec - tr.time;
     if (d < -half || d > half) continue;
 
-    if (t.type === "blurDip") {
+    if (tr.type === "blurDip") {
       // Eased up over the frames before the cut, peak on the cut frame, eased back down after.
       const k = d < 0 ? ease((d + half) / half) : ease(1 - d / half);
       const fx = TRANSITION_FX.blurDip;
@@ -37,7 +37,7 @@ export const transitionState = (frame: number): TransitionState => {
       s.flareOpacity = Math.max(s.flareOpacity, fx.flareOpacity * k);
     }
 
-    if (t.type === "whipPan") {
+    if (tr.type === "whipPan") {
       // One continuous eased pan across the cut: 0 → -dist on the outgoing shot,
       // +dist → 0 on the incoming one, so velocity peaks at the cut.
       const u = ease((d + half) / (2 * half));
@@ -49,7 +49,7 @@ export const transitionState = (frame: number): TransitionState => {
       s.scale *= 1 + (2 * Math.abs(x) + 8) / COMP.width;
     }
 
-    if (t.type === "limeSweep") {
+    if (tr.type === "limeSweep") {
       const u = ease((d + half) / (2 * half));
       const fx = TRANSITION_FX.limeSweep;
       const bandW = (COMP.width * fx.bandWidthPct) / 100;

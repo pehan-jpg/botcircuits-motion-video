@@ -1,105 +1,116 @@
 import type React from "react";
-import { Easing, interpolate, spring } from "remotion";
-import { MOTION, PRIMITIVES, STACK } from "./config";
+import { Easing, interpolate } from "remotion";
+import { EASE_CURVE, MOTION, STACK, STACK_CONTAINER_HEIGHT } from "./config";
 
 type Bezier = readonly [number, number, number, number];
 
 export const bezier = (b: Bezier) => Easing.bezier(b[0], b[1], b[2], b[3]);
-export const revealEase = bezier(MOTION.revealEasing);
-export const easeInOut = bezier(MOTION.easeInOut);
-export const easeOut = bezier(MOTION.easeOut);
+
+/** The single curve used for every position change (and the eased fades). */
+export const ease = bezier(EASE_CURVE);
 
 export const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
-/** 0 → 1 over `duration` frames from `start`, eased with the reveal curve. */
-export const ramp = (frame: number, start: number, duration: number, easing = revealEase) =>
-  interpolate(frame, [start, start + duration], [0, 1], { ...clamp, easing });
+/** 0 → 1 over `duration` seconds from `start`, on the single ease-out curve. */
+export const easeIn01 = (t: number, start: number, duration: number) =>
+  interpolate(t, [start, start + duration], [0, 1], { ...clamp, easing: ease });
+
+/** 0 → 1 over `duration` seconds from `start`, linear (used for opacity fades). */
+export const linear01 = (t: number, start: number, duration: number) => interpolate(t, [start, start + duration], [0, 1], clamp);
 
 export const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-/** Only emit a blur filter when it is visible, so resting text stays crisp. */
-export const blurFilter = (px: number) => (px > 0.05 ? `blur(${px.toFixed(2)}px)` : undefined);
-
-/** The stack spring (no fixed duration): drives rises, glides and height growth. */
-export const stackSpring = (frame: number, start: number, fps: number) =>
-  spring({ frame: frame - start, fps, config: MOTION.spring });
-
-const exitSpring = (frame: number, start: number, fps: number) =>
-  spring({ frame: frame - start, fps, config: MOTION.exitSpring, durationInFrames: MOTION.exit.frames });
-
 /**
- * Entrance / exit state of one stack element. `fade` (opacity + blur) goes directly on the
- * glass surface, because an ancestor with opacity or filter would disable its backdrop-filter.
+ * Vertical offset for an in-flow element, applied as a layout offset (position: relative + top)
+ * rather than a transform. Headless Chrome sometimes captured transform-only (compositor) updates
+ * a frame late, which showed up as stale positions and missing text; a layout offset forces a
+ * fresh paint on every frame. Never scale.
  */
-export const itemMotion = (frame: number, fps: number, enter: number, exit: number, risePx: number = STACK.risePx) => {
-  const p = stackSpring(frame, enter, fps);
-  const q = exitSpring(frame, exit, fps);
-  return {
-    visible: frame >= enter && frame < exit + MOTION.exit.frames,
-    /** Presence 0 → 1: how much of its slot the element occupies. */
-    p,
-    fade: {
-      opacity: p * (1 - q),
-      filter: blurFilter(MOTION.enter.blurPx * (1 - p) + MOTION.exit.blurPx * q),
-    },
-    scale: lerp(MOTION.enter.scaleFrom, 1, p),
-    /** Own vertical motion: rises from `risePx` below its slot, drifts up on exit. */
-    ownY: risePx * (1 - p) + MOTION.exit.translatePx * q,
-  };
+export const translateY = (y: number): React.CSSProperties => ({ position: "relative", top: `${y.toFixed(3)}px` });
+
+/* ---------- Stack items ---------- */
+
+export type StackItem = {
+  /** Entrance start (s). */
+  enter: number;
+  /** Current height (px), animated for cards that grow. */
+  height: number;
 };
 
-export type ItemMotion = ReturnType<typeof itemMotion>;
-
-/** Shared idle float so the whole stack breathes together. */
-export const floatY = (frame: number, from: number) =>
-  MOTION.float.amplitudePx * Math.sin(((frame - from) / MOTION.float.periodFrames) * Math.PI * 2);
+export type ItemState = { y: number; opacity: number; textOpacity: number };
 
 /**
- * Layout of a bottom-anchored stack, for elements listed top → bottom.
- * `offset`: distance of each element's bottom edge above the stack bottom. Every element below
- * pushes the ones above it up by its presence × (height + gap), so a card rising into the bottom
- * slot glides everything above it upward with the same spring.
- * `clipTop`: how much of an element's top is hidden so it never overlaps the element above while
- * the space is still opening; it emerges upward out of its slot instead.
+ * Layout of a bottom-anchored stack at time t, items listed top → bottom. A new item starts
+ * (own height + 24px) below its slot and rises into it while every item above scrolls up by
+ * (its height + 12px) on the same curve over the same 0.4 s, so the stack moves as one.
+ * Returns each item's y (px, down positive, bottom edge relative to the stack bottom) and opacities.
  */
-export const stackLayout = (items: { p: number; h: number; ownY: number }[]) => {
-  const offsets = items.map(() => 0);
-  let acc = 0;
+export const stackLayout = (t: number, items: StackItem[]): ItemState[] => {
+  const m = MOTION.enter;
+  const e = items.map((it) => easeIn01(t, it.enter, m.duration));
+  let below = 0;
+  const out: ItemState[] = items.map(() => ({ y: 0, opacity: 0, textOpacity: 0 }));
   for (let i = items.length - 1; i >= 0; i--) {
-    offsets[i] = acc;
-    acc += items[i].p * (items[i].h + STACK.gap);
+    const it = items[i];
+    out[i] = {
+      y: -below + (it.height + m.extraDropPx) * (1 - e[i]),
+      opacity: linear01(t, it.enter, m.opacityDuration),
+      textOpacity: linear01(t, it.enter + m.textDelay, m.textFade),
+    };
+    below += e[i] * (it.height + STACK.gap);
   }
-  return items.map((item, i) => {
-    if (i === 0) return { offset: offsets[i], clipTop: 0 };
-    const top = offsets[i] - item.ownY + item.h;
-    const allowed = offsets[i - 1] - items[i - 1].ownY - STACK.gap;
-    return { offset: offsets[i], clipTop: Math.min(item.h, Math.max(0, top - allowed)) };
-  });
+  return out;
 };
 
-/** Height of a card that grows upward: base height plus each growth eased in with the stack spring. */
-export const grownHeight = (frame: number, fps: number, base: number, growth: { at: number; grow: number }[]) =>
-  base + growth.reduce((sum, g) => sum + g.grow * stackSpring(frame, g.at, fps), 0);
+/** Whole-stack exit: scrolls up 40px on the same curve while fading to 0. No stagger. */
+export const stackExit = (t: number, exitStart: number) => {
+  const x = easeIn01(t, exitStart, MOTION.exit.duration);
+  return { y: -MOTION.exit.liftPx * x, opacity: 1 - x };
+};
 
-/** Container transform for a stack element. */
-export const stackTransform = (y: number, scale: number): React.CSSProperties => ({
-  translate: `0px ${y.toFixed(2)}px`,
-  scale: String(scale),
-});
+/** Whether a scene's stack is on screen at time t. */
+export const stackVisible = (t: number, firstEnter: number, exitStart: number) =>
+  t >= firstEnter && t < exitStart + MOTION.exit.duration;
+
+/** The query dims to 80% once the card arrives. */
+export const queryDim = (t: number, cardEnter: number) => lerp(1, MOTION.dim.to, easeIn01(t, cardEnter, MOTION.dim.duration));
+
+/** Height of a growing card: base plus each growth, eased over 0.3 s. */
+export const grownHeight = (t: number, base: number, growth: { at: number; grow: number }[]) =>
+  base + growth.reduce((sum, g) => sum + g.grow * easeIn01(t, g.at, MOTION.grow.duration), 0);
+
+/** A new row inside a growing card: opacity 0 → 1 and an 8px rise over 0.3 s, no blur. */
+export const rowAppear = (t: number, at: number | null): React.CSSProperties => {
+  if (at === null) return {};
+  const k = easeIn01(t, at, MOTION.grow.duration);
+  return { opacity: k, ...translateY(MOTION.grow.rowRisePx * (1 - k)) };
+};
 
 /**
- * Text roll for content that swaps in place: the outgoing text rises 14px, fades and blurs over
- * 10 frames; the incoming text starts 3 frames later and settles from 14px below over 12 frames.
- * `inAt` is when the swap that brings this content starts (null = present from the start),
- * `outAt` is when the swap that replaces it starts (null = stays).
+ * Opacity-only crossfade for content that swaps in place: the outgoing state fades out over
+ * 8 frames (30 fps) and the incoming one fades in over 8 frames starting 4 frames later.
+ * `inAt` = when the swap bringing this content starts (null = present from the start);
+ * `outAt` = when the swap replacing it starts (null = stays).
  */
-export const textRoll = (frame: number, inAt: number | null, outAt: number | null): React.CSSProperties => {
-  const r = PRIMITIVES.textRoll;
-  const i = inAt === null ? 1 : ramp(frame, inAt + r.inDelayFrames, r.inFrames);
-  const o = outAt === null ? 0 : ramp(frame, outAt, r.outFrames);
-  return {
-    opacity: i * (1 - o),
-    translate: `0px ${(r.distancePx * (1 - i) - r.distancePx * o).toFixed(2)}px`,
-    filter: blurFilter(r.blurPx * (1 - i) + r.blurPx * o),
-  };
+export const crossfade = (t: number, inAt: number | null, outAt: number | null): React.CSSProperties => {
+  const c = MOTION.crossfade;
+  const i = inAt === null ? 1 : linear01(t, inAt + c.overlap, c.duration);
+  const o = outAt === null ? 0 : linear01(t, outAt, c.duration);
+  return { opacity: i * (1 - o) };
 };
+
+/**
+ * The stack's soft edge, applied to each card in container coordinates (a mask on the container
+ * itself switches off the cards' backdrop blur in Chrome). `top` is the card's top edge within
+ * the container, so every card fades through the same 56px top and 40px bottom bands.
+ */
+export const softEdgeMask = (top: number): React.CSSProperties => {
+  const h = STACK_CONTAINER_HEIGHT;
+  const g = `linear-gradient(to bottom, transparent ${(-top).toFixed(2)}px, black ${(STACK.maskTopPx - top).toFixed(2)}px, black ${(
+    h - STACK.maskBottomPx - top
+  ).toFixed(2)}px, transparent ${(h - top).toFixed(2)}px)`;
+  return { maskImage: g, WebkitMaskImage: g };
+};
+
+/** Current time in seconds (the composition fps can be 60 or 30). */
+export const timeOf = (frame: number, fps: number) => frame / fps;

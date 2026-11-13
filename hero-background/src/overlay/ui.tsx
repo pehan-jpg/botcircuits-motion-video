@@ -1,11 +1,14 @@
 import type React from "react";
-import { MOTION, STACK, THEME } from "./config";
+import { LINES, STACK, STACK_CONTAINER_HEIGHT, THEME } from "./config";
 import { inter } from "./fonts";
-import { type ItemMotion, blurFilter, lerp, ramp, stackTransform } from "./motion";
+import { softEdgeMask } from "./motion";
 
-/* ---------- Typography (Inter only) ---------- */
+/* ---------- Typography (Inter only, integer sizes, line height 1.3) ---------- */
 
-const textBase: React.CSSProperties = {
+/** Class on every text element, so verification renders can hide text to sample the glass behind it. */
+export const TEXT_CLASS = "ovl-text";
+
+export const textBase: React.CSSProperties = {
   fontFamily: inter,
   fontVariantNumeric: "tabular-nums",
   textShadow: THEME.textShadow,
@@ -17,13 +20,14 @@ export const Label: React.FC<{ children: React.ReactNode; color?: string; style?
   style,
 }) => (
   <div
+    className={TEXT_CLASS}
     style={{
       ...textBase,
       fontSize: THEME.type.label.size,
       fontWeight: THEME.type.label.weight,
       letterSpacing: THEME.type.label.letterSpacing,
       textTransform: "uppercase",
-      lineHeight: 1.2,
+      lineHeight: `${LINES.label}px`,
       color,
       opacity: THEME.type.label.opacity,
       ...style,
@@ -35,11 +39,12 @@ export const Label: React.FC<{ children: React.ReactNode; color?: string; style?
 
 export const Title: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
   <div
+    className={TEXT_CLASS}
     style={{
       ...textBase,
       fontSize: THEME.type.title.size,
       fontWeight: THEME.type.title.weight,
-      lineHeight: 1.3,
+      lineHeight: `${LINES.title}px`,
       letterSpacing: "-0.01em",
       color: THEME.text,
       ...style,
@@ -55,11 +60,12 @@ export const Body: React.FC<{ children: React.ReactNode; color?: string; style?:
   style,
 }) => (
   <div
+    className={TEXT_CLASS}
     style={{
       ...textBase,
       fontSize: THEME.type.body.size,
       fontWeight: THEME.type.body.weight,
-      lineHeight: 1.38,
+      lineHeight: `${LINES.body}px`,
       color,
       ...style,
     }}
@@ -68,40 +74,70 @@ export const Body: React.FC<{ children: React.ReactNode; color?: string; style?:
   </div>
 );
 
-/* ---------- Glass ---------- */
+/* ---------- Stack container and glass items ---------- */
+
+/**
+ * The single right-aligned column. Its bottom edge sits `maskBottomPx` below the scene's stack
+ * anchor, so resting cards (bottom edge on the anchor) are fully opaque and new cards rise in
+ * through the soft bottom band.
+ */
+export const Stack: React.FC<{ bottom: number; children: React.ReactNode }> = ({ bottom, children }) => (
+  <div
+    style={{
+      position: "absolute",
+      left: STACK.left,
+      top: bottom + STACK.maskBottomPx - STACK_CONTAINER_HEIGHT,
+      width: STACK.width,
+      height: STACK_CONTAINER_HEIGHT,
+    }}
+  >
+    {children}
+  </div>
+);
+
+/** Average mask alpha over a card's vertical extent: dims the card's shadow as it passes the soft edges. */
+const maskCoverage = (top: number, height: number) => {
+  const h = STACK_CONTAINER_HEIGHT;
+  let sum = 0;
+  const n = 16;
+  for (let i = 0; i < n; i++) {
+    const y = top + ((i + 0.5) / n) * height;
+    const a = y < 0 ? 0 : y < STACK.maskTopPx ? y / STACK.maskTopPx : y < h - STACK.maskBottomPx ? 1 : y < h ? (h - y) / STACK.maskBottomPx : 0;
+    sum += a;
+  }
+  return sum / n;
+};
 
 export type GlassVariant = "action" | "query";
 
 const glassBackground = (variant: GlassVariant, tint: number) =>
   variant === "action"
-    ? `${THEME.glass.actionSheen}, rgba(${THEME.glass.actionTint}, ${tint})`
-    : `linear-gradient(${THEME.glass.queryFill}, ${THEME.glass.queryFill}), rgba(${THEME.glass.actionTint}, ${tint})`;
+    ? `${THEME.glass.actionSheen}, rgba(${THEME.glass.actionRgb}, ${tint})`
+    : `rgba(${THEME.glass.queryRgb}, ${tint})`;
 
 type GlassProps = {
   variant: GlassVariant;
-  /** Alpha of the dark tint under the glass (per scene, from config). */
+  /** Fill alpha (per scene, from config). */
   tint: number;
   /** Fixed width, or "fit" to hug the content up to `maxWidth`. */
   width: number | "fit";
   maxWidth?: number;
   /** Surface height in px (animated for cards that grow upward). */
   height: number;
-  /** Container transform (stack position, rise, float, exit drift). */
-  transform: React.CSSProperties;
-  /** Opacity + blur, applied on the surface itself. */
-  fade: { opacity: number; filter?: string };
-  /** Optional horizontal wipe: inset in px from the right edge. */
-  clipRight?: number;
-  /** Hidden top portion while the element rises into an opening slot. */
-  clipTop?: number;
+  /** Vertical offset of the bottom edge from the stack anchor (px, down positive). */
+  y: number;
+  /** Surface opacity (entrance fade × exit fade × dim). */
+  opacity: number;
+  /** Content opacity (fades in 2 frames after the surface). */
+  textOpacity: number;
   radius?: number;
   surfaceStyle?: React.CSSProperties;
   children: React.ReactNode;
 };
 
 /**
- * A glass surface anchored to the bottom-right of its stack; the stack positions it with
- * `transform`. Its shadow lives on its own layer so reveals never clip it.
+ * A glass card bottom-anchored in the stack and positioned with translate3d only. The soft
+ * edge mask sits on the surface itself; the shadow is a separate layer that fades with it.
  */
 export const Glass: React.FC<GlassProps> = ({
   variant,
@@ -109,27 +145,25 @@ export const Glass: React.FC<GlassProps> = ({
   width,
   maxWidth,
   height,
-  transform,
-  fade,
-  clipRight = 0,
-  clipTop = 0,
+  y,
+  opacity,
+  textOpacity,
   radius: radiusProp,
   surfaceStyle,
   children,
 }) => {
   const radius = radiusProp ?? THEME.glass.radius;
-  const w = typeof width === "number" ? width : undefined;
-  const clipped = clipRight > 0.01 || clipTop > 0.01;
+  const top = STACK_CONTAINER_HEIGHT - STACK.maskBottomPx - height + y;
+  const isAction = variant === "action";
   return (
     <div
       style={{
         position: "absolute",
         right: 0,
-        bottom: 0,
+        // Positioned with a layout offset, not a transform (see translateY in motion.ts).
+        bottom: `${(STACK.maskBottomPx - y).toFixed(3)}px`,
         width: width === "fit" ? "max-content" : width,
         maxWidth,
-        transformOrigin: "100% 100%",
-        ...transform,
       }}
     >
       <div
@@ -138,12 +172,10 @@ export const Glass: React.FC<GlassProps> = ({
           left: 0,
           top: 0,
           width: "100%",
-          height: "100%",
+          height,
           borderRadius: radius,
           boxShadow: THEME.glass.shadow,
-          transformOrigin: "0 100%",
-          scale: clipped ? `${w ? 1 - clipRight / w : 1} ${Math.max(0, 1 - clipTop / height)}` : undefined,
-          opacity: fade.opacity,
+          opacity: opacity * maskCoverage(top, height),
         }}
       />
       <div
@@ -155,85 +187,56 @@ export const Glass: React.FC<GlassProps> = ({
           background: glassBackground(variant, tint),
           backdropFilter: THEME.glass.backdropFilter,
           WebkitBackdropFilter: THEME.glass.backdropFilter,
-          border: THEME.glass.border,
-          boxShadow: THEME.glass.innerHighlight,
+          border: isAction ? THEME.glass.border : "none",
+          boxShadow: isAction ? THEME.glass.innerHighlight : undefined,
           borderRadius: radius,
-          clipPath: clipped
-            ? `inset(${clipTop.toFixed(2)}px ${clipRight.toFixed(2)}px 0px 0px round ${Math.min(radius, height / 2).toFixed(2)}px)`
-            : undefined,
-          ...fade,
+          opacity,
+          ...softEdgeMask(top),
           ...surfaceStyle,
         }}
       >
-        {children}
+        <div style={{ opacity: textOpacity, height: "100%" }}>{children}</div>
       </div>
     </div>
   );
 };
 
-/** The single right-aligned column; its bottom edge sits at `bottom` and elements stack upward. */
-export const Stack: React.FC<{ bottom: number; children: React.ReactNode }> = ({ bottom, children }) => (
-  <div style={{ position: "absolute", left: STACK.left, top: 0, width: STACK.width, height: bottom }}>{children}</div>
-);
-
-/** Word-by-word reveal: each word fades in from a short blur. */
-export const WordReveal: React.FC<{ text: string; frame: number; start: number }> = ({ text, frame, start }) => {
-  const q = MOTION.query;
-  return (
-    <>
-      {text.split(" ").map((word, i) => {
-        const t = ramp(frame, start + i * q.wordStagger, q.wordFrames);
-        return (
-          <span key={i}>
-            <span style={{ display: "inline-block", opacity: t, filter: blurFilter(q.wordBlurPx * (1 - t)) }}>{word}</span>{" "}
-          </span>
-        );
-      })}
-    </>
-  );
-};
-
-/** Customer query bubble with its industry label; dims once the action card arrives. */
+/** Customer query bubble: dark glass, no border, right-aligned text hugging its content up to 400px. */
 export const QueryBubble: React.FC<{
-  frame: number;
   /** Small label above the query, e.g. "Customer · Travel". */
   label: string;
   text: string;
-  enter: number;
-  dimAt: number;
   tint: number;
-  motion: ItemMotion;
-  /** Vertical position relative to the stack bottom (negative = up). */
+  height: number;
   y: number;
-}> = ({ frame, label, text, enter, dimAt, tint, motion, y }) => {
-  if (!motion.visible) return null;
-  const dim = lerp(1, MOTION.query.dimTo, ramp(frame, dimAt, MOTION.query.dimFrames));
-
-  return (
-    <Glass
-      variant="query"
-      tint={tint}
-      width="fit"
-      maxWidth={STACK.queryMaxWidth}
-      height={STACK.queryHeight}
-      transform={stackTransform(y, motion.scale)}
-      fade={{ ...motion.fade, opacity: motion.fade.opacity * dim }}
-      surfaceStyle={{ padding: "11px 18px 12px", textAlign: "right" }}
+  opacity: number;
+  textOpacity: number;
+}> = ({ label, text, tint, height, y, opacity, textOpacity }) => (
+  <Glass
+    variant="query"
+    tint={tint}
+    width="fit"
+    maxWidth={STACK.queryMaxWidth}
+    height={height}
+    y={y}
+    opacity={opacity}
+    textOpacity={textOpacity}
+    surfaceStyle={{ padding: `${THEME.query.padY}px ${THEME.query.padX}px`, textAlign: "right" }}
+  >
+    <Label>{label}</Label>
+    <div
+      className={TEXT_CLASS}
+      style={{
+        ...textBase,
+        marginTop: THEME.query.labelGap,
+        fontSize: THEME.type.query.size,
+        fontWeight: THEME.type.query.weight,
+        lineHeight: `${LINES.body}px`,
+        color: THEME.text,
+        textWrap: "balance",
+      }}
     >
-      <Label>{label}</Label>
-      <div
-        style={{
-          ...textBase,
-          marginTop: 4,
-          fontSize: THEME.type.query.size,
-          fontWeight: THEME.type.query.weight,
-          lineHeight: 1.36,
-          color: THEME.text,
-          textWrap: "balance",
-        }}
-      >
-        <WordReveal text={text} frame={frame} start={enter + MOTION.query.wordDelay} />
-      </div>
-    </Glass>
-  );
-};
+      {text}
+    </div>
+  </Glass>
+);

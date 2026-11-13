@@ -1,109 +1,109 @@
 import type React from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
-import { PRIMITIVES, SCENES, STACK, THEME, exitTiming, queryLabel } from "../config";
-import { type ItemMotion, floatY, itemMotion, stackLayout, stackTransform } from "../motion";
-import { PillPop, RollingDetail, RouteDraw, SegmentedBar, TagTicks, wipeInset } from "../primitives";
-import { Body, Glass, Label, QueryBubble, Stack, Title } from "../ui";
+import { PRIMITIVES, SCENES, STACK, THEME, queryLabel } from "../config";
+import { queryDim, stackExit, stackLayout, stackVisible, timeOf } from "../motion";
+import { PillPop, RollingDetail, RouteDraw, SegmentedBar, TagTicks } from "../primitives";
+import { Body, Glass, Label, QueryBubble, Stack, TEXT_CLASS, textBase } from "../ui";
 
 const S = SCENES.retail;
-const EXIT = exitTiming(S.exitEnd);
-const ROUTE = { width: 200, height: 48, d: "M 12 36 Q 100 -8 188 36" };
+const B = S.beats;
+const ROUTE = { width: 200, height: 44, d: "M 12 32 Q 100 -6 188 32" };
 
 const Place: React.FC<{ name: string }> = ({ name }) => (
-  <Title style={{ fontSize: 18, letterSpacing: "0.06em", textTransform: "uppercase", whiteSpace: "nowrap" }}>{name}</Title>
+  <div
+    className={TEXT_CLASS}
+    style={{ ...textBase, fontSize: 16, fontWeight: 600, lineHeight: "20px", letterSpacing: "0.06em", textTransform: "uppercase", color: THEME.text }}
+  >
+    {name}
+  </div>
 );
 
-const OrderCard: React.FC<{ frame: number; fps: number; motion: ItemMotion; y: number; clipTop: number }> = ({
-  frame,
-  fps,
-  motion,
-  y,
-  clipTop,
-}) => (
-  <Glass
-    variant="action"
-    tint={S.tint}
-    width={STACK.width}
-    height={S.card.height}
-    transform={stackTransform(y, motion.scale)}
-    fade={motion.fade}
-    clipRight={wipeInset(frame, S.wipe.start, STACK.width)}
-    clipTop={clipTop}
-    surfaceStyle={{ padding: 18, display: "flex", flexDirection: "column" }}
-  >
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 26 }}>
+/** The card arrives with all of its content in place; inner animations start once it has settled. */
+const OrderContent: React.FC<{ t: number }> = ({ t }) => (
+  <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 24 }}>
       <Label>{S.copy.label}</Label>
-      <PillPop frame={frame} fps={fps} at={S.badgeAt} small>
+      <PillPop t={t} at={B.badge} small>
         {S.copy.badge}
       </PillPop>
     </div>
 
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 10, height: ROUTE.height }}>
       <Place name={S.copy.from} />
-      <RouteDraw id="delivery-route" frame={frame} start={S.route.start} width={ROUTE.width} height={ROUTE.height} d={ROUTE.d} glyph="van" />
+      <RouteDraw id="delivery-route" t={t} start={B.route} width={ROUTE.width} height={ROUTE.height} d={ROUTE.d} glyph="van" />
       <Place name={S.copy.to} />
     </div>
 
-    <div style={{ borderTop: `1.5px dashed ${THEME.hairline}`, marginTop: 10 }} />
+    <div style={{ height: 1, marginTop: 10, borderTop: `1px dashed ${THEME.hairline}` }} />
 
-    <div style={{ display: "grid", gridTemplateColumns: "0.8fr 1fr 1.4fr", marginTop: 10 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "0.8fr 1fr 1.4fr", marginTop: 10, height: 42 }}>
       {S.copy.details.map((d, i) => (
-        <RollingDetail key={d.label} frame={frame} label={d.label} value={d.value} start={S.details.start + i * S.details.stagger} />
+        <RollingDetail key={d.label} t={t} label={d.label} value={d.value} start={B.details + i * PRIMITIVES.digitRoll.groupStagger} valueHeight={25} />
       ))}
     </div>
 
-    <div style={{ marginTop: "auto" }}>
-      <SegmentedBar frame={frame} start={S.stages.start} filled={S.stages.filled} labels={S.copy.stages} />
+    <div style={{ marginTop: 12, height: 26 }}>
+      <SegmentedBar t={t} start={B.segments} filled={S.stagesFilled} labels={S.copy.stages} />
     </div>
-  </Glass>
-);
-
-const Tag: React.FC<{ frame: number; motion: ItemMotion; y: number; clipTop: number }> = ({ frame, motion, y, clipTop }) => (
-  <Glass
-    variant="action"
-    tint={S.tint}
-    width="fit"
-    height={S.tag.height}
-    radius={999}
-    transform={stackTransform(y, motion.scale)}
-    fade={motion.fade}
-    clipTop={clipTop}
-    surfaceStyle={{ padding: "0 18px 0 14px", display: "flex", alignItems: "center", gap: 10, whiteSpace: "nowrap" }}
-  >
-    <TagTicks frame={frame} start={S.tag.at + 8} />
-    <Body style={{ lineHeight: 1.3 }}>{S.copy.tag}</Body>
-  </Glass>
+  </div>
 );
 
 export const OrderDelivery: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const qm = itemMotion(frame, fps, S.query.enter, EXIT.query);
-  const om = itemMotion(frame, fps, S.card.enter, EXIT.card);
-  const tm = itemMotion(frame, fps, S.tag.at, EXIT.card, PRIMITIVES.tag.risePx);
-  if (!qm.visible && !om.visible) return null;
+  const t = timeOf(frame, fps);
+  if (!stackVisible(t, B.query, B.exit)) return null;
 
-  const [ql, ol, tl] = stackLayout([
-    { p: qm.p, h: STACK.queryHeight, ownY: qm.ownY },
-    { p: om.p, h: S.card.height, ownY: om.ownY },
-    { p: tm.p, h: S.tag.height, ownY: tm.ownY },
+  const [q, c, g] = stackLayout(t, [
+    { enter: B.query, height: S.queryHeight },
+    { enter: B.card, height: S.card.height },
+    { enter: B.tag, height: S.tag.height },
   ]);
-  const float = floatY(frame, S.query.enter);
+  const exit = stackExit(t, B.exit);
 
   return (
     <Stack bottom={S.stackBottom}>
       <QueryBubble
-        frame={frame}
         label={queryLabel(S.industry)}
         text={S.query.text}
-        enter={S.query.enter}
-        dimAt={S.card.enter}
         tint={S.queryTint}
-        motion={qm}
-        y={-ql.offset + qm.ownY + float}
+        height={S.queryHeight}
+        y={q.y + exit.y}
+        opacity={q.opacity * queryDim(t, B.card) * exit.opacity}
+        textOpacity={q.textOpacity}
       />
-      {om.visible ? <OrderCard frame={frame} fps={fps} motion={om} y={-ol.offset + om.ownY + float} clipTop={ol.clipTop} /> : null}
-      {tm.visible ? <Tag frame={frame} motion={tm} y={-tl.offset + tm.ownY + float} clipTop={tl.clipTop} /> : null}
+      {t >= B.card ? (
+        <Glass
+          variant="action"
+          tint={S.tint}
+          width={STACK.width}
+          height={S.card.height}
+          y={c.y + exit.y}
+          opacity={c.opacity * exit.opacity}
+          textOpacity={c.textOpacity}
+          surfaceStyle={{ padding: `${THEME.card.padY}px ${THEME.card.padX}px` }}
+        >
+          <OrderContent t={t} />
+        </Glass>
+      ) : null}
+      {t >= B.tag ? (
+        <Glass
+          variant="action"
+          tint={S.tint}
+          width="fit"
+          height={S.tag.height}
+          radius={999}
+          y={g.y + exit.y}
+          opacity={g.opacity * exit.opacity}
+          textOpacity={g.textOpacity}
+          surfaceStyle={{ padding: "0 16px 0 12px", whiteSpace: "nowrap" }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 8, height: "100%" }}>
+            <TagTicks t={t} start={B.ticks} />
+            <Body>{S.copy.tag}</Body>
+          </div>
+        </Glass>
+      ) : null}
     </Stack>
   );
 };

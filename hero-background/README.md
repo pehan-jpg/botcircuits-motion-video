@@ -44,7 +44,40 @@ render commands, or set `REMOTION_BROWSER` for `npm run stills`.
 
 ---
 
-# Hero video (`HeroOverlay`): graded base + glass UI overlay, and a clean version
+# Hero video (`HeroOverlay`, v5): graded base + glass UI overlay, and a clean version
+
+1920x1080, **60 fps** by default (1228 frames for the 20.47 s clip; the `fps` input prop gives the
+30 fps copy). No audio. All copy, timings (in seconds), positions, heights, glass tints, colours
+and easing are in [`src/overlay/config.ts`](src/overlay/config.ts). `BRAND_LIME` is a placeholder (`#B5E61D`).
+
+## Motion model (v5)
+- One curve for every position change: `Easing.bezier(0.16, 1, 0.3, 1)`. No springs, blur, scale or idle float.
+- Bottom-anchored stack in the right column (x 1400–1840). A new item rises from (its height + 24px)
+  below while the stack scrolls up by (its height + 12px), together, over 0.4 s; opacity 0 → 1 over
+  0.2 s; its text 2 frames (at 30 fps) later. The query dims to 80% when the card arrives.
+- Growing cards grow upward over 0.3 s; new rows fade in with an 8px rise. Content swaps are
+  opacity-only crossfades (8 frames at 30 fps, 4-frame overlap). Exit: the whole stack scrolls up
+  40px and fades over 0.4 s.
+- Soft top (56px) and bottom (40px) edges via a CSS mask on each card in stack-container coordinates
+  (a mask on the container would switch off the cards' backdrop blur in Chrome).
+- Beats are laid out by `schedule()` in config: motions on a card run one after another and the
+  remaining time in each scene window is shared out as holds (`npm run overlay:timeline` prints them).
+
+## Rendering
+`npm run overlay:v5` (`scripts/render-v5.sh`) renders every frame as an independent PNG still and
+encodes with ffmpeg (H.264 CRF 14 preset slow, yuv420p, bt709; VP9 WebM). Frames are rendered one
+by one because sequence rendering in this headless Chrome sometimes captured a frame before the
+overlay had repainted (stale positions, missing text), while every independent still is correct
+and reproducible byte for byte.
+
+## Verification scripts
+- `npm run overlay:motion-check`: per-frame stack translateY through an entrance and an exit.
+- `npm run overlay:tune-tints`: raises each scene's tints in 0.05 steps until every text line passes
+  WCAG contrast (body 4.5:1, labels 3:1), measured by `scripts/contrast.py` against renders with
+  the text hidden (`hideText` prop).
+- `freezeBaseAt` prop holds the base video so holds can be checked for stillness.
+
+## Earlier notes (base video, scenes, clean version)
 
 1920x1080, 30 fps, 614 frames, no audio. All copy, timings, positions, heights, glass tints,
 colours and spring values are in [`src/overlay/config.ts`](src/overlay/config.ts).

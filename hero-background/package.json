@@ -35,12 +35,14 @@
     "render:webm": "remotion render HeroBackground out/hero-background.webm --codec=vp9 --crf=33 --muted",
     "overlay:stills": "node scripts/overlay-stills.mjs",
     "overlay:preview": "remotion render HeroOverlay out/v4-preview.mp4 --scale=0.5 --crf=23 --muted --gl=swangle",
-    "overlay:mp4": "scripts/render-final.sh out/hero-overlay-v4.mp4 h264 14 --x264-preset=slow",
-    "overlay:webm": "scripts/render-final.sh out/hero-overlay-v4.webm vp9 30",
     "grade": "scripts/grade-base.sh",
     "clean:mp4": "scripts/render-final.sh out/hero-clean-v4.mp4 h264 14 --x264-preset=slow '--props={\"showOverlay\":false}'",
     "clean:webm": "scripts/render-final.sh out/hero-clean-v4.webm vp9 30 '--props={\"showOverlay\":false}'",
-    "clean:poster": "remotion still HeroOverlay out/hero-clean-poster.jpg --frame=380 --image-format=jpeg --jpeg-quality=92 '--props={\"showOverlay\":false}' --gl=swangle"
+    "clean:poster": "remotion still HeroOverlay out/hero-clean-poster.jpg --frame=380 --image-format=jpeg --jpeg-quality=92 '--props={\"showOverlay\":false}' --gl=swangle",
+    "overlay:timeline": "esbuild scripts/print-timeline.ts --bundle --platform=node --log-level=error --outfile=out/print-timeline.cjs && node out/print-timeline.cjs",
+    "overlay:motion-check": "esbuild scripts/export-motion.ts --bundle --platform=node --log-level=error --outfile=out/export-motion.cjs && node out/export-motion.cjs",
+    "overlay:tune-tints": "python3 scripts/tune-tints.py",
+    "overlay:v5": "scripts/render-v5.sh"
   },
   "allowScripts": {
     "esbuild": false
