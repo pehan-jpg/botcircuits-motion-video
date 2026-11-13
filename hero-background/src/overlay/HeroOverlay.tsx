@@ -1,9 +1,9 @@
 import { AbsoluteFill, OffthreadVideo, staticFile, useCurrentFrame } from "remotion";
 import { COMP, validateTimeline } from "./config";
-import { AiConcierge } from "./scenes/AiConcierge";
-import { BoardingPass } from "./scenes/BoardingPass";
-import { BookingProgress } from "./scenes/BookingProgress";
-import { FlightUpdate } from "./scenes/FlightUpdate";
+import { CardSecurity } from "./scenes/CardSecurity";
+import { InsuranceClaim } from "./scenes/InsuranceClaim";
+import { OrderDelivery } from "./scenes/OrderDelivery";
+import { TravelUpdate } from "./scenes/TravelUpdate";
 import { Flare, LimeBand, VideoWrapper, transitionState } from "./transitions";
 
 // Fail fast if a scene drifts within the minimum gap of a cut or the loop point.
@@ -29,10 +29,10 @@ export const HeroOverlay: React.FC<HeroOverlayProps> = ({ showOverlay }) => {
 
       {showOverlay ? (
         <>
-          <FlightUpdate />
-          <BookingProgress />
-          <BoardingPass />
-          <AiConcierge />
+          <TravelUpdate />
+          <CardSecurity />
+          <OrderDelivery />
+          <InsuranceClaim />
         </>
       ) : null}
     </AbsoluteFill>

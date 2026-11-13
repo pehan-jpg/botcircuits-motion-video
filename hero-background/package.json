@@ -11,6 +11,7 @@
   "dependencies": {
     "@remotion/cli": "4.0.537",
     "@remotion/google-fonts": "4.0.537",
+    "@remotion/paths": "4.0.537",
     "@remotion/transitions": "4.0.537",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -33,12 +34,12 @@
     "render:mp4": "remotion render HeroBackground out/hero-background.mp4 --codec=h264 --crf=20 --x264-preset=slow --muted",
     "render:webm": "remotion render HeroBackground out/hero-background.webm --codec=vp9 --crf=33 --muted",
     "overlay:stills": "node scripts/overlay-stills.mjs",
-    "overlay:preview": "remotion render HeroOverlay out/final-preview.mp4 --scale=0.5 --crf=23 --muted --gl=swangle",
-    "overlay:mp4": "scripts/render-final.sh out/hero-overlay-v3.mp4 h264 14 --x264-preset=slow",
-    "overlay:webm": "scripts/render-final.sh out/hero-overlay-v3.webm vp9 30",
+    "overlay:preview": "remotion render HeroOverlay out/v4-preview.mp4 --scale=0.5 --crf=23 --muted --gl=swangle",
+    "overlay:mp4": "scripts/render-final.sh out/hero-overlay-v4.mp4 h264 14 --x264-preset=slow",
+    "overlay:webm": "scripts/render-final.sh out/hero-overlay-v4.webm vp9 30",
     "grade": "scripts/grade-base.sh",
-    "clean:mp4": "scripts/render-final.sh out/hero-clean-v3.mp4 h264 14 --x264-preset=slow '--props={\"showOverlay\":false}'",
-    "clean:webm": "scripts/render-final.sh out/hero-clean-v3.webm vp9 30 '--props={\"showOverlay\":false}'",
+    "clean:mp4": "scripts/render-final.sh out/hero-clean-v4.mp4 h264 14 --x264-preset=slow '--props={\"showOverlay\":false}'",
+    "clean:webm": "scripts/render-final.sh out/hero-clean-v4.webm vp9 30 '--props={\"showOverlay\":false}'",
     "clean:poster": "remotion still HeroOverlay out/hero-clean-poster.jpg --frame=380 --image-format=jpeg --jpeg-quality=92 '--props={\"showOverlay\":false}' --gl=swangle"
   },
   "allowScripts": {

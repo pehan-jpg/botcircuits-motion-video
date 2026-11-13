@@ -1,12 +1,13 @@
 import type React from "react";
 import { Easing, interpolate, spring } from "remotion";
-import { MOTION, STACK } from "./config";
+import { MOTION, PRIMITIVES, STACK } from "./config";
 
 type Bezier = readonly [number, number, number, number];
 
 export const bezier = (b: Bezier) => Easing.bezier(b[0], b[1], b[2], b[3]);
 export const revealEase = bezier(MOTION.revealEasing);
-export const progressEase = bezier(MOTION.progressEasing);
+export const easeInOut = bezier(MOTION.easeInOut);
+export const easeOut = bezier(MOTION.easeOut);
 
 export const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
@@ -15,15 +16,6 @@ export const ramp = (frame: number, start: number, duration: number, easing = re
   interpolate(frame, [start, start + duration], [0, 1], { ...clamp, easing });
 
 export const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
-/** Scale dip used for button presses. */
-export const pressScale = (frame: number, at: number) =>
-  interpolate(
-    frame,
-    [at, at + MOTION.press.downFrames, at + MOTION.press.downFrames + MOTION.press.upFrames],
-    [1, MOTION.press.scale, 1],
-    { ...clamp, easing: revealEase },
-  );
 
 /** Only emit a blur filter when it is visible, so resting text stays crisp. */
 export const blurFilter = (px: number) => (px > 0.05 ? `blur(${px.toFixed(2)}px)` : undefined);
@@ -39,7 +31,7 @@ const exitSpring = (frame: number, start: number, fps: number) =>
  * Entrance / exit state of one stack element. `fade` (opacity + blur) goes directly on the
  * glass surface, because an ancestor with opacity or filter would disable its backdrop-filter.
  */
-export const itemMotion = (frame: number, fps: number, enter: number, exit: number) => {
+export const itemMotion = (frame: number, fps: number, enter: number, exit: number, risePx: number = STACK.risePx) => {
   const p = stackSpring(frame, enter, fps);
   const q = exitSpring(frame, exit, fps);
   return {
@@ -52,7 +44,7 @@ export const itemMotion = (frame: number, fps: number, enter: number, exit: numb
     },
     scale: lerp(MOTION.enter.scaleFrom, 1, p),
     /** Own vertical motion: rises from `risePx` below its slot, drifts up on exit. */
-    ownY: STACK.risePx * (1 - p) + MOTION.exit.translatePx * q,
+    ownY: risePx * (1 - p) + MOTION.exit.translatePx * q,
   };
 };
 
@@ -95,13 +87,19 @@ export const stackTransform = (y: number, scale: number): React.CSSProperties =>
   scale: String(scale),
 });
 
-/** Fade + small vertical slide for content swaps inside a card. */
-export const swap = (frame: number, inAt: number, outAt: number | null, duration = 10, distance = 14) => {
-  const i = ramp(frame, inAt, duration);
-  const o = outAt === null ? 0 : ramp(frame, outAt, duration);
+/**
+ * Text roll for content that swaps in place: the outgoing text rises 14px, fades and blurs over
+ * 10 frames; the incoming text starts 3 frames later and settles from 14px below over 12 frames.
+ * `inAt` is when the swap that brings this content starts (null = present from the start),
+ * `outAt` is when the swap that replaces it starts (null = stays).
+ */
+export const textRoll = (frame: number, inAt: number | null, outAt: number | null): React.CSSProperties => {
+  const r = PRIMITIVES.textRoll;
+  const i = inAt === null ? 1 : ramp(frame, inAt + r.inDelayFrames, r.inFrames);
+  const o = outAt === null ? 0 : ramp(frame, outAt, r.outFrames);
   return {
     opacity: i * (1 - o),
-    translate: `0px ${(distance * (1 - i) - distance * o).toFixed(2)}px`,
-    filter: blurFilter(3 * (1 - i) + 3 * o),
-  } satisfies React.CSSProperties;
+    translate: `0px ${(r.distancePx * (1 - i) - r.distancePx * o).toFixed(2)}px`,
+    filter: blurFilter(r.blurPx * (1 - i) + r.blurPx * o),
+  };
 };

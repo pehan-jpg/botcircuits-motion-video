@@ -62,6 +62,21 @@ colours and spring values are in [`src/overlay/config.ts`](src/overlay/config.ts
   (variance of the Laplacian) per scene, measured on the left 68% of the frame scaled to 1881px wide
   (nearest neighbour) and cropped from y=88.
 
+## Scenes (one industry each)
+
+| Scene | Frames | Component | Query label | Action |
+| --- | --- | --- | --- | --- |
+| Airport | 0–152 | `TravelUpdate` | Customer · Travel | Flight delayed → options → rebooked |
+| Keyboard | 153–302 | `CardSecurity` | Customer · Banking | Lost card: verify, block, order replacement |
+| Sofa | 303–462 | `OrderDelivery` | Customer · Retail | Order rescheduled to this evening, van route, stages |
+| Headset | 463–613 | `InsuranceClaim` | Customer · Insurance | AI concierge opens a claim: shield, steps, reference |
+
+`INDUSTRY_LABEL.showIndustryLabel` (config) switches the labels back to plain "Customer".
+All motion is built from the shared primitives in `src/overlay/primitives.tsx` (skeleton shimmer,
+wave loader, text roll, tap ripple and ring draw, button press, check draw, spinner to check, step
+progress bar, clip-path wipe, dashed route draw, digit roll, segmented bar, tag ticks, pill pop,
+detail row, shield draw, orb pulse); their timings live in `PRIMITIVES` in config.
+
 ## Overlay and clean version
 - The composition's `showOverlay` input prop (default `COMP.showOverlay`) switches the glass UI on or off.
   With `false` only the base video and the four transitions render.
@@ -77,10 +92,10 @@ colours and spring values are in [`src/overlay/config.ts`](src/overlay/config.ts
 npm run grade            # build and measure public/hero_base_graded.mp4
 npm run overlay:stills   # verification stills (STILLS_DIR, STILLS_PROPS='{"showOverlay":false}')
 npm run overlay:preview  # half-resolution preview
-npm run overlay:mp4      # out/hero-overlay-v3.mp4  (H.264, CRF 14)
-npm run overlay:webm     # out/hero-overlay-v3.webm (VP9, CRF 30)
-npm run clean:mp4        # out/hero-clean-v3.mp4
-npm run clean:webm       # out/hero-clean-v3.webm
+npm run overlay:mp4      # out/hero-overlay-v4.mp4  (H.264, CRF 14)
+npm run overlay:webm     # out/hero-overlay-v4.webm (VP9, CRF 30)
+npm run clean:mp4        # out/hero-clean-v4.mp4
+npm run clean:webm       # out/hero-clean-v4.webm
 npm run clean:poster     # out/hero-clean-poster.jpg (frame 380, JPEG quality 92)
 ```
 
