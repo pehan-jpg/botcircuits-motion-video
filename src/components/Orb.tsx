@@ -1,15 +1,10 @@
 import React from 'react';
 import {COLORS, alpha} from '../theme';
-import {ORB} from '../handoff';
-import {LogoMark} from './Logo';
-import {CheckStroke} from './Chip';
 
 /**
- * The agent orb: solid white disc, BotCircuits mark in ink, thin periwinkle
- * ring. Dark backgrounds get a soft white/violet glow; light backgrounds a
- * soft drop shadow (`light` 0 -> 1 blends between them).
- * `square` 0 -> 1 morphs the circle into a rounded-square tile (scene 6), and
- * `iconMix` cross-fades the mark into `children` (the tile's icon).
+ * The recurring orb character: pastel iridescent fill (conic gradient of
+ * periwinkle, peach, blush and sky), white core highlight, thin white ring and
+ * a soft shadow. `color` 0 = untrained (desaturated, dim ring) -> 1 = full.
  */
 export const Orb: React.FC<{
   cx: number;
@@ -17,60 +12,35 @@ export const Orb: React.FC<{
   size?: number;
   scale?: number;
   opacity?: number;
-  light?: number;
-  glow?: number;
-  pulse?: number;
-  check?: number;
-  whiteRing?: number;
-  square?: number;
-  squareRadius?: number; // radius as a fraction of size at square = 1
-  iconMix?: number;
-  ringOpacity?: number;
-  children?: React.ReactNode;
-}> = ({
-  cx,
-  cy,
-  size = ORB.size,
-  scale = 1,
-  opacity = 1,
-  light = 0,
-  glow = 1,
-  pulse = 0,
-  check = 0,
-  whiteRing = 0,
-  square = 0,
-  squareRadius = 0.26,
-  iconMix = 0,
-  ringOpacity = 1,
-  children,
-}) => {
+  color?: number;
+  pulse?: number; // 0..1 expanding ring
+  frame?: number; // slow iridescent rotation
+  shadow?: boolean;
+  blur?: number;
+}> = ({cx, cy, size = 200, scale = 1, opacity = 1, color = 1, pulse = 0, frame = 0, shadow = true, blur = 0}) => {
   const S = size;
-  const radius = S * (0.5 + (squareRadius - 0.5) * square);
+  const angle = (frame * 0.6) % 360;
   return (
-    <div style={{position: 'absolute', left: cx - S / 2, top: cy - S / 2, width: S, height: S, opacity, transform: `scale(${scale})`}}>
-      {/* dark-surface glow: white -> violet, no shadow */}
-      {(1 - light) * glow > 0 ? (
-        <div
-          style={{
-            position: 'absolute',
-            left: -S * 0.8,
-            top: -S * 0.8,
-            width: S * 2.6,
-            height: S * 2.6,
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${alpha(COLORS.white, 0.3)} 0%, ${alpha(COLORS.spinnerViolet, 0.22)} 38%, ${alpha(COLORS.spinnerViolet, 0)} 66%)`,
-            opacity: (1 - light) * glow,
-          }}
-        />
-      ) : null}
+    <div
+      style={{
+        position: 'absolute',
+        left: cx - S / 2,
+        top: cy - S / 2,
+        width: S,
+        height: S,
+        opacity,
+        transform: `scale(${scale})`,
+        filter: blur > 0.05 ? `blur(${blur}px)` : undefined,
+      }}
+    >
       {pulse > 0 && pulse < 1 ? (
         <div
           style={{
             position: 'absolute',
             inset: 0,
-            borderRadius: radius,
-            border: `4px solid ${alpha(light > 0.5 ? COLORS.spinnerViolet : COLORS.white, 0.8 * (1 - pulse))}`,
-            transform: `scale(${1 + pulse * 0.9})`,
+            borderRadius: '50%',
+            border: `${Math.max(2, S * 0.025)}px solid ${alpha(COLORS.white, 0.85 * (1 - pulse))}`,
+            transform: `scale(${1 + pulse * 0.8})`,
           }}
         />
       ) : null}
@@ -78,46 +48,18 @@ export const Orb: React.FC<{
         style={{
           position: 'absolute',
           inset: 0,
-          borderRadius: radius,
-          background: COLORS.white,
+          borderRadius: '50%',
+          background: `radial-gradient(circle at 34% 30%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 18%, rgba(255,255,255,0) 46%), conic-gradient(from ${angle}deg, ${COLORS.periwinkle}, ${COLORS.peach}, ${COLORS.blush}, ${COLORS.sky}, ${COLORS.periwinkle})`,
           boxShadow: [
-            `0 0 0 ${2}px ${alpha(COLORS.periwinkle, ringOpacity)}`,
-            `0 20px 60px rgba(13,18,36,${0.18 * light})`,
-            whiteRing > 0 ? `0 0 0 ${8 * whiteRing}px ${alpha(COLORS.white, 0.95 * whiteRing)}` : '',
+            `0 0 0 ${Math.max(1.5, S * 0.012)}px ${alpha(COLORS.white, 0.5 + 0.5 * color)}`,
+            shadow ? `0 ${S * 0.1}px ${S * 0.3}px rgba(13,18,36,0.22)` : '',
+            `inset 0 ${-S * 0.06}px ${S * 0.14}px rgba(124,108,240,0.18)`,
           ]
             .filter(Boolean)
             .join(', '),
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          filter: color < 0.999 ? `saturate(${color}) brightness(${0.88 + 0.12 * color})` : undefined,
         }}
-      >
-        <div style={{position: 'absolute', opacity: 1 - iconMix}}>
-          <LogoMark height={S * 0.5} />
-        </div>
-        {children ? <div style={{position: 'absolute', opacity: iconMix, display: 'flex'}}>{children}</div> : null}
-      </div>
-      {check > 0 ? (
-        <div
-          style={{
-            position: 'absolute',
-            right: -S * 0.02,
-            bottom: S * 0.02,
-            width: S * 0.3,
-            height: S * 0.3,
-            borderRadius: '50%',
-            background: COLORS.white,
-            boxShadow: `0 0 0 2px ${COLORS.periwinkle}, 0 8px 20px rgba(13,18,36,0.25)`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transform: `scale(${Math.min(1, check * 3)})`,
-            opacity: Math.min(1, check * 3),
-          }}
-        >
-          <CheckStroke size={S * 0.19} draw={check} color={COLORS.inkNavy} width={3} />
-        </div>
-      ) : null}
+      />
     </div>
   );
 };
