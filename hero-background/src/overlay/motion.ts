@@ -22,9 +22,7 @@ export const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /**
  * Vertical offset for an in-flow element, applied as a layout offset (position: relative + top)
- * rather than a transform. Headless Chrome sometimes captured transform-only (compositor) updates
- * a frame late, which showed up as stale positions and missing text; a layout offset forces a
- * fresh paint on every frame. Never scale.
+ * rather than a transform, so every frame is a fresh paint in headless Chrome. Never scale.
  */
 export const translateY = (y: number): React.CSSProperties => ({ position: "relative", top: `${y.toFixed(3)}px` });
 

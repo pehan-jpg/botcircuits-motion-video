@@ -67,7 +67,7 @@ and easing are in [`src/overlay/config.ts`](src/overlay/config.ts). `BRAND_LIME`
 `npm run overlay:v5` (`scripts/render-v5.sh`) renders every frame as an independent PNG still and
 encodes with ffmpeg (H.264 CRF 14 preset slow, yuv420p, bt709; VP9 WebM). Frames are rendered one
 by one because sequence rendering in this headless Chrome sometimes captured a frame before the
-overlay had repainted (stale positions, missing text), while every independent still is correct
+overlay text had painted (frames with empty glass), while every independent still is correct
 and reproducible byte for byte.
 
 ## Verification scripts

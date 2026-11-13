@@ -160,7 +160,7 @@ export const Glass: React.FC<GlassProps> = ({
       style={{
         position: "absolute",
         right: 0,
-        // Positioned with a layout offset, not a transform (see translateY in motion.ts).
+        // Positioned with a layout offset rather than a transform (see translateY in motion.ts).
         bottom: `${(STACK.maskBottomPx - y).toFixed(3)}px`,
         width: width === "fit" ? "max-content" : width,
         maxWidth,

@@ -1,6 +1,6 @@
 // Renders HeroOverlay frame by frame, each frame as a fresh still (PNG), in parallel workers.
-// Sequence rendering in this headless Chrome sometimes captured a frame before the overlay had
-// repainted (stale positions, missing text); every independently rendered still is correct.
+// Sequence rendering in this headless Chrome sometimes captured a frame before the overlay text had
+// painted (empty glass); every independently rendered still is correct.
 // Usage: node scripts/render-frames.mjs <outDir> <fps> <firstFrame> <lastFrame> [workers]
 import { bundle } from "@remotion/bundler";
 import { openBrowser, renderStill, selectComposition } from "@remotion/renderer";
