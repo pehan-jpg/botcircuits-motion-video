@@ -6,7 +6,7 @@ import {sec} from './timeline';
 import {Camera} from './camera';
 
 export const OVERLAP = 0.5;
-const DUR = {s4: 4.5, s5: 7.0, s6: 10.5, s7: 9.5, s8: 6.0, s9: 7.0};
+const DUR = {s4: 4.5, s5: 7.0, s6: 10.5, s7: 9.5, s8: 8.0, s9: 7.0};
 const start = (() => {
   const o: Record<string, number> = {};
   let t = 0;
@@ -17,7 +17,7 @@ const start = (() => {
   return o as Record<keyof typeof DUR, number>;
 })();
 export const BUILD7 = {dur: DUR, start};
-export const BUILD7_TOTAL = start.s9 + DUR.s9; // 42 s
+export const BUILD7_TOTAL = start.s9 + DUR.s9; // 44 s
 export const BUILD7_FRAMES = {
   start: Object.fromEntries(Object.entries(start).map(([k, v]) => [k, sec(v)])) as Record<keyof typeof DUR, number>,
   dur: Object.fromEntries(Object.entries(DUR).map(([k, v]) => [k, sec(v)])) as Record<keyof typeof DUR, number>,
@@ -54,3 +54,6 @@ export const WHATSAPP_FINAL = {
   background: '#25D366',
   logo: {centerX: 960, centerY: 540, size: 200, color: '#FFFFFF'},
 } as const;
+
+/** S7 -> S8: where the cursor is (screen px) at the start of scene 8, travelling toward "Simulator". */
+export const CURSOR_S7_END = {x: 760, y: 820};

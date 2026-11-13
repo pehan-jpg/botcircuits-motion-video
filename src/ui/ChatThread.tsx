@@ -7,6 +7,7 @@ import {Orb} from '../components/Orb';
 import {CheckStroke} from '../components/Chip';
 import {Checks} from '../components/Bubble';
 import {measureText, wrapText} from '../components/measure';
+import {Caret} from '../components/TypingText';
 
 export type Msg = {
   from: 'maya' | 'agent';
@@ -201,24 +202,30 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
  * timestamps, footer status + "Message" field. World coords CHAT.
  * Messages are bottom-aligned; older ones scroll up under a soft top fade.
  */
-export const ChatThread: React.FC<{frame: number; msgs: Msg[]; orbColor: number; orbPulse?: number; x?: number; y?: number; footerOrbOpacity?: number; scale?: number}> = ({
-  frame,
-  msgs,
-  orbColor,
-  orbPulse = 0,
-  x = CHAT.x,
-  y = CHAT.y,
-  footerOrbOpacity = 1,
-  scale = 1,
-}) => {
+export const ChatThread: React.FC<{
+  frame: number;
+  msgs: Msg[];
+  orbColor: number;
+  orbPulse?: number;
+  x?: number;
+  y?: number;
+  footerOrbOpacity?: number;
+  scale?: number;
+  height?: number;
+  /** Text being typed into the "Message" field (with caret), and its focus 0..1. */
+  draft?: string;
+  focus?: number;
+  sendPress?: number;
+}> = ({frame, msgs, orbColor, orbPulse = 0, x = CHAT.x, y = CHAT.y, footerOrbOpacity = 1, scale = 1, height = CHAT.height, draft, focus = 0, sendPress = 0}) => {
   const s = frame / sec(1);
-  const AREA = {top: 112, bottom: 700};
+  const AREA = {top: 112, bottom: height - 160};
   const visibleH = AREA.bottom - AREA.top;
   const shown = msgs.filter((m) => m.at === -Infinity || s >= m.at);
   const total = shown.reduce((a, m) => a + blockHeight(m, s), 0);
   const scroll = Math.max(0, total - visibleH + 8);
+  const hasDraft = !!draft && draft.length > 0;
   return (
-    <div data-safe="chat card" style={{position: 'absolute', left: x, top: y, width: CHAT.width, height: CHAT.height, fontFamily: FONT_SANS, transformOrigin: '0 0', transform: scale !== 1 ? `scale(${scale})` : undefined}}>
+    <div data-safe="chat card" style={{position: 'absolute', left: x, top: y, width: CHAT.width, height, fontFamily: FONT_SANS, transformOrigin: '0 0', transform: scale !== 1 ? `scale(${scale})` : undefined}}>
       <div style={{position: 'absolute', inset: 0, borderRadius: CHAT.radius, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: UI.shadow}} />
       {/* header */}
       <div style={{position: 'absolute', left: 28, top: 22}}>
@@ -243,15 +250,15 @@ export const ChatThread: React.FC<{frame: number; msgs: Msg[]; orbColor: number;
           maskImage: 'linear-gradient(180deg, transparent 0, #000 56px)',
         }}
       >
-        <div style={{position: 'absolute', left: 0, right: 0, top: Math.max(0, visibleH - total - 8) - scroll + (total > visibleH ? 0 : 0)}}>
+        <div style={{position: 'absolute', left: 0, right: 0, top: Math.max(0, visibleH - total - 8) - scroll}}>
           {shown.map((m, i) => (
             <Message key={i} m={m} frame={frame} orbColor={orbColor} />
           ))}
         </div>
       </div>
       {/* footer */}
-      <div style={{position: 'absolute', left: 0, right: 0, top: 706, height: 1, background: UI.border}} />
-      <div style={{position: 'absolute', left: 28, top: 718, height: 34, display: 'flex', alignItems: 'center', gap: 12, fontSize: 22, color: UI.text2, whiteSpace: 'nowrap'}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: height - 154, height: 1, background: UI.border}} />
+      <div style={{position: 'absolute', left: 28, top: height - 142, height: 34, display: 'flex', alignItems: 'center', gap: 12, fontSize: 22, color: UI.text2, whiteSpace: 'nowrap'}}>
         <div style={{position: 'relative', width: 28, height: 28, opacity: footerOrbOpacity}}>
           <Orb cx={14} cy={14} size={28} color={orbColor} frame={frame} shadow={false} pulse={orbPulse} />
         </div>
@@ -259,17 +266,77 @@ export const ChatThread: React.FC<{frame: number; msgs: Msg[]; orbColor: number;
         <span>·</span>
         <span>Online</span>
       </div>
-      <div style={{position: 'absolute', left: 24, right: 24, top: 770, height: 64, borderRadius: 32, background: '#F4F5F7', border: `1px solid ${UI.border}`, display: 'flex', alignItems: 'center', paddingLeft: 26, fontSize: 22, color: '#9CA3AF', boxSizing: 'border-box'}}>
-        Message
+      <div
+        style={{
+          position: 'absolute',
+          left: 24,
+          right: 24,
+          top: height - 90,
+          height: 64,
+          borderRadius: 32,
+          background: focus > 0.5 ? COLORS.white : '#F4F5F7',
+          border: `${focus > 0.5 ? 2 : 1}px solid ${focus > 0.5 ? '#3CC37A' : UI.border}`,
+          boxShadow: focus > 0 ? `0 0 0 ${5 * focus}px rgba(60,195,122,${0.15 * focus})` : undefined,
+          display: 'flex',
+          alignItems: 'center',
+          paddingLeft: 26,
+          fontSize: hasDraft ? 26 : 22,
+          color: hasDraft ? UI.ink : '#9CA3AF',
+          boxSizing: 'border-box',
+          whiteSpace: 'pre',
+        }}
+      >
+        {hasDraft ? (
+          <>
+            {draft}
+            <span style={{display: 'inline-block', width: 0}}>
+              <Caret frame={frame} height={30} typingUntil={frame + 2} color={UI.ink} />
+            </span>
+          </>
+        ) : (
+          <>
+            {focus > 0.5 ? (
+              <span style={{display: 'inline-block', width: 0, marginLeft: -4}}>
+                <Caret frame={frame} height={30} typingUntil={-1} color={UI.ink} />
+              </span>
+            ) : null}
+            Message
+          </>
+        )}
+        <div
+          style={{
+            position: 'absolute',
+            right: 8,
+            top: 7,
+            width: 48,
+            height: 48,
+            borderRadius: 24,
+            background: hasDraft ? UI.ink : '#E5E7EB',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transform: `scale(${1 - 0.08 * sendPress})`,
+          }}
+        >
+          <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke={hasDraft ? COLORS.white : '#9CA3AF'} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 19V5M6 11l6-6 6 6" />
+          </svg>
+        </div>
       </div>
     </div>
   );
 };
 
+/** World position (relative to the card) of the send arrow and the message field. */
+export const chatFieldPoints = (height = CHAT.height) => ({
+  field: {x: 200, y: height - 90 + 32},
+  send: {x: CHAT.width - 24 - 8 - 24, y: height - 90 + 32},
+});
+
 /** The conversation, continuing across scenes (scene-local times). */
 export const CONVO = {
   s5: [
-    {from: 'maya', text: 'Hi, I lost my credit card. Can you block it?', at: 5.45, time: '9:02 AM'},
+    {from: 'maya', text: 'Hi, I lost my credit card. Can you block it?', at: 5.5, time: '9:02 AM'},
     {from: 'agent', text: "Sorry, I can't help with that yet.", at: 5.85, time: '9:02 AM'},
   ] as Msg[],
   s6: [
@@ -278,8 +345,8 @@ export const CONVO = {
     {from: 'agent', text: "Thanks, you're verified. I'll block your card now.", at: 8.45, time: '9:06 AM', chip: 'Card blocked'},
   ] as Msg[],
   s7: [
-    {from: 'maya', text: 'When will my new card arrive?', at: 6.9, time: '9:07 AM'},
-    {from: 'agent', text: 'Your new card should arrive in 5 to 7 business days.', at: 7.15, time: '9:07 AM', source: 'Card policy.pdf'},
+    {from: 'maya', text: 'When will my new card arrive?', at: 7.1, time: '9:07 AM'},
+    {from: 'agent', text: 'Your new card should arrive in 5 to 7 business days.', at: 7.35, time: '9:07 AM', source: 'Card policy.pdf'},
   ] as Msg[],
 };
 export const past = (...lists: Msg[][]) => lists.flat().map((m) => ({...m, at: -Infinity}));

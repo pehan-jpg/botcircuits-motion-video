@@ -16,7 +16,7 @@ import {Scene08Simulator} from './scenes/Scene08Simulator';
 import {Scene09Publish} from './scenes/Scene09Publish';
 import {SafeAreaGuard} from './components/SafeAreaGuard';
 
-/** Scenes 1-9: 16 s problem sequence + 42 s build stage = 58 s. */
+/** Scenes 1-9: 16 s problem sequence + 44 s build stage = 60 s. */
 export const FULL_VIDEO_DURATION = PROBLEM_SEQUENCE_DURATION + BUILD7_FRAMES.total;
 
 const BUILD = [

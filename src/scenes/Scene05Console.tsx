@@ -11,19 +11,25 @@ import {CameraRig, dissolve, isPanning} from '../components/CameraRig';
 import {Cursor} from '../components/Cursor';
 import {Orb} from '../components/Orb';
 import {PetalSpinner} from '../components/PetalSpinner';
-import {ConsoleCard, ConsolePill, CONSOLE_INPUT, inputHeight} from '../ui/ConsoleCard';
+import {ConsoleCard, ConsolePill, CONSOLE_INPUT, inputHeight, liftDuration} from '../ui/ConsoleCard';
 import {ChatThread, CONVO} from '../ui/ChatThread';
 import {UI} from '../ui/tokens';
 import {envelope, SceneLayerProps} from './kit';
 
 export const PROMPT = "Build an agent for card services. It checks who the customer is, blocks lost cards, and hands over to a person when it can't.";
 const TYPE_AT = 1.2;
-const PER_CHAR = 1.1;
+const PER_CHAR = 0.85;
+const SEND = 3.15;
+const LIFT = 3.25;
+const LIFT_END = LIFT + liftDuration(PROMPT); // ~4.47
+const COLLAPSE: [number, number] = [LIFT_END - 0.02, LIFT_END + 0.25];
+const TRAVEL: [number, number] = [COLLAPSE[1] - 0.02, COLLAPSE[1] + 0.2];
+const ORB_AT = TRAVEL[1] - 0.04;
 const CARD_LEFT = CONSOLE_CARD.cx - CONSOLE_CARD.width / 2;
 const CARD_TOP = CONSOLE_CARD.cy - CONSOLE_CARD.height / 2;
 
 // wide camera, at most a gentle 1.08 drift toward the input (card stays inside the margins)
-const CAM: CamKeys = {t: [0, 1.0, 3.6, 4.4], x: [960, 960, 960, 960], y: [540, 540, 548, 540], s: [1, 1, 1.08, 1]};
+const CAM: CamKeys = {t: [0, 1.0, 3.1, 4.2], x: [960, 960, 960, 960], y: [540, 540, 548, 540], s: [1, 1, 1.08, 1]};
 
 /**
  * SCENE 5 (7 s) Console prompt, then the untrained agent. Periwinkle sky.
@@ -40,19 +46,28 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const tilt = kfIO(f, [0, 0.6], [3, 0]);
   const cardIn = tween(f, 0, 0.5);
   const focus = tween(f, 1.0, 1.2);
-  const SEND = 3.75;
-  const cardGone = tween(f, 4.55, 5.05);
-  const merge = kfIO(f, [4.2, 4.55], [0, 1]);
+  const cardGone = tween(f, COLLAPSE[0] + 0.1, TRAVEL[1] + 0.15);
+  const merge = kfIO(f, [COLLAPSE[0] + 0.05, TRAVEL[1]], [0, 1]);
+  const collapse = kfIO(f, COLLAPSE, [0, 1]);
+  const travel = kfIO(f, TRAVEL, [0, 1]);
   const H = inputHeight(f, PROMPT, sec(TYPE_AT), PER_CHAR);
   const sendWorld = {x: CARD_LEFT + CONSOLE_INPUT.x + CONSOLE_INPUT.width - 18 - CONSOLE_INPUT.send / 2, y: CARD_TOP + CONSOLE_INPUT.y + H - (CONSOLE_INPUT.lineHeight + CONSOLE_INPUT.padY * 2) / 2};
   const centre = {x: 960, y: 540};
-  const orbGrow = popIn(f, 4.5, 0.4, 1.04);
+  const orbGrow = popIn(f, ORB_AT, 0.4, 1.04);
   // the orb flies into the chat footer's mini orb (agent status line)
-  const toFooter = kfIO(f, [5.05, 5.5], [0, 1]);
+  const toFooter = kfIO(f, [5.25, 5.6], [0, 1]);
   const footer = toScreen(CHAT_VIEW, {x: CHAT.x + 28 + 14, y: CHAT.y + 718 + 17});
   const orbSize = 180 + (28 - 180) * toFooter;
   const orbPos = {x: centre.x + (footer.x - centre.x) * toFooter, y: centre.y + (footer.y - centre.y) * toFooter - Math.sin(toFooter * Math.PI) * 120};
-  const chatIn = kfIO(f, [4.95, 5.45], [0, 1]);
+  const chatIn = kfIO(f, [5.1, 5.6], [0, 1]);
+  // the empty input field (world): collapses into a dark dot, which travels to the centre
+  const I = CONSOLE_INPUT;
+  const fieldC = {x: CARD_LEFT + I.x + I.width / 2, y: CARD_TOP + I.y + H / 2};
+  const DOT = 44;
+  const fw = I.width + (DOT - I.width) * collapse;
+  const fh = H + (DOT - H) * collapse;
+  const dotC = {x: fieldC.x + (centre.x - fieldC.x) * travel, y: fieldC.y + (centre.y - fieldC.y) * travel - Math.sin(travel * Math.PI) * 40};
+  const showField = s >= COLLAPSE[0] && s < ORB_AT + 0.12;
 
   const click = toScreen(camAt(sec(1.0), CAM), {x: CARD_LEFT + CONSOLE_INPUT.x + 300, y: CARD_TOP + CONSOLE_INPUT.y + 45});
   const sendScreen = toScreen(camAt(sec(SEND), CAM), sendWorld);
@@ -71,11 +86,27 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
           {cardGone < 1 ? (
             <CameraRig cam={cam} panning={isPanning((fr) => camAt(fr, CAM), f) && false}>
               <div style={{position: 'absolute', left: 0, top: 0, ...dissolve(cardIn, cardGone), transformOrigin: '960px 540px', transform: `perspective(2400px) rotateX(${tilt}deg)`}}>
-                <ConsoleCard frame={f} text={PROMPT} typeStart={sec(TYPE_AT)} perChar={PER_CHAR} focus={focus} sendPress={kf(f, [SEND, SEND + 0.07, SEND + 0.22], [0, 1, 0])} liftAt={3.95} sendOpacity={1 - merge} />
+                <ConsoleCard frame={f} text={PROMPT} typeStart={sec(TYPE_AT)} perChar={PER_CHAR} focus={focus} sendPress={kf(f, [SEND, SEND + 0.07, SEND + 0.22], [0, 1, 0])} liftAt={LIFT} hideInput={s >= COLLAPSE[0]} />
               </div>
-              {merge > 0 && merge < 1 ? (
-                <div style={{position: 'absolute', left: sendWorld.x + (centre.x - sendWorld.x) * merge - 28, top: sendWorld.y + (centre.y - sendWorld.y) * merge - 28, width: 56, height: 56, borderRadius: 28, background: UI.ink, transform: `scale(${1 - 0.7 * merge})`}} />
-              ) : null}
+            </CameraRig>
+          ) : null}
+          {showField ? (
+            <CameraRig cam={cam}>
+              <div
+                style={{
+                  position: 'absolute',
+                  left: dotC.x - fw / 2,
+                  top: dotC.y - fh / 2,
+                  width: fw,
+                  height: fh,
+                  borderRadius: Math.min(fh / 2, 24 + (DOT / 2 - 24) * collapse),
+                  background: `color-mix(in srgb, ${UI.ink} ${Math.round(100 * tween(f, COLLAPSE[0] + 0.1, COLLAPSE[1]))}%, ${COLORS.white})`,
+                  border: `2px solid ${alpha(UI.consoleLime, 1 - collapse)}`,
+                  boxShadow: `0 0 0 ${6 * (1 - collapse)}px ${alpha(UI.consoleLime, 0.16 * (1 - collapse))}`,
+                  boxSizing: 'border-box',
+                  opacity: 1 - tween(f, ORB_AT, ORB_AT + 0.1),
+                }}
+              />
             </CameraRig>
           ) : null}
           {merge < 1 ? (
@@ -85,12 +116,12 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
               </div>
             </CameraRig>
           ) : null}
-          {merge > 0.6 && s < 5.0 ? (
-            <div style={{position: 'absolute', left: 960 - 40, top: 540 - 40, width: 80, height: 80, borderRadius: 40, background: `radial-gradient(circle, ${COLORS.white} 0%, ${COLORS.white} 25%, ${alpha('#CFF5DE', 0.8)} 45%, rgba(255,255,255,0) 72%)`, opacity: kf(f, [4.35, 4.5, 4.7], [0, 1, 0])}} />
+          {merge > 0.6 && s < ORB_AT + 0.4 ? (
+            <div style={{position: 'absolute', left: 960 - 40, top: 540 - 40, width: 80, height: 80, borderRadius: 40, background: `radial-gradient(circle, ${COLORS.white} 0%, ${COLORS.white} 25%, ${alpha('#CFF5DE', 0.8)} 45%, rgba(255,255,255,0) 72%)`, opacity: kf(f, [ORB_AT - 0.12, ORB_AT, ORB_AT + 0.2], [0, 1, 0])}} />
           ) : null}
-          {s >= 4.5 ? (
+          {s >= ORB_AT ? (
             <>
-              <PetalSpinner cx={orbPos.x} cy={orbPos.y} radius={150} ringRadius={94} frame={f} opacity={kf(f, [4.5, 4.65, 4.95, 5.05], [0, 1, 1, 0])} converge={tween(f, 4.85, 5.05)} />
+              <PetalSpinner cx={orbPos.x} cy={orbPos.y} radius={150} ringRadius={94} frame={f} opacity={kf(f, [ORB_AT, ORB_AT + 0.15, 5.15, 5.25], [0, 1, 1, 0])} converge={tween(f, 5.05, 5.25)} />
               {toFooter < 1 ? <Orb cx={orbPos.x} cy={orbPos.y} size={orbSize} scale={orbGrow} color={0} frame={f} /> : null}
             </>
           ) : null}
@@ -113,15 +144,15 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             {t: 0.95, x: click.x, y: click.y},
             {t: 1.1, x: click.x, y: click.y},
             {t: 1.7, x: 1600, y: 930},
-            {t: 3.2, x: 1620, y: 920},
-            {t: 3.7, x: sendScreen.x + 6, y: sendScreen.y + 6},
-            {t: 3.9, x: sendScreen.x + 6, y: sendScreen.y + 6},
-            {t: 4.5, x: 1700, y: 1180},
+            {t: 2.6, x: 1620, y: 920},
+            {t: SEND - 0.05, x: sendScreen.x + 6, y: sendScreen.y + 6},
+            {t: SEND + 0.15, x: sendScreen.x + 6, y: sendScreen.y + 6},
+            {t: SEND + 0.75, x: 1700, y: 1180},
           ]}
           clicks={[1.0, SEND]}
-          hand={[[3.5, 3.95]]}
+          hand={[[SEND - 0.3, SEND + 0.2]]}
           rippleColor={COLORS.inkNavy}
-          opacity={tween(f, 0.4, 0.6) * (1 - tween(f, 4.2, 4.5))}
+          opacity={tween(f, 0.4, 0.6) * (1 - tween(f, SEND + 0.3, SEND + 0.6))}
         />
       ) : null}
     </AbsoluteFill>

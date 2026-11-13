@@ -26,6 +26,11 @@ export const ConsolePill: React.FC<{width?: number; height?: number}> = ({width 
   </div>
 );
 
+export const LIFT_STAGGER = 0.04;
+export const LIFT_DUR = 0.3;
+/** Seconds from liftAt until the last word of `text` has lifted off. */
+export const liftDuration = (text: string) => (text.split(/\s+/).filter(Boolean).length - 1) * LIFT_STAGGER + LIFT_DUR;
+
 export const inputLines = (text: string) => wrapText(text, FONT, TEXT_W, 16);
 
 /** Height of the input at a frame: grows (200 ms ease) as each new line starts. */
@@ -59,7 +64,8 @@ export const ConsoleCard: React.FC<{
   sendPress: number;
   liftAt?: number;
   sendOpacity?: number;
-}> = ({frame, text, typeStart, perChar, focus, sendPress, liftAt, sendOpacity = 1}) => {
+  hideInput?: boolean;
+}> = ({frame, text, typeStart, perChar, focus, sendPress, liftAt, sendOpacity = 1, hideInput = false}) => {
   const C = CONSOLE_CARD;
   const I = CONSOLE_INPUT;
   const n = typedCount(frame, typeStart, text.length, perChar, 'console');
@@ -100,6 +106,7 @@ export const ConsoleCard: React.FC<{
       <div
         style={{
           position: 'absolute',
+          visibility: hideInput ? 'hidden' : 'visible',
           left: I.x,
           top: I.y,
           width: I.width,
@@ -132,9 +139,10 @@ export const ConsoleCard: React.FC<{
                     if (!w) return null;
                     if (/^\s+$/.test(w)) return <span key={i}>{w}</span>;
                     const k = wordIdx++;
-                    const p = liftAt === undefined ? 0 : ease(frame, [sec(liftAt + k * 0.012), sec(liftAt + k * 0.012 + 0.22)], [0, 1]);
+                    // reading order, 0.04 s apart: each word rises 40 px straight up, blurs and fades
+                    const p = liftAt === undefined ? 0 : ease(frame, [sec(liftAt + k * LIFT_STAGGER), sec(liftAt + k * LIFT_STAGGER + LIFT_DUR)], [0, 1]);
                     return (
-                      <span key={i} style={{display: 'inline-block', opacity: 1 - p, transform: `translateY(${-70 * p}px) scale(${1 - 0.4 * p})`}}>
+                      <span key={i} style={{display: 'inline-block', opacity: 1 - p, transform: `translateY(${-40 * p}px)`, filter: p > 0.01 ? `blur(${6 * p}px)` : undefined}}>
                         {w}
                       </span>
                     );

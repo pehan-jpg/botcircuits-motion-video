@@ -1,14 +1,11 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
-import {COLORS, alpha, bob, kf, kfIO, popIn, press, tween} from '../theme';
+import {COLORS, alpha, ease, kf, kfIO, popIn, press, tween} from '../theme';
 import {sec} from '../timeline';
-import {BACKDROPS} from '../handoff';
 import {AGENT, BUILD7, PUBLISH_BTN, WHATSAPP_FINAL} from '../v7';
-import {camAt, CamKeys, toScreen, IDENTITY} from '../components/Stage';
-import {CameraRig, dissolve, isPanning} from '../components/CameraRig';
-import {Backdrop} from '../components/Backdrop';
+import {Camera} from '../camera';
+import {CameraRig, dissolve} from '../components/CameraRig';
 import {CircleReveal} from '../components/CircleReveal';
-import {DuskSky, ForegroundClouds} from '../components/ProceduralSky';
 import {Cursor} from '../components/Cursor';
 import {Orb} from '../components/Orb';
 import {PublishButton} from '../ui/Panels';
@@ -16,29 +13,52 @@ import {Channel, ChannelLogo} from '../ui/ChannelLogo';
 import {UI, UI_FONT} from '../ui/tokens';
 import {envelope, SceneLayerProps} from './kit';
 
-// WhatsApp is last so the pan ends on it, centred, for the hand-off.
-const ORDER: Channel[] = ['messenger', 'instagram', 'telegram', 'slack', 'webchat', 'voice', 'mobile', 'whatsapp'];
-const STEP = 340;
-const X0 = 1300;
-const ROW_Y = 560;
-const logoX = (i: number) => X0 + i * STEP;
-const WA_X = logoX(ORDER.length - 1);
-const ORB_C = {x: 960, y: 540};
+// ---- 4 x 2 grid of channel logos, centred, fully inside the frame ----
+const ORDER: Channel[] = ['whatsapp', 'messenger', 'instagram', 'telegram', 'slack', 'webchat', 'voice', 'mobile'];
+const SIZE = 170;
+const GAP_X = 190;
+const GAP_Y = 150;
+const slot = (i: number) => ({
+  x: 960 + ((i % 4) - 1.5) * (SIZE + GAP_X),
+  y: 540 + (Math.floor(i / 4) - 0.5) * (SIZE + GAP_Y),
+});
+const ORB_C = {x: 960, y: 515}; // slightly above the grid centre
 const PUB = {x: 510, y: 230, width: 900, height: 560};
-const CLICK = 1.0;
-const POP = (i: number) => 2.9 + i * 0.15;
-const PAN: [number, number] = [4.0, 6.2];
-const ROLL = [6.2, 6.32, 6.44];
-const REVEAL: [number, number] = [6.5, 6.98];
 
-const CAM: CamKeys = {t: [0, PAN[0], PAN[1], 7], x: [960, 960, WA_X, WA_X], y: [540, 540, 540, 540], s: [1, 1, 1, 1]};
+// ---- timeline (scene seconds) ----
+const CLICK = 1.0;
+const POP = (i: number) => 2.7 + i * 0.15;
+const TRAVEL = 0.36;
+const LANDED = POP(ORDER.length - 1) + TRAVEL; // ~4.11
+const GLOW = (i: number) => LANDED + i * 0.25;
+const BADGE = 4.6;
+const ROLL = [4.9, 5.05, 5.2];
+const HANDOFF = 6.1;
+const REVEAL: [number, number] = [HANDOFF + 0.15, HANDOFF + 0.7];
+
+/** Gentle drift (max 1.03), back to 1.0 for the hand-off. */
+const camAt = (f: number): Camera => ({x: 960, y: 540, rotation: 0, scale: kfIO(f, [2.7, HANDOFF, HANDOFF + 0.4], [1, 1.03, 1])});
+
+/** Point on the logo's single curved path from the orb to its slot. */
+const pathPt = (i: number, t: number) => {
+  const a = ORB_C;
+  const b = slot(i);
+  const mx = (a.x + b.x) / 2;
+  const my = (a.y + b.y) / 2;
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const side = b.y < a.y ? -1 : 1;
+  const c = {x: mx + dy * 0.25 * side, y: my - Math.abs(dx) * 0.25 * (b.y < a.y ? 1 : -0.4)};
+  const u = 1 - t;
+  return {pt: {x: u * u * a.x + 2 * u * t * c.x + t * t * b.x, y: u * u * a.y + 2 * u * t * c.y + t * t * b.y}, d: `M ${a.x} ${a.y} Q ${c.x} ${c.y} ${b.x} ${b.y}`};
+};
 
 const Badge: React.FC<{f: number; size: number}> = ({f, size}) => {
   const pos = ROLL.reduce((m, t) => m + tween(f, t, t + 0.09), 0);
   const moving = ROLL.some((t) => f > sec(t) && f < sec(t + 0.09));
   const h = size * 0.62;
   return (
-    <div style={{position: 'absolute', right: -size * 0.15, top: -size * 0.15, width: size, height: size, borderRadius: size / 2, background: COLORS.badgeRed, border: `${size * 0.06}px solid ${COLORS.white}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 20px rgba(13,18,36,0.3)', transform: `scale(${popIn(f, 6.0, 0.3, 1.04)})`, opacity: 1 - tween(f, 6.55, 6.7)}}>
+    <div style={{position: 'absolute', right: -size * 0.2, top: -size * 0.2, width: size, height: size, borderRadius: size / 2, background: COLORS.badgeRed, border: `${size * 0.06}px solid ${COLORS.white}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 20px rgba(13,18,36,0.2)', transform: `scale(${popIn(f, BADGE, 0.3, 1.04)})`, opacity: 1 - tween(f, 5.4, 5.55)}}>
       <div style={{height: h, overflow: 'hidden', width: size * 0.6}}>
         <div style={{transform: `translateY(${-pos * h}px)`, filter: moving ? 'blur(1.4px)' : undefined}}>
           {['3', '2', '1', '0'].map((d) => (
@@ -51,7 +71,9 @@ const Badge: React.FC<{f: number; size: number}> = ({f, size}) => {
 };
 
 /**
- * SCENE 9 (7 s) Publish and channels (logos only). Dusk sky.
+ * SCENE 9 (7 s) Publish, then the channels on white: the agent becomes the
+ * orb, eight logos pop into a 4 x 2 grid, breathe and glow in turn; WhatsApp
+ * takes the centre and its green fills the frame.
  */
 export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const f = useCurrentFrame();
@@ -60,33 +82,51 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const s = f / fps;
   const dur = BUILD7.dur.s9;
   const env = envelope(f, dur, true, false);
-  const cam = camAt(f, CAM);
-  const panning = isPanning((fr) => camAt(fr, CAM), f) || s >= 2.85; // logo pop-in + pan: edge bleed allowed
+  const cam = camAt(f);
 
   const spin = tween(f, CLICK + 0.05, CLICK + 0.2) * (1 - tween(f, 1.55, 1.65));
   const done = tween(f, 1.6, 1.85);
   const shrink = kfIO(f, [2.1, 2.65], [0, 1]);
-  const orbIn = tween(f, 2.35, 2.65);
-  const orbFade = tween(f, 3.8, 4.3);
+  const orbIn = tween(f, 2.3, 2.6);
+  const orbOut = kfIO(f, [2.9, LANDED - 0.1], [0, 1]); // shrinks and fades as the logos appear
   const reveal = kfIO(f, REVEAL, [0, 1]);
-  const others = tween(f, REVEAL[0], REVEAL[0] + 0.3);
-  const waWhite = tween(f, 6.6, 6.9);
-  const waScreen = toScreen(cam, {x: WA_X, y: ROW_Y});
+  const others = tween(f, HANDOFF, HANDOFF + 0.3);
+  const waGlide = kfIO(f, [HANDOFF, HANDOFF + 0.45], [0, 1]);
+  const waWhite = tween(f, HANDOFF + 0.2, HANDOFF + 0.36); // white as the green circle passes the logo
+  const breathe = s > LANDED ? 1 + 0.015 * (1 - Math.cos(((s - LANDED) / 1.6) * Math.PI * 2)) * (1 - others) : 1;
+
+  const logo = (i: number) => {
+    const c = ORDER[i];
+    const t = ease(f, [sec(POP(i)), sec(POP(i) + TRAVEL)], [0, 1]);
+    const p = popIn(f, POP(i), TRAVEL, 1.04);
+    const {pt} = pathPt(i, t);
+    const glow = kf(f, [GLOW(i), GLOW(i) + 0.1, GLOW(i) + 0.35], [0, 1, 0]);
+    return {c, p, pt, glow};
+  };
 
   return (
     <AbsoluteFill>
       {show('bg') ? (
         <AbsoluteFill style={{opacity: env.inP, filter: env.inP < 0.99 ? `blur(${14 * (1 - env.inP)}px)` : undefined}}>
-          <Backdrop src={BACKDROPS.dusk8} t={s} span={8} cam={{...cam, x: 960, y: 540}} scrim="dark" fallback={<DuskSky t={s} cam={IDENTITY} frame={f} />} />
-          {/* the background light the orb fades into */}
-          <AbsoluteFill style={{background: `radial-gradient(circle at 50% 50%, ${alpha('#CFF5DE', 0.35)} 0%, ${alpha('#CFF5DE', 0)} 40%)`, opacity: kf(f, [3.8, 4.3, 5.0], [0, 1, 0.3])}} />
+          {/* pure white, very faint lilac wash at the corners */}
+          <AbsoluteFill
+            style={{
+              background: [
+                `radial-gradient(circle at 0% 0%, ${alpha('#E9E3FF', 0.7)} 0%, ${alpha('#E9E3FF', 0)} 32%)`,
+                `radial-gradient(circle at 100% 0%, ${alpha('#EFE6FF', 0.6)} 0%, ${alpha('#EFE6FF', 0)} 30%)`,
+                `radial-gradient(circle at 0% 100%, ${alpha('#EFE6FF', 0.6)} 0%, ${alpha('#EFE6FF', 0)} 30%)`,
+                `radial-gradient(circle at 100% 100%, ${alpha('#E9E3FF', 0.7)} 0%, ${alpha('#E9E3FF', 0)} 32%)`,
+                '#FFFFFF',
+              ].join(', '),
+            }}
+          />
         </AbsoluteFill>
       ) : null}
 
       {show('fg') ? (
         <>
-          {/* coral glow pulse + the Publish page, which then shrinks into the orb */}
-          <AbsoluteFill style={{background: `radial-gradient(ellipse 40% 45% at 50% 50%, ${alpha(UI.glow.publish, 0.5)} 0%, ${alpha(UI.glow.publish, 0)} 70%)`, opacity: kf(f, [1.6, 1.85, 2.5], [0, 1, 0])}} />
+          {/* soft coral glow + the Publish page, which then shrinks into the orb */}
+          <AbsoluteFill style={{background: `radial-gradient(ellipse 40% 45% at 50% 50%, ${alpha(UI.glow.publish, 0.35)} 0%, ${alpha(UI.glow.publish, 0)} 70%)`, opacity: kf(f, [1.6, 1.85, 2.5], [0, 1, 0])}} />
           {shrink < 1 ? (
             <div
               data-safe="publish page"
@@ -102,86 +142,81 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
                 fontFamily: UI_FONT,
               }}
             >
-              <div style={{position: 'absolute', inset: 0, borderRadius: 30, background: COLORS.white, boxShadow: UI.shadow}} />
+              <div style={{position: 'absolute', inset: 0, borderRadius: 30, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: '0 30px 80px rgba(13,18,36,0.14)'}} />
               <div style={{position: 'absolute', left: 48, top: 40, fontSize: 32, fontWeight: 700, color: UI.ink}}>Publish</div>
               <div style={{position: 'absolute', left: 48, top: 88, fontSize: 24, color: UI.text2, whiteSpace: 'nowrap'}}>{AGENT}</div>
               <Orb cx={ORB_C.x - PUB.x} cy={ORB_C.y - PUB.y - 40} size={140} frame={f} />
             </div>
           ) : null}
-          {/* the Publish button (shared from scene 8) */}
           {shrink < 1 ? (
             <div data-safe="publish button" style={{position: 'absolute', left: PUBLISH_BTN.cx - PUBLISH_BTN.width / 2, top: PUBLISH_BTN.cy - PUBLISH_BTN.height / 2, ...dissolve(1, tween(f, 2.1, 2.5)), transform: `scale(${press(f, CLICK) * (1 - 0.85 * shrink)})`, transformOrigin: `${ORB_C.x - (PUBLISH_BTN.cx - PUBLISH_BTN.width / 2)}px ${ORB_C.y - (PUBLISH_BTN.cy - PUBLISH_BTN.height / 2)}px`}}>
               <PublishButton width={PUBLISH_BTN.width} height={PUBLISH_BTN.height} frame={f} spin={spin} done={done} />
             </div>
           ) : null}
 
-          <CameraRig cam={cam} panning={panning}>
-            {/* the greenish orb (ends centred), then fades into the light */}
-            {orbIn > 0 && orbFade < 1 ? <Orb cx={ORB_C.x} cy={ORB_C.y + (s > 2.8 ? bob(f, 0, 6) : 0)} size={170} frame={f} opacity={orbIn * (1 - orbFade)} blur={10 * orbFade} pulse={tween(f, 2.75, 3.3)} /> : null}
-            {/* beam + dotted arcs from the orb to each logo */}
+          <CameraRig cam={cam}>
+            {/* the greenish orb: centred, then shrinks and fades as the logos leave it */}
+            {orbIn > 0 && orbOut < 1 ? <Orb cx={ORB_C.x} cy={ORB_C.y} size={150} frame={f} scale={1 - 0.6 * orbOut} opacity={orbIn * (1 - orbOut)} pulse={tween(f, 2.6, 3.1)} /> : null}
+
+            {/* one thin dotted guide arc per logo, only while it travels (at most three at once) */}
             {ORDER.map((c, i) => {
-              const tx = logoX(i);
-              const d = `M ${ORB_C.x + 80} ${ORB_C.y} C ${ORB_C.x + 300} ${ORB_C.y - 260}, ${tx - 200} ${ROW_Y - 260}, ${tx} ${ROW_Y - 110}`;
-              const draw = tween(f, POP(i) - 0.25, POP(i) + 0.1);
-              const fade = 1 - tween(f, 4.2, 4.7);
-              return draw > 0 && fade > 0 ? (
-                <svg key={c} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}} width={1} height={1} opacity={fade}>
+              const draw = tween(f, POP(i), POP(i) + 0.15);
+              const fade = 1 - tween(f, POP(i) + 0.15, POP(i) + 0.45);
+              if (draw <= 0 || fade <= 0) return null;
+              const {d} = pathPt(i, 1);
+              return (
+                <svg key={c} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}} width={1} height={1} opacity={0.3 * fade}>
                   <defs>
-                    <mask id={`m9-${c}`} maskUnits="userSpaceOnUse" x={-1000} y={-1000} width={7000} height={4000}>
-                      <path d={d} stroke="#fff" strokeWidth={14} fill="none" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - draw} />
+                    <mask id={`m9-${c}`} maskUnits="userSpaceOnUse" x={0} y={0} width={1920} height={1080}>
+                      <path d={d} stroke="#fff" strokeWidth={10} fill="none" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - draw} />
                     </mask>
                   </defs>
-                  <path d={d} stroke={alpha(COLORS.white, 0.7)} strokeWidth={4} strokeDasharray="2 16" strokeLinecap="round" fill="none" mask={`url(#m9-${c})`} />
+                  <path d={d} stroke="#6B7280" strokeWidth={3} strokeDasharray="0.01 14" strokeLinecap="round" fill="none" mask={`url(#m9-${c})`} />
                 </svg>
-              ) : null;
+              );
             })}
-            {s > 2.75 && s < 3.4 ? <div style={{position: 'absolute', left: ORB_C.x + 80, top: ORB_C.y - 3, width: 1200 * tween(f, 2.75, 3.1), height: 6, borderRadius: 3, background: alpha(COLORS.white, 0.6), boxShadow: `0 0 24px 6px ${alpha(COLORS.white, 0.4)}`, opacity: 1 - tween(f, 3.1, 3.4)}} /> : null}
-            {/* the eight channel logos */}
-            {ORDER.map((c, i) => {
-              const p = popIn(f, POP(i), 0.35, 1.04);
-              if (p <= 0) return null;
-              const sx = toScreen(cam, {x: logoX(i), y: ROW_Y}).x;
-              const pass = s > PAN[0] - 0.2 && s < REVEAL[0] ? Math.max(0, 1 - Math.abs(sx - 960) / 360) : 0;
-              const isWA = c === 'whatsapp';
-              if (isWA) return null; // drawn above the reveal
+
+            {/* the seven other logos (WhatsApp is drawn above the reveal) */}
+            {ORDER.map((_, i) => {
+              const L = logo(i);
+              if (L.p <= 0 || L.c === 'whatsapp') return null;
               return (
                 <ChannelLogo
-                  key={c}
-                  logo={c}
-                  cx={logoX(i)}
-                  cy={ROW_Y + bob(f, i * 0.8, 5)}
-                  size={200}
-                  scale={p}
-                  opacity={Math.min(1, p) * (1 - others)}
-                  blur={8 * Math.max(0, 1 - Math.min(1, p)) + 14 * others}
-                  glow={pass}
+                  key={L.c}
+                  logo={L.c}
+                  cx={L.pt.x}
+                  cy={L.pt.y}
+                  size={SIZE}
+                  scale={(0.35 + 0.65 * L.p) * breathe * (1 - 0.3 * others)}
+                  opacity={Math.min(1, L.p * 1.4) * (1 - others)}
+                  blur={8 * Math.max(0, 1 - Math.min(1, L.p)) + 14 * others}
+                  glow={L.glow}
                 />
               );
             })}
           </CameraRig>
 
-          {/* hand-off: WhatsApp-green circle expands from behind the logo */}
-          <CircleReveal cx={waScreen.x} cy={waScreen.y} progress={reveal}>
+          {/* hand-off: WhatsApp glides to the centre, its green expands from behind it */}
+          <CircleReveal cx={960} cy={540} progress={reveal}>
             <AbsoluteFill style={{background: WHATSAPP_FINAL.background}} />
           </CircleReveal>
-          <CameraRig cam={cam} panning={panning}>
+          <CameraRig cam={cam}>
             {(() => {
-              const i = ORDER.length - 1;
-              const p = popIn(f, POP(i), 0.35, 1.04);
-              if (p <= 0) return null;
-              const sx = toScreen(cam, {x: WA_X, y: ROW_Y}).x;
-              const pass = s > PAN[0] - 0.2 && s < REVEAL[0] ? Math.max(0, 1 - Math.abs(sx - 960) / 360) : 0;
-              const y = ROW_Y + bob(f, i * 0.8, 5) * (1 - tween(f, 6.2, 6.5)) + (WHATSAPP_FINAL.logo.centerY - ROW_Y) * tween(f, 6.2, 6.5);
+              const L = logo(0);
+              if (L.p <= 0) return null;
+              const finalSize = WHATSAPP_FINAL.logo.size / cam.scale;
+              const cx = L.pt.x + (WHATSAPP_FINAL.logo.centerX - L.pt.x) * waGlide;
+              const cy = L.pt.y + (WHATSAPP_FINAL.logo.centerY - L.pt.y) * waGlide;
+              const size = SIZE + (finalSize - SIZE) * waGlide;
+              const sc = (0.35 + 0.65 * L.p) * (waGlide > 0 ? 1 : breathe);
               return (
                 <>
-                  <ChannelLogo logo="whatsapp" cx={WA_X} cy={y} size={200} scale={p} blur={8 * Math.max(0, 1 - Math.min(1, p))} glow={pass * (1 - reveal)} opacity={(1 - waWhite) * Math.min(1, p)} badge={s >= 6.0 && s < 6.7 ? <Badge f={f} size={64} /> : null} />
-                  {waWhite > 0 ? <ChannelLogo logo="whatsapp" cx={WA_X} cy={y} size={200} color={WHATSAPP_FINAL.logo.color} opacity={waWhite} /> : null}
+                  <ChannelLogo logo="whatsapp" cx={cx} cy={cy} size={size} scale={sc} blur={8 * Math.max(0, 1 - Math.min(1, L.p))} glow={L.glow * (1 - reveal)} opacity={(1 - waWhite) * Math.min(1, L.p * 1.4)} shadow={1 - reveal} badge={s >= BADGE && s < 5.6 ? <Badge f={f} size={58} /> : null} />
+                  {waWhite > 0 ? <ChannelLogo logo="whatsapp" cx={cx} cy={cy} size={size} color={WHATSAPP_FINAL.logo.color} opacity={waWhite} shadow={0} /> : null}
                 </>
               );
             })()}
           </CameraRig>
-
-          <ForegroundClouds t={s} cam={cam} opacity={0.14 * tween(f, 2.6, 3.4) * (1 - reveal)} y={800} id="fg9" />
 
           <Cursor
             frame={f}
@@ -193,7 +228,7 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             ]}
             clicks={[CLICK]}
             hand={[[0.7, 1.35]]}
-            rippleColor={COLORS.white}
+            rippleColor={COLORS.inkNavy}
             opacity={tween(f, 0.3, 0.5) * (1 - tween(f, 1.7, 2.1))}
           />
         </>

@@ -7,7 +7,7 @@ import fs from 'node:fs';
 
 const outDir = process.argv[2] || 'out/qa';
 const from = Number(process.argv[3] || 960);
-const to = Number(process.argv[4] || 3479);
+const to = Number(process.argv[4] || 3599);
 const browserExecutable = process.env.REMOTION_BROWSER || null;
 fs.mkdirSync(outDir, {recursive: true});
 const serveUrl = await bundle({entryPoint: path.resolve('src/index.ts')});
@@ -32,3 +32,5 @@ for (let f = from; f <= to; f += 30) {
 fs.writeFileSync(path.join(outDir, 'safe-area-report.txt'), warnings.join('\n') + '\n');
 console.log(`${warnings.length} warnings`);
 console.log(warnings.join('\n'));
+// fail the build on any violation
+if (warnings.length > 0) process.exit(1);

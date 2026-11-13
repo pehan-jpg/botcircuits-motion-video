@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "remotion studio src/index.ts",
     "render": "remotion render src/index.ts ProblemSequence out/problem_sequence.mp4",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "qa": "node scripts/qa.mjs"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.543",
