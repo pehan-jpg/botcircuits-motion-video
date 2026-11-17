@@ -1,77 +1,59 @@
-import { HEADLINE_CPS, sec } from "../constants";
-import { typewriterDuration } from "../components/Typewriter";
+import { sec } from "../constants";
 
-export const DURATION = 336; // 5.6s at 60 fps
+export const DURATION = 480; // 8.0s at 60 fps
 
-export const TITLE_TEXT = "Space by";
-export const UNDERLINE_WORD = "Space";
+type R = readonly [number, number];
+const r = (a: number, b: number): R => [sec(a), sec(b)];
 
-/** All beats in frames (60 fps). Comments give seconds. */
+/** All beats in frames (60 fps); arguments are seconds. */
 export const T = {
-  cardIn: 0, // 0.0
-  cardInDur: sec(0.45),
-  rowIn: sec(0.5), // 0.5 new row slides in
-  rowInDur: sec(0.3),
-  highlightFade: [sec(0.62), sec(1.1)] as const,
+  canvasIn: r(0, 0.6),
 
-  // 1.0 to 1.4 trigger
-  leg0: [sec(1.0), sec(1.27)] as const, // row -> node A
-  popA: sec(1.13),
-  lineAB: [sec(1.23), sec(1.43)] as const,
-  popB: sec(1.33),
-  popDur: sec(0.24),
-  spinnerIn: sec(1.05),
+  // 0.6 to 1.8 inbound events (tiles 0.15s apart)
+  eventTile: [0.6, 0.75, 0.9].map((s) => r(s, s + 0.3)),
+  eventLine: [0.7, 0.85, 1.0].map((s) => r(s, s + 0.3)),
+  eventPulse: [1.0, 1.2, 1.4].map((s) => r(s, s + 0.32)),
+  popStart: sec(1.17),
 
-  // 1.4 to 2.3 agent
-  leg1: [sec(1.43), sec(1.7)] as const, // A -> B
-  haloB: [sec(1.7), sec(2.1)] as const, // 0.4s halo pulse
-  lineBC: [sec(2.0), sec(2.2)] as const,
-  leg2: [sec(2.1), sec(2.37)] as const, // B -> C
+  // 1.8 to 3.2 the process draws
+  lines: {
+    startAgent: r(1.8, 2.1),
+    agentBranch: r(2.05, 2.35),
+    branchPerson: r(2.3, 2.6),
+    personDone: r(2.55, 2.85),
+    auto: r(2.65, 2.95),
+  },
+  popAgent: sec(2.0),
+  popBranch: sec(2.25),
+  popPerson: sec(2.5),
+  popDone: sec(2.75),
+  popDur: sec(0.26),
+  runToAgent: r(2.6, 2.85),
+  haloAgent: r(2.85, 3.25),
 
-  // 2.3 to 2.9 review gate
-  ringC: [sec(2.37), sec(2.57)] as const, // ring 1 start, ring 2 start
+  // 3.2 to 4.8 connected tools
+  toolTile: [3.2, 3.3, 3.4, 3.5].map((s) => r(s, s + 0.3)),
+  toolLine: [3.3, 3.4, 3.5, 3.6].map((s) => r(s, s + 0.3)),
+  toolCall: [3.72, 3.99, 4.26, 4.53].map((s) => ({ out: r(s, s + 0.13), back: r(s + 0.14, s + 0.27) })),
+  newRow: r(4.8, 5.1),
+
+  // 4.8 to 6.2 the run continues
+  agentBranch: r(4.85, 5.0),
+  branchPerson: r(5.0, 5.2),
+  ring: [sec(5.2), sec(5.4)],
   ringDur: sec(0.24),
-  approveC: [sec(2.72), sec(2.92)] as const,
-  lineCD: [sec(2.74), sec(2.9)] as const,
-  leg3: [sec(2.8), sec(3.0)] as const, // C -> D
-  popD: sec(2.9),
+  approve: r(5.58, 5.76),
+  personDone: r(5.76, 5.96),
+  donePop: r(5.94, 6.14),
+  rowDone: r(6.0, 6.2),
 
-  // 2.9 to 3.3 complete and hold
-  statusDone: [sec(2.97), sec(3.17)] as const,
+  // 6.2 to 6.8 a row change starts another run
+  rowToStart: r(6.25, 6.65),
+  startLight: r(6.6, 6.9),
 
-  // 3.3 to 3.8 merge
-  merge: [sec(3.3), sec(3.68)] as const,
-  symbolIn: [sec(3.48), sec(3.72)] as const,
-  symbolMove: [sec(3.66), sec(3.98)] as const,
-
-  // title
-  titleStart: sec(3.9),
-  underline: sec(5.0),
-  loopOut: [DURATION - sec(0.4), DURATION] as const,
-};
-
-export const TYPE_END = T.titleStart + Math.ceil(typewriterDuration(TITLE_TEXT, HEADLINE_CPS) * 60);
-export const WORDMARK_IN: readonly [number, number] = [TYPE_END + sec(0.04), TYPE_END + sec(0.54)];
-
-/* ---------- layout (px, 1920 x 1080) ---------- */
-export const CARD = { left: 640, top: 286, width: 640, height: 220, radius: 20 };
-export const ROW = { top: 52, pitch: 52, height: 36, inset: 14, dotX: 30 };
-export const NODE = { size: 96, y: 706, xs: [630, 850, 1070, 1290] as const, radius: 26 };
-export const MERGE_POINT = { x: 960, y: 540 };
-
-export const TITLE = {
-  fontSize: 84,
-  fontWeight: 600,
-  lineHeight: 1.45,
-  symbolSize: 88,
-  gapSymbol: 26,
-  gapWordmark: 20,
-  wordmarkHeight: 56,
-  centreY: 540,
-};
-
-/** Row dot of the new (top) row in frame coordinates. */
-export const NEW_ROW_DOT = {
-  x: CARD.left + ROW.dotX,
-  y: CARD.top + ROW.top + ROW.height / 2,
+  // 6.8 to 8.0 hold
+  ambient: r(6.8, 7.5),
+  loopOut: r(7.6, 8.0),
+  endMarkCollapse: r(7.2, 7.4),
+  endMarkSymbol: r(7.3, 7.45),
 };

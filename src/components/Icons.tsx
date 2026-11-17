@@ -66,3 +66,19 @@ export const PetalSpinner: React.FC<{ size: number; color: string; rotation: num
     </g>
   </svg>
 );
+
+export const ClockIcon: React.FC<{ size: number }> = ({ size }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" style={{ display: "block" }}>
+    <circle cx={12} cy={12} r={8.6} fill="none" stroke={INK} strokeWidth={2.2} />
+    <path d="M12 7.4V12l3.2 2.1" fill="none" stroke={INK} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+/** Tiny knowledge stack glyph (three stacked layers). */
+export const StackIcon: React.FC<{ size: number }> = ({ size }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" style={{ display: "block" }}>
+    <path d="M12 3.5 21 8l-9 4.5L3 8Z" fill={INK} />
+    <path d="m3 12 9 4.5 9-4.5" fill="none" stroke={INK} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+    <path d="m3 16 9 4.5 9-4.5" fill="none" stroke={INK} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);

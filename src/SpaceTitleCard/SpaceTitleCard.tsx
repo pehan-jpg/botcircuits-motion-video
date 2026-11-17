@@ -1,36 +1,40 @@
-import React, { useEffect, useState } from "react";
-import { AbsoluteFill, continueRender, delayRender, interpolate, useCurrentFrame } from "remotion";
+import React, { useMemo } from "react";
+import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { getStaticFiles } from "@remotion/studio";
-import { measureText } from "@remotion/layout-utils";
-import { EASE, HEADLINE_CPS, INK } from "../constants";
-import { FONT_FAMILY, waitForFonts } from "../fonts";
-import { mix, progress } from "../anim";
-import { BrandSymbol, BrandWordmark, LOGO_FILE, WORDMARK_ASPECT, WORDMARK_FILE } from "../components/BrandAssets";
-import { LimeUnderline } from "../components/LimeUnderline";
+import { EASE, INK } from "../constants";
+import { FONT_FAMILY } from "../fonts";
+import { pop, progress } from "../anim";
+import { BrandSymbol, LOGO_FILE } from "../components/BrandAssets";
 import { SafeAreaGuard } from "../components/SafeAreaGuard";
-import { Typewriter } from "../components/Typewriter";
-import { CLAMP, ProcessLayer, TableCard } from "./Process";
-import { DURATION, MERGE_POINT, T, TITLE, TITLE_TEXT, UNDERLINE_WORD, WORDMARK_IN } from "./timeline";
+import { CANVAS, LogoKey, logoFile, validateGeometry } from "./geometry";
+import { CLAMP, SceneContents, SceneTable } from "./Scene";
+import { DURATION, T } from "./timeline";
+
+export type EndMark = "none" | "symbol";
 
 export type SpaceTitleCardProps = {
   loop: boolean;
   guards: boolean;
-  /** Overrides public/ detection (the render script passes what is on disk). */
-  logoAvailable?: boolean | null;
-  wordmarkAvailable?: boolean | null;
+  /** "symbol": in the last 0.8s the canvas collapses into the BotCircuits symbol and holds 0.6s. */
+  endMark: EndMark;
+  /** At most three 18px column labels. Off by default. */
+  showLabels: boolean;
+  /** Files present in public/, as found by the render script. Falls back to Studio detection. */
+  availableFiles?: string[] | null;
 };
 
-const hasStatic = (name: string): boolean => {
+const LOGO_KEYS: LogoKey[] = ["gmail", "slack", "salesforce", "zendesk", "google-drive", "google-sheets"];
+
+const studioFiles = (): string[] => {
   try {
-    return getStaticFiles().some((f) => f.name === name);
+    return getStaticFiles().map((f) => f.name);
   } catch {
-    return false;
+    return [];
   }
 };
 
-/* ---------- backdrop: white base, cool mint to sky pastel, drifts at most 3 percent ---------- */
+/* backdrop: white base, cool mint to sky pastel, drifts at most 3 percent */
 const Backdrop: React.FC<{ frame: number; loop: boolean }> = ({ frame, loop }) => {
-  // percent, 0 -> 3 (in loop mode it drifts out and back so the seam is invisible)
   const d = loop ? 3 * Math.sin((Math.PI * frame) / DURATION) : (frame / DURATION) * 3;
   return (
     <AbsoluteFill
@@ -46,149 +50,109 @@ const Backdrop: React.FC<{ frame: number; loop: boolean }> = ({ frame, loop }) =
   );
 };
 
-type TitleMetrics = { textWidth: number; boxWidth: number; boxHeight: number };
+const LABELS = [
+  { text: "Triggers", x: 130 },
+  { text: "Process", x: 590 },
+  { text: "Systems", x: 1075 },
+];
 
-const useTitleMetrics = (): TitleMetrics | null => {
-  const [m, setM] = useState<TitleMetrics | null>(null);
-  const [handle] = useState(() => delayRender("Measuring title"));
-  useEffect(() => {
-    waitForFonts()
-      .then(() => {
-        const { width } = measureText({
-          text: TITLE_TEXT,
-          fontFamily: FONT_FAMILY,
-          fontSize: TITLE.fontSize,
-          fontWeight: String(TITLE.fontWeight),
-          letterSpacing: "normal",
-          validateFontIsLoaded: true,
-        });
-        setM({
-          textWidth: width,
-          boxWidth: Math.ceil(width) + 8, // room for the caret
-          boxHeight: TITLE.fontSize * TITLE.lineHeight,
-        });
-        continueRender(handle);
-      })
-      .catch((e) => {
-        throw e;
-      });
-  }, [handle]);
-  return m;
-};
-
-export const SpaceTitleCard: React.FC<SpaceTitleCardProps> = ({ loop, guards, logoAvailable, wordmarkAvailable }) => {
+export const SpaceTitleCard: React.FC<SpaceTitleCardProps> = ({ loop, guards, endMark, showLabels, availableFiles }) => {
   const frame = useCurrentFrame();
-  const metrics = useTitleMetrics();
-  const logoOk = logoAvailable ?? hasStatic(LOGO_FILE);
-  const wordOk = wordmarkAvailable ?? hasStatic(WORDMARK_FILE);
+  const files = availableFiles ?? studioFiles();
+  const logos = Object.fromEntries(LOGO_KEYS.map((k) => [k, files.includes(logoFile(k))])) as Record<LogoKey, boolean>;
+  const symbolOk = files.includes(LOGO_FILE);
+  const staticErrors = useMemo(() => validateGeometry(), []);
 
-  // Merge: the whole process scene converges into the merge point (shared element, ease out).
-  const m = progress(frame, T.merge[0], T.merge[1]);
-  const sceneScale = 1 - 0.9 * m;
-  const sceneOpacity = interpolate(frame, [mix(T.merge[0], T.merge[1], 0.45), T.merge[1]], [1, 0], CLAMP);
-  const sceneOrigin = `${MERGE_POINT.x}px ${MERGE_POINT.y}px`;
+  // Canvas pop in (0.97 -> 1, fade). In loop mode the empty canvas is already there on frame 0.
+  const canvasP = progress(frame, T.canvasIn[0], T.canvasIn[1]);
+  const canvasScale = loop ? 1 : interpolate(canvasP, [0, 1], [0.97, 1]);
+  const canvasOpacity = loop ? 1 : canvasP;
 
-  // Lockup geometry, centred as a block.
-  const wordW = TITLE.wordmarkHeight * WORDMARK_ASPECT;
-  const boxW = metrics?.boxWidth ?? 0;
-  const total = TITLE.symbolSize + TITLE.gapSymbol + boxW + TITLE.gapWordmark + wordW;
-  const left = 960 - total / 2;
-  const symbolSlot = { x: left + TITLE.symbolSize / 2, y: TITLE.centreY };
-  const textLeft = left + TITLE.symbolSize + TITLE.gapSymbol;
-  const wordLeft = textLeft + boxW + TITLE.gapWordmark;
+  // Loop: the contents fade in the last 0.4s, leaving the empty canvas.
+  const contentsOpacity =
+    loop && endMark === "none" ? interpolate(frame, [T.loopOut[0], T.loopOut[1] - 2], [1, 0], { ...CLAMP, easing: EASE }) : 1;
 
-  // Symbol emerges at the merge point, then moves to its slot in the lockup.
-  const sIn = progress(frame, T.symbolIn[0], T.symbolIn[1]);
-  const sMove = progress(frame, T.symbolMove[0], T.symbolMove[1]);
-  const symX = mix(MERGE_POINT.x, symbolSlot.x, sMove);
-  const symY = mix(MERGE_POINT.y, symbolSlot.y, sMove);
-  const symScale = mix(mix(0.5, 1.3, sIn), 1, sMove);
+  // End mark: the canvas collapses into the symbol at the centre, then holds.
+  const markOn = endMark === "symbol";
+  const collapse = markOn ? progress(frame, T.endMarkCollapse[0], T.endMarkCollapse[1]) : 0;
+  const symbolP = pop(frame, T.endMarkSymbol[0], T.endMarkSymbol[1] - T.endMarkSymbol[0]);
 
-  const wIn = progress(frame, WORDMARK_IN[0], WORDMARK_IN[1]);
-
-  const loopOut = loop ? interpolate(frame, [T.loopOut[0], T.loopOut[1] - 6], [1, 0], { ...CLAMP, easing: EASE }) : 1;
-  const loopCardIn = loop ? interpolate(frame, [T.loopOut[0] + 6, T.loopOut[1] - 1], [0, 1], { ...CLAMP, easing: EASE }) : 0;
-
-  const titleBox = metrics ? { width: metrics.boxWidth, height: metrics.boxHeight } : null;
+  const dotGrid = "radial-gradient(circle, rgba(13,18,36,0.075) 1.2px, rgba(13,18,36,0) 1.6px)";
 
   return (
     <AbsoluteFill style={{ fontFamily: FONT_FAMILY }}>
       <Backdrop frame={frame} loop={loop} />
-      <SafeAreaGuard enabled={guards && metrics !== null} titleStartFrame={T.titleStart} titleBox={titleBox}>
-        {frame < T.merge[1] ? (
-          <AbsoluteFill style={{ transform: `scale(${sceneScale})`, transformOrigin: sceneOrigin, opacity: sceneOpacity }}>
-            <TableCard frame={frame} mode="story" skipPop={loop} />
-            <ProcessLayer frame={frame} />
-          </AbsoluteFill>
+      <SafeAreaGuard enabled={guards} noOverlap staticErrors={staticErrors}>
+        {collapse < 1 ? (
+          <div
+            data-guard="canvas"
+            data-guard-container=""
+            style={{
+              position: "absolute",
+              left: CANVAS.left,
+              top: CANVAS.top,
+              width: CANVAS.w,
+              height: CANVAS.h,
+              borderRadius: CANVAS.radius,
+              backgroundColor: "#FFFFFF",
+              backgroundImage: dotGrid,
+              backgroundSize: "24px 24px",
+              backgroundPosition: "12px 12px",
+              border: "1px solid rgba(13,18,36,0.08)",
+              boxShadow: "0 30px 80px rgba(13,40,60,0.12), 0 6px 18px rgba(13,18,36,0.06)",
+              boxSizing: "border-box",
+              transform: `scale(${canvasScale * (1 - 0.94 * collapse)})`,
+              opacity: canvasOpacity * (1 - interpolate(collapse, [0.4, 1], [0, 1], CLAMP)),
+            }}
+          >
+            <div style={{ position: "absolute", inset: 0, opacity: contentsOpacity }}>
+              {showLabels
+                ? LABELS.map((l) => (
+                    <div
+                      key={l.text}
+                      style={{
+                        position: "absolute",
+                        left: l.x - 80,
+                        width: 160,
+                        top: 14,
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: 600,
+                        lineHeight: 1.4,
+                        color: INK,
+                        opacity: 0.7 * progress(frame, T.canvasIn[1], T.canvasIn[1] + 18),
+                      }}
+                    >
+                      {l.text}
+                    </div>
+                  ))
+                : null}
+              <SceneTable frame={frame} />
+              <SceneContents frame={frame} logos={logos} />
+            </div>
+            {contentsOpacity < 1 ? (
+              // Loop return: the empty table fades back in so the last frame matches frame 0.
+              <div style={{ position: "absolute", inset: 0, opacity: 1 - contentsOpacity }}>
+                <SceneTable frame={0} empty />
+              </div>
+            ) : null}
+          </div>
         ) : null}
 
-        {frame >= T.symbolIn[0] && sIn > 0 ? (
+        {markOn && frame >= T.endMarkSymbol[0] ? (
           <div
             data-guard="symbol"
             style={{
               position: "absolute",
-              left: symX - TITLE.symbolSize / 2,
-              top: symY - TITLE.symbolSize / 2,
-              width: TITLE.symbolSize,
-              height: TITLE.symbolSize,
-              transform: `scale(${symScale})`,
-              opacity: Math.min(1, sIn * 1.6) * loopOut,
+              left: 960 - 60,
+              top: 540 - 60,
+              width: 120,
+              height: 120,
+              transform: `scale(${symbolP.scale})`,
+              opacity: symbolP.opacity,
             }}
           >
-            <BrandSymbol size={TITLE.symbolSize} available={logoOk} />
-          </div>
-        ) : null}
-
-        {metrics && frame >= T.titleStart ? (
-          <>
-            <div
-              style={{
-                position: "absolute",
-                left: textLeft,
-                top: TITLE.centreY - metrics.boxHeight / 2,
-                opacity: loopOut,
-              }}
-            >
-              <Typewriter
-                text={TITLE_TEXT}
-                startFrame={T.titleStart}
-                cps={HEADLINE_CPS}
-                fontFamily={FONT_FAMILY}
-                fontSize={TITLE.fontSize}
-                fontWeight={TITLE.fontWeight}
-                lineHeight={TITLE.lineHeight}
-                boxWidth={metrics.boxWidth}
-                color={INK}
-                decorate={{
-                  from: 0,
-                  to: UNDERLINE_WORD.length,
-                  render: () => (
-                    <LimeUnderline
-                      startFrame={T.underline}
-                      style={{ position: "absolute", left: 2, right: 2, top: "100%", marginTop: 2 }}
-                    />
-                  ),
-                }}
-              />
-            </div>
-            <div
-              data-guard="wordmark"
-              style={{
-                position: "absolute",
-                left: wordLeft,
-                top: TITLE.centreY - TITLE.wordmarkHeight / 2 + 4,
-                opacity: wIn * loopOut,
-                transform: `translate(${(1 - wIn) * -14}px, ${(1 - wIn) * 16}px)`,
-              }}
-            >
-              <BrandWordmark height={TITLE.wordmarkHeight} available={wordOk} />
-            </div>
-          </>
-        ) : null}
-
-        {loop && loopCardIn > 0 ? (
-          <div style={{ opacity: loopCardIn, position: "absolute", inset: 0 }}>
-            <TableCard frame={DURATION} mode="empty" skipPop />
+            <BrandSymbol size={120} available={symbolOk} />
           </div>
         ) : null}
       </SafeAreaGuard>

@@ -4,10 +4,16 @@ import { CENTRE_BOX, HEIGHT, SAFE, WIDTH } from "../constants";
 
 export type SafeAreaGuardProps = {
   enabled: boolean;
-  /** First frame of the title. No title character may be visible on it. */
-  titleStartFrame: number;
+  /** First frame of the title, if the composition has one. No title character may be visible on it. */
+  titleStartFrame?: number;
   /** Pre-measured title box size; the box must keep this size on every frame. */
-  titleBox: { width: number; height: number } | null;
+  titleBox?: { width: number; height: number } | null;
+  /** Also require everything inside the centre 60 percent of the frame. */
+  centreBox?: boolean;
+  /** Fail when two [data-guard] elements (other than any marked data-guard-container) overlap. */
+  noOverlap?: boolean;
+  /** Static layout errors to fail on (e.g. lines crossing nodes). */
+  staticErrors?: string[];
   children: React.ReactNode;
 };
 
@@ -15,14 +21,18 @@ const TOL = 0.75;
 
 /**
  * Dev only guard. Renders nothing visible. Fails the render (cancelRender) when:
- *  - any [data-guard] element leaves the 96px safe area or the centre 60 percent,
+ *  - any [data-guard] element leaves the 96px safe area (or, with centreBox, the centre 60 percent),
+ *  - two [data-guard] elements overlap (noOverlap), or a static layout check failed,
  *  - the title box changes size while typing, or its text overflows the box,
  *  - any title character is visible on the title's first frame.
  */
 export const SafeAreaGuard: React.FC<SafeAreaGuardProps> = ({
   enabled,
-  titleStartFrame,
-  titleBox,
+  titleStartFrame = -1,
+  titleBox = null,
+  centreBox = false,
+  noOverlap = false,
+  staticErrors = [],
   children,
 }) => {
   const frame = useCurrentFrame();
@@ -33,6 +43,11 @@ export const SafeAreaGuard: React.FC<SafeAreaGuardProps> = ({
     const rootRect = root.current.getBoundingClientRect();
     const k = rootRect.width / WIDTH;
     const fail = (msg: string) => cancelRender(new Error(`[SafeAreaGuard] frame ${frame}: ${msg}`));
+
+    if (staticErrors.length > 0) {
+      fail(`layout: ${staticErrors.join("; ")}`);
+      return;
+    }
 
     const nodes = root.current.querySelectorAll<HTMLElement>("[data-guard]");
     for (const el of Array.from(nodes)) {
@@ -46,17 +61,34 @@ export const SafeAreaGuard: React.FC<SafeAreaGuardProps> = ({
       };
       const name = el.dataset.guard;
       if (box.left < SAFE - TOL || box.top < SAFE - TOL || box.right > WIDTH - SAFE + TOL || box.bottom > HEIGHT - SAFE + TOL) {
-        fail(`"${name}" leaves the 96px safe area (${JSON.stringify(box)})`);
+        fail(`"${name}" leaves the 96px safe area (${JSON.stringify(box)}, root ${rootRect.width}x${rootRect.height}, el ${r.width}x${r.height})`);
         return;
       }
       if (
-        box.left < CENTRE_BOX.left - TOL ||
+        centreBox &&
+        (box.left < CENTRE_BOX.left - TOL ||
         box.right > CENTRE_BOX.right + TOL ||
         box.top < CENTRE_BOX.top - TOL ||
-        box.bottom > CENTRE_BOX.bottom + TOL
+        box.bottom > CENTRE_BOX.bottom + TOL)
       ) {
         fail(`"${name}" leaves the centre 60 percent of the frame (${JSON.stringify(box)})`);
         return;
+      }
+    }
+
+    if (noOverlap) {
+      const solids = Array.from(nodes)
+        .filter((el) => el.dataset.guardContainer === undefined && Number(getComputedStyle(el).opacity) > 0.01)
+        .map((el) => ({ name: el.dataset.guard, r: el.getBoundingClientRect() }));
+      for (let i = 0; i < solids.length; i++) {
+        for (let j = i + 1; j < solids.length; j++) {
+          const a = solids[i].r;
+          const b = solids[j].r;
+          if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) {
+            fail(`"${solids[i].name}" overlaps "${solids[j].name}"`);
+            return;
+          }
+        }
       }
     }
 
@@ -88,10 +120,10 @@ export const SafeAreaGuard: React.FC<SafeAreaGuardProps> = ({
         }
       }
     }
-  }, [enabled, frame, titleStartFrame, titleBox]);
+  }, [enabled, frame, titleStartFrame, titleBox, centreBox, noOverlap, staticErrors]);
 
   return (
-    <div ref={root} style={{ position: "absolute", inset: 0 }}>
+    <div ref={root} style={{ position: "absolute", left: 0, top: 0, width: WIDTH, height: HEIGHT }}>
       {children}
     </div>
   );

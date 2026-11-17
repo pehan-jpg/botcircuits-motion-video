@@ -1,3 +1,4 @@
+// Flags: --loop, --end-mark=symbol, --labels, --only=stills,poster,mp4,webm
 // Renders SpaceTitleCard: MP4 (H.264), WebM (VP9), poster PNG and stills every 0.25s.
 // Guards run during every render (guards: true); any violation fails the render.
 import { bundle } from "@remotion/bundler";
@@ -8,18 +9,25 @@ import path from "node:path";
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const out = path.join(root, "out");
 const stillsDir = path.join(out, "space_stills");
-fs.mkdirSync(stillsDir, { recursive: true });
+
 
 const loop = process.argv.includes("--loop");
+const endMark = process.argv.find((a) => a.startsWith("--end-mark="))?.slice(11) ?? "none";
+const showLabels = process.argv.includes("--labels");
 const only = process.argv.find((a) => a.startsWith("--only="))?.slice(7);
-const inputProps = {
-  loop,
-  guards: true,
-  logoAvailable: fs.existsSync(path.join(root, "public", "botcircuits-logo.svg")),
-  wordmarkAvailable: fs.existsSync(path.join(root, "public", "botcircuits-wordmark.svg")),
-};
-for (const [k, f] of [["logoAvailable", "botcircuits-logo.svg"], ["wordmarkAvailable", "botcircuits-wordmark.svg"]]) {
-  if (!inputProps[k]) console.warn(`WARNING: public/${f} missing, rendering a labelled placeholder.`);
+const publicDir = path.join(root, "public");
+const listFiles = (dir, prefix = "") =>
+  fs.existsSync(dir)
+    ? fs.readdirSync(dir, { withFileTypes: true }).flatMap((d) =>
+        d.isDirectory() ? listFiles(path.join(dir, d.name), `${prefix}${d.name}/`) : [`${prefix}${d.name}`],
+      )
+    : [];
+const availableFiles = listFiles(publicDir);
+const inputProps = { loop, guards: true, endMark, showLabels, availableFiles };
+const expected = ["logos/gmail.svg", "logos/slack.svg", "logos/salesforce.svg", "logos/zendesk.svg", "logos/google-drive.svg", "logos/google-sheets.svg"];
+if (endMark === "symbol") expected.push("botcircuits-logo.svg");
+for (const f of expected) {
+  if (!availableFiles.includes(f)) console.warn(`WARNING: public/${f} missing, rendering a neutral placeholder.`);
 }
 
 const serveUrl = await bundle({ entryPoint: path.join(root, "src", "index.ts") });
@@ -36,6 +44,8 @@ const common = { composition, serveUrl, inputProps, puppeteerInstance, browserEx
 const step = (name) => !only || only.split(",").includes(name);
 
 if (step("stills")) {
+  fs.rmSync(stillsDir, { recursive: true, force: true });
+  fs.mkdirSync(stillsDir, { recursive: true });
   const every = Math.round(composition.fps * 0.25);
   for (let f = 0; f < composition.durationInFrames; f += every) {
     const t = (f / composition.fps).toFixed(2).padStart(5, "0");

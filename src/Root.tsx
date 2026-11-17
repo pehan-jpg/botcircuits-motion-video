@@ -7,8 +7,9 @@ import { DURATION } from "./SpaceTitleCard/timeline";
 const defaults: SpaceTitleCardProps = {
   loop: false,
   guards: true,
-  logoAvailable: null,
-  wordmarkAvailable: null,
+  endMark: "none", // END_MARK
+  showLabels: false, // SHOW_LABELS
+  availableFiles: null,
 };
 
 export const RemotionRoot: React.FC = () => {
