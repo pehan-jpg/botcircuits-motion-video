@@ -8,7 +8,7 @@ import {Backdrop} from '../components/Backdrop';
 import {FallbackPeriwinkle} from '../components/ProceduralSky';
 import {camAt, CamKeys, toScreen} from '../components/Stage';
 import {CameraRig, dissolve, isPanning} from '../components/CameraRig';
-import {Cursor} from '../components/Cursor';
+import {PlannedCursor} from '../components/Cursor';
 import {Orb} from '../components/Orb';
 import {PetalSpinner} from '../components/PetalSpinner';
 import {ConsoleCard, ConsolePill, CONSOLE_INPUT, inputHeight, liftDuration} from '../ui/ConsoleCard';
@@ -73,7 +73,7 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const dotC = {x: fieldC.x + (centre.x - fieldC.x) * travel, y: fieldC.y + (centre.y - fieldC.y) * travel - Math.sin(travel * Math.PI) * 40};
   const showField = s >= COLLAPSE[0] && s < ORB_AT + 0.12;
 
-  const click = toScreen(camAt(sec(0.6), CAM), {x: CARD_LEFT + CONSOLE_INPUT.x + 300, y: CARD_TOP + CONSOLE_INPUT.y + 45});
+  const click = toScreen(camAt(sec(0.6), CAM), {x: CARD_LEFT + CONSOLE_INPUT.x + 26, y: CARD_TOP + CONSOLE_INPUT.y + 45});
   const sendScreen = toScreen(camAt(sec(SEND), CAM), sendWorld);
 
   return (
@@ -155,22 +155,15 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
       ) : null}
 
       {show('fg') ? (
-        <Cursor
+        <PlannedCursor
           frame={f}
-          keys={[
-            {t: 0.2, x: 1660, y: 1040},
-            {t: 0.55, x: click.x, y: click.y},
-            {t: 0.7, x: click.x, y: click.y},
-            {t: 1.3, x: 1600, y: 930},
-            {t: 2.1, x: 1620, y: 920},
-            {t: SEND - 0.05, x: sendScreen.x + 6, y: sendScreen.y + 6},
-            {t: SEND + 0.15, x: sendScreen.x + 6, y: sendScreen.y + 6},
-            {t: SEND + 0.75, x: 1700, y: 1180},
+          targets={[
+            // park the tip at the left edge of the input, then drift out of the line while typing
+            {t: 0.6, x: click.x, y: click.y, click: true},
+            {t: 1.0, x: click.x + 20, y: click.y + 20},
+            {t: SEND, x: sendScreen.x, y: sendScreen.y, click: true, hand: true},
           ]}
-          clicks={[0.6, SEND]}
-          hand={[[SEND - 0.3, SEND + 0.2]]}
           rippleColor={COLORS.inkNavy}
-          opacity={tween(f, 0.2, 0.4) * (1 - tween(f, SEND + 0.3, SEND + 0.6))}
         />
       ) : null}
     </AbsoluteFill>

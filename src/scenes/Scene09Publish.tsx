@@ -9,7 +9,7 @@ import {beatUnderline} from '../ui/TextBeat';
 import {Camera} from '../camera';
 import {CameraRig, dissolve} from '../components/CameraRig';
 import {CircleReveal} from '../components/CircleReveal';
-import {Cursor} from '../components/Cursor';
+import {PlannedCursor} from '../components/Cursor';
 import {Orb} from '../components/Orb';
 import {PublishButton} from '../ui/Panels';
 import {Channel, ChannelLogo} from '../ui/ChannelLogo';
@@ -224,19 +224,7 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             })()}
           </CameraRig>
 
-          <Cursor
-            frame={f}
-            keys={[
-              {t: 0.2, x: 1660, y: 1060},
-              {t: CLICK - 0.1, x: PUBLISH_BTN.cx + 40, y: PUBLISH_BTN.cy + 12},
-              {t: CLICK + 0.45, x: PUBLISH_BTN.cx + 40, y: PUBLISH_BTN.cy + 12},
-              {t: 1.9, x: 1500, y: 1180},
-            ]}
-            clicks={[CLICK]}
-            hand={[[CLICK - 0.3, CLICK + 0.35]]}
-            rippleColor={COLORS.inkNavy}
-            opacity={tween(f, 0.2, 0.4) * (1 - tween(f, 1.5, 1.9))}
-          />
+          <PlannedCursor frame={f} targets={[{t: CLICK, x: PUBLISH_BTN.cx, y: PUBLISH_BTN.cy, click: true, hand: true}]} rippleColor={COLORS.inkNavy} />
         </>
       ) : null}
     </AbsoluteFill>

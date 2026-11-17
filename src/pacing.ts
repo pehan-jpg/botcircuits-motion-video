@@ -16,6 +16,11 @@ export const REPLAY_STAGGER = 0.3;
 export const REPLAY_HOLD = 0.3;
 /** Readability limit checked by the ReadabilityGuard. */
 export const MAX_WPS = 5.5;
+/** Agent typing indicator before a bubble (shorter for messages of four words or fewer). */
+export const INDICATOR_TIME = (words: number) => (words <= 4 ? 0.5 : 0.7);
+/** Customer messages: after typing in the input, the send press (0.15 s) and the bubble sliding up (0.3 s). */
+export const SEND_TIME = 0.5;
+export const SEND_PRESS = 0.15;
 /** The scene tail that overlaps the next item (blur dissolve). */
 export const TAIL = 0.4;
 
@@ -29,10 +34,14 @@ export type Timed = Msg & {mode: Mode; typedEnd: number; chipEnd: number; holdEn
 export const words = (t: string) => t.split(/\s+/).filter(Boolean).length;
 
 /**
- * Times a chat sequence from `startAt`. Normal: typed at TYPE_WPS with a caret,
- * then an optional chip (CHIP_TIME), then HOLD(words), then MSG_GAP. Replay:
- * consecutive messages start REPLAY_STAGGER apart at REPLAY_WPS without a
- * caret; the block ends REPLAY_HOLD after its last word.
+ * Times a chat sequence from `startAt`.
+ *  - customer, normal: types in the Message input at TYPE_WPS, then SEND_TIME
+ *    (send press + bubble slides up); the bubble lands at `at`.
+ *  - agent, normal: typing indicator INDICATOR_TIME, then the bubble appears at
+ *    its final size (`at`) and its words reveal at TYPE_WPS.
+ *  - then an optional chip (CHIP_TIME), HOLD(words), and MSG_GAP.
+ *  - replay: bubbles appear instantly, REPLAY_STAGGER apart; the block ends
+ *    REPLAY_HOLD after the last bubble has slid in.
  */
 export const chatTimeline = (msgs: In[], startAt = 0) => {
   const out: Timed[] = [];
@@ -40,19 +49,35 @@ export const chatTimeline = (msgs: In[], startAt = 0) => {
   let replayEnd = startAt;
   msgs.forEach((m, i) => {
     const w = words(m.text);
-    const wps = m.mode === 'replay' ? REPLAY_WPS : TYPE_WPS;
-    const start = t;
-    const typedEnd = start + w / wps;
-    const chipEnd = typedEnd + (m.chip || m.source ? CHIP_TIME : 0);
-    const holdEnd = chipEnd + (m.mode === 'replay' ? REPLAY_HOLD : HOLD(w));
-    out.push({from: m.from, text: m.text, time: m.time, chip: m.chip, source: m.source, at: start, wps, replay: m.mode === 'replay', mode: m.mode, typedEnd, chipEnd, holdEnd, words: w});
     const next = msgs[i + 1];
+    const base = {from: m.from, text: m.text, time: m.time, chip: m.chip, source: m.source, mode: m.mode, words: w};
     if (m.mode === 'replay') {
+      const at = t;
+      const holdEnd = at + REPLAY_STAGGER + REPLAY_HOLD;
+      out.push({...base, at, replay: true, typedEnd: at, chipEnd: at, holdEnd});
       replayEnd = Math.max(replayEnd, holdEnd);
-      t = next && next.mode === 'replay' ? start + REPLAY_STAGGER : replayEnd;
-    } else {
-      t = holdEnd + (next ? MSG_GAP : 0);
+      t = next && next.mode === 'replay' ? at + REPLAY_STAGGER : replayEnd;
+      return;
     }
+    let at: number;
+    let typedEnd: number;
+    let extra: Partial<Msg> = {};
+    if (m.from === 'maya') {
+      const inputAt = t;
+      const inputEnd = inputAt + w / TYPE_WPS;
+      at = inputEnd + SEND_TIME;
+      typedEnd = at; // the bubble lands complete
+      extra = {inputAt, inputEnd};
+    } else {
+      const indicatorAt = t;
+      at = indicatorAt + INDICATOR_TIME(w);
+      typedEnd = at + w / TYPE_WPS; // word reveal
+      extra = {indicatorAt, wps: TYPE_WPS};
+    }
+    const chipEnd = typedEnd + (m.chip || m.source ? CHIP_TIME : 0);
+    const holdEnd = chipEnd + HOLD(w);
+    out.push({...base, ...extra, at, typedEnd, chipEnd, holdEnd});
+    t = holdEnd + (next ? MSG_GAP : 0);
   });
   const end = Math.max(t, ...out.map((m) => m.holdEnd));
   return {msgs: out, start: startAt, end, total: end - startAt};
@@ -111,15 +136,30 @@ const s10 = chatTimeline(
 export const CHATS = {s5, s6, s7, s8, s10};
 export const CONVO = {s5: s5.msgs as Msg[], s6: s6.msgs as Msg[], s7: s7.msgs as Msg[]};
 
-// ---- scene 11: three separate voices with silent gaps ------------------------
+// ---- scene 11: a hospitality voice call (separately recorded voices, silent gaps) ----
+/** Set false to drop the last customer line ("Thank you.") and its gap. */
+export const INCLUDE_THANKS = true;
+export type Slot = {who: 'customer' | 'agent'; text: string; from: number; to: number};
+const SLOTS_ALL: Slot[] = [
+  {who: 'customer', text: 'Hello?', from: 0.8, to: 2.0},
+  {who: 'agent', text: 'Hello Daniel, welcome to Harbour Hotel. How can I help?', from: 2.8, to: 6.4},
+  {who: 'customer', text: "Hi, I'd like to extend my stay by one night.", from: 7.2, to: 11.2},
+  {who: 'agent', text: "Done. You're now booked until Saturday.", from: 12.2, to: 15.0},
+  {who: 'customer', text: 'Thank you.', from: 15.8, to: 17.0},
+];
+const SLOTS = INCLUDE_THANKS ? SLOTS_ALL : SLOTS_ALL.slice(0, 4);
+const LAST = SLOTS[SLOTS.length - 1].to;
 export const CALL = {
-  connect: 0.8,
-  customer: [0.8, 3.2] as [number, number],
-  agent: [4.2, 7.7] as [number, number],
-  narrator: [8.7, 11.1] as [number, number],
-  collapse: [11.1, 11.45] as [number, number], // the card collapses into a conversation row before TextBeat 7 types
-  end: 11.6,
-  lines: {customer: "I don't recognise this charge.", agent: "I'll bring in a teammate to review it.", system: 'Nadia joined the call'},
+  agentName: 'Guest Concierge',
+  business: 'Harbour Hotel',
+  caller: 'Daniel',
+  connected: 0.8, // "Calling" -> "Connected"
+  slots: SLOTS,
+  tool: {from: 11.2, done: 12.0, to: 12.2, busy: 'Checking availability', ok: 'Saturday available', after: 'Booking updated'},
+  collapse: [LAST, LAST + 0.6] as [number, number],
+  end: LAST + 0.6,
+  /** Scene 12 (Priya's conversation, replay). */
+  team: {customer: "I don't recognise a charge on my statement.", agent: "I'll bring in a teammate to review it.", reply: "I'm reviewing the charge now."},
 };
 
 // ---- scene lengths (derived) ---------------------------------------------------
@@ -148,7 +188,8 @@ export const readabilityWarnings = (): string[] => {
   const check = (scene: string, tl: ReturnType<typeof chatTimeline>, nextChangeAfterLast: number) => {
     tl.msgs.forEach((m, i) => {
       if (m.mode !== 'normal') return;
-      const wps = m.words / (m.typedEnd - m.at);
+      // customers type in the input; agents reveal word by word in the bubble
+      const wps = m.from === 'maya' ? m.words / (m.inputEnd! - m.inputAt!) : m.words / (m.typedEnd - m.at);
       if (wps > MAX_WPS + 1e-6) w.push(`READABILITY ${scene} "${m.text}" types at ${wps.toFixed(2)} wps`);
       const next = i < tl.msgs.length - 1 ? tl.msgs[i + 1].at : nextChangeAfterLast;
       const hold = next - m.chipEnd;
@@ -160,21 +201,25 @@ export const readabilityWarnings = (): string[] => {
   check('s7', s7, SCENE_LEN.s7 - TAIL);
   check('s8', s8, S8_RESULT_AT);
   check('s10', s10, SCENE_LEN.s10 - TAIL);
-  // the call transcript (typed across each voice slot)
-  const c = words(CALL.lines.customer) / (CALL.customer[1] - CALL.customer[0]);
-  const a = words(CALL.lines.agent) / (CALL.agent[1] - CALL.agent[0]);
-  if (c > MAX_WPS || a > MAX_WPS) w.push(`READABILITY s11 transcript too fast (${c.toFixed(2)}, ${a.toFixed(2)} wps)`);
-  if (CALL.agent[0] - CALL.customer[1] < HOLD(words(CALL.lines.customer))) w.push('READABILITY s11 customer line hold too short');
-  if (CALL.narrator[0] - CALL.agent[1] < HOLD(words(CALL.lines.agent))) w.push('READABILITY s11 agent line hold too short');
+  // the call transcript (words revealed across each voice slot)
+  for (const sl of CALL.slots) {
+    const r = words(sl.text) / (sl.to - sl.from);
+    if (r > MAX_WPS) w.push(`READABILITY s11 "${sl.text}" reveals at ${r.toFixed(2)} wps`);
+  }
   return w;
 };
 
-/** assertGaps (scene 11): >= 1.0 s silence between slots, >= 0.5 s before the first and after the last. */
+/** assertGaps (scene 11): >= 0.8 s silence between slots (1.0 s around the tool chip), >= 0.5 s before the first and after the last. */
 export const gapWarnings = (): string[] => {
   const w: string[] = [];
-  const slots = [CALL.customer, CALL.agent, CALL.narrator];
-  if (slots[0][0] < 0.5) w.push(`GAPS s11 only ${slots[0][0]} s before the first slot`);
-  for (let i = 1; i < slots.length; i++) if (slots[i][0] - slots[i - 1][1] < 1.0 - 1e-6) w.push(`GAPS s11 gap ${i} is ${(slots[i][0] - slots[i - 1][1]).toFixed(2)} s`);
-  if (CALL.end - slots[2][1] < 0.5 - 1e-6) w.push(`GAPS s11 only ${(CALL.end - slots[2][1]).toFixed(2)} s after the last slot`);
+  const sl = CALL.slots;
+  if (sl[0].from < 0.5) w.push(`GAPS s11 only ${sl[0].from} s before the first slot`);
+  for (let i = 1; i < sl.length; i++) {
+    const gap = sl[i].from - sl[i - 1].to;
+    const aroundTool = sl[i - 1].to <= CALL.tool.from + 1e-6 && sl[i].from >= CALL.tool.to - 1e-6;
+    const need = aroundTool ? 1.0 : 0.8;
+    if (gap < need - 1e-6) w.push(`GAPS s11 gap before "${sl[i].text}" is ${gap.toFixed(2)} s (< ${need})`);
+  }
+  if (CALL.end - sl[sl.length - 1].to < 0.5 - 1e-6) w.push(`GAPS s11 only ${(CALL.end - sl[sl.length - 1].to).toFixed(2)} s after the last slot`);
   return w;
 };

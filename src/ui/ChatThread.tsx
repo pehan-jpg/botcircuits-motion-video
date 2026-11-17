@@ -1,5 +1,6 @@
 import React from 'react';
-import {COLORS, FONT_MONO, FONT_SANS, FONT_SANS_FAMILY, ease, popIn, tween} from '../theme';
+import {COLORS, FONT_MONO, FONT_SANS, FONT_SANS_FAMILY, kf, tween} from '../theme';
+import {TYPE_WPS} from '../pacing';
 import {sec} from '../timeline';
 import {UI, UI_FONT} from './tokens';
 import {AGENT, CHAT} from '../v7';
@@ -12,13 +13,16 @@ import {Caret} from '../components/TypingText';
 export type Msg = {
   from: 'maya' | 'agent';
   text: string;
-  at: number; // scene seconds (-Infinity = already there)
+  at: number; // scene seconds the bubble is in place (-Infinity = already there)
   time: string; // "9:02 AM"
   chip?: string; // tool result chip inside the agent bubble
   source?: string; // source chip under the agent bubble
-  instant?: boolean; // appears complete (a chip landed on it) instead of typing
-  wps?: number; // typing speed in words per second (see src/pacing.ts)
-  replay?: boolean; // already seen by the viewer: fast, no caret
+  instant?: boolean;
+  wps?: number; // agent: word reveal speed (words per second, src/pacing.ts)
+  replay?: boolean; // already seen by the viewer: appears instantly with a 12px slide
+  inputAt?: number; // customer: starts typing in the Message input
+  inputEnd?: number; // customer: input typing done (then send press + bubble slides up)
+  indicatorAt?: number; // agent: typing indicator before the bubble
 };
 
 // Light variant of the scenes 1-3 thread.
@@ -26,7 +30,9 @@ const FS = 26;
 const LH = 36;
 const PAD_X = 20;
 const PAD_Y = 16;
-const TEXT_MAX = 440;
+/** Bubbles never exceed 82% of the card width. */
+export const BUBBLE_MAX = Math.round(CHAT.width * 0.82);
+const TEXT_MAX = BUBBLE_MAX - PAD_X * 2 - 2;
 const FONT = `400 ${FS}px "${FONT_SANS_FAMILY}"`;
 const AV = 44;
 const BUBBLE_X = 24 + AV + 14;
@@ -36,6 +42,9 @@ export const PER_WORD = 0.06;
 export const CHAT_TEXT = {fs: FS, lh: LH, padX: PAD_X, padY: PAD_Y, max: TEXT_MAX};
 const CHIP_H = 48;
 const SOURCE_H = 46;
+const IND = {w: 104, h: 64};
+const SEND_PRESS = 0.15;
+const SLIDE = 0.3;
 
 const bubbleDims = (text: string) => {
   const lines = wrapText(text, FONT, TEXT_MAX, FS * 0.5);
@@ -43,29 +52,20 @@ const bubbleDims = (text: string) => {
   return {lines, w: Math.ceil(w) + PAD_X * 2 + 2, h: lines.length * LH + PAD_Y * 2};
 };
 
-/** Typed state of an agent message: visible words (fractional) and bubble size. */
-const typedState = (m: Msg, s: number) => {
-  const words = m.text.split(' ');
-  if (m.at === -Infinity || m.instant || (m.from === 'maya' && !m.wps)) return {k: words.length, dims: bubbleDims(m.text), done: true};
-  const t = (s - m.at) * (m.wps ?? 1 / PER_WORD); // words typed (fractional); the first word shows as the bubble appears
-  const k = Math.max(1, Math.min(words.length, t + 1));
-  const kf = Math.floor(k);
-  const a = bubbleDims(words.slice(0, Math.max(1, kf)).join(' '));
-  const b = bubbleDims(words.slice(0, Math.min(words.length, Math.max(1, kf + 1))).join(' '));
-  const p = ease(k - kf, [0, 1], [0, 1]);
-  return {k: kf, dims: {lines: a.lines, w: a.w + (b.w - a.w) * p, h: a.h + (b.h - a.h) * p}, done: kf >= words.length};
+/** The final box of a message, pre-measured: it never changes size once on screen. */
+export const messageBox = (m: Msg) => {
+  const d = bubbleDims(m.text);
+  const chipW = m.chip ? measureText(m.chip, `600 22px "Plus Jakarta Sans"`, 12) + 64 : 0;
+  const bw = Math.min(BUBBLE_MAX, Math.max(d.w, m.chip ? chipW + PAD_X * 2 : 0));
+  const bh = d.h + (m.chip ? CHIP_H + 12 : 0);
+  const block = bh + (m.source ? SOURCE_H + 10 : 0) + META + GAP;
+  return {lines: d.lines, bw, bh, textH: d.h, block};
 };
-export const msgEnd = (m: Msg) => m.at + (m.instant ? 0.15 : m.text.split(' ').length / (m.wps ?? 1 / PER_WORD));
-const CHIP_IN = 0.5; // CHIP_TIME in src/pacing.ts
-
-/** Current height of a message block (bubble, chip, source, timestamp). */
-const blockHeight = (m: Msg, s: number) => {
-  const st = typedState(m, s);
-  const end = msgEnd(m);
-  const chip = m.chip ? (m.at === -Infinity ? 1 : tween(Math.round(s * 60), end, end + CHIP_IN * 0.6)) : 0;
-  const src = m.source ? (m.at === -Infinity ? 1 : tween(Math.round(s * 60), end, end + CHIP_IN * 0.6)) : 0;
-  return st.dims.h + chip * (CHIP_H + 12) + src * (SOURCE_H + 10) + META + GAP;
-};
+const nWords = (t: string) => t.split(' ').length;
+/** When everything in the bubble has appeared (agent: last word revealed). */
+export const msgEnd = (m: Msg) => m.at + (m.from === 'agent' && !m.replay && m.wps ? nWords(m.text) / m.wps : 0);
+/** From when the message block is on screen. */
+const visibleFrom = (m: Msg) => (m.at === -Infinity ? -Infinity : m.from === 'maya' && m.inputAt !== undefined ? m.at - SLIDE : m.at);
 
 export const MAvatar: React.FC<{size: number; border?: boolean}> = ({size, border}) => (
   <div
@@ -106,74 +106,70 @@ export const SourceChip: React.FC<{label: string}> = ({label}) => (
   </div>
 );
 
+const Avatar: React.FC<{agent: boolean; frame: number; orbColor: number}> = ({agent, frame, orbColor}) =>
+  agent ? (
+    <div style={{position: 'relative', width: AV, height: AV}}>
+      <Orb cx={AV / 2} cy={AV / 2} size={AV} color={orbColor} frame={frame} shadow={false} />
+    </div>
+  ) : (
+    <MAvatar size={AV} />
+  );
+const AVATAR_TOP = PAD_Y + LH / 2 - AV / 2; // level with the first text line, fixed
+
 const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame, orbColor}) => {
-  const s = frame / sec(1);
   const isAgent = m.from === 'agent';
-  const appear = m.at === -Infinity ? 1 : popIn(frame, m.at, 0.3, 1.03);
-  const st = typedState(m, s);
+  const box = messageBox(m);
+  const old = m.at === -Infinity;
+  // arrival: replay = instant 12px slide; customer = slides up from the input; agent = appears at final size
+  const p = old ? 1 : m.replay ? tween(frame, m.at, m.at + SLIDE) : m.from === 'maya' && m.inputAt !== undefined ? tween(frame, m.at - SLIDE, m.at) : tween(frame, m.at, m.at + 0.15);
+  const slide = old ? 0 : m.replay ? 12 : m.from === 'maya' && m.inputAt !== undefined ? 70 : 4;
+  const reveal = isAgent && !old && !m.replay && !!m.wps;
   const end = msgEnd(m);
-  const chip = m.chip ? (m.at === -Infinity ? 1 : tween(frame, end, end + CHIP_IN * 0.6)) : 0;
-  const src = m.source ? (m.at === -Infinity ? 1 : tween(frame, end, end + CHIP_IN * 0.6)) : 0;
-  const typing = m.at !== -Infinity && !m.replay && !m.instant && !st.done;
+  const after = old ? 1 : tween(frame, end, end + 0.3);
   let wi = 0;
-  const finalLines = bubbleDims(m.text).lines;
-  const chipW = isAgent && m.chip ? measureText(m.chip, `600 22px "Plus Jakarta Sans"`, 12) + 64 : 0;
-  const bw = Math.max(st.dims.w, chip > 0 ? chipW + PAD_X * 2 : 0);
-  const bh = st.dims.h + chip * (CHIP_H + 12);
   return (
-    <div style={{position: 'relative', height: blockHeight(m, s), opacity: Math.min(1, appear), transform: `scale(${appear})`, transformOrigin: '0 100%'}}>
-      <div style={{position: 'absolute', left: 24, top: bh - AV}}>
-        {isAgent ? (
-          <div style={{position: 'relative', width: AV, height: AV}}>
-            <Orb cx={AV / 2} cy={AV / 2} size={AV} color={orbColor} frame={frame} shadow={false} />
-          </div>
-        ) : (
-          <MAvatar size={AV} />
-        )}
+    <div style={{position: 'relative', height: box.block, opacity: p, transform: `translateY(${(1 - p) * slide}px)`}}>
+      <div style={{position: 'absolute', left: 24, top: AVATAR_TOP}}>
+        <Avatar agent={isAgent} frame={frame} orbColor={orbColor} />
       </div>
       <div
+        data-bubble
         style={{
           position: 'absolute',
           left: BUBBLE_X,
           top: 0,
-          width: bw,
-          height: bh,
+          width: box.bw,
+          height: box.bh,
           borderRadius: `26px 26px 26px 8px`,
           border: isAgent ? '1.5px solid transparent' : 'none',
-          background: isAgent
-            ? `linear-gradient(#F7F9F8, #F7F9F8) padding-box, linear-gradient(120deg, #6FD3A4, #CDE7FF) border-box`
-            : '#EEF0F3',
+          background: isAgent ? `linear-gradient(#F7F9F8, #F7F9F8) padding-box, linear-gradient(120deg, #6FD3A4, #CDE7FF) border-box` : '#EEF0F3',
           boxSizing: 'border-box',
         }}
       >
         <div style={{position: 'absolute', left: PAD_X, top: PAD_Y - (isAgent ? 1.5 : 0), fontFamily: FONT_SANS, fontSize: FS, lineHeight: `${LH}px`, color: UI.ink, whiteSpace: 'pre'}}>
-          {finalLines.map((l, li) => (
+          {box.lines.map((l, li) => (
             <div key={li}>
               {l.split(' ').map((w, j, arr) => {
                 const k = wi++;
+                const q = reveal ? tween(frame, m.at + k / m.wps!, m.at + k / m.wps! + 0.15) : 1;
                 return (
-                  <span key={j} style={{opacity: k < st.k ? 1 : 0}}>
+                  <span key={j} style={{display: 'inline-block', opacity: q, transform: `translateY(${4 * (1 - q)}px)`}}>
                     {w}
-                    {typing && k === st.k - 1 ? (
-                      <span style={{display: 'inline-block', width: 0, position: 'relative'}}>
-                        <span style={{position: 'absolute', left: 3, top: 5, width: 2.5, height: 28, borderRadius: 1, background: UI.ink}} />
-                      </span>
-                    ) : null}
-                    {j < arr.length - 1 ? ' ' : ''}
+                    {j < arr.length - 1 ? '\u00A0' : ''}
                   </span>
                 );
               })}
             </div>
           ))}
         </div>
-        {m.chip && chip > 0 ? (
-          <div style={{position: 'absolute', left: PAD_X - 4, top: st.dims.h - 6, opacity: chip}}>
-            <ResultChip label={m.chip} draw={m.at === -Infinity ? 1 : tween(frame, end + 0.1, end + CHIP_IN)} />
+        {m.chip ? (
+          <div style={{position: 'absolute', left: PAD_X - 4, top: box.textH - 6, opacity: after}}>
+            <ResultChip label={m.chip} draw={old ? 1 : tween(frame, end + 0.1, end + 0.5)} />
           </div>
         ) : null}
       </div>
-      {m.source && src > 0 ? (
-        <div style={{position: 'absolute', left: BUBBLE_X, top: bh + 10, opacity: src, transform: `translateY(${(1 - src) * 8}px)`}}>
+      {m.source ? (
+        <div style={{position: 'absolute', left: BUBBLE_X, top: box.bh + 10, opacity: after}}>
           <SourceChip label={m.source} />
         </div>
       ) : null}
@@ -181,14 +177,14 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
         style={{
           position: 'absolute',
           left: BUBBLE_X + 4,
-          top: bh + src * (SOURCE_H + 10) + 6,
+          top: box.bh + (m.source ? SOURCE_H + 10 : 0) + 6,
           height: 28,
           display: 'flex',
           alignItems: 'center',
           gap: 10,
           color: UI.text2,
           fontSize: 22,
-          opacity: st.done ? (m.at === -Infinity ? 1 : tween(frame, end, end + 0.2)) : 0,
+          opacity: old ? 1 : tween(frame, end, end + 0.2),
           whiteSpace: 'nowrap',
         }}
       >
@@ -202,6 +198,24 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
             </span>
           </>
         ) : null}
+      </div>
+    </div>
+  );
+};
+
+/** Agent typing indicator: a small bubble at the orb avatar with three softly pulsing dots. */
+const Indicator: React.FC<{frame: number; at: number; orbColor: number}> = ({frame, at, orbColor}) => {
+  const p = tween(frame, at, at + 0.15);
+  return (
+    <div style={{position: 'relative', height: IND.h + GAP, opacity: p}}>
+      <div style={{position: 'absolute', left: 24, top: IND.h / 2 - AV / 2}}>
+        <Avatar agent frame={frame} orbColor={orbColor} />
+      </div>
+      <div style={{position: 'absolute', left: BUBBLE_X, top: 0, width: IND.w, height: IND.h, borderRadius: '26px 26px 26px 8px', border: '1.5px solid transparent', background: `linear-gradient(#F7F9F8, #F7F9F8) padding-box, linear-gradient(120deg, #6FD3A4, #CDE7FF) border-box`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10}}>
+        {[0, 1, 2].map((i) => {
+          const ph = Math.sin(((frame / 60 - at) * Math.PI * 2) / 0.9 - i * 0.9);
+          return <span key={i} style={{width: 10, height: 10, borderRadius: 5, background: UI.text2, opacity: 0.35 + 0.45 * (0.5 + 0.5 * ph), transform: `translateY(${-2 * (0.5 + 0.5 * ph)}px)`}} />;
+        })}
       </div>
     </div>
   );
@@ -234,10 +248,23 @@ export const ChatThread: React.FC<{
   const s = frame / sec(1);
   const AREA = {top: 112, bottom: height - 160};
   const visibleH = AREA.bottom - AREA.top;
-  const shown = msgs.filter((m) => m.at === -Infinity || s >= m.at);
-  const total = shown.reduce((a, m) => a + blockHeight(m, s), 0);
+  const shown = msgs.filter((m) => s >= visibleFrom(m));
+  const typingAgent = msgs.find((m) => m.indicatorAt !== undefined && s >= m.indicatorAt && s < m.at);
+  const total = shown.reduce((a, m) => a + messageBox(m).block, 0) + (typingAgent ? IND.h + GAP : 0);
   const scroll = Math.max(0, total - visibleH + 8);
-  const hasDraft = !!draft && draft.length > 0;
+  // customer messages are typed in the Message input first (caret only there), then sent
+  const typingCustomer = draft === undefined ? msgs.find((m) => m.inputAt !== undefined && s >= m.inputAt - 0.15 && s < m.at - SLIDE) : undefined;
+  let inputText = draft;
+  let inputFocus = focus;
+  let inputPress = sendPress;
+  if (typingCustomer) {
+    const ws = typingCustomer.text.split(' ');
+    const k = s < typingCustomer.inputAt! ? 0 : Math.min(ws.length, Math.floor((s - typingCustomer.inputAt!) * TYPE_WPS) + 1);
+    inputText = ws.slice(0, k).join(' ');
+    inputFocus = 1;
+    inputPress = kf(frame, [typingCustomer.inputEnd!, typingCustomer.inputEnd! + SEND_PRESS / 2, typingCustomer.inputEnd! + SEND_PRESS], [0, 1, 0]);
+  }
+  const hasDraft = !!inputText && inputText.length > 0;
   return (
     <div data-safe="chat card" style={{position: 'absolute', left: x, top: y, width: CHAT.width, height, fontFamily: FONT_SANS, transformOrigin: '0 0', transform: scale !== 1 ? `scale(${scale})` : undefined}}>
       <div style={{position: 'absolute', inset: 0, borderRadius: CHAT.radius, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: UI.shadow}} />
@@ -272,6 +299,7 @@ export const ChatThread: React.FC<{
           {shown.map((m, i) => (
             <Message key={i} m={m} frame={frame} orbColor={orbColor} />
           ))}
+          {typingAgent ? <Indicator frame={frame} at={typingAgent.indicatorAt!} orbColor={orbColor} /> : null}
         </div>
       </div>
       {/* footer */}
@@ -292,9 +320,9 @@ export const ChatThread: React.FC<{
           top: height - 90,
           height: 64,
           borderRadius: 32,
-          background: focus > 0.5 ? COLORS.white : '#F4F5F7',
-          border: `${focus > 0.5 ? 2 : 1}px solid ${focus > 0.5 ? '#3CC37A' : UI.border}`,
-          boxShadow: focus > 0 ? `0 0 0 ${5 * focus}px rgba(60,195,122,${0.15 * focus})` : undefined,
+          background: inputFocus > 0.5 ? COLORS.white : '#F4F5F7',
+          border: `${inputFocus > 0.5 ? 2 : 1}px solid ${inputFocus > 0.5 ? '#3CC37A' : UI.border}`,
+          boxShadow: inputFocus > 0 ? `0 0 0 ${5 * inputFocus}px rgba(60,195,122,${0.15 * inputFocus})` : undefined,
           display: 'flex',
           alignItems: 'center',
           paddingLeft: 26,
@@ -306,14 +334,14 @@ export const ChatThread: React.FC<{
       >
         {hasDraft ? (
           <>
-            {draft}
+            {inputText}
             <span style={{display: 'inline-block', width: 0}}>
               <Caret frame={frame} height={30} typingUntil={frame + 2} color={UI.ink} />
             </span>
           </>
         ) : (
           <>
-            {focus > 0.5 ? (
+            {inputFocus > 0.5 ? (
               <span style={{display: 'inline-block', width: 0, marginLeft: -4}}>
                 <Caret frame={frame} height={30} typingUntil={-1} color={UI.ink} />
               </span>
@@ -333,7 +361,7 @@ export const ChatThread: React.FC<{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            transform: `scale(${1 - 0.08 * sendPress})`,
+            transform: `scale(${1 - 0.1 * inputPress})`,
           }}
         >
           <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke={hasDraft ? COLORS.white : '#9CA3AF'} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
@@ -350,13 +378,12 @@ export const ChatThread: React.FC<{
  * bubble and the source chip under it. Messages are bottom aligned, so the
  * last block always ends at the bottom of the message area.
  */
-export const lastBlockGeom = (msgs: Msg[], height = CHAT.height, settled = true) => {
+export const lastBlockGeom = (msgs: Msg[], height = CHAT.height) => {
   const m = msgs[msgs.length - 1];
   const AREA = {top: 112, bottom: height - 160};
-  const bh = settled ? blockHeight({...m, at: -Infinity}, 1e6) : bubbleDims(m.text).h + META + GAP;
-  const top = AREA.bottom - 8 - bh;
-  const d = bubbleDims(m.text);
-  return {bubble: {x: BUBBLE_X, y: top, w: d.w, h: d.h}, source: {x: BUBBLE_X, y: top + d.h + 10, h: SOURCE_H}};
+  const box = messageBox(m);
+  const top = AREA.bottom - 8 - box.block;
+  return {bubble: {x: BUBBLE_X, y: top, w: box.bw, h: box.bh}, source: {x: BUBBLE_X, y: top + box.bh + 10, h: SOURCE_H}};
 };
 
 /** World position (relative to the card) of the send arrow and the message field. */

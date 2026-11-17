@@ -5,13 +5,13 @@ import {COLORS, FONT_SANS, alpha, kf, kfIO, popIn, press, tween} from '../theme'
 import {BUILD7, CONFIG_VIEW, CONTENT, DANIEL_ROW, LOOP_RING, SHELL} from '../v7';
 import {toScreen} from '../components/Stage';
 import {CameraRig} from '../components/CameraRig';
-import {Cursor} from '../components/Cursor';
+import {PlannedCursor} from '../components/Cursor';
 import {Orb} from '../components/Orb';
 import {GWaveform} from '../components/Glyphs';
 import {Caret} from '../components/TypingText';
 import {AppShell, navPoint} from '../ui/AppShell';
 import {UI, UI_FONT} from '../ui/tokens';
-import {CALL} from '../pacing';
+import {CALL, TYPE_WPS} from '../pacing';
 import {LineToCircle} from '../components/Morph';
 import {beatUnderline} from '../ui/TextBeat';
 import {envelope, SceneLayerProps} from './kit';
@@ -24,21 +24,22 @@ const PANEL = {x: LIST.x + LIST.width + 24, y: C0.y + 28, width: C0.x + CONTENT.
 const AV = {x: PANEL.x + 56, y: PANEL.y + 48, size: 56}; // header avatar centre
 const FIELD = {x: PANEL.x + 24, y: PANEL.y + PANEL.height - 24 - 64, width: PANEL.width - 48, height: 64};
 const BTN = {right: PANEL.x + PANEL.width - 24, y: PANEL.y + 24, h: 52};
-const REPLY = "I'm reviewing the charge now, Daniel.";
+const REPLY = CALL.team.reply;
 
 // ---- timeline ----
-const NAV = 0.45;
+const NAV = 0.6;
 const TAKE = 2.0;
-const TYPE_AT = 2.6;
-const SEND = 3.5;
-const BACK = 4.4;
+const TYPE_AT = 2.55;
+// typed in the Message input at TYPE_WPS, then a send press (0.15 s) and the row slides up
+const SEND = TYPE_AT + REPLY.split(' ').length / TYPE_WPS + 0.05;
+const BACK = 4.5;
 const OUT: [number, number] = [5.2, 6.0];
 
 type Conv = {name: string; letter: string; status: 'Resolved' | 'Needs a person'; channel: 'whatsapp' | 'voice'};
 const CONVS: Conv[] = [
   {name: 'Maya', letter: 'M', status: 'Resolved', channel: 'whatsapp'},
-  {name: 'Daniel', letter: 'D', status: 'Needs a person', channel: 'voice'},
-  {name: 'Priya', letter: 'P', status: 'Resolved', channel: 'whatsapp'},
+  {name: 'Priya', letter: 'P', status: 'Needs a person', channel: 'whatsapp'},
+  {name: 'Arjun', letter: 'A', status: 'Resolved', channel: 'whatsapp'},
 ];
 
 const Ink: React.FC<{size: number; letter: string}> = ({size, letter}) => (
@@ -52,12 +53,24 @@ const StatusChip: React.FC<{status: string}> = ({status}) => {
   );
 };
 
-const Row: React.FC<{who: 'D' | 'agent' | 'N'; text: string; frame: number; opacity?: number}> = ({who, text, frame, opacity = 1}) => (
-  <div style={{display: 'flex', gap: 16, alignItems: 'flex-start', padding: '12px 0', opacity}}>
+/** A teammate: an ink circle with a person glyph (no name or initials). */
+const Person: React.FC<{size: number}> = ({size}) => (
+  <div style={{width: size, height: size, borderRadius: size / 2, background: UI.ink, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+    <svg width={size * 0.56} height={size * 0.56} viewBox="0 0 24 24" fill="none" stroke={COLORS.white} strokeWidth={2} strokeLinecap="round">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4.5 21c0-4.2 3.4-7 7.5-7s7.5 2.8 7.5 7" />
+    </svg>
+  </div>
+);
+
+const Row: React.FC<{who: 'P' | 'agent' | 'team'; text: string; frame: number; opacity?: number; dy?: number}> = ({who, text, frame, opacity = 1, dy = 0}) => (
+  <div style={{display: 'flex', gap: 16, alignItems: 'flex-start', padding: '12px 0', opacity, transform: `translateY(${dy}px)`}}>
     {who === 'agent' ? (
       <div style={{position: 'relative', width: 40, height: 40, flexShrink: 0}}>
         <Orb cx={20} cy={20} size={40} frame={frame} shadow={false} />
       </div>
+    ) : who === 'team' ? (
+      <Person size={40} />
     ) : (
       <Ink size={40} letter={who} />
     )}
@@ -66,8 +79,8 @@ const Row: React.FC<{who: 'D' | 'agent' | 'N'; text: string; frame: number; opac
 );
 
 /**
- * SCENE 12 (7 s) The human in the loop. Conversations: Daniel needs a person;
- * Nadia takes over, replies, and hands back to the agent. A dotted loop ring
+ * SCENE 12 (7 s) The human in the loop. Conversations: Priya needs a person;
+ * a teammate takes over, replies, and hands back to the agent. A dotted loop ring
  * traces agent, person, agent, then stays as a circle with the orb inside.
  */
 export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
@@ -84,12 +97,12 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   // avatar swap orb <-> N (cross rotate, 0.5 s)
   const toN = kfIO(f, [TAKE + 0.05, TAKE + 0.55], [0, 1]) * (1 - kfIO(f, [BACK + 0.05, BACK + 0.55], [0, 1]));
   const withN = s >= TAKE + 0.3 && s < BACK + 0.3;
-  const btnW = 170 + (280 - 170) * kfIO(f, [TAKE + 0.1, TAKE + 0.4], [0, 1]);
+  const btnW = 170 + (250 - 170) * kfIO(f, [TAKE + 0.1, TAKE + 0.4], [0, 1]);
   const handedBack = s >= BACK + 0.2;
   const fieldOn = tween(f, TAKE + 0.4, TAKE + 0.55) * (1 - tween(f, BACK, BACK + 0.2));
   const words = REPLY.split(' ');
-  const typed = s < SEND ? Math.max(0, Math.min(words.length, Math.floor((s - TYPE_AT) / 0.1) + 1)) : 0;
-  const sent = popIn(f, SEND + 0.05, 0.3, 1.03);
+  const typed = s < TYPE_AT ? 0 : s < SEND + 0.15 ? Math.min(words.length, Math.floor((s - TYPE_AT) * TYPE_WPS) + 1) : 0;
+  const sent = tween(f, SEND + 0.15, SEND + 0.45); // slides up from the input
   // loop ring around the header avatar, a marker travels it once: agent, person, agent
   // the dotted ring docked (dim) around the header avatar since TextBeat 7; it brightens at Take over
   const ringDraw = s >= 0.7 ? 0.35 + 0.65 * tween(f, TAKE - 0.25, TAKE + 0.1) : 0;
@@ -127,7 +140,7 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
               </CameraRig>
             </div>
 
-            {/* conversation list (Daniel's row arrives from the call card) */}
+            {/* conversation list */}
             {CONVS.map((c, i) => {
               const p = popIn(f, 0.15 + i * 0.08, 0.3, 1.03);
               if (p <= 0) return null;
@@ -154,18 +167,18 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             {/* the selected conversation */}
             <div data-safe="conversation panel" style={{position: 'absolute', left: PANEL.x, top: PANEL.y, width: PANEL.width, height: PANEL.height, opacity: panelIn, filter: panelIn < 0.99 ? `blur(${10 * (1 - panelIn)}px)` : undefined, transform: `translateX(${(1 - panelIn) * 30}px)`, fontFamily: UI_FONT}}>
               <div style={{position: 'absolute', inset: 0, borderRadius: 24, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: `0 30px 80px rgba(13,18,36,0.10), 0 0 0 2px ${alpha('#23A06B', 0.18)}`}} />
-              <div style={{position: 'absolute', left: 104, top: 22, fontSize: 26, fontWeight: 600, color: UI.ink}}>Daniel</div>
-              <div style={{position: 'absolute', left: 104, top: 56, fontSize: 22, color: UI.text2, whiteSpace: 'nowrap'}}>Voice call</div>
-              <div style={{position: 'absolute', left: 260, top: 30}}>
-                <span style={{display: 'inline-flex', alignItems: 'center', height: 40, padding: '0 16px', borderRadius: 20, background: withN ? '#EEF0F3' : UI.chipMint, color: withN ? UI.ink : UI.chipText, fontSize: 22, fontWeight: 600, whiteSpace: 'nowrap'}}>{withN ? 'With Nadia' : 'With agent'}</span>
+              <div style={{position: 'absolute', left: 104, top: 22, fontSize: 26, fontWeight: 600, color: UI.ink}}>Priya</div>
+              <div style={{position: 'absolute', left: 104, top: 56, fontSize: 22, color: UI.text2, whiteSpace: 'nowrap'}}>WhatsApp</div>
+              <div style={{position: 'absolute', left: 205, top: 30}}>
+                <span style={{display: 'inline-flex', alignItems: 'center', height: 40, padding: '0 16px', borderRadius: 20, background: withN ? '#EEF0F3' : UI.chipMint, color: withN ? UI.ink : UI.chipText, fontSize: 22, fontWeight: 600, whiteSpace: 'nowrap'}}>{withN ? 'With your team' : 'With agent'}</span>
               </div>
               <div style={{position: 'absolute', left: 0, right: 0, top: 96, height: 1, background: UI.border}} />
               <div style={{position: 'absolute', left: 28, right: 28, top: 116}}>
-                <Row who="D" text={CALL.lines.customer} frame={f} />
-                <Row who="agent" text={CALL.lines.agent} frame={f} />
-                {sent > 0 ? <Row who="N" text={REPLY} frame={f} opacity={Math.min(1, sent)} /> : null}
+                <Row who="P" text={CALL.team.customer} frame={f} />
+                <Row who="agent" text={CALL.team.agent} frame={f} />
+                {sent > 0 ? <Row who="team" text={REPLY} frame={f} opacity={sent} dy={(1 - sent) * 70} /> : null}
               </div>
-              {/* message field (active once Nadia takes over) */}
+              {/* message field (active once the team takes over) */}
               <div style={{position: 'absolute', left: FIELD.x - PANEL.x, top: FIELD.y - PANEL.y, width: FIELD.width, height: FIELD.height, borderRadius: 32, background: fieldOn > 0.5 ? COLORS.white : '#F4F5F7', border: `${fieldOn > 0.5 ? 2 : 1}px solid ${fieldOn > 0.5 ? '#3CC37A' : UI.border}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', paddingLeft: 26, fontFamily: FONT_SANS, fontSize: typed > 0 ? 26 : 22, color: typed > 0 ? UI.ink : '#9CA3AF', whiteSpace: 'pre'}}>
                 {typed > 0 ? (
                   <>
@@ -202,7 +215,7 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
                   <Orb cx={orbS / 2} cy={orbS / 2} size={orbS} frame={f} shadow={glide > 0.5} />
                 </div>
                 <div style={{position: 'absolute', inset: 0, backfaceVisibility: 'hidden', transform: 'rotateY(180deg)'}}>
-                  <Ink size={orbS} letter="N" />
+                  <Person size={orbS} />
                 </div>
               </div>
             </div>
@@ -217,25 +230,15 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             return <LineToCircle line={lineAtDock} cx={c.x} cy={c.y} r={44} t={ulRing} stroke={`color-mix(in srgb, rgba(13,18,36,0.75) ${Math.round(100 * ulRing)}%, #8FD03C)`} width={6 - 2.5 * ulRing} dash={ulRing > 0.3 ? '0.1 9' : undefined} opacity={1 - 0.65 * dock} />;
           })() : null}
           {owns ? (
-            <Cursor
+            <PlannedCursor
               frame={f}
-              keys={[
-                {t: 0.0, x: 1500, y: 1000},
-                {t: NAV - 0.05, ...nav},
-                {t: NAV + 0.15, ...nav},
-                {t: TAKE - 0.05, ...takeBtn},
-                {t: TAKE + 0.15, ...takeBtn},
-                {t: TYPE_AT + 0.3, x: sendPt.x - 120, y: sendPt.y + 70},
-                {t: SEND - 0.05, ...sendPt},
-                {t: SEND + 0.15, ...sendPt},
-                {t: BACK - 0.05, x: BTN.right - 140, y: BTN.y + BTN.h / 2},
-                {t: BACK + 0.15, x: BTN.right - 140, y: BTN.y + BTN.h / 2},
-                {t: BACK + 0.7, x: 1700, y: 1000},
+              targets={[
+                {t: NAV, ...nav, click: true, hand: true},
+                {t: TAKE, ...takeBtn, click: true, hand: true},
+                {t: SEND, ...sendPt, click: true, hand: true},
+                {t: BACK, x: BTN.right - 140, y: BTN.y + BTN.h / 2, click: true, hand: true},
               ]}
-              clicks={[NAV, TAKE, SEND, BACK]}
-              hand={[[NAV - 0.2, NAV + 0.15], [TAKE - 0.25, TAKE + 0.15], [SEND - 0.25, SEND + 0.15], [BACK - 0.25, BACK + 0.15]]}
               rippleColor={COLORS.inkNavy}
-              opacity={tween(f, 0.0, 0.2) * (1 - tween(f, BACK + 0.4, BACK + 0.7))}
             />
           ) : null}
         </>

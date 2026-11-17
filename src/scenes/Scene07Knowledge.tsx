@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {COLORS, alpha, kf, kfIO, popIn, tween} from '../theme';
 import {BACKDROPS} from '../handoff';
-import {BUILD7, CHAT, CHAT_VIEW, CONFIG_VIEW, CONTENT, SHELL} from '../v7';
+import {BUILD7, CHAT_VIEW, CONFIG_VIEW, CONTENT, SHELL} from '../v7';
 import {beatUnderline} from '../ui/TextBeat';
 import {camAt, CamKeys, toScreen} from '../components/Stage';
 import {CameraRig, dissolve, isPanning} from '../components/CameraRig';
@@ -13,8 +13,7 @@ import {Cubic, cubicPath, cubicPoint} from '../components/StrokeLine';
 import {Logo} from '../components/logos';
 import {Caret, typedCount} from '../components/TypingText';
 import {AppShell, navPoint} from '../ui/AppShell';
-import {ChatThread, CONVO, lastBlockGeom, msgEnd, past} from '../ui/ChatThread';
-import {FlyChip} from '../ui/FlyChip';
+import {ChatThread, CONVO, past} from '../ui/ChatThread';
 import {Orb} from '../components/Orb';
 import {SourceIcon, SourceRow} from '../ui/Panels';
 import {UI, UI_FONT} from '../ui/tokens';
@@ -47,14 +46,14 @@ const T = {
   drop: 1.9,
   row1: 2.05,
   addWeb: 2.5,
-  field: 2.9,
-  type: 3.0,
-  add: 3.6,
-  row2: 3.75,
-  connect: 4.05,
-  hover: 4.4,
-  pick: 4.6,
-  row3: 4.95,
+  field: 3.0,
+  type: 3.1,
+  add: 3.75,
+  row2: 3.9,
+  connect: 4.3,
+  hover: 4.85,
+  pick: 5.05,
+  row3: 5.35,
 };
 const READY = [T.row1 + 0.65, T.row2 + 0.65, T.row3 + 0.65];
 const ROW_IN = [T.row1, T.row2, T.row3];
@@ -164,43 +163,31 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
 
   // ---- cursor (screen) ----
   const keys: CursorKey[] = [
-    {t: 0.0, ...W(navPoint('Data Sources'))},
-    {t: 0.5, x: 1450, y: 900},
-    {t: 1.15, ...W(grabPt)},
+    {t: 0.65, x: W(grabPt).x + 54, y: W(grabPt).y + 46},
+    {t: T.grab, ...W(grabPt)},
     {t: T.grab + 0.05, ...W(grabPt)},
   ];
   const after: CursorKey[] = [
     {t: T.drop, ...W(DROP_C)},
-    {t: T.drop + 0.25, ...W({x: DROP_C.x - 20, y: DROP_C.y + 30})},
-    {t: T.addWeb - 0.05, ...W(c(ADD_WEB))},
-    {t: T.addWeb + 0.1, ...W(c(ADD_WEB))},
-    {t: T.field - 0.05, ...W({x: FIELD.x + 260, y: c(FIELD).y})},
-    {t: T.field + 0.1, ...W({x: FIELD.x + 260, y: c(FIELD).y})},
-    {t: T.type + 0.2, ...W({x: FIELD.x + 300, y: FIELD.y + FIELD.height + 60})},
-    {t: T.add - 0.05, ...W(c(ADD_BTN))},
-    {t: T.add + 0.15, ...W(c(ADD_BTN))},
-    {t: T.connect - 0.05, ...W(c(CONNECT))},
-    {t: T.connect + 0.1, ...W(c(CONNECT))},
-    {t: T.hover, ...W({x: POP.x + 250, y: POP.y + 10 + 36})},
-    {t: T.pick + 0.15, ...W({x: POP.x + 250, y: POP.y + 10 + 36})},
-    {t: 5.2, x: 1620, y: 1000},
+    {t: T.addWeb - 0.55, ...W(DROP_C)},
+    {t: T.addWeb, ...W(c(ADD_WEB))},
+    {t: T.addWeb + 0.05, ...W(c(ADD_WEB))},
+    // the URL field: park the tip at its left edge, then drift out of the line while it types
+    {t: T.field, ...W({x: FIELD.x + 34, y: c(FIELD).y})},
+    {t: T.field + 0.05, ...W({x: FIELD.x + 34, y: c(FIELD).y})},
+    {t: T.add - 0.6, ...W({x: FIELD.x + 54, y: c(FIELD).y + 20})},
+    {t: T.add - 0.55, ...W({x: FIELD.x + 54, y: c(FIELD).y + 20})},
+    {t: T.add, ...W(c(ADD_BTN))},
+    {t: T.add + 0.05, ...W(c(ADD_BTN))},
+    {t: T.connect, ...W(c(CONNECT))},
+    {t: T.connect + 0.05, ...W(c(CONNECT))},
+    {t: T.hover, ...W({x: POP.x + 250, y: POP.y + 10 + 32})},
+    {t: T.pick + 0.15, ...W({x: POP.x + 250, y: POP.y + 10 + 32})},
   ];
-  // shared element: the "Card policy.pdf" chip lifts from row 1 and lands as the source chip
-  const msgs7 = [...past(CONVO.s5, CONVO.s6), ...CONVO.s7];
-  const ans = CONVO.s7[1];
-  const srcLand = lastBlockGeom(msgs7, CHAT.height, true).source;
-  const srcScreen = toScreen(CHAT_VIEW, {x: CHAT.x + srcLand.x, y: CHAT.y + srcLand.y});
-  const LIFT = 5.8;
-  const chip0 = W({x: DROP.x + 96, y: rowTop(0) + 21});
-  const LAND = msgEnd(ans); // the source chip draws in as the answer finishes typing
-  const chipKeys = [
-    {t: LIFT, x: chip0.x, y: chip0.y, w: 250, o: 0},
-    {t: LIFT + 0.2, x: chip0.x, y: chip0.y - 30, w: 250},
-    {t: 6.6, x: 1320, y: 640, w: 250, s: 0.95},
-    {t: LAND - 0.15, x: 1310, y: 625, w: 250, s: 0.95},
-    {t: LAND, x: srcScreen.x, y: srcScreen.y, w: 230},
-    {t: LAND + 0.15, x: srcScreen.x, y: srcScreen.y, w: 230, o: 0},
-  ];
+  // the source list is off screen when the answer arrives, so (per the carrier rule) the
+  // "Card policy.pdf" row pulses just before the pan and the agent then answers normally
+  const PULSE = 5.5;
+  const pulse = kf(f, [PULSE, PULSE + 0.15, PULSE + 0.5], [0, 1, 0]);
   // Knowledge -> Simulator: the three rows collapse along dotted arcs into the orb, which flies to "Simulator"
   const ORB_W = {x: DROP_C.x, y: DROP.y + 40};
   const orbPop = popIn(f, 99, 0.3, 1.04);
@@ -304,7 +291,7 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
                 const u = 1 - cl;
                 const pt = {x: u * u * r0.x + 2 * u * cl * cc.x + cl * cl * ORB_W.x, y: u * u * r0.y + 2 * u * cl * cc.y + cl * cl * ORB_W.y};
                 return (
-                  <div key={k} style={{position: 'absolute', left: DROP.x + (pt.x - r0.x), top: rowTop(i) + rowShift + (pt.y - r0.y), opacity: Math.min(1, p) * (1 - 0.55 * old) * (1 - cl), transform: `scale(${(0.96 + 0.04 * p) * (1 - 0.85 * cl)})`, transformOrigin: 'center center', filter: cl > 0.01 ? `blur(${4 * cl}px)` : undefined}}>
+                  <div key={k} style={{position: 'absolute', borderRadius: 22, boxShadow: i === 0 && pulse > 0 ? `0 0 0 ${3 * pulse}px ${alpha('#3CC37A', 0.9 * pulse)}, 0 0 ${30 * pulse}px ${alpha('#3CC37A', 0.5 * pulse)}` : undefined, left: DROP.x + (pt.x - r0.x), top: rowTop(i) + rowShift + (pt.y - r0.y), opacity: Math.min(1, p) * (1 - 0.55 * old) * (1 - cl), transform: `scale(${(0.96 + 0.04 * p) * (1 - 0.85 * cl)})`, transformOrigin: 'center center', filter: cl > 0.01 ? `blur(${4 * cl}px)` : undefined}}>
                     <SourceRow kind={k} name={['Card policy.pdf', 'Help centre', 'Support wiki'][i]} frame={f} readyAt={READY[i]} width={DROP.width} />
                   </div>
                 );
@@ -398,10 +385,6 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
               </svg>
             );
           })() : null}
-          <FlyChip frame={f} keys={chipKeys} variant="pill" fontSize={22}>
-            <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="#E5484D" strokeWidth={2}><path d="M6 2.8h8l4.5 4.5V20a1.2 1.2 0 0 1-1.2 1.2H6A1.2 1.2 0 0 1 4.8 20V4A1.2 1.2 0 0 1 6 2.8z" /></svg>
-            Card policy.pdf
-          </FlyChip>
           {env.ownsShared ? (
             <Cursor
               frame={f}
@@ -410,7 +393,7 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
               hand={[[0.95, T.grab + 0.02], [T.addWeb - 0.25, T.addWeb + 0.2], [T.add - 0.25, T.add + 0.2], [T.connect - 0.25, T.connect + 0.2], [T.hover - 0.1, T.pick + 0.2]]}
               grab={[[T.grab, T.drop + 0.05]]}
               rippleColor={COLORS.inkNavy}
-              opacity={tween(f, 0.3, 0.55) * (1 - tween(f, 5.45, 5.7))}
+              opacity={tween(f, 0.6, 0.8) * (1 - tween(f, T.pick + 0.3, T.pick + 0.5))}
             />
           ) : null}
         </>

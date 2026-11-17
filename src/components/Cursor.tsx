@@ -1,5 +1,5 @@
 import React from 'react';
-import {COLORS, alpha, ease, kf} from '../theme';
+import {COLORS, alpha, kf, kfIO} from '../theme';
 import {sec} from '../timeline';
 
 export type CursorKey = {t: number; x: number; y: number};
@@ -12,7 +12,7 @@ export const cursorAt = (frame: number, keys: CursorKey[], bend = 0.18) => {
     const a = keys[i];
     const b = keys[i + 1];
     if (s <= b.t) {
-      const t = ease(frame, [sec(a.t), sec(b.t)], [0, 1]);
+      const t = kfIO(frame, [sec(a.t), sec(b.t)], [0, 1]); // ease in and out
       const dx = b.x - a.x;
       const dy = b.y - a.y;
       const c = {x: (a.x + b.x) / 2 - dy * bend, y: (a.y + b.y) / 2 + dx * bend};
@@ -29,7 +29,7 @@ const Arrow: React.FC = () => (
     d="M3 2 L3 25.5 L9.2 19.8 L13.2 28.8 L17.3 27.1 L13.3 18.2 L21.8 18.2 Z"
     fill={COLORS.ink}
     stroke={COLORS.white}
-    strokeWidth={1.8}
+    strokeWidth={1.2}
     strokeLinejoin="round"
   />
 );
@@ -80,26 +80,27 @@ export const Cursor: React.FC<{
   return (
     <>
       {clicks.map((c) =>
-        s >= c && s < c + 0.6 ? (
+        s >= c && s < c + 0.4 ? (
           <div
             key={c}
             style={{
               position: 'absolute',
-              left: p.x - 75,
-              top: p.y - 75,
-              width: 150,
-              height: 150,
-              borderRadius: 75,
-              background: `radial-gradient(circle, ${alpha(rippleColor, 0)} 40%, ${alpha(rippleColor, 0.55)} 62%, ${alpha(rippleColor, 0)} 72%)`,
-              opacity: (1 - kf(frame, [c, c + 0.55], [0, 1])) * opacity,
-              transform: `scale(${kf(frame, [c, c + 0.55], [0.2, 1.6])})`,
+              left: p.x - 50,
+              top: p.y - 50,
+              width: 100,
+              height: 100,
+              borderRadius: 50,
+              border: `3px solid ${alpha(rippleColor, 0.45)}`,
+              boxSizing: 'border-box',
+              opacity: (1 - kf(frame, [c, c + 0.4], [0, 1])) * opacity,
+              transform: `scale(${kf(frame, [c, c + 0.4], [0.15, 1])})`,
             }}
           />
         ) : null,
       )}
       <svg
-        width={90}
-        height={90}
+        width={75}
+        height={75}
         viewBox="0 0 30 30"
         style={{
           position: 'absolute',
@@ -109,21 +110,67 @@ export const Cursor: React.FC<{
           opacity,
           transformOrigin: '0 0',
           transform: `translate(${p.x}px, ${p.y}px) scale(${press})`,
-          filter: 'drop-shadow(0 5px 8px rgba(13,18,36,0.35))',
+          filter: 'drop-shadow(0 3px 6px rgba(13,18,36,0.2))',
         }}
       >
         <g transform="translate(-3 -2)" opacity={1 - h - g}>
           <Arrow />
         </g>
         <g transform="translate(-12 -1.6)" opacity={h}>
-          <HandShapes fill="none" stroke={COLORS.white} sw={3.2} />
+          <HandShapes fill="none" stroke={COLORS.white} sw={2.2} />
           <HandShapes fill={COLORS.ink} />
         </g>
         <g transform="translate(-14 -10)" opacity={g}>
-          <FistShapes fill="none" stroke={COLORS.white} sw={3.2} />
+          <FistShapes fill="none" stroke={COLORS.white} sw={2.2} />
           <FistShapes fill={COLORS.ink} />
         </g>
       </svg>
     </>
   );
+};
+
+// ---------------------------------------------------------------------------
+// Cursor planner: give it the targets (where the tip / fingertip must be, and
+// when); it moves from target to target on curved eased paths of 0.5 to 0.8 s,
+// fades out during any wait longer than 0.8 s and fades back in near the next
+// target 0.3 s before it is needed.
+// ---------------------------------------------------------------------------
+export type CursorTarget = {t: number; x: number; y: number; click?: boolean; hand?: boolean};
+const travel = (a: {x: number; y: number}, b: {x: number; y: number}) => Math.min(0.8, Math.max(0.5, 0.5 + Math.hypot(b.x - a.x, b.y - a.y) / 2400));
+export const planCursor = (targets: CursorTarget[]) => {
+  const keys: CursorKey[] = [];
+  const vis: [number, number][] = []; // visible spans
+  let spanStart = 0;
+  targets.forEach((tg, i) => {
+    const prev = targets[i - 1];
+    const near = {x: tg.x + 54, y: tg.y + 46};
+    const d = prev ? travel(prev, tg) : 0.5;
+    // a wait of 0.8 s or more with no action: fade out, come back near the next target
+    if (!prev || tg.t - prev.t - d >= 0.8 - 1e-6) {
+      if (prev) {
+        keys.push({t: prev.t + 0.35, x: prev.x, y: prev.y});
+        vis.push([spanStart, prev.t + 0.35]);
+      }
+      // reappear near the next target 0.3 s before it is needed, then move in
+      keys.push({t: tg.t - 0.5, x: near.x, y: near.y});
+      spanStart = tg.t - 0.5;
+    } else {
+      // move from the previous target (never before it was reached)
+      keys.push({t: Math.max(prev.t + 0.02, tg.t - d), x: prev.x, y: prev.y});
+    }
+    keys.push({t: tg.t, x: tg.x, y: tg.y});
+  });
+  const last = targets[targets.length - 1];
+  keys.push({t: last.t + 0.35, x: last.x, y: last.y});
+  vis.push([spanStart, last.t + 0.35]);
+  const clicks = targets.filter((t) => t.click).map((t) => t.t);
+  const hand = targets.filter((t) => t.hand).map((t) => [t.t - 0.25, t.t + 0.15] as [number, number]);
+  const opacity = (frame: number) => vis.reduce((m, [a, b]) => Math.max(m, kf(frame, [a, a + 0.2, b, b + 0.2], [0, 1, 1, 0])), 0);
+  return {keys, clicks, hand, opacity};
+};
+
+/** A cursor driven by targets (see planCursor). */
+export const PlannedCursor: React.FC<{frame: number; targets: CursorTarget[]; opacity?: number; rippleColor?: string; grab?: [number, number][]}> = ({frame, targets, opacity = 1, rippleColor, grab}) => {
+  const plan = planCursor(targets);
+  return <Cursor frame={frame} keys={plan.keys} clicks={plan.clicks} hand={plan.hand} grab={grab} rippleColor={rippleColor} opacity={opacity * plan.opacity(frame)} />;
 };

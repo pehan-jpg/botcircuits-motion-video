@@ -2,17 +2,16 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {COLORS, alpha, kf, kfIO, press, tween} from '../theme';
 import {sec} from '../timeline';
-import {BUILD7, CHAT, CHAT_VIEW, CONFIG_VIEW, CONTENT, SHELL} from '../v7';
+import {BUILD7, CHAT_VIEW, CONFIG_VIEW, CONTENT, SHELL} from '../v7';
 import {camAt, CamKeys, toScreen} from '../components/Stage';
 import {CameraRig, dissolve, isPanning} from '../components/CameraRig';
 import {LilacSky} from '../components/ProceduralSky';
-import {Cursor} from '../components/Cursor';
+import {PlannedCursor} from '../components/Cursor';
 import {AppShell, navPoint} from '../ui/AppShell';
-import {ChatThread, CONVO, lastBlockGeom, past} from '../ui/ChatThread';
-import {FlyChip} from '../ui/FlyChip';
+import {ChatThread, CONVO, past} from '../ui/ChatThread';
 import {RectMorph} from '../components/Morph';
 import {beatUnderline} from '../ui/TextBeat';
-import {StepsCard, STEPS_CARD, Section, rowTextAnchor, rowTextEnd} from '../ui/Procedure';
+import {StepsCard, STEPS_CARD, Section, rowHeightAt, rowTextAnchor, rowTextEnd} from '../ui/Procedure';
 import {UI, UI_FONT} from '../ui/tokens';
 import {envelope, SceneLayerProps} from './kit';
 
@@ -38,7 +37,7 @@ export const SECTIONS: Section[] = [
   },
 ];
 const ALL_ROWS = SECTIONS.flatMap((s) => s.rows);
-const SAVE_AT = 4.15;
+const SAVE_AT = 3.9;
 export const SAVE = {x: SHELL.x + SHELL.width - 28 - 60, y: SHELL.y + SHELL.header / 2, w: 120, h: 52};
 export const TOGGLE = {x: SAVE.x - 60 - 28 - 32, y: SAVE.y};
 
@@ -98,22 +97,13 @@ export const Scene06Procedures: React.FC<SceneLayerProps> = ({layer = 'all'}) =>
   const P = (p: {x: number; y: number}, t: number) => toScreen(camAt(sec(t), CAM), p);
   const nav = P(navPoint('Procedures'), 0.7);
   const save = P({x: SAVE.x, y: SAVE.y}, SAVE_AT);
-  // shared element: the SEND text of step 1.2 lifts out and lands as the verified bubble
-  const LIFT = 4.3;
-  const anchor = rowTextAnchor(SECTIONS, '1.2', sec(LIFT));
-  const a0 = P({x: anchor.x - 20, y: anchor.y - 16}, LIFT);
+  // the source card is off screen when the verified reply arrives, so (per the carrier rule)
+  // row 1.2 pulses just before the pan and the agent then replies normally
   const msgs6 = [...past(CONVO.s5), ...CONVO.s6];
-  const g = lastBlockGeom(msgs6, CHAT.height, false);
-  const land = toScreen(CHAT_VIEW, {x: CHAT.x + g.bubble.x, y: CHAT.y + g.bubble.y});
-  const LAND = CONVO.s6[2].at;
-  const flyKeys = [
-    {t: LIFT, x: a0.x, y: a0.y, w: anchor.w + 40, o: 0},
-    {t: LIFT + 0.2, x: a0.x, y: a0.y - 30, w: anchor.w + 40},
-    {t: 5.1, x: 1300, y: 470, w: g.bubble.w, s: 0.85, o: 0.6},
-    {t: LAND - 0.25, x: 1290, y: 455, w: g.bubble.w, s: 0.85, o: 0.6},
-    {t: LAND, x: land.x, y: land.y, w: g.bubble.w},
-    {t: LAND + 0.3, x: land.x, y: land.y, w: g.bubble.w, o: 0},
-  ];
+  const PULSE = 4.15;
+  const pulseRow = SECTIONS[0].rows[1];
+  const anchor = rowTextAnchor(SECTIONS, '1.2', sec(PULSE));
+  const pulse = kf(f, [PULSE, PULSE + 0.15, PULSE + 0.5], [0, 1, 0]);
 
   return (
     <AbsoluteFill>
@@ -143,29 +133,20 @@ export const Scene06Procedures: React.FC<SceneLayerProps> = ({layer = 'all'}) =>
             <div style={{position: 'absolute', left: 0, top: 0, ...dissolve(1, env.outP), opacity: (0.6 + 0.4 * pageIn) * (1 - env.outP)}}>
               <div style={{opacity: shellIn}}><ProcedureHeader frame={f} saveAt={SAVE_AT} /></div>
               <StepsCard frame={f} sections={SECTIONS} active={active} spotlight={spotlight} skeleton={1 - pageIn} unroll={unroll} />
+              {pulse > 0 ? <div style={{position: 'absolute', left: STEPS_CARD.x + 14, top: anchor.y - 28 - 58 - 6, width: STEPS_CARD.width - 28, height: rowHeightAt(pulseRow, sec(PULSE)) + 12, borderRadius: 18, boxShadow: `0 0 0 ${3 * pulse}px ${alpha(UI.glow.procedure, 0.9 * pulse)}, 0 0 ${30 * pulse}px ${alpha(UI.glow.procedure, 0.6 * pulse)}`}} /> : null}
             </div>
           </CameraRig>
           {s < 0.65 ? (
             <RectMorph from={beatUnderline('b2')} to={{...P({x: STEPS_CARD.x, y: STEPS_CARD.y}, 0), w: STEPS_CARD.width, h: 6}} t={ulMorph} r0={3} r1={3} fill0="#8FD03C" fill1="#8FD03C" opacity={1 - tween(f, 0.45, 0.65)} />
           ) : null}
-          <FlyChip frame={f} keys={flyKeys}>{VERIFIED_TEXT}</FlyChip>
           {env.ownsShared ? (
-            <Cursor
+            <PlannedCursor
               frame={f}
-              keys={[
-                {t: 0.3, x: 1500, y: 1000},
-                {t: 0.65, x: nav.x, y: nav.y},
-                {t: 0.85, x: nav.x, y: nav.y},
-                {t: 1.4, x: 1640, y: 1000},
-                {t: 3.6, x: 1660, y: 990},
-                {t: SAVE_AT - 0.1, x: save.x, y: save.y + 6},
-                {t: SAVE_AT + 0.2, x: save.x, y: save.y + 6},
-                {t: 4.8, x: 1780, y: 1010},
+              targets={[
+                {t: 0.7, x: nav.x, y: nav.y, click: true, hand: true},
+                {t: SAVE_AT, x: save.x, y: save.y, click: true, hand: true},
               ]}
-              clicks={[0.7, SAVE_AT]}
-              hand={[[0.5, 0.9], [SAVE_AT - 0.25, SAVE_AT + 0.25]]}
               rippleColor={COLORS.inkNavy}
-              opacity={tween(f, 0.3, 0.5) * (1 - tween(f, 4.5, 4.75))}
             />
           ) : null}
         </>

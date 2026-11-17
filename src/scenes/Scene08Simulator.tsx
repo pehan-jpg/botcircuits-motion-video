@@ -21,7 +21,6 @@ const NAV_CLICK = 0.2; // the pill slides to Simulator as the page arrives (Text
 const PAGE_IN: [number, number] = [0.4, 0.85];
 const FIELD_CLICK = 1.1;
 const TYPE_AT = 1.2;
-const FIRST = 'Hi, I lost my credit card. Can you block it?';
 const SEND = 2.2;
 // replay (already seen) then the edge case, timed by src/pacing.ts
 const SIM_MSGS: Msg[] = CHATS.s8.msgs;
@@ -60,10 +59,7 @@ export const Scene08Simulator: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
   const L = (a: number, b: number) => a + (b - a) * toButton;
   const spot = resultIn; // chat and trace drop to 45% while the result is shown
 
-  // Maya's first message typed into the field, then sent
-  // Maya's first line is a replay (seen in scene 1), so it is not typed into the field here
-  const n = 0;
-  const focus = 0;
+  // replayed lines appear instantly; Maya's new line is typed in the input by ChatThread (src/pacing.ts)
   const pts = chatFieldPoints(SIM.height);
   const fieldPt = W({x: SIM.x + pts.field.x, y: SIM.y + pts.field.y});
   const sendPt = W({x: SIM.x + pts.send.x, y: SIM.y + pts.send.y});
@@ -91,7 +87,7 @@ export const Scene08Simulator: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
             <div style={{position: 'absolute', left: 0, top: 0, ...dissolve(pageIn, env.outP), fontFamily: UI_FONT}}>
               <div data-safe="page title" style={{position: 'absolute', left: CONTENT.x + 32, top: SHELL.y + 18, height: 52, display: 'flex', alignItems: 'center', fontSize: 26, fontWeight: 700, color: UI.ink, whiteSpace: 'nowrap'}}>Simulator</div>
               <div style={{position: 'absolute', left: 0, top: 0, opacity: 1 - 0.55 * spot}}>
-                <ChatThread frame={f} msgs={SIM_MSGS} orbColor={1} x={SIM.x} y={SIM.y} height={SIM.height} draft={FIRST.slice(0, n)} focus={focus} />
+                <ChatThread frame={f} msgs={SIM_MSGS} orbColor={1} x={SIM.x} y={SIM.y} height={SIM.height} />
               </div>
               <div style={{position: 'absolute', left: TRACE.x, top: TRACE.y, opacity: 1 - 0.55 * spot}}>
                 <TracePanel frame={f} ticks={TICKS} width={TRACE_W} height={TRACE.height} lineOpacity={tween(f, 0.45, 0.55)} markersAt={0.5} />

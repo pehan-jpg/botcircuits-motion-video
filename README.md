@@ -5,11 +5,11 @@ BotCircuits CX product explainer, built with Remotion (TypeScript, 1920x1080, **
 ```bash
 npm install
 npm run dev      # Remotion Studio preview
-npx remotion render src/index.ts FullVideo out/preview_scenes_1_to_13_v13.mp4 --codec=h264 --crf=18
+npx remotion render src/index.ts FullVideo out/preview_scenes_1_to_13_v14.mp4 --codec=h264 --crf=18
 ```
 
 ## Compositions
-- `FullVideo` (main, 112.4 s): scenes 1-3 (16 s) + scenes 4-13 with seven TextBeats. Scene lengths are derived in `src/pacing.ts` (chat pacing: 5 words/s, HOLD, replay mode) and assembled in `src/v7.ts`.
+- `FullVideo` (main, 122.3 s): scenes 1-3 (16 s) + scenes 4-13 with seven TextBeats. Scene lengths are derived in `src/pacing.ts` (chat pacing: 5 words/s, HOLD, replay mode) and assembled in `src/v7.ts`.
 - `ProblemSequence` (16 s): scenes 1-3 only
 - `Build-scenes/Scene04..13`: each Build scene on its own
 
