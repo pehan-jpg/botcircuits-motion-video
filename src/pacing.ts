@@ -8,6 +8,7 @@
 import type {Msg} from './ui/ChatThread';
 import type {Section} from './ui/Procedure';
 import {charTimes} from './ui/typewriter';
+import {TAGLINE} from './constants';
 
 export const TYPE_CPS = 32; // normal messages, characters per second (about 5 words per second)
 export const REPLAY_CPS = 70; // replayed messages (already seen), about 2.2x faster
@@ -241,6 +242,20 @@ export const S12 = {
   back: human.typedEnd + 1.2,
 };
 
+// ---- scene 13: the end line types with the same typewriter (large display text) ----
+export const HEADLINE_CPS = 20;
+/** The guard's limit for the end line. */
+export const MAX_HEADLINE_CPS = 24;
+const TAG_BREAK = TAGLINE.indexOf('. ', TAGLINE.indexOf('. ') + 1);
+/** Line 1 / line 2 with a forced break after "everywhere." */
+export const TAGLINE_LINES = TAG_BREAK >= 0 ? [TAGLINE.slice(0, TAG_BREAK + 1), TAGLINE.slice(TAG_BREAK + 2)] : [TAGLINE];
+/** The typed text: the line break is a character too (it carries the pause after the full stop). */
+const TAG_TEXT = TAGLINE_LINES.join('\n');
+const TAG_TYPE_AT = 0.3; // after the orb ring dissolve
+export const TAGLINE_TYPING = {text: TAG_TEXT, lines: TAGLINE_LINES, start: TAG_TYPE_AT, ...charTimes(TAG_TEXT, TAG_TYPE_AT, HEADLINE_CPS, TAG_TEXT)};
+/** Hold 1.2 s after the last character, then the dissolve to the lockup (1.9 s, ending on the 1.2 s lockup hold). */
+export const S13_OUT = TAGLINE_TYPING.end + 1.2;
+
 // ---- scene lengths (derived) ---------------------------------------------------
 export const SCENE_LEN = {
   s4: 5.5,
@@ -252,7 +267,7 @@ export const SCENE_LEN = {
   s10: s10.end + TAIL,
   s11: CALL.end,
   s12: S12.back + 2.5, // hand back, the loop ring, the pull back
-  s13: 6.5,
+  s13: S13_OUT + 1.9,
 };
 export const BEAT_LEN = {b1: 2.0, b2: 2.0, b3: 2.0, b4: 2.0, b5: 2.0, b6: 2.4, b7: 2.0};
 export const S8_RESULT_AT = s8.end;
