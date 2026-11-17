@@ -94,6 +94,8 @@ export const messageGeom = (m: Msg, s: number) => {
   return {lines: d.lines, lineStart, bw, w, h, textH, block, layoutH, times: tw.times, typedEnd: tw.end, chars, linesWithText: d.lines.filter((_, k) => lineStart[k] < chars).length, grow, after};
 };
 /** When the last character has started (timestamps and chips follow). */
+/** Layout height of the typing indicator block at time s. */
+export const indicatorLayoutH = (at: number, s: number) => (IND.h + META + GAP) * easeT(s, at, at + ENTER);
 export const msgEnd = (m: Msg) => (m.at === -Infinity ? -Infinity : messageGeom(m, 0).typedEnd);
 const visibleFrom = (m: Msg) => (m.at === -Infinity ? -Infinity : m.at);
 
@@ -146,7 +148,7 @@ const Avatar: React.FC<{agent: boolean; frame: number; orbColor: number}> = ({ag
   );
 const AVATAR_TOP = PAD_Y + LH / 2 - AV / 2; // level with the first text line, fixed
 
-const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame, orbColor}) => {
+export const ThreadMessage: React.FC<{m: Msg; frame: number; orbColor: number; avatar?: React.ReactNode; bubbleBg?: string}> = ({m, frame, orbColor, avatar, bubbleBg}) => {
   const s = frame / 60;
   const isAgent = m.from === 'agent';
   const g = messageGeom(m, s);
@@ -168,7 +170,7 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
   return (
     <div style={{position: 'relative', height: g.layoutH, opacity: pop, transform: `scale(${0.96 + 0.04 * pop})`, transformOrigin: '0 0'}}>
       <div style={{position: 'absolute', left: 24, top: AVATAR_TOP}}>
-        <Avatar agent={isAgent} frame={frame} orbColor={orbColor} />
+        {avatar ?? <Avatar agent={isAgent} frame={frame} orbColor={orbColor} />}
       </div>
       <div
         data-bubble
@@ -180,7 +182,7 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
           height: g.h,
           borderRadius: `26px 26px 26px 8px`,
           border: isAgent ? '1.5px solid transparent' : 'none',
-          background: isAgent ? `linear-gradient(#F7F9F8, #F7F9F8) padding-box, linear-gradient(120deg, #6FD3A4, #CDE7FF) border-box` : '#EEF0F3',
+          background: isAgent ? `linear-gradient(#F7F9F8, #F7F9F8) padding-box, linear-gradient(120deg, #6FD3A4, #CDE7FF) border-box` : bubbleBg ?? '#EEF0F3',
           boxSizing: 'border-box',
           overflow: 'visible',
         }}
@@ -254,7 +256,7 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
 };
 
 /** Agent typing indicator: a small bubble at the orb avatar with three softly pulsing dots. */
-const Indicator: React.FC<{frame: number; at: number; orbColor: number}> = ({frame, at, orbColor}) => {
+export const Indicator: React.FC<{frame: number; at: number; orbColor: number}> = ({frame, at, orbColor}) => {
   const p = tween(frame, at, at + 0.15);
   const enter = easeT(frame / 60, at, at + ENTER);
   return (
@@ -340,7 +342,7 @@ export const ChatThread: React.FC<{
       >
         <div style={{position: 'absolute', left: 0, right: 0, top: Math.max(0, visibleH - total - 8) - scroll}}>
           {shown.map((m, i) => (
-            <Message key={i} m={m} frame={frame} orbColor={orbColor} />
+            <ThreadMessage key={i} m={m} frame={frame} orbColor={orbColor} />
           ))}
           {typingAgent ? <Indicator frame={frame} at={typingAgent.indicatorAt!} orbColor={orbColor} /> : null}
         </div>

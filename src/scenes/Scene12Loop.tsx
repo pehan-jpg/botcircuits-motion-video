@@ -8,12 +8,11 @@ import {CameraRig} from '../components/CameraRig';
 import {PlannedCursor} from '../components/Cursor';
 import {Orb} from '../components/Orb';
 import {GWaveform} from '../components/Glyphs';
-import {Caret} from '../components/TypingText';
 import {AppShell, navPoint} from '../ui/AppShell';
 import {UI, UI_FONT} from '../ui/tokens';
-import {CALL, TYPE_CPS} from '../pacing';
-// the teammate's reply types in the Message input at about 5 words per second
-const TYPE_WPS = TYPE_CPS / 6.4;
+import {S12, TYPE_CPS} from '../pacing';
+import {Indicator, ThreadMessage} from '../ui/ChatThread';
+import {CHAR_FADE, charTimes} from '../ui/typewriter';
 import {LineToCircle} from '../components/Morph';
 import {beatUnderline} from '../ui/TextBeat';
 import {envelope, SceneLayerProps} from './kit';
@@ -26,16 +25,13 @@ const PANEL = {x: LIST.x + LIST.width + 24, y: C0.y + 28, width: C0.x + CONTENT.
 const AV = {x: PANEL.x + 56, y: PANEL.y + 48, size: 56}; // header avatar centre
 const FIELD = {x: PANEL.x + 24, y: PANEL.y + PANEL.height - 24 - 64, width: PANEL.width - 48, height: 64};
 const BTN = {right: PANEL.x + PANEL.width - 24, y: PANEL.y + 24, h: 52};
-const REPLY = CALL.team.reply;
 
 // ---- timeline ----
 const NAV = 0.6;
-const TAKE = 2.0;
-const TYPE_AT = 2.55;
-// typed in the Message input at TYPE_WPS, then a send press (0.15 s) and the row slides up
-const SEND = TYPE_AT + REPLY.split(' ').length / TYPE_WPS + 0.05;
-const BACK = 4.5;
-const OUT: [number, number] = [5.2, 6.0];
+// every time comes from src/pacing.ts (S12): the thread types, then Take over, then a teammate joins
+const TAKE = S12.take;
+const BACK = S12.back;
+const OUT: [number, number] = [BACK + 0.7, BACK + 1.5];
 
 type Conv = {name: string; letter: string; status: 'Resolved' | 'Needs a person'; channel: 'whatsapp' | 'voice'};
 const CONVS: Conv[] = [
@@ -49,7 +45,7 @@ const Ink: React.FC<{size: number; letter: string}> = ({size, letter}) => (
 );
 
 const StatusChip: React.FC<{status: string}> = ({status}) => {
-  const coral = status === 'Needs a person';
+  const coral = status === 'Needs a person'; // 'Resolved' and 'With your team' are mint
   return (
     <span style={{display: 'inline-flex', alignItems: 'center', height: 32, padding: '0 12px', borderRadius: 16, background: coral ? '#FFE7DF' : UI.chipMint, color: coral ? '#B5401F' : UI.chipText, fontSize: 20, fontWeight: 600, whiteSpace: 'nowrap'}}>{status}</span>
   );
@@ -65,26 +61,23 @@ const Person: React.FC<{size: number}> = ({size}) => (
   </div>
 );
 
-const Row: React.FC<{who: 'P' | 'agent' | 'team'; text: string; frame: number; opacity?: number; dy?: number}> = ({who, text, frame, opacity = 1, dy = 0}) => (
-  <div style={{display: 'flex', gap: 16, alignItems: 'flex-start', padding: '12px 0', opacity, transform: `translateY(${dy}px)`}}>
-    {who === 'agent' ? (
-      <div style={{position: 'relative', width: 40, height: 40, flexShrink: 0}}>
-        <Orb cx={20} cy={20} size={40} frame={frame} shadow={false} />
-      </div>
-    ) : who === 'team' ? (
-      <Person size={40} />
-    ) : (
-      <Ink size={40} letter={who} />
-    )}
-    <div style={{fontFamily: FONT_SANS, fontSize: 26, lineHeight: '36px', color: UI.ink}}>{text}</div>
-  </div>
-);
+/** A centered system row (not a bubble): small, grey, a person glyph, typed with the same typewriter. */
+const SystemRow: React.FC<{frame: number}> = ({frame}) => {
+  const sNow = frame / 60;
+  const t = charTimes(S12.system.text, S12.system.start, TYPE_CPS, S12.system.text);
+  const enter = Math.min(1, Math.max(0, (sNow - (S12.system.start - 0.1)) / 0.3));
+  return (
+    <div style={{height: 56 * (1 - Math.pow(1 - enter, 3)), display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, opacity: enter}}>
+      <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke={UI.text2} strokeWidth={2} strokeLinecap="round"><circle cx="12" cy="8" r="4" /><path d="M4.5 21c0-4.2 3.4-7 7.5-7s7.5 2.8 7.5 7" /></svg>
+      <span style={{fontFamily: FONT_SANS, fontSize: 22, color: UI.text2, whiteSpace: 'pre'}}>
+        {S12.system.text.split('').map((ch, i) => (
+          <span key={i} style={{opacity: sNow < t.times[i] ? 0 : Math.min(1, (sNow - t.times[i]) / CHAR_FADE)}}>{ch}</span>
+        ))}
+      </span>
+    </div>
+  );
+};
 
-/**
- * SCENE 12 (7 s) The human in the loop. Conversations: Priya needs a person;
- * a teammate takes over, replies, and hands back to the agent. A dotted loop ring
- * traces agent, person, agent, then stays as a circle with the orb inside.
- */
 export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const f = useCurrentFrame();
   const show = (k: 'bg' | 'shell' | 'fg') => layer === 'all' || layer === k;
@@ -101,10 +94,8 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const withN = s >= TAKE + 0.3 && s < BACK + 0.3;
   const btnW = 170 + (250 - 170) * kfIO(f, [TAKE + 0.1, TAKE + 0.4], [0, 1]);
   const handedBack = s >= BACK + 0.2;
-  const fieldOn = tween(f, TAKE + 0.4, TAKE + 0.55) * (1 - tween(f, BACK, BACK + 0.2));
-  const words = REPLY.split(' ');
-  const typed = s < TYPE_AT ? 0 : s < SEND + 0.15 ? Math.min(words.length, Math.floor((s - TYPE_AT) * TYPE_WPS) + 1) : 0;
-  const sent = tween(f, SEND + 0.15, SEND + 0.45); // slides up from the input
+  // the composer stays empty; its send button highlights briefly as the human message finishes
+  const sendFlash = kf(f, [S12.human.typedEnd, S12.human.typedEnd + 0.1, S12.human.typedEnd + 0.2], [0, 1, 0]);
   // loop ring around the header avatar, a marker travels it once: agent, person, agent
   // the dotted ring docked (dim) around the header avatar since TextBeat 7; it brightens at Take over
   const ringDraw = s >= 0.7 ? 0.35 + 0.65 * tween(f, TAKE - 0.25, TAKE + 0.1) : 0;
@@ -121,7 +112,6 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
 
   const nav = W(navPoint('Conversations'));
   const takeBtn = {x: BTN.right - btnW / 2, y: BTN.y + BTN.h / 2};
-  const sendPt = {x: FIELD.x + FIELD.width - 32, y: FIELD.y + FIELD.height / 2};
 
   return (
     <AbsoluteFill>
@@ -154,7 +144,7 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
                   <div style={{display: 'flex', flexDirection: 'column', gap: 6, flex: 1}}>
                     <span style={{fontSize: 24, fontWeight: 600, color: UI.ink}}>{c.name}</span>
                     <span>
-                      <StatusChip status={resolved ? 'Resolved' : c.status} />
+                      <StatusChip status={resolved ? 'Resolved' : i === 1 && s >= TAKE + 0.05 ? 'With your team' : c.status} />
                     </span>
                   </div>
                   {c.channel === 'whatsapp' ? (
@@ -175,23 +165,21 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
                 <span style={{display: 'inline-flex', alignItems: 'center', height: 40, padding: '0 16px', borderRadius: 20, background: withN ? '#EEF0F3' : UI.chipMint, color: withN ? UI.ink : UI.chipText, fontSize: 22, fontWeight: 600, whiteSpace: 'nowrap'}}>{withN ? 'With your team' : 'With agent'}</span>
               </div>
               <div style={{position: 'absolute', left: 0, right: 0, top: 96, height: 1, background: UI.border}} />
-              <div style={{position: 'absolute', left: 28, right: 28, top: 116}}>
-                <Row who="P" text={CALL.team.customer} frame={f} />
-                <Row who="agent" text={CALL.team.agent} frame={f} />
-                {sent > 0 ? <Row who="team" text={REPLY} frame={f} opacity={sent} dy={(1 - sent) * 70} /> : null}
+              {/* the thread starts empty; every line types (src/pacing.ts S12) */}
+              <div style={{position: 'absolute', left: 0, right: 0, top: 112}}>
+                {S12.msgs.map((m, i) => {
+                  if (m.indicatorAt !== undefined && s >= m.indicatorAt && s < m.at) return <Indicator key={i} frame={f} at={m.indicatorAt} orbColor={1} />;
+                  if (s < m.at) return null;
+                  return <ThreadMessage key={i} m={m} frame={f} orbColor={1} avatar={m.from === 'maya' ? <Ink size={44} letter="P" /> : undefined} />;
+                })}
+                {s >= S12.system.start - 0.1 ? <SystemRow frame={f} /> : null}
+                {s >= S12.human.at ? <ThreadMessage m={S12.human} frame={f} orbColor={1} avatar={<Person size={44} />} /> : null}
               </div>
               {/* message field (active once the team takes over) */}
-              <div style={{position: 'absolute', left: FIELD.x - PANEL.x, top: FIELD.y - PANEL.y, width: FIELD.width, height: FIELD.height, borderRadius: 32, background: fieldOn > 0.5 ? COLORS.white : '#F4F5F7', border: `${fieldOn > 0.5 ? 2 : 1}px solid ${fieldOn > 0.5 ? '#3CC37A' : UI.border}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', paddingLeft: 26, fontFamily: FONT_SANS, fontSize: typed > 0 ? 26 : 22, color: typed > 0 ? UI.ink : '#9CA3AF', whiteSpace: 'pre'}}>
-                {typed > 0 ? (
-                  <>
-                    {words.slice(0, typed).join(' ')}
-                    <span style={{display: 'inline-block', width: 0}}><Caret frame={f} height={30} typingUntil={f + 2} color={UI.ink} /></span>
-                  </>
-                ) : (
-                  'Message'
-                )}
-                <div style={{position: 'absolute', right: 8, top: 7, width: 48, height: 48, borderRadius: 24, background: typed > 0 ? UI.ink : '#E5E7EB', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: `scale(${press(f, SEND)})`}}>
-                  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke={typed > 0 ? COLORS.white : '#9CA3AF'} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M6 11l6-6 6 6" /></svg>
+              <div style={{position: 'absolute', left: FIELD.x - PANEL.x, top: FIELD.y - PANEL.y, width: FIELD.width, height: FIELD.height, borderRadius: 32, background: '#F4F5F7', border: `1px solid ${UI.border}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', paddingLeft: 26, fontFamily: FONT_SANS, fontSize: 22, color: '#9CA3AF', whiteSpace: 'pre'}}>
+                Message
+                <div style={{position: 'absolute', right: 8, top: 7, width: 48, height: 48, borderRadius: 24, background: `color-mix(in srgb, ${UI.ink} ${Math.round(100 * sendFlash)}%, #E5E7EB)`, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke={sendFlash > 0.5 ? COLORS.white : '#9CA3AF'} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M6 11l6-6 6 6" /></svg>
                 </div>
               </div>
             </div>
@@ -237,7 +225,6 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
               targets={[
                 {t: NAV, ...nav, click: true, hand: true},
                 {t: TAKE, ...takeBtn, click: true, hand: true},
-                {t: SEND, ...sendPt, click: true, hand: true},
                 {t: BACK, x: BTN.right - 140, y: BTN.y + BTN.h / 2, click: true, hand: true},
               ]}
               rippleColor={COLORS.inkNavy}

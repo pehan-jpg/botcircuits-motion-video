@@ -34,7 +34,7 @@ const CARD_TOP = CONSOLE_CARD.cy - CONSOLE_CARD.height / 2;
 const CAM: CamKeys = {t: [0, 0.8, 2.6, 3.8], x: [960, 960, 960, 960], y: [540, 540, 548, 540], s: [1, 1, 1.08, 1]};
 
 /**
- * SCENE 5 (7 s) Console prompt, then the untrained agent. Periwinkle sky.
+ * SCENE 5 Console prompt, then the new agent answers in role. Periwinkle sky.
  */
 export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const f = useCurrentFrame();
@@ -140,7 +140,7 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
           {s >= ORB_AT ? (
             <>
               <PetalSpinner cx={orbPos.x} cy={orbPos.y} radius={150} ringRadius={94} frame={f} opacity={kf(f, [ORB_AT, ORB_AT + 0.15, 4.8, 4.9], [0, 1, 1, 0])} converge={tween(f, 4.7, 4.9)} />
-              {toFooter < 1 ? <Orb cx={orbPos.x} cy={orbPos.y} size={orbSize} scale={orbGrow} color={0} frame={f} /> : null}
+              {toFooter < 1 ? <Orb cx={orbPos.x} cy={orbPos.y} size={orbSize} scale={orbGrow} color={1} frame={f} pulse={tween(f, ORB_AT, ORB_AT + 0.6)} /> : null}
             </>
           ) : null}
         </>
@@ -149,7 +149,7 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
       {show('shell') && chatIn > 0 && env.ownsShared ? (
         <CameraRig cam={CHAT_VIEW}>
           <div style={{position: 'absolute', left: 0, top: 0, opacity: chatIn, transform: `translateX(${(1 - chatIn) * 200}px)`, filter: chatIn < 0.99 ? `blur(${10 * (1 - chatIn)}px)` : undefined}}>
-            <ChatThread frame={f} msgs={CONVO.s5} orbColor={0} footerOrbOpacity={toFooter >= 1 ? 1 : 0} />
+            <ChatThread frame={f} msgs={CONVO.s5} orbColor={1} footerOrbOpacity={toFooter >= 1 ? 1 : 0} />
           </div>
         </CameraRig>
       ) : null}

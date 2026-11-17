@@ -6,6 +6,7 @@ import {CONTENT} from '../v7';
 import {VariableChip} from '../components/Chip';
 import {typedCount} from '../components/TypingText';
 import {measureText, wrapText} from '../components/measure';
+import {PROC_PER_CHAR, PROCEDURE_BUILD_PACE, procTextEnd, procTextStart} from '../pacing';
 
 export type TagKind = 'RUN' | 'IF' | 'ELSE' | 'SEND' | 'SET';
 const TAG_COL: Record<TagKind, {bg: string; fg: string}> = {RUN: UI.run, IF: UI.iff, ELSE: UI.iff, SEND: UI.send, SET: UI.set};
@@ -37,13 +38,14 @@ const TEXT_W = STEPS_CARD.width - TEXT_X - 48;
 const NEST_X = TEXT_X + 70;
 const NEST_W = STEPS_CARD.width - NEST_X - 48;
 const FONT = `500 ${FS}px "${UI_FAMILY}"`;
-const PER_CHAR = 0.4;
+const PER_CHAR = PROC_PER_CHAR; // frames per character, slowed by PROCEDURE_BUILD_PACE
+const P = PROCEDURE_BUILD_PACE;
 const SECTION_H = 56;
 const SECTION_GAP = 32;
 const lines = (t: string, w: number) => wrapText(t, FONT, w, 13);
 const rowText = (r: Row) => (r.kind === 'RUN' || r.kind === 'SEND' ? r.text : r.send);
-const textStart = (r: Row) => r.at + (r.kind === 'IF' || r.kind === 'ELSE' ? 0.2 : 0.15);
-export const rowTextEnd = (r: Row) => textStart(r) + (rowText(r).length * PER_CHAR) / 60 + 0.03;
+const textStart = (r: Row) => procTextStart(r);
+export const rowTextEnd = (r: Row) => procTextEnd(r);
 
 /** Lines typed so far (fractional, eased 0.2 s as each new line starts). */
 const linesNow = (r: Row, frame: number) => {
@@ -55,7 +57,7 @@ const linesNow = (r: Row, frame: number) => {
   ls.forEach((l, i) => {
     if (i > 0) {
       const fr = start + acc * PER_CHAR;
-      n += ease(frame, [fr, fr + sec(0.2)], [0, 1]);
+      n += ease(frame, [fr, fr + sec(0.2 * P)], [0, 1]);
     }
     acc += l.length + 1;
   });
@@ -64,12 +66,12 @@ const linesNow = (r: Row, frame: number) => {
 
 /** Current height of a row (0 before it appears; grows as its text types). */
 export const rowHeightAt = (r: Row, frame: number) => {
-  const appear = ease(frame, [sec(r.at - 0.05), sec(r.at + 0.2)], [0, 1]);
+  const appear = ease(frame, [sec(r.at - 0.05 * P), sec(r.at + 0.2 * P)], [0, 1]);
   if (appear <= 0) return 0;
   const {n} = linesNow(r, frame);
   let h: number;
   if (r.kind === 'RUN') {
-    const tagsIn = tween(frame, rowTextEnd(r) - 0.1, rowTextEnd(r) + 0.15);
+    const tagsIn = tween(frame, rowTextEnd(r) - 0.1 * P, rowTextEnd(r) + 0.15 * P);
     h = PAD + n * LH + tagsIn * (16 + 44) + PAD;
   } else if (r.kind === 'SEND') h = PAD + n * LH + PAD;
   else h = PAD + 44 + 14 + n * LH + PAD;
@@ -90,18 +92,18 @@ const TypedBlock: React.FC<{text: string; frame: number; at: number; x: number; 
 export const StepRow: React.FC<{r: Row; frame: number; dim: number}> = ({r, frame, dim}) => {
   const h = rowHeightAt(r, frame);
   if (h <= 0) return null;
-  const tag = popIn(frame, r.at, 0.3, 1.04);
-  const vis = tween(frame, r.at - 0.05, r.at + 0.15);
+  const tag = popIn(frame, r.at, 0.3 * P, 1.04);
+  const vis = tween(frame, r.at - 0.05 * P, r.at + 0.15 * P);
   const end = rowTextEnd(r);
   let body: React.ReactNode;
   if (r.kind === 'RUN') {
     const ls = lines(r.text, TEXT_W);
-    const fly = kfIO(frame, [end, end + 0.35], [0, 1]);
+    const fly = kfIO(frame, [end, end + 0.35 * P], [0, 1]);
     const last = ls[ls.length - 1];
     const from = {x: TEXT_X + measureText(last, FONT, 13) + 18, y: (ls.length - 1) * LH - 2};
     const chipW = measureText(r.into, `500 22px "JetBrains Mono"`, 13) + 70;
     const to = {x: STEPS_CARD.width - 48 - chipW, y: ls.length * LH + 16};
-    const tags = tween(frame, end - 0.1, end + 0.15);
+    const tags = tween(frame, end - 0.1 * P, end + 0.15 * P);
     body = (
       <>
         <div style={{position: 'absolute', left: 90, top: -2, transform: `scale(${tag})`, transformOrigin: 'left center'}}><TypeTag kind="RUN" /></div>
@@ -134,7 +136,7 @@ export const StepRow: React.FC<{r: Row; frame: number; dim: number}> = ({r, fram
           ) : null}
         </div>
         <div style={{position: 'absolute', left: 100, top: 52, width: 3, height: h - PAD * 2 - 52, borderRadius: 2, background: alpha(UI.iff.fg, 0.25)}} />
-        <div style={{position: 'absolute', left: 120, top: 56, opacity: tween(frame, r.at + 0.15, r.at + 0.3)}}><TypeTag kind="SEND" /></div>
+        <div style={{position: 'absolute', left: 120, top: 56, opacity: tween(frame, r.at + 0.15 * P, r.at + 0.3 * P)}}><TypeTag kind="SEND" /></div>
         <div style={{position: 'absolute', left: 0, top: 58}}>
           <TypedBlock text={r.send} frame={frame} at={textStart(r)} x={NEST_X} w={NEST_W} seed={r.id} />
         </div>
@@ -151,7 +153,7 @@ export const StepRow: React.FC<{r: Row; frame: number; dim: number}> = ({r, fram
 
 /** Total content height at a frame (for scrolling). */
 export const bodyHeightAt = (sections: Section[], frame: number) =>
-  sections.reduce((a, s, i) => a + (frame >= sec(s.at) ? SECTION_H * tween(frame, s.at, s.at + 0.25) : 0) + s.rows.reduce((b, r) => b + rowHeightAt(r, frame), 0) + (i > 0 && frame >= sec(s.at) ? SECTION_GAP : 0), 0);
+  sections.reduce((a, s, i) => a + (frame >= sec(s.at) ? SECTION_H * tween(frame, s.at, s.at + 0.25 * P) : 0) + s.rows.reduce((b, r) => b + rowHeightAt(r, frame), 0) + (i > 0 && frame >= sec(s.at) ? SECTION_GAP : 0), 0);
 
 /**
  * The Steps card: header (title + subtitle fully visible), sections whose
@@ -184,7 +186,7 @@ export const StepsCard: React.FC<{frame: number; sections: Section[]; active?: s
         <div style={{position: 'absolute', left: 0, right: 0, top: 12 - scroll}}>
           {sections.map((s, si) => {
             if (frame < sec(s.at)) return null;
-            const t = tween(frame, s.at, s.at + 0.25);
+            const t = tween(frame, s.at, s.at + 0.25 * P);
             return (
               <div key={si} style={{paddingTop: si > 0 ? SECTION_GAP : 0}}>
                 <div style={{height: SECTION_H * t, overflow: 'hidden', opacity: t * (active && spotlight > 0 ? 1 - 0.55 * spotlight : 1)}}>
@@ -213,7 +215,7 @@ export const rowTextAnchor = (sections: Section[], id: string, frame: number) =>
   for (const [si, s] of sections.entries()) {
     if (frame < sec(s.at)) break;
     if (si > 0) y += SECTION_GAP;
-    y += SECTION_H * tween(frame, s.at, s.at + 0.25);
+    y += SECTION_H * tween(frame, s.at, s.at + 0.25 * P);
     for (const r of s.rows) {
       if (r.id === id) {
         const nested = r.kind === 'IF' || r.kind === 'ELSE';

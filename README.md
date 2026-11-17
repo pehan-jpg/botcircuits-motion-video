@@ -5,11 +5,11 @@ BotCircuits CX product explainer, built with Remotion (TypeScript, 1920x1080, **
 ```bash
 npm install
 npm run dev      # Remotion Studio preview
-npx remotion render src/index.ts FullVideo out/preview_scenes_1_to_13_v15.mp4 --codec=h264 --crf=18
+npx remotion render src/index.ts FullVideo out/preview_scenes_1_to_13_v16.mp4 --codec=h264 --crf=18
 ```
 
 ## Compositions
-- `FullVideo` (main, 127.4 s): scenes 1-3 (16 s) + scenes 4-13 with seven TextBeats. Scene lengths are derived in `src/pacing.ts` (chat pacing: character typewriter at TYPE_CPS 32 / REPLAY_CPS 70, HOLD, replay mode) and assembled in `src/v7.ts`.
+- `FullVideo` (main, 145.15 s): scenes 1-3 (16 s) + scenes 4-13 with seven TextBeats. Scene lengths are derived in `src/pacing.ts` (chat pacing: character typewriter at TYPE_CPS 32 / REPLAY_CPS 70, HOLD, replay mode) and assembled in `src/v7.ts`.
 - `ProblemSequence` (16 s): scenes 1-3 only
 - `Build-scenes/Scene04..13`: each Build scene on its own
 
@@ -34,3 +34,4 @@ Scenes 4-8 author keyframes in seconds with `kf(frame, [seconds], [values])` (`s
 - `src/ui/TextBeat.tsx` + `src/scenes/Beats.tsx`: the seven TextBeats (typed line, lime underline that the next scene morphs into its key shape); `src/components/Morph.tsx` (RectMorph, LineToCircle)
 - `src/pacing.ts`: chat pacing constants, `chatTimeline()`, the chat sequences, the scene 11 voice slots, derived scene lengths, ReadabilityGuard and assertGaps; `npm run guards` (also run first by `npm run qa`)
 - `src/ui/typewriter.ts`: deterministic character typewriter (jitter, punctuation pauses, 70 ms fade) shared by pacing and rendering
+- Procedure build pace: `PROCEDURE_BUILD_PACE` and the timed procedure plan (`PROC_SECTIONS`, `PROC_SAVE_AT`) live in `src/pacing.ts`; scene 12's thread timeline is `S12` there too

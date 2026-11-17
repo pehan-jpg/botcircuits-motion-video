@@ -13,36 +13,18 @@ import {RectMorph} from '../components/Morph';
 import {beatUnderline} from '../ui/TextBeat';
 import {StepsCard, STEPS_CARD, Section, rowHeightAt, rowTextAnchor, rowTextEnd} from '../ui/Procedure';
 import {UI, UI_FONT} from '../ui/tokens';
+import {PROC_SAVE_AT, PROC_SECTIONS, S6_BUILD} from '../pacing';
 import {envelope, SceneLayerProps} from './kit';
 
-const VERIFIED_TEXT = "Thanks Maya, you're verified. I'll block your card now.";
-/** The procedure built in this scene. */
-export const SECTIONS: Section[] = [
-  {
-    title: 'Verify the customer',
-    at: 0.95,
-    rows: [
-      {id: '1.1', kind: 'RUN', text: 'Ask for the last four digits of the card and the date of birth. Confirm they match the account.', into: 'verified', at: 1.05},
-      {id: '1.2', kind: 'IF', cond: 'verified', condIs: 'is yes', send: VERIFIED_TEXT, at: 2.0},
-      {id: '1.3', kind: 'ELSE', send: "I can't verify you here. Let me bring in a teammate.", at: 2.5},
-    ],
-  },
-  {
-    title: 'Block the card',
-    at: 2.95,
-    rows: [
-      {id: '2.1', kind: 'RUN', text: 'Block the card using the card system.', into: 'card_status', at: 3.05},
-      {id: '2.2', kind: 'SEND', text: 'Your card ending 4821 is blocked. A new one is on its way.', at: 3.5},
-    ],
-  },
-];
+/** The procedure built in this scene, timed by src/pacing.ts (PROCEDURE_BUILD_PACE). */
+export const SECTIONS: Section[] = PROC_SECTIONS;
 const ALL_ROWS = SECTIONS.flatMap((s) => s.rows);
-const SAVE_AT = 3.9;
+const SAVE_AT = PROC_SAVE_AT;
 export const SAVE = {x: SHELL.x + SHELL.width - 28 - 60, y: SHELL.y + SHELL.header / 2, w: 120, h: 52};
 export const TOGGLE = {x: SAVE.x - 60 - 28 - 32, y: SAVE.y};
 
 const CAM: CamKeys = {
-  t: [0, 4.5, 5.1],
+  t: [0, S6_BUILD, S6_BUILD + 0.6],
   x: [CONFIG_VIEW.x, CONFIG_VIEW.x, CHAT_VIEW.x],
   y: [540, 540, 540],
   s: [1, 1, 1],
@@ -84,13 +66,13 @@ export const Scene06Procedures: React.FC<SceneLayerProps> = ({layer = 'all'}) =>
   const cam = camAt(f, CAM);
   const panning = isPanning((fr) => camAt(fr, CAM), f);
 
-  const config = kfIO(f, [4.5, 5.1], [1, 0]);
+  const config = kfIO(f, [S6_BUILD, S6_BUILD + 0.6], [1, 0]);
   const shellIn = tween(f, 0.1, 0.55);
   const pageIn = tween(f, 0.75, 1.0); // skeleton -> live page after the click
   const unroll = kfIO(f, [0.35, 0.8], [0, 1]);
   const ulMorph = kfIO(f, [0, 0.4], [0, 1]);
-  const orbColor = tween(f, 5.0, 5.35); // the first configured reply
-  const orbPulse = tween(f, 5.1, 5.7);
+  const orbColor = 1; // the agent works from its first message (no grey orb)
+  const orbPulse = 0;
   const active = ALL_ROWS.reduce((a, r) => (s >= r.at ? r.id : a), ALL_ROWS[0].id);
   const spotlight = kf(f, [1.1, 1.3, rowTextEnd(ALL_ROWS[ALL_ROWS.length - 1]) + 0.2, rowTextEnd(ALL_ROWS[ALL_ROWS.length - 1]) + 0.5], [0, 1, 1, 0]);
 
@@ -100,7 +82,7 @@ export const Scene06Procedures: React.FC<SceneLayerProps> = ({layer = 'all'}) =>
   // the source card is off screen when the verified reply arrives, so (per the carrier rule)
   // row 1.2 pulses just before the pan and the agent then replies normally
   const msgs6 = [...past(CONVO.s5), ...CONVO.s6];
-  const PULSE = 4.15;
+  const PULSE = SAVE_AT + 0.25;
   const pulseRow = SECTIONS[0].rows[1];
   const anchor = rowTextAnchor(SECTIONS, '1.2', sec(PULSE));
   const pulse = kf(f, [PULSE, PULSE + 0.15, PULSE + 0.5], [0, 1, 0]);

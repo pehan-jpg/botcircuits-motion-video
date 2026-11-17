@@ -6,6 +6,7 @@
 // (The Console prompt, Procedure rows and URL typing keep their own speed.)
 // ---------------------------------------------------------------------------
 import type {Msg} from './ui/ChatThread';
+import type {Section} from './ui/Procedure';
 import {charTimes} from './ui/typewriter';
 
 export const TYPE_CPS = 32; // normal messages, characters per second (about 5 words per second)
@@ -32,7 +33,7 @@ export const TAIL = 0.4;
 
 export const OPENING = 'Hi, I lost my credit card. Can you block it?';
 export const ASK = 'Can you confirm the last four digits of your card?';
-export const ELSE_TEXT = "I can't verify you here. Let me bring in a teammate.";
+export const ELSE_TEXT = "I can't verify you here. Let me bring in a teammate."; // identical to the Procedure's ELSE row
 
 export type Mode = 'normal' | 'replay';
 export type In = {from: 'maya' | 'agent'; text: string; mode: Mode; time: string; chip?: string; source?: string};
@@ -85,9 +86,61 @@ export const chatTimeline = (msgs: In[], startAt = 0) => {
   return {msgs: out, start: startAt, end, total: end - startAt};
 };
 
+// ---- the Procedure build (scene 6), slowed slightly so it can be read ------------
+/** Every duration in the Procedure build phase is multiplied by this. */
+export const PROCEDURE_BUILD_PACE = 1.15;
+/** Procedure row typing speed (frames per character), scaled by the pace. */
+export const PROC_PER_CHAR = 0.4 * PROCEDURE_BUILD_PACE;
+const ROW_HOLD = 0.2; // after each step row completes
+const LAST_ROW_HOLD = 0.4; // after the last row
+export const VERIFIED_TEXT = "Thanks Maya, you're verified. I'll block your card now.";
+export const ELSE_ROW = "I can't verify you here. Let me bring in a teammate.";
+type RowSpec = {id: string; kind: string; [k: string]: string};
+const PROC_SPEC: {title: string; rows: RowSpec[]}[] = [
+  {
+    title: 'Verify the customer',
+    rows: [
+      {id: '1.1', kind: 'RUN', text: 'Ask for the last four digits of the card and the date of birth. Confirm they match the account.', into: 'verified'},
+      {id: '1.2', kind: 'IF', cond: 'verified', condIs: 'is yes', send: VERIFIED_TEXT},
+      {id: '1.3', kind: 'ELSE', send: ELSE_ROW},
+    ],
+  },
+  {
+    title: 'Block the card',
+    rows: [
+      {id: '2.1', kind: 'RUN', text: 'Block the card using the card system.', into: 'card_status'},
+      {id: '2.2', kind: 'SEND', text: 'Your card ending 4821 is blocked. A new one is on its way.'},
+    ],
+  },
+];
+const P = PROCEDURE_BUILD_PACE;
+/** Row timing helpers (shared with src/ui/Procedure.tsx). */
+export const procTextStart = (r: {kind: string; at: number}) => r.at + (r.kind === 'IF' || r.kind === 'ELSE' ? 0.2 : 0.15) * P;
+export const procRowText = (r: {kind: string}) => (r.kind === 'RUN' || r.kind === 'SEND' ? (r as unknown as {text: string}).text : (r as unknown as {send: string}).send);
+export const procTextEnd = (r: Section['rows'][number]) => procTextStart(r) + (procRowText(r).length * PROC_PER_CHAR) / 60 + 0.03;
+/** A row is complete once its text has typed and its chip has flown into "into". */
+const procRowDone = (r: Section['rows'][number]) => procTextEnd(r) + (r.kind === 'RUN' ? 0.45 : 0.1) * P;
+export const PROC_SECTIONS: Section[] = (() => {
+  let t = 0.95;
+  return PROC_SPEC.map((sec) => {
+    const at = t;
+    let rt = at + 0.1 * P;
+    const rows = sec.rows.map((r) => {
+      const row = {...r, at: rt} as unknown as Section['rows'][number];
+      rt = procRowDone(row) + ROW_HOLD;
+      return row;
+    });
+    t = rt;
+    return {title: sec.title, at, rows};
+  });
+})();
+const LAST_ROW = PROC_SECTIONS[PROC_SECTIONS.length - 1].rows.slice(-1)[0];
+/** Save, once the finished Procedure has been held for reading. */
+export const PROC_SAVE_AT = procRowDone(LAST_ROW) + LAST_ROW_HOLD;
+
 // ---- the chat sequences -------------------------------------------------------
 const S5_CONSOLE = 5.0; // Console prompt, word lift off, orb (non chat time)
-const S6_BUILD = 4.5; // Procedure rows + Save
+export const S6_BUILD = PROC_SAVE_AT + 0.6; // Procedure rows + Save (derived from the build plan)
 const S7_ADDS = 6.0; // three ways of adding a source
 const PAN = 0.6; // camera pan to the chat for a proof beat
 const S8_LEAD = 0.5; // Simulator page arrives
@@ -97,15 +150,16 @@ const S10_LEAD = 0.9; // green -> WhatsApp card
 const s5 = chatTimeline(
   [
     {from: 'maya', text: OPENING, mode: 'replay', time: '9:02 AM'},
-    {from: 'agent', text: "Sorry, I can't help with that yet.", mode: 'normal', time: '9:02 AM'},
+    {from: 'agent', text: "I'm sorry to hear that, Maya. I'm your Card Services Agent, and I can help with lost or stolen cards.", mode: 'normal', time: '9:02 AM'},
   ],
   S5_CONSOLE - TAIL,
 );
 const s6 = chatTimeline(
   [
-    {from: 'agent', text: ASK, mode: 'normal', time: '9:05 AM'},
+    {from: 'maya', text: 'Yes, please block it.', mode: 'normal', time: '9:05 AM'},
+    {from: 'agent', text: 'Of course. First, can you confirm the last four digits of your card?', mode: 'normal', time: '9:05 AM'},
     {from: 'maya', text: '4821', mode: 'normal', time: '9:05 AM'},
-    {from: 'agent', text: "Thanks Maya, you're verified. I'll block your card now.", mode: 'normal', time: '9:06 AM', chip: 'Card blocked'},
+    {from: 'agent', text: VERIFIED_TEXT, mode: 'normal', time: '9:06 AM', chip: 'Card blocked'},
   ],
   S6_BUILD + PAN,
 );
@@ -160,7 +214,31 @@ export const CALL = {
   collapse: [LAST, LAST + 0.6] as [number, number],
   end: LAST + 0.6,
   /** Scene 12 (Priya's conversation, replay). */
-  team: {customer: "I don't recognise a charge on my statement.", agent: "I'll bring in a teammate to review it.", reply: "I'm reviewing the charge now."},
+  team: {customer: "I don't recognise a charge on my statement.", agent: "I'll bring in a teammate to review it.", reply: "Hi Priya, this is the card team. I'm reviewing the charge now."},
+};
+
+// ---- scene 12: human in the loop (every line typed, new to the viewer) ------------
+const S12_CHAT_AT = 0.9; // the Conversations window and the empty Priya thread arrive first
+const s12 = chatTimeline(
+  [
+    {from: 'maya', text: CALL.team.customer, mode: 'normal', time: '9:14 AM'},
+    {from: 'agent', text: CALL.team.agent, mode: 'normal', time: '9:14 AM'},
+  ],
+  S12_CHAT_AT,
+);
+const S12_TAKE = s12.end + 0.2; // the cursor clicks "Take over"
+const SYSTEM_TEXT = 'A team member joined the conversation';
+const sysType = charTimes(SYSTEM_TEXT, S12_TAKE + 0.45, TYPE_CPS, SYSTEM_TEXT);
+const humanAt = sysType.end + META_FADE + MSG_GAP;
+const humanType = charTimes(CALL.team.reply, humanAt + POP_TIME, TYPE_CPS, CALL.team.reply);
+const human: Timed = {from: 'maya', text: CALL.team.reply, time: '9:15 AM', mode: 'normal', words: words(CALL.team.reply), at: humanAt, typeStart: humanAt + POP_TIME, cps: TYPE_CPS, typedEnd: humanType.end, chipEnd: humanType.end + META_FADE, holdEnd: humanType.end + META_FADE + 1.2};
+export const S12 = {
+  msgs: s12.msgs,
+  take: S12_TAKE,
+  system: {text: SYSTEM_TEXT, start: S12_TAKE + 0.45, end: sysType.end},
+  human,
+  /** "Hand back to agent", 1.2 s after the human message finishes. */
+  back: human.typedEnd + 1.2,
 };
 
 // ---- scene lengths (derived) ---------------------------------------------------
@@ -173,7 +251,7 @@ export const SCENE_LEN = {
   s9: 6.5,
   s10: s10.end + TAIL,
   s11: CALL.end,
-  s12: 7.0,
+  s12: S12.back + 2.5, // hand back, the loop ring, the pull back
   s13: 6.5,
 };
 export const BEAT_LEN = {b1: 2.0, b2: 2.0, b3: 2.0, b4: 2.0, b5: 2.0, b6: 2.4, b7: 2.0};
@@ -202,6 +280,10 @@ export const readabilityWarnings = (): string[] => {
   check('s7', s7, SCENE_LEN.s7 - TAIL);
   check('s8', s8, S8_RESULT_AT);
   check('s10', s10, SCENE_LEN.s10 - TAIL);
+  check('s12', s12, S12_TAKE);
+  // scene 12: nothing in the thread at the scene's first frame; every line types (never appears whole)
+  for (const m of [...s12.msgs, human]) if (!(m.typeStart! > 0) || !(m.typedEnd > m.typeStart!)) w.push(`READABILITY s12 "${m.text}" appears without typing`);
+  if (!(S12.system.start > 0 && S12.system.end > S12.system.start)) w.push('READABILITY s12 system row appears without typing');
   // the call transcript (words revealed across each voice slot)
   for (const sl of CALL.slots) {
     const r = sl.text.length / (sl.to - sl.from);
