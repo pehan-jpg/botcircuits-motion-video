@@ -30,13 +30,13 @@ const PAGE_ORB = {x: PUBLISH_BTN.cx, y: 450}; // the agent's orb on the Publish 
 
 // ---- timeline (scene seconds) ----
 const CLICK = 0.8;
-const POP = (i: number) => 2.35 + i * 0.15;
+const POP = (i: number) => 2.25 + i * 0.15;
 const TRAVEL = 0.36;
 const LANDED = POP(ORDER.length - 1) + TRAVEL; // ~4.11
 const GLOW = (i: number) => LANDED + i * 0.25;
-const BADGE = 4.3;
-const ROLL = [4.6, 4.75, 4.9];
-const HANDOFF = 5.75;
+const BADGE = 3.95;
+const ROLL = [4.2, 4.35, 4.5];
+const HANDOFF = 5.25;
 const REVEAL: [number, number] = [HANDOFF + 0.15, HANDOFF + 0.65];
 /** From here scene 10 draws the green frame and the white logo (shared element). */
 export const S9_HANDOVER = BUILD7.dur.s9 - 0.5;
@@ -63,7 +63,7 @@ const Badge: React.FC<{f: number; size: number}> = ({f, size}) => {
   const moving = ROLL.some((t) => f > sec(t) && f < sec(t + 0.09));
   const h = size * 0.62;
   return (
-    <div style={{position: 'absolute', right: -size * 0.2, top: -size * 0.2, width: size, height: size, borderRadius: size / 2, background: COLORS.badgeRed, border: `${size * 0.06}px solid ${COLORS.white}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 20px rgba(13,18,36,0.2)', transform: `scale(${popIn(f, BADGE, 0.3, 1.04)})`, opacity: 1 - tween(f, 5.1, 5.25)}}>
+    <div style={{position: 'absolute', right: -size * 0.2, top: -size * 0.2, width: size, height: size, borderRadius: size / 2, background: COLORS.badgeRed, border: `${size * 0.06}px solid ${COLORS.white}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 20px rgba(13,18,36,0.2)', transform: `scale(${popIn(f, BADGE, 0.3, 1.04)})`, opacity: 1 - tween(f, 4.7, 4.85)}}>
       <div style={{height: h, overflow: 'hidden', width: size * 0.6}}>
         <div style={{transform: `translateY(${-pos * h}px)`, filter: moving ? 'blur(1.4px)' : undefined}}>
           {['3', '2', '1', '0'].map((d) => (
@@ -217,7 +217,7 @@ export const Scene09Publish: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
               const sc = (0.35 + 0.65 * L.p) * (waGlide > 0 ? 1 : breathe);
               return (
                 <>
-                  <ChannelLogo logo="whatsapp" cx={cx} cy={cy} size={size} scale={sc} blur={8 * Math.max(0, 1 - Math.min(1, L.p))} glow={L.glow * (1 - reveal)} opacity={(1 - waWhite) * Math.min(1, L.p * 1.4)} shadow={1 - reveal} badge={s >= BADGE && s < 5.3 ? <Badge f={f} size={58} /> : null} />
+                  <ChannelLogo logo="whatsapp" cx={cx} cy={cy} size={size} scale={sc} blur={8 * Math.max(0, 1 - Math.min(1, L.p))} glow={L.glow * (1 - reveal)} opacity={(1 - waWhite) * Math.min(1, L.p * 1.4)} shadow={1 - reveal} badge={s >= BADGE && s < 4.9 ? <Badge f={f} size={58} /> : null} />
                   {waWhite > 0 ? <ChannelLogo logo="whatsapp" cx={cx} cy={cy} size={size} color={WHATSAPP_FINAL.logo.color} opacity={waWhite} shadow={0} /> : null}
                 </>
               );

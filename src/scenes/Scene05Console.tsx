@@ -19,10 +19,10 @@ import {beatUnderline} from '../ui/TextBeat';
 import {envelope, SceneLayerProps} from './kit';
 
 export const PROMPT = "Build an agent for card services. It checks who the customer is, blocks lost cards, and hands over to a person when it can't.";
-const TYPE_AT = 1.2;
+const TYPE_AT = 0.7;
 const PER_CHAR = 0.85;
-const SEND = 3.15;
-const LIFT = 3.25;
+const SEND = 2.6;
+const LIFT = 2.7;
 const LIFT_END = LIFT + liftDuration(PROMPT); // ~4.47
 const COLLAPSE: [number, number] = [LIFT_END - 0.02, LIFT_END + 0.25];
 const TRAVEL: [number, number] = [COLLAPSE[1] - 0.02, COLLAPSE[1] + 0.2];
@@ -31,7 +31,7 @@ const CARD_LEFT = CONSOLE_CARD.cx - CONSOLE_CARD.width / 2;
 const CARD_TOP = CONSOLE_CARD.cy - CONSOLE_CARD.height / 2;
 
 // wide camera, at most a gentle 1.08 drift toward the input (card stays inside the margins)
-const CAM: CamKeys = {t: [0, 1.0, 3.1, 4.2], x: [960, 960, 960, 960], y: [540, 540, 548, 540], s: [1, 1, 1.08, 1]};
+const CAM: CamKeys = {t: [0, 0.8, 2.6, 3.8], x: [960, 960, 960, 960], y: [540, 540, 548, 540], s: [1, 1, 1.08, 1]};
 
 /**
  * SCENE 5 (7 s) Console prompt, then the untrained agent. Periwinkle sky.
@@ -59,11 +59,11 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const centre = {x: 960, y: 540};
   const orbGrow = popIn(f, ORB_AT, 0.4, 1.04);
   // the orb flies into the chat footer's mini orb (agent status line)
-  const toFooter = kfIO(f, [5.25, 5.6], [0, 1]);
+  const toFooter = kfIO(f, [4.75, 5.1], [0, 1]);
   const footer = toScreen(CHAT_VIEW, {x: CHAT.x + 28 + 14, y: CHAT.y + 718 + 17});
   const orbSize = 180 + (28 - 180) * toFooter;
   const orbPos = {x: centre.x + (footer.x - centre.x) * toFooter, y: centre.y + (footer.y - centre.y) * toFooter - Math.sin(toFooter * Math.PI) * 120};
-  const chatIn = kfIO(f, [5.1, 5.6], [0, 1]);
+  const chatIn = kfIO(f, [4.4, 4.8], [0, 1]);
   // the empty input field (world): collapses into a dark dot, which travels to the centre
   const I = CONSOLE_INPUT;
   const fieldC = {x: CARD_LEFT + I.x + I.width / 2, y: CARD_TOP + I.y + H / 2};
@@ -73,7 +73,7 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const dotC = {x: fieldC.x + (centre.x - fieldC.x) * travel, y: fieldC.y + (centre.y - fieldC.y) * travel - Math.sin(travel * Math.PI) * 40};
   const showField = s >= COLLAPSE[0] && s < ORB_AT + 0.12;
 
-  const click = toScreen(camAt(sec(1.0), CAM), {x: CARD_LEFT + CONSOLE_INPUT.x + 300, y: CARD_TOP + CONSOLE_INPUT.y + 45});
+  const click = toScreen(camAt(sec(0.6), CAM), {x: CARD_LEFT + CONSOLE_INPUT.x + 300, y: CARD_TOP + CONSOLE_INPUT.y + 45});
   const sendScreen = toScreen(camAt(sec(SEND), CAM), sendWorld);
 
   return (
@@ -139,7 +139,7 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
           ) : null}
           {s >= ORB_AT ? (
             <>
-              <PetalSpinner cx={orbPos.x} cy={orbPos.y} radius={150} ringRadius={94} frame={f} opacity={kf(f, [ORB_AT, ORB_AT + 0.15, 5.15, 5.25], [0, 1, 1, 0])} converge={tween(f, 5.05, 5.25)} />
+              <PetalSpinner cx={orbPos.x} cy={orbPos.y} radius={150} ringRadius={94} frame={f} opacity={kf(f, [ORB_AT, ORB_AT + 0.15, 4.8, 4.9], [0, 1, 1, 0])} converge={tween(f, 4.7, 4.9)} />
               {toFooter < 1 ? <Orb cx={orbPos.x} cy={orbPos.y} size={orbSize} scale={orbGrow} color={0} frame={f} /> : null}
             </>
           ) : null}
@@ -158,19 +158,19 @@ export const Scene05Console: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
         <Cursor
           frame={f}
           keys={[
-            {t: 0.4, x: 1660, y: 1040},
-            {t: 0.95, x: click.x, y: click.y},
-            {t: 1.1, x: click.x, y: click.y},
-            {t: 1.7, x: 1600, y: 930},
-            {t: 2.6, x: 1620, y: 920},
+            {t: 0.2, x: 1660, y: 1040},
+            {t: 0.55, x: click.x, y: click.y},
+            {t: 0.7, x: click.x, y: click.y},
+            {t: 1.3, x: 1600, y: 930},
+            {t: 2.1, x: 1620, y: 920},
             {t: SEND - 0.05, x: sendScreen.x + 6, y: sendScreen.y + 6},
             {t: SEND + 0.15, x: sendScreen.x + 6, y: sendScreen.y + 6},
             {t: SEND + 0.75, x: 1700, y: 1180},
           ]}
-          clicks={[1.0, SEND]}
+          clicks={[0.6, SEND]}
           hand={[[SEND - 0.3, SEND + 0.2]]}
           rippleColor={COLORS.inkNavy}
-          opacity={tween(f, 0.4, 0.6) * (1 - tween(f, SEND + 0.3, SEND + 0.6))}
+          opacity={tween(f, 0.2, 0.4) * (1 - tween(f, SEND + 0.3, SEND + 0.6))}
         />
       ) : null}
     </AbsoluteFill>

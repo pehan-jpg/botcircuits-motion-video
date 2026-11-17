@@ -1,11 +1,12 @@
 import React from 'react';
 import {AbsoluteFill, random, useCurrentFrame, useVideoConfig} from 'remotion';
-import {COLORS, FONT_MONO, FONT_SANS, alpha, kfIO, popIn, tween} from '../theme';
+import {COLORS, FONT_MONO, FONT_SANS, alpha, kf, kfIO, popIn, tween} from '../theme';
 import {AGENT, BUILD7, CENTER_CARD, DANIEL_ROW, WA_HEADER_GLYPH} from '../v7';
 import {Orb} from '../components/Orb';
 import {GWaveform} from '../components/Glyphs';
 import {CheckStroke} from '../components/Chip';
 import {UI, UI_FONT} from '../ui/tokens';
+import {CALL} from '../pacing';
 import {LineToCircle} from '../components/Morph';
 import {beatUnderline} from '../ui/TextBeat';
 import {envelope, SceneLayerProps} from './kit';
@@ -14,20 +15,20 @@ const C = CENTER_CARD;
 const ORB0 = {x: C.width / 2, y: 330}; // card local
 const ORB1 = {x: C.width / 2 - 110, y: 330};
 const N_POS = {x: C.width / 2 + 120, y: 330};
-const PER_WORD = 0.07;
-type Line = {who: 'D' | 'agent' | 'N'; text: string; at: number};
+type Line = {who: 'D' | 'agent' | 'N' | 'system'; text: string; at: number; dur: number};
+// three voices in separate slots with silent gaps (src/pacing.ts CALL): customer, agent, narrator
 const LINES: Line[] = [
-  {who: 'D', text: "I don't recognise a charge on my statement.", at: 0.8},
-  {who: 'agent', text: "I can help with that. This needs a teammate to review it, so I'm bringing one in now.", at: 1.8},
-  {who: 'N', text: "Hi Daniel, I've got the details and I'll take it from here.", at: 3.95},
+  {who: 'D', text: CALL.lines.customer, at: CALL.customer[0], dur: CALL.customer[1] - CALL.customer[0]},
+  {who: 'agent', text: CALL.lines.agent, at: CALL.agent[0], dur: CALL.agent[1] - CALL.agent[0]},
+  {who: 'system', text: CALL.lines.system, at: CALL.narrator[0] + 0.6, dur: 0.4},
 ];
-const lineEnd = (l: Line) => l.at + l.text.split(' ').length * PER_WORD;
-const HANDOFF = 3.05;
-const COLLAPSE: [number, number] = [4.9, 5.5];
+const HANDOFF = CALL.narrator[0];
+const COLLAPSE = CALL.collapse;
 
-/** Who is speaking at time s (drives the waveform ring). */
-const speaker = (s: number): 'D' | 'agent' | 'N' | null => {
-  for (const l of LINES) if (s >= l.at && s <= lineEnd(l) + 0.25) return l.who;
+/** Who is speaking at time s (drives the waveform ring); null = silence. */
+const speaker = (s: number): 'D' | 'agent' | null => {
+  if (s >= CALL.customer[0] && s < CALL.customer[1]) return 'D';
+  if (s >= CALL.agent[0] && s < CALL.agent[1]) return 'agent';
   return null;
 };
 
@@ -72,9 +73,18 @@ const InkAvatar: React.FC<{size: number; letter: string}> = ({size, letter}) => 
 /** One transcript row: avatar + text typed word by word. */
 const TranscriptRow: React.FC<{l: Line; frame: number; s: number}> = ({l, frame, s}) => {
   const words = l.text.split(' ');
-  const k = Math.max(1, Math.min(words.length, Math.floor((s - l.at) / PER_WORD) + 1));
+  const appear = Math.min(1, Math.max(0, popIn(frame, l.at, 0.3, 1.03)));
+  if (l.who === 'system') {
+    return (
+      <div style={{display: 'flex', justifyContent: 'center', padding: '10px 0', opacity: appear}}>
+        <span style={{fontFamily: FONT_SANS, fontSize: 22, lineHeight: '30px', color: UI.text2}}>{l.text}</span>
+      </div>
+    );
+  }
+  // typed in sync across the voice slot
+  const k = Math.max(1, Math.min(words.length, Math.floor(((s - l.at) / l.dur) * words.length) + 1));
   return (
-    <div style={{display: 'flex', gap: 16, alignItems: 'flex-start', padding: '10px 0', opacity: popIn(frame, l.at, 0.3, 1.03) > 0 ? Math.min(1, popIn(frame, l.at, 0.3, 1.03)) : 0}}>
+    <div style={{display: 'flex', gap: 16, alignItems: 'flex-start', padding: '10px 0', opacity: appear}}>
       {l.who === 'agent' ? (
         <div style={{position: 'relative', width: 40, height: 40, flexShrink: 0}}>
           <Orb cx={20} cy={20} size={40} frame={frame} shadow={false} />
@@ -113,30 +123,30 @@ export const Scene11Voice: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const joined = popIn(f, HANDOFF + 0.6, 0.3, 1.04);
   const orbSize = 220 + (120 - 220) * move;
   const orbC = {x: ORB0.x + (ORB1.x - ORB0.x) * move, y: ORB0.y};
-  const agentLevel = sp === 'agent' ? 1 : 0.15;
-  const nLevel = sp === 'N' ? 1 : 0.15;
-  const timer = Math.max(0, Math.floor(s - 0.3));
+  // silent slots: bars are still (level 0); customer: grey bars; agent: green bars
+  const level = sp === 'D' ? 0.6 : sp === 'agent' ? 1 : 0;
+  const timer = Math.max(0, Math.floor(s));
+  const gapGlow = kf(f, [CALL.customer[1], CALL.customer[1] + 0.3, CALL.agent[0] - 0.2, CALL.agent[0]], [0, 0.6, 0.6, 0]);
   const col = kfIO(f, COLLAPSE, [0, 1]);
-  const content = 1 - tween(f, COLLAPSE[0], COLLAPSE[0] + 0.3);
-  const rowIn = tween(f, COLLAPSE[0] + 0.3, COLLAPSE[1]);
+  const content = 1 - tween(f, COLLAPSE[0], COLLAPSE[0] + 0.25);
+  const rowIn = tween(f, COLLAPSE[0] + 0.2, COLLAPSE[0] + 0.35) * (1 - tween(f, COLLAPSE[1] - 0.15, COLLAPSE[1]));
   const rect = {x: C.x + (DANIEL_ROW.x - C.x) * col, y: C.y + (DANIEL_ROW.y - C.y) * col, w: C.width + (DANIEL_ROW.width - C.width) * col, h: C.height + (DANIEL_ROW.height - C.height) * col};
-  const owns = env.ownsShared;
   const shown = LINES.filter((l) => s >= l.at);
 
   return (
     <AbsoluteFill>
       {show('bg') ? (
-        <AbsoluteFill style={{opacity: env.inP * (1 - env.outP), filter: env.inP < 0.99 ? `blur(${14 * (1 - env.inP)}px)` : undefined}}>
+        <AbsoluteFill style={{opacity: env.inP, filter: env.inP < 0.99 ? `blur(${14 * (1 - env.inP)}px)` : undefined}}>
           {/* soft lilac and peach wash */}
           <AbsoluteFill style={{background: `radial-gradient(circle at 18% 22%, ${alpha('#D9D0FF', 0.9)} 0%, ${alpha('#D9D0FF', 0)} 45%), radial-gradient(circle at 85% 80%, ${alpha('#FFD3B5', 0.85)} 0%, ${alpha('#FFD3B5', 0)} 45%), #FBF8FF`}} />
         </AbsoluteFill>
       ) : null}
 
-      {show('fg') && owns ? (
+      {show('fg') ? (
         <>
           {/* deep green halo for the active call */}
           <div style={{position: 'absolute', left: C.x - 200, top: C.y - 120, width: C.width + 400, height: C.height + 240, borderRadius: '50%', background: `radial-gradient(ellipse, ${alpha('#14684A', 0.22)} 0%, ${alpha('#14684A', 0)} 62%)`, opacity: content}} />
-          <div data-safe="call card" style={{position: 'absolute', opacity: tween(f, 0.25, 0.6), filter: f < 40 ? `blur(${10 * (1 - tween(f, 0.25, 0.6))}px)` : undefined, transform: `perspective(2400px) rotateX(${3 * (1 - kfIO(f, [0.25, 0.8], [0, 1]))}deg)`, left: rect.x, top: rect.y, width: rect.w, height: rect.h, borderRadius: 32 - 12 * col, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: `0 30px 80px rgba(13,18,36,0.12), 0 0 0 2px ${alpha('#23A06B', 0.25 * content)}`, overflow: 'hidden', fontFamily: UI_FONT}}>
+          <div data-safe="call card" style={{position: 'absolute', opacity: tween(f, 0.25, 0.6) * (1 - tween(f, COLLAPSE[1] - 0.15, COLLAPSE[1])), filter: f < 40 ? `blur(${10 * (1 - tween(f, 0.25, 0.6))}px)` : undefined, transform: `perspective(2400px) rotateX(${3 * (1 - kfIO(f, [0.25, 0.8], [0, 1]))}deg)`, left: rect.x, top: rect.y, width: rect.w, height: rect.h, borderRadius: 32 - 12 * col, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: `0 30px 80px rgba(13,18,36,0.12), 0 0 0 2px ${alpha('#23A06B', 0.25 * content)}`, overflow: 'hidden', fontFamily: UI_FONT}}>
             <div style={{position: 'absolute', left: 0, top: 0, width: C.width, height: C.height, opacity: content}}>
               {/* header: Voice waveform glyph, agent name, call timer */}
               <div style={{position: 'absolute', left: WA_HEADER_GLYPH.cx - C.x - 22, top: WA_HEADER_GLYPH.cy - C.y - 22}}>
@@ -149,12 +159,11 @@ export const Scene11Voice: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
               <div style={{position: 'absolute', left: 0, right: 0, top: 96, height: 1, background: UI.border}} />
 
               {/* the orb with its waveform ring (agent: green bars; customer: grey bars, orb calm) */}
-              <BarRing cx={orbC.x} cy={orbC.y} r={orbSize / 2 + 18} frame={f} level={(sp === 'D' ? 0.6 : agentLevel * (1 - split) + 0.15 * split) * tween(f, 0.5, 0.8)} opacity={tween(f, 0.5, 0.65)} color={sp === 'D' ? '#9CA3AF' : '#14684A'} split={split} seed="agent" />
-              <Orb cx={orbC.x} cy={orbC.y} size={orbSize} frame={f} glow={sp === 'agent' ? 1 : 0} scale={popIn(f, 0.3, 0.4, 1.04)} />
+              <BarRing cx={orbC.x} cy={orbC.y} r={orbSize / 2 + 18} frame={f} level={level * (1 - split)} opacity={tween(f, 0.5, 0.65)} color={sp === 'D' ? '#9CA3AF' : '#14684A'} split={split} seed="agent" />
+              <Orb cx={orbC.x} cy={orbC.y} size={orbSize} frame={f} glow={sp === 'agent' ? 1 : gapGlow} scale={popIn(f, 0.3, 0.4, 1.04)} />
               {/* the teammate joins */}
               {nIn > 0 ? (
                 <>
-                  <BarRing cx={N_POS.x} cy={N_POS.y} r={78} frame={f} level={nLevel} color="#14684A" seed="nadia" />
                   <div style={{position: 'absolute', left: N_POS.x - 60, top: N_POS.y - 60, transform: `translateX(${(1 - Math.min(1, nIn)) * 40}px) scale(${nIn})`, opacity: Math.min(1, nIn)}}>
                     <InkAvatar size={120} letter="N" />
                   </div>

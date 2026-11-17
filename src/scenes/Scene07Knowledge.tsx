@@ -13,7 +13,7 @@ import {Cubic, cubicPath, cubicPoint} from '../components/StrokeLine';
 import {Logo} from '../components/logos';
 import {Caret, typedCount} from '../components/TypingText';
 import {AppShell, navPoint} from '../ui/AppShell';
-import {ChatThread, CONVO, lastBlockGeom, past} from '../ui/ChatThread';
+import {ChatThread, CONVO, lastBlockGeom, msgEnd, past} from '../ui/ChatThread';
 import {FlyChip} from '../ui/FlyChip';
 import {Orb} from '../components/Orb';
 import {SourceIcon, SourceRow} from '../ui/Panels';
@@ -60,10 +60,10 @@ const READY = [T.row1 + 0.65, T.row2 + 0.65, T.row3 + 0.65];
 const ROW_IN = [T.row1, T.row2, T.row3];
 
 const CAM: CamKeys = {
-  t: [0, 5.4, 6.0, 7.2, 7.65],
-  x: [CONFIG_VIEW.x, CONFIG_VIEW.x, CHAT_VIEW.x, CHAT_VIEW.x, CONFIG_VIEW.x],
-  y: [540, 540, 540, 540, 540],
-  s: [1, 1, 1, 1, 1],
+  t: [0, 6.0, 6.6],
+  x: [CONFIG_VIEW.x, CONFIG_VIEW.x, CHAT_VIEW.x],
+  y: [540, 540, 540],
+  s: [1, 1, 1],
 };
 const W = (p: {x: number; y: number}) => toScreen(CONFIG_VIEW, p); // world -> screen while acting (camera locked at 1.0)
 
@@ -133,7 +133,7 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
   const env = envelope(f, dur, true, true, BUILD7.ov.s7);
   const cam = camAt(f, CAM);
   const panning = isPanning((fr) => camAt(fr, CAM), f);
-  const config = kfIO(f, [5.4, 6.0, 7.2, 7.65], [1, 0, 0, 1]);
+  const config = kfIO(f, [6.0, 6.6], [1, 0]);
   const shellIn = tween(f, 0.1, 0.55);
   const dzMorph = kfIO(f, [0, 0.5], [0, 1]);
 
@@ -190,22 +190,22 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
   const ans = CONVO.s7[1];
   const srcLand = lastBlockGeom(msgs7, CHAT.height, true).source;
   const srcScreen = toScreen(CHAT_VIEW, {x: CHAT.x + srcLand.x, y: CHAT.y + srcLand.y});
-  const LIFT = 5.2;
+  const LIFT = 5.8;
   const chip0 = W({x: DROP.x + 96, y: rowTop(0) + 21});
-  const LAND = ans.at + ans.text.split(' ').length * 0.06 + 0.1;
+  const LAND = msgEnd(ans); // the source chip draws in as the answer finishes typing
   const chipKeys = [
     {t: LIFT, x: chip0.x, y: chip0.y, w: 250, o: 0},
     {t: LIFT + 0.2, x: chip0.x, y: chip0.y - 30, w: 250},
-    {t: 6.0, x: 1320, y: 640, w: 250, s: 0.95},
+    {t: 6.6, x: 1320, y: 640, w: 250, s: 0.95},
     {t: LAND - 0.15, x: 1310, y: 625, w: 250, s: 0.95},
     {t: LAND, x: srcScreen.x, y: srcScreen.y, w: 230},
     {t: LAND + 0.15, x: srcScreen.x, y: srcScreen.y, w: 230, o: 0},
   ];
   // Knowledge -> Simulator: the three rows collapse along dotted arcs into the orb, which flies to "Simulator"
   const ORB_W = {x: DROP_C.x, y: DROP.y + 40};
-  const orbPop = popIn(f, 7.62, 0.3, 1.04);
-  const collapse = (i: number) => kfIO(f, [7.72 + i * 0.08, 7.98 + i * 0.08], [0, 1]);
-  const orbFly = kfIO(f, [8.08, 8.4], [0, 1]);
+  const orbPop = popIn(f, 99, 0.3, 1.04);
+  const collapse = (i: number) => kfIO(f, [99 + i * 0.08, 99.3 + i * 0.08], [0, 1]);
+  const orbFly = kfIO(f, [99, 99.3], [0, 1]);
   const navW = navPoint('Simulator');
   const orbPos = {x: ORB_W.x + (navW.x - ORB_W.x) * orbFly, y: ORB_W.y + (navW.y - ORB_W.y) * orbFly - Math.sin(orbFly * Math.PI) * 60};
   const cur = s < T.grab + 0.05 ? cursorAt(f, keys) : s < T.drop ? W(dragPt) : cursorAt(f, after);
@@ -312,7 +312,7 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
 
               {/* dotted arcs from each row into the orb */}
               {[0, 1, 2].map((i) => {
-                const d = tween(f, 7.66 + i * 0.08, 7.84 + i * 0.08) * (1 - tween(f, 7.95 + i * 0.08, 8.1 + i * 0.08));
+                const d = tween(f, 99 + i * 0.08, 99.2 + i * 0.08) * (1 - tween(f, 99.3 + i * 0.08, 99.4 + i * 0.08));
                 if (d <= 0) return null;
                 const r0 = {x: DROP.x + DROP.width / 2, y: rowTop(i) + ROW_H / 2};
                 const curve: Cubic = [r0, {x: r0.x + 260, y: r0.y}, {x: ORB_W.x + 260, y: ORB_W.y}, ORB_W];
@@ -410,7 +410,7 @@ export const Scene07Knowledge: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
               hand={[[0.95, T.grab + 0.02], [T.addWeb - 0.25, T.addWeb + 0.2], [T.add - 0.25, T.add + 0.2], [T.connect - 0.25, T.connect + 0.2], [T.hover - 0.1, T.pick + 0.2]]}
               grab={[[T.grab, T.drop + 0.05]]}
               rippleColor={COLORS.inkNavy}
-              opacity={tween(f, 0.3, 0.55) * (1 - tween(f, 5.0, 5.25))}
+              opacity={tween(f, 0.3, 0.55) * (1 - tween(f, 5.45, 5.7))}
             />
           ) : null}
         </>

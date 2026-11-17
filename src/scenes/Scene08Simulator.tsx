@@ -1,18 +1,17 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
-import {COLORS, alpha, kf, kfIO, tween} from '../theme';
-import {sec} from '../timeline';
+import {COLORS, alpha, kfIO, tween} from '../theme';
 import {BUILD7, CHAT, CONFIG_VIEW, CONTENT, PUBLISH_BTN, SHELL} from '../v7';
 import {toScreen} from '../components/Stage';
 import {CameraRig, dissolve} from '../components/CameraRig';
 import {CreamSky} from '../components/ProceduralSky';
 import {IDENTITY} from '../components/Stage';
 import {Cursor} from '../components/Cursor';
-import {typedCount} from '../components/TypingText';
 import {AppShell} from '../ui/AppShell';
 import {ChatThread, chatFieldPoints, Msg} from '../ui/ChatThread';
 import {PublishButton, RESULT_H, TestResultCard, TracePanel} from '../ui/Panels';
 import {UI, UI_FONT} from '../ui/tokens';
+import {CHATS, S8_RESULT_AT} from '../pacing';
 import {CheckStroke} from '../components/Chip';
 import {beatUnderline} from '../ui/TextBeat';
 import {envelope, SceneLayerProps} from './kit';
@@ -22,17 +21,14 @@ const NAV_CLICK = 0.2; // the pill slides to Simulator as the page arrives (Text
 const PAGE_IN: [number, number] = [0.4, 0.85];
 const FIELD_CLICK = 1.1;
 const TYPE_AT = 1.2;
-const PER_CHAR = 1.0; // frames
 const FIRST = 'Hi, I lost my credit card. Can you block it?';
 const SEND = 2.2;
-const SIM_MSGS: Msg[] = [
-  {from: 'maya', text: FIRST, at: SEND + 0.05, time: '9:10 AM'},
-  {from: 'agent', text: 'Can you confirm the last four digits of the card?', at: 2.6, time: '9:10 AM'},
-  {from: 'maya', text: "I don't know the number.", at: 3.6, time: '9:10 AM'},
-  {from: 'agent', text: "I can't verify you here. Let me bring in a teammate.", at: 3.95, time: '9:11 AM'},
-];
-const TICKS = [2.4, 2.75, 4.0, 4.65];
-const RESULT_AT = 5.0;
+// replay (already seen) then the edge case, timed by src/pacing.ts
+const SIM_MSGS: Msg[] = CHATS.s8.msgs;
+const SM = CHATS.s8.msgs;
+// the Trace steps tick in sync with the chat
+const TICKS = [SM[0].at + 0.15, SM[1].at + 0.2, SM[2].typedEnd + 0.2, SM[3].typedEnd];
+const RESULT_AT = S8_RESULT_AT;
 const TO_BUTTON: [number, number] = [99, 100]; // the Publish button now forms from TextBeat 5's underline
 
 // ---- layout (world): whole window, camera locked at 1.0 ----
@@ -65,8 +61,9 @@ export const Scene08Simulator: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
   const spot = resultIn; // chat and trace drop to 45% while the result is shown
 
   // Maya's first message typed into the field, then sent
-  const n = s < SEND ? typedCount(f, sec(TYPE_AT), FIRST.length, PER_CHAR, 'sim8') : 0;
-  const focus = kf(f, [FIELD_CLICK, FIELD_CLICK + 0.1, SEND + 0.1, SEND + 0.3], [0, 1, 1, 0]);
+  // Maya's first line is a replay (seen in scene 1), so it is not typed into the field here
+  const n = 0;
+  const focus = 0;
   const pts = chatFieldPoints(SIM.height);
   const fieldPt = W({x: SIM.x + pts.field.x, y: SIM.y + pts.field.y});
   const sendPt = W({x: SIM.x + pts.send.x, y: SIM.y + pts.send.y});
@@ -94,7 +91,7 @@ export const Scene08Simulator: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
             <div style={{position: 'absolute', left: 0, top: 0, ...dissolve(pageIn, env.outP), fontFamily: UI_FONT}}>
               <div data-safe="page title" style={{position: 'absolute', left: CONTENT.x + 32, top: SHELL.y + 18, height: 52, display: 'flex', alignItems: 'center', fontSize: 26, fontWeight: 700, color: UI.ink, whiteSpace: 'nowrap'}}>Simulator</div>
               <div style={{position: 'absolute', left: 0, top: 0, opacity: 1 - 0.55 * spot}}>
-                <ChatThread frame={f} msgs={SIM_MSGS} orbColor={1} x={SIM.x} y={SIM.y} height={SIM.height} draft={FIRST.slice(0, n)} focus={focus} sendPress={kf(f, [SEND, SEND + 0.07, SEND + 0.22], [0, 1, 0])} />
+                <ChatThread frame={f} msgs={SIM_MSGS} orbColor={1} x={SIM.x} y={SIM.y} height={SIM.height} draft={FIRST.slice(0, n)} focus={focus} />
               </div>
               <div style={{position: 'absolute', left: TRACE.x, top: TRACE.y, opacity: 1 - 0.55 * spot}}>
                 <TracePanel frame={f} ticks={TICKS} width={TRACE_W} height={TRACE.height} lineOpacity={tween(f, 0.45, 0.55)} markersAt={0.5} />
@@ -165,7 +162,7 @@ export const Scene08Simulator: React.FC<SceneLayerProps> = ({layer = 'all'}) => 
             clicks={[FIELD_CLICK, SEND]}
             hand={[[FIELD_CLICK - 0.15, FIELD_CLICK + 0.15], [SEND - 0.25, SEND + 0.2]]}
             rippleColor={COLORS.inkNavy}
-            opacity={tween(f, 0.5, 0.7) * (1 - tween(f, SEND + 0.35, SEND + 0.7))}
+            opacity={0}
           />
         </>
       ) : null}

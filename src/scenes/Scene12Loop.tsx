@@ -11,6 +11,7 @@ import {GWaveform} from '../components/Glyphs';
 import {Caret} from '../components/TypingText';
 import {AppShell, navPoint} from '../ui/AppShell';
 import {UI, UI_FONT} from '../ui/tokens';
+import {CALL} from '../pacing';
 import {LineToCircle} from '../components/Morph';
 import {beatUnderline} from '../ui/TextBeat';
 import {envelope, SceneLayerProps} from './kit';
@@ -160,8 +161,8 @@ export const Scene12Loop: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
               </div>
               <div style={{position: 'absolute', left: 0, right: 0, top: 96, height: 1, background: UI.border}} />
               <div style={{position: 'absolute', left: 28, right: 28, top: 116}}>
-                <Row who="D" text="I don't recognise a charge on my statement." frame={f} />
-                <Row who="agent" text="I can help with that. This needs a teammate to review it, so I'm bringing one in now." frame={f} />
+                <Row who="D" text={CALL.lines.customer} frame={f} />
+                <Row who="agent" text={CALL.lines.agent} frame={f} />
                 {sent > 0 ? <Row who="N" text={REPLY} frame={f} opacity={Math.min(1, sent)} /> : null}
               </div>
               {/* message field (active once Nadia takes over) */}

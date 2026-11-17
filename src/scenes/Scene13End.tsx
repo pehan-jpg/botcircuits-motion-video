@@ -16,8 +16,9 @@ const LINE_FONT = `600 ${FS}px "${UI_FAMILY}"`;
 const BREAK = TAGLINE.indexOf('. ', TAGLINE.indexOf('. ') + 1) >= 0 ? TAGLINE.indexOf('. ', TAGLINE.indexOf('. ') + 1) + 1 : -1;
 const LINES = BREAK > 0 ? [TAGLINE.slice(0, BREAK), TAGLINE.slice(BREAK + 1)] : [TAGLINE];
 const UNDERLINE = 'everywhere';
-const TYPE_AT = 0.7;
-const PER_WORD = 0.16;
+// the line types over about 4.3 s, then the lockup holds for at least 1.2 s
+const TYPE_AT = 0.5;
+const PER_WORD = 0.42;
 
 // final lockup (symbol + wordmark), centred
 const MARK_H = 130;
@@ -42,20 +43,22 @@ export const Scene13End: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const env = envelope(f, BUILD7.dur.s13, true, false, BUILD7.ov.s13);
   const expand = kfIO(f, [0.3, 1.0], [0, 1]);
   const orbOut = tween(f, 0.3, 0.8);
-  const lineOut = tween(f, 3.4, 3.8);
+  const lineOut = tween(f, 4.6, 4.9);
   // the ring expands and fades as the line types, then returns to flow into the symbol
-  const back = kfIO(f, [3.4, 3.7], [0, 1]);
-  const toDots = kfIO(f, [3.65, 4.2], [0, 1]);
+  const back = kfIO(f, [4.6, 4.85], [0, 1]);
+  const toDots = kfIO(f, [4.8, 5.15], [0, 1]);
   const ringR = LOOP_RING.r + 310 * expand * (1 - back);
-  const ringOp = (1 - expand) * (1 - back) + back * (1 - tween(f, 3.65, 3.8));
-  const markIn = tween(f, 4.05, 4.3);
-  const wordIn = tween(f, 4.15, 4.35);
+  const ringOp = (1 - expand) * (1 - back) + back * (1 - tween(f, 4.8, 4.95));
+  const markIn = tween(f, 5.05, 5.25);
+  const wordIn = tween(f, 5.1, 5.3);
 
   // words with their typing time
   let wi = 0;
   const lineEls = LINES.map((ln) => ln.split(' ').map((w) => ({w, i: wi++})));
   const total = wi;
-  const underlineAt = TYPE_AT + total * PER_WORD + 0.1;
+  // the underline draws as soon as its word has typed
+  const ulWord = TAGLINE.split(' ').findIndex((w) => w.startsWith(UNDERLINE.split(' ')[0]));
+  const underlineAt = TYPE_AT + (ulWord + 1) * PER_WORD + 0.15;
   // the first word starts grey and darkens as the rest types; the final state is all ink
   const firstDark = tween(f, TYPE_AT + PER_WORD, TYPE_AT + total * PER_WORD + 0.3);
   const ulDraw = kfIO(f, [underlineAt, underlineAt + 0.3], [0, 1]);
@@ -124,8 +127,8 @@ export const Scene13End: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             </div>
           ) : null}
           {URL ? (
-            <div data-safe="end url" style={{position: 'absolute', left: 0, right: 0, top: 540 + MARK_H / 2 + 40, textAlign: 'center', fontFamily: FONT_MONO, fontSize: 28, color: UI.text2, opacity: tween(f, 4.4, 4.6)}}>
-              {URL.slice(0, Math.max(0, Math.floor((s - 4.4) / 0.03)))}
+            <div data-safe="end url" style={{position: 'absolute', left: 0, right: 0, top: 540 + MARK_H / 2 + 40, textAlign: 'center', fontFamily: FONT_MONO, fontSize: 28, color: UI.text2, opacity: tween(f, 5.3, 5.5)}}>
+              {URL.slice(0, Math.max(0, Math.floor((s - 5.3) / 0.03)))}
             </div>
           ) : null}
         </>

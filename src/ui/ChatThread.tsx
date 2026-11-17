@@ -17,6 +17,8 @@ export type Msg = {
   chip?: string; // tool result chip inside the agent bubble
   source?: string; // source chip under the agent bubble
   instant?: boolean; // appears complete (a chip landed on it) instead of typing
+  wps?: number; // typing speed in words per second (see src/pacing.ts)
+  replay?: boolean; // already seen by the viewer: fast, no caret
 };
 
 // Light variant of the scenes 1-3 thread.
@@ -44,8 +46,8 @@ const bubbleDims = (text: string) => {
 /** Typed state of an agent message: visible words (fractional) and bubble size. */
 const typedState = (m: Msg, s: number) => {
   const words = m.text.split(' ');
-  if (m.from === 'maya' || m.at === -Infinity || m.instant) return {k: words.length, dims: bubbleDims(m.text), done: true};
-  const t = (s - m.at) / PER_WORD; // words typed (fractional); the first word shows as the bubble appears
+  if (m.at === -Infinity || m.instant || (m.from === 'maya' && !m.wps)) return {k: words.length, dims: bubbleDims(m.text), done: true};
+  const t = (s - m.at) * (m.wps ?? 1 / PER_WORD); // words typed (fractional); the first word shows as the bubble appears
   const k = Math.max(1, Math.min(words.length, t + 1));
   const kf = Math.floor(k);
   const a = bubbleDims(words.slice(0, Math.max(1, kf)).join(' '));
@@ -53,14 +55,15 @@ const typedState = (m: Msg, s: number) => {
   const p = ease(k - kf, [0, 1], [0, 1]);
   return {k: kf, dims: {lines: a.lines, w: a.w + (b.w - a.w) * p, h: a.h + (b.h - a.h) * p}, done: kf >= words.length};
 };
-export const msgEnd = (m: Msg) => m.at + (m.instant ? 0.15 : m.text.split(' ').length * PER_WORD);
+export const msgEnd = (m: Msg) => m.at + (m.instant ? 0.15 : m.text.split(' ').length / (m.wps ?? 1 / PER_WORD));
+const CHIP_IN = 0.5; // CHIP_TIME in src/pacing.ts
 
 /** Current height of a message block (bubble, chip, source, timestamp). */
 const blockHeight = (m: Msg, s: number) => {
   const st = typedState(m, s);
   const end = msgEnd(m);
-  const chip = m.chip ? (m.at === -Infinity ? 1 : tween(Math.round(s * 60), end + 0.05, end + 0.35)) : 0;
-  const src = m.source ? (m.at === -Infinity ? 1 : tween(Math.round(s * 60), end + 0.1, end + 0.4)) : 0;
+  const chip = m.chip ? (m.at === -Infinity ? 1 : tween(Math.round(s * 60), end, end + CHIP_IN * 0.6)) : 0;
+  const src = m.source ? (m.at === -Infinity ? 1 : tween(Math.round(s * 60), end, end + CHIP_IN * 0.6)) : 0;
   return st.dims.h + chip * (CHIP_H + 12) + src * (SOURCE_H + 10) + META + GAP;
 };
 
@@ -109,8 +112,9 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
   const appear = m.at === -Infinity ? 1 : popIn(frame, m.at, 0.3, 1.03);
   const st = typedState(m, s);
   const end = msgEnd(m);
-  const chip = m.chip ? (m.at === -Infinity ? 1 : tween(frame, end + 0.05, end + 0.35)) : 0;
-  const src = m.source ? (m.at === -Infinity ? 1 : tween(frame, end + 0.1, end + 0.4)) : 0;
+  const chip = m.chip ? (m.at === -Infinity ? 1 : tween(frame, end, end + CHIP_IN * 0.6)) : 0;
+  const src = m.source ? (m.at === -Infinity ? 1 : tween(frame, end, end + CHIP_IN * 0.6)) : 0;
+  const typing = m.at !== -Infinity && !m.replay && !m.instant && !st.done;
   let wi = 0;
   const finalLines = bubbleDims(m.text).lines;
   const chipW = isAgent && m.chip ? measureText(m.chip, `600 22px "Plus Jakarta Sans"`, 12) + 64 : 0;
@@ -150,6 +154,11 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
                 return (
                   <span key={j} style={{opacity: k < st.k ? 1 : 0}}>
                     {w}
+                    {typing && k === st.k - 1 ? (
+                      <span style={{display: 'inline-block', width: 0, position: 'relative'}}>
+                        <span style={{position: 'absolute', left: 3, top: 5, width: 2.5, height: 28, borderRadius: 1, background: UI.ink}} />
+                      </span>
+                    ) : null}
                     {j < arr.length - 1 ? ' ' : ''}
                   </span>
                 );
@@ -159,7 +168,7 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
         </div>
         {m.chip && chip > 0 ? (
           <div style={{position: 'absolute', left: PAD_X - 4, top: st.dims.h - 6, opacity: chip}}>
-            <ResultChip label={m.chip} draw={m.at === -Infinity ? 1 : tween(frame, end + 0.15, end + 0.5)} />
+            <ResultChip label={m.chip} draw={m.at === -Infinity ? 1 : tween(frame, end + 0.1, end + CHIP_IN)} />
           </div>
         ) : null}
       </div>
@@ -356,20 +365,6 @@ export const chatFieldPoints = (height = CHAT.height) => ({
   send: {x: CHAT.width - 24 - 8 - 24, y: height - 90 + 32},
 });
 
-/** The conversation, continuing across scenes (scene-local times). */
-export const CONVO = {
-  s5: [
-    {from: 'maya', text: 'Hi, I lost my credit card. Can you block it?', at: 5.5, time: '9:02 AM'},
-    {from: 'agent', text: "Sorry, I can't help with that yet.", at: 5.85, time: '9:02 AM'},
-  ] as Msg[],
-  s6: [
-    {from: 'agent', text: "I'm sorry to hear that, Maya. Can you confirm the last four digits of the card?", at: 5.95, time: '9:05 AM'},
-    {from: 'maya', text: '4821', at: 7.05, time: '9:05 AM'},
-    {from: 'agent', text: "Thanks Maya, you're verified. I'll block your card now.", at: 7.25, time: '9:06 AM', chip: 'Card blocked', instant: true},
-  ] as Msg[],
-  s7: [
-    {from: 'maya', text: 'When will my new card arrive?', at: 5.95, time: '9:07 AM'},
-    {from: 'agent', text: 'Your new card should arrive in 5 to 7 business days.', at: 6.15, time: '9:07 AM', source: 'Card policy.pdf'},
-  ] as Msg[],
-};
+/** The conversation, continuing across scenes (scene-local times), timed by src/pacing.ts. */
+export {CONVO} from '../pacing';
 export const past = (...lists: Msg[][]) => lists.flat().map((m) => ({...m, at: -Infinity}));

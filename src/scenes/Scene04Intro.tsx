@@ -95,10 +95,11 @@ export const Scene04Intro: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   const blobs = kf(f, [1.6, 1.75, 2.5, 2.75], [0, 1, 1, 0]);
   const markIn = tween(f, 2.45, 2.75);
   const wordIn = tween(f, 2.7, 3.2);
-  const textOut = tween(f, 4.8, 5.2);
-  const toPill = kfIO(f, [4.85, 5.2], [0, 1]);
-  const toCaret = kfIO(f, [5.2, 5.6], [0, 1]);
-  const sky = tween(f, 4.9, 6.0);
+  // hold to 4.3, then out: text blurs, symbol -> pill (4.35-4.7) -> lime caret (4.7-5.1, where TextBeat 1 starts)
+  const textOut = tween(f, 4.3, 4.7);
+  const toPill = kfIO(f, [4.35, 4.7], [0, 1]);
+  const toCaret = kfIO(f, [4.7, 5.1], [0, 1]);
+  const sky = tween(f, 4.4, 5.5);
 
   // layout from measured widths (the line is reserved at full width, so it never jumps)
   const tw = measureText(TITLE, T_FONT, FS * 0.56);
@@ -179,7 +180,7 @@ export const Scene04Intro: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
           {/* symbol, then the dark pill, then the lime caret */}
           {markIn > 0 && s < dur - BUILD7.ov.s4.out ? (
             toPill <= 0 ? (
-              <div data-safe="logo symbol" style={{position: 'absolute', left: markC.x - MARK_W / 2, top: markC.y - MARK_H / 2, opacity: markIn, filter: markIn < 0.99 ? `blur(${8 * (1 - markIn)}px)` : undefined, transform: `scale(${kf(f, [3.2, 4.8], [1, 1.02])})`}}>
+              <div data-safe="logo symbol" style={{position: 'absolute', left: markC.x - MARK_W / 2, top: markC.y - MARK_H / 2, opacity: markIn, filter: markIn < 0.99 ? `blur(${8 * (1 - markIn)}px)` : undefined, transform: `scale(${kf(f, [3.2, 4.3], [1, 1.02])})`}}>
                 <LogoMark height={MARK_H} />
               </div>
             ) : (

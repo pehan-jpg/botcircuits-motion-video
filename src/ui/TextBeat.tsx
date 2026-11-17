@@ -26,8 +26,9 @@ const FONT = `600 ${FS}px "${UI_FAMILY}"`;
 const LH = Math.round(FS * 1.35);
 const PAD = Math.round(FS * 0.3);
 const CY = 540;
-const TYPE_END = 0.9;
-export const UL = {h: 6, r: 3, drawAt: 0.9, drawEnd: 1.2, outAt: 1.2};
+export const UL = {h: 6, r: 3};
+/** Beat phases from its length: typing, underline draw (0.3 s), blur out (the last 0.4 s, while the next scene picks up the underline). */
+const phases = (dur: number) => ({drawAt: dur - 0.7, drawEnd: dur - 0.4, outAt: dur - 0.4});
 const width = (t: string) => measureText(t, FONT, FS * 0.56);
 const cps = (b: Beat) => Math.max(28, b.text.length / 0.85);
 
@@ -57,17 +58,18 @@ export const TextBeat: React.FC<{beatKey: BuildKey; backdrop: React.ReactNode; l
   const b = beatOf(beatKey);
   const ov = BUILD7.ov[beatKey];
   const inP = tween(f, 0, ov.in);
-  const out = tween(f, UL.outAt, BUILD7.dur[beatKey]);
+  const P = phases(BUILD7.dur[beatKey]);
+  const out = tween(f, P.outAt, BUILD7.dur[beatKey]);
   const n = Math.max(0, Math.min(b.text.length, Math.floor(s * cps(b))));
   const W = width(b.text);
   const left = 960 - W / 2;
   const firstEnd = b.text.indexOf(' ');
   const firstDark = n <= firstEnd ? 0 : (n - firstEnd) / (b.text.length - firstEnd);
   const caretX = left + width(b.text.slice(0, n));
-  const typing = s < TYPE_END + 0.05;
+  const typing = s < P.drawAt;
   const blinkOn = typing && (n < b.text.length || Math.floor((s * 60) / 16) % 2 === 0);
   const ul = beatUnderline(beatKey);
-  const draw = tween(f, UL.drawAt, UL.drawEnd);
+  const draw = tween(f, P.drawAt, P.drawEnd);
   const show = (k: 'bg' | 'fg') => layer === 'all' || layer === k;
   return (
     <AbsoluteFill>
@@ -85,11 +87,11 @@ export const TextBeat: React.FC<{beatKey: BuildKey; backdrop: React.ReactNode; l
             </span>
           </div>
           {/* lime caret */}
-          {typing && s < UL.drawAt + 0.05 ? (
+          {typing ? (
             <div style={{position: 'absolute', left: caretX + (n > 0 ? 4 : 0), top: CY - 32, width: 4, height: 64, borderRadius: 2, background: LIME, opacity: blinkOn ? 1 : 0}} />
           ) : null}
           {/* the lime underline under the accent word (the next scene carries it on from 1.2 s) */}
-          {draw > 0 && s < UL.outAt + 1 / 60 ? <div style={{position: 'absolute', left: ul.x, top: ul.y, width: ul.w * draw, height: ul.h, borderRadius: UL.r, background: LIME}} /> : null}
+          {draw > 0 && s < P.outAt + 1 / 60 ? <div style={{position: 'absolute', left: ul.x, top: ul.y, width: ul.w * draw, height: ul.h, borderRadius: UL.r, background: LIME}} /> : null}
         </>
       ) : null}
     </AbsoluteFill>

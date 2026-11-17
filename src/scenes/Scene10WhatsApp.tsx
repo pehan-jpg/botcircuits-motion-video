@@ -7,17 +7,14 @@ import {GWaveform} from '../components/Glyphs';
 import {ChannelLogo} from '../ui/ChannelLogo';
 import {ChatThread, Msg} from '../ui/ChatThread';
 import {UI, UI_FONT} from '../ui/tokens';
+import {CHATS} from '../pacing';
 import {envelope, SceneLayerProps} from './kit';
 
-const MSGS: Msg[] = [
-  {from: 'maya', text: 'Hi, I lost my credit card. Can you block it?', at: 1.0, time: '9:02 AM'},
-  {from: 'agent', text: "I'm sorry to hear that, Maya. Can you confirm the last four digits of the card?", at: 1.3, time: '9:02 AM'},
-  {from: 'maya', text: '4821', at: 2.25, time: '9:02 AM'},
-  {from: 'agent', text: "Thanks Maya, you're verified. Your card is blocked and a new one is on its way.", at: 2.5, time: '9:02 AM', chip: 'Card blocked'},
-];
-const BLOCKED = 2.5 + 16 * 0.06 + 0.05; // the "Card blocked" chip
+// replay (already seen) then the new reply, timed by src/pacing.ts
+const MSGS: Msg[] = CHATS.s10.msgs;
+const BLOCKED = CHATS.s10.msgs[3].typedEnd; // the "Card blocked" chip
 const SHRINK: [number, number] = [0.5, 1.1];
-const OUT: [number, number] = [3.75, 4.05]; // content blurs out, glyph morphs to the Voice waveform
+const OUT: [number, number] = [99, 100]; // the scene now dissolves into TextBeat 6 // content blurs out, glyph morphs to the Voice waveform
 
 /** The large mono clock + thin timeline line of scenes 1 to 3, frozen at 9:02 AM (light variant). */
 export const FrozenClock: React.FC<{opacity: number; pulse: number}> = ({opacity, pulse}) => (
@@ -76,7 +73,7 @@ export const Scene10WhatsApp: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
   return (
     <AbsoluteFill>
       {show('bg') ? (
-        <AbsoluteFill style={{opacity: 1 - env.outP}}>
+        <AbsoluteFill>
           {/* pale wash: #EAF8EF at the edges, white centre */}
           <AbsoluteFill style={{background: `radial-gradient(ellipse 70% 70% at 50% 50%, #FFFFFF 0%, #FFFFFF 35%, #EAF8EF 100%)`}} />
         </AbsoluteFill>

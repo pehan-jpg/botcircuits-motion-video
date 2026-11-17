@@ -4,14 +4,16 @@
 // ---------------------------------------------------------------------------
 import {sec} from './timeline';
 import {Camera} from './camera';
+import {BEAT_LEN, SCENE_LEN} from './pacing';
 
 export const OVERLAP = 0.5;
 /** Overlap next to a TextBeat (both sides). */
 export const BEAT_OVERLAP = 0.4;
 /** Build stage in order: scenes and the seven TextBeats (b1..b7). */
 const ORDER = [
-  ['s4', 6.0], ['b1', 1.6], ['s5', 7.0], ['b2', 1.6], ['s6', 9.5], ['b3', 1.6], ['s7', 8.5], ['b4', 1.6],
-  ['s8', 8.0], ['b5', 1.6], ['s9', 7.0], ['s10', 4.5], ['b6', 1.6], ['s11', 6.0], ['b7', 1.6], ['s12', 7.0], ['s13', 5.5],
+  ['s4', SCENE_LEN.s4], ['b1', BEAT_LEN.b1], ['s5', SCENE_LEN.s5], ['b2', BEAT_LEN.b2], ['s6', SCENE_LEN.s6], ['b3', BEAT_LEN.b3],
+  ['s7', SCENE_LEN.s7], ['b4', BEAT_LEN.b4], ['s8', SCENE_LEN.s8], ['b5', BEAT_LEN.b5], ['s9', SCENE_LEN.s9], ['s10', SCENE_LEN.s10],
+  ['b6', BEAT_LEN.b6], ['s11', SCENE_LEN.s11], ['b7', BEAT_LEN.b7], ['s12', SCENE_LEN.s12], ['s13', SCENE_LEN.s13],
 ] as const;
 export type BuildKey = (typeof ORDER)[number][0];
 export const BUILD_KEYS = ORDER.map(([k]) => k) as BuildKey[];
