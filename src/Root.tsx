@@ -1,7 +1,6 @@
 import { Composition } from "remotion";
-import { FPS, HEIGHT, WIDTH } from "./constants";
+import { DURATION, END_MARK, FPS, HEIGHT, LOOP, WIDTH } from "./constants";
 import { ConciergeTitleCard, ConciergeTitleCardProps } from "./ConciergeTitleCard";
-import { DURATION } from "./ConciergeTitleCard/timeline";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -13,7 +12,7 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         width={WIDTH}
         height={HEIGHT}
-        defaultProps={{ loop: false, guards: true } satisfies ConciergeTitleCardProps}
+        defaultProps={{ loop: LOOP, endMark: END_MARK, guards: true } satisfies ConciergeTitleCardProps}
       />
     </>
   );

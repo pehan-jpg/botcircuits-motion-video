@@ -18,7 +18,8 @@ export const SafeAreaGuard: React.FC<{
   enabled: boolean;
   frame: number;
   rootId: string;
-  title: TitleGuardSpec;
+  /** Optional title checks (unused when a composition has no typed title). */
+  title?: TitleGuardSpec;
 }> = ({ enabled, frame, rootId, title }) => {
   useLayoutEffect(() => {
     if (!enabled) return;
@@ -65,7 +66,7 @@ export const SafeAreaGuard: React.FC<{
 
     // 2. Title box is fixed from its first frame.
     const box = root.querySelector<HTMLElement>("[data-title-box]");
-    if (box) {
+    if (box && title) {
       const r = local(box.getBoundingClientRect());
       const e = title.box;
       if (

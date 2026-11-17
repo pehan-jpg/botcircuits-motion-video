@@ -13,17 +13,20 @@ export const TYPE_RULES = {
   caretBlinkHz: 1.1,
   caretHoldAfterLast: 0.3,
   caretFade: 0.15,
+  /** A bubble grows to its next line over this time, ending as that line's first character starts. */
+  lineGrow: 0.12,
 } as const;
 
 export type TypeSchedule = {
   /** Start time of each character, in seconds from the typing start. */
   starts: number[];
-  /** Time the last character starts. */
   lastStart: number;
   /** Time the last character is fully visible. */
   done: number;
   /** Time the caret has fully faded. */
   caretGone: number;
+  /** Smallest gap between two character starts (for the speed guard). */
+  minGap: number;
 };
 
 /**
@@ -34,12 +37,14 @@ export const typeSchedule = (text: string, cps: number): TypeSchedule => {
   const chars = Array.from(text);
   const starts: number[] = [];
   let t = 0;
+  let minGap = Infinity;
   chars.forEach((ch, i) => {
     starts.push(t);
     const jitter = (random(`typewriter-${i}`) * 2 - 1) * TYPE_RULES.jitter;
     let gap = (1 / cps) * (1 + jitter);
     if (ch === ",") gap += TYPE_RULES.commaPause;
     if (ch === ".") gap += TYPE_RULES.stopPause;
+    if (i < chars.length - 1) minGap = Math.min(minGap, gap);
     t += gap;
   });
   const lastStart = starts[starts.length - 1] ?? 0;
@@ -48,7 +53,19 @@ export const typeSchedule = (text: string, cps: number): TypeSchedule => {
     lastStart,
     done: lastStart + TYPE_RULES.charFade,
     caretGone: lastStart + TYPE_RULES.caretHoldAfterLast + TYPE_RULES.caretFade,
+    minGap,
   };
+};
+
+/** Index of the first character of each line, for lines produced by wrapLines. */
+export const lineStartIndices = (lines: string[]) => {
+  const out: number[] = [];
+  let n = 0;
+  for (const l of lines) {
+    out.push(n);
+    n += Array.from(l).length;
+  }
+  return out;
 };
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
@@ -60,14 +77,19 @@ export const caretOpacity = (t: number, schedule: TypeSchedule, leadIn = 0) => {
   const fade = 1 - clamp01((t - fadeStart) / TYPE_RULES.caretFade);
   const typing = t >= 0 && t <= schedule.lastStart + 0.05;
   // Solid while characters arrive, a soft 1.1 Hz blink otherwise.
-  const phase = typing ? 0 : (t - (t < 0 ? -leadIn : schedule.lastStart));
+  const phase = typing ? 0 : t - (t < 0 ? -leadIn : schedule.lastStart);
   const wave = 0.5 + 0.5 * Math.cos(2 * Math.PI * TYPE_RULES.caretBlinkHz * phase);
   const blink = typing ? 1 : clamp01((wave - 0.25) * 4);
   return TYPE_RULES.caretOpacity * blink * fade;
 };
 
+/**
+ * Pre-wrapped typewriter. Every character is laid out at its final position from
+ * the first frame (opacity 0), so nothing shifts. No overflow clipping or masks.
+ */
 export const Typewriter: React.FC<{
-  text: string;
+  /** Lines as produced by wrapLines (trailing spaces kept, joined they form the text). */
+  lines: string[];
   /** Seconds since typing started (negative before it starts). */
   time: number;
   schedule: TypeSchedule;
@@ -79,11 +101,11 @@ export const Typewriter: React.FC<{
   caretColor?: string;
   /** Seconds the caret is shown before the first character. */
   caretLeadIn?: number;
-  /** Marks characters for the guard (title only). */
+  /** Marks characters for the readability guard. */
   charGuard?: string;
   style?: React.CSSProperties;
 }> = ({
-  text,
+  lines,
   time,
   schedule,
   fontFamily,
@@ -96,7 +118,7 @@ export const Typewriter: React.FC<{
   charGuard,
   style,
 }) => {
-  const chars = Array.from(text);
+  const lineStarts = lineStartIndices(lines);
   const started = schedule.starts.filter((s) => time >= s).length;
   const caretAlpha = caretOpacity(time, schedule, caretLeadIn);
   const caretIndex = Math.max(0, started - 1);
@@ -115,34 +137,39 @@ export const Typewriter: React.FC<{
         ...style,
       }}
     >
-      {chars.map((ch, i) => {
-        const o = clamp01((time - schedule.starts[i]) / TYPE_RULES.charFade);
-        return (
-          <span key={i} style={{ position: "relative" }}>
-            {/* Opacity sits on an inner span so the caret never inherits it. */}
-            <span data-guard-char={charGuard} style={{ opacity: o }}>
-              {ch}
-            </span>
-            {i === caretIndex && caretAlpha > 0 ? (
-              <span
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  // Zero layout width: the caret never pushes text around.
-                  left: caretAfter ? "calc(100% + 3px)" : -5,
-                  top: "50%",
-                  width: TYPE_RULES.caretWidth,
-                  height: caretHeight,
-                  marginTop: -caretHeight / 2,
-                  borderRadius: 1,
-                  background: caretColor,
-                  opacity: caretAlpha,
-                }}
-              />
-            ) : null}
-          </span>
-        );
-      })}
+      {lines.map((line, li) => (
+        <div key={li} style={{ height: lineHeight }}>
+          {Array.from(line).map((ch, ci) => {
+            const i = lineStarts[li] + ci;
+            const o = clamp01((time - schedule.starts[i]) / TYPE_RULES.charFade);
+            return (
+              <span key={ci} style={{ position: "relative" }}>
+                {/* Opacity sits on an inner span so the caret never inherits it. */}
+                <span data-guard-char={charGuard} style={{ opacity: o }}>
+                  {ch}
+                </span>
+                {i === caretIndex && caretAlpha > 0 ? (
+                  <span
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      // Zero layout width: the caret never pushes text around.
+                      left: caretAfter ? "calc(100% + 3px)" : -5,
+                      top: "50%",
+                      width: TYPE_RULES.caretWidth,
+                      height: caretHeight,
+                      marginTop: -caretHeight / 2,
+                      borderRadius: 1,
+                      background: caretColor,
+                      opacity: caretAlpha,
+                    }}
+                  />
+                ) : null}
+              </span>
+            );
+          })}
+        </div>
+      ))}
     </div>
   );
 };

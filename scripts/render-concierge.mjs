@@ -1,5 +1,6 @@
 // Renders ConciergeTitleCard: MP4, WebM, poster and stills every 0.25s.
-// Guards are on, so any safe area or title box violation fails the render.
+// Guards are on, so any safe area or readability violation fails the render.
+// Flags: --loop, --end-mark=symbol, --stills-only.
 import { bundle } from "@remotion/bundler";
 import { renderMedia, renderStill, selectComposition } from "@remotion/renderer";
 import fs from "node:fs";
@@ -13,7 +14,8 @@ fs.mkdirSync(stillsDir, { recursive: true });
 const args = new Set(process.argv.slice(2));
 const loop = args.has("--loop");
 const only = (name) => !args.has("--stills-only") || name === "stills";
-const inputProps = { loop, guards: true };
+const endMark = args.has("--end-mark=symbol") ? "symbol" : "none";
+const inputProps = { loop, endMark, guards: true };
 
 // Use the pre-installed headless shell when present (no download needed).
 const localShell =

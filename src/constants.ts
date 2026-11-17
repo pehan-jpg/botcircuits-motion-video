@@ -15,9 +15,20 @@ export const HEIGHT = 1080;
 /** Seconds to whole frames at the project frame rate. */
 export const sec = (n: number) => Math.round(n * FPS);
 
+/** ConciergeTitleCard v2: 8.0s at 60 fps. */
+export const DURATION = 480;
+
+/** Optional end mark: "none" ends on the resolved chat; "symbol" morphs into the BotCircuits symbol. */
+export type EndMark = "none" | "symbol";
+export const END_MARK: EndMark = "none";
+/** When true, the clip returns to the empty card so it loops. */
+export const LOOP = false;
+
 /** Typing speeds, in characters per second. */
 export const HEADLINE_CPS = 20;
 export const CHAT_CPS = 32;
+/** Readability ceiling checked by ReadabilityGuard. */
+export const MAX_CPS = 40;
 
 /** Layout rules. */
 export const SAFE_AREA = 96;
