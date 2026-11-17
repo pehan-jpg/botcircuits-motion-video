@@ -11,7 +11,7 @@ execSync('npx tsx scripts/guards.ts', {stdio: 'inherit'});
 
 const outDir = process.argv[2] || 'out/qa';
 const from = Number(process.argv[3] || 960);
-const to = Number(process.argv[4] || 7337);
+const to = Number(process.argv[4] || 7643);
 const browserExecutable = process.env.REMOTION_BROWSER || null;
 fs.mkdirSync(outDir, {recursive: true});
 const serveUrl = await bundle({entryPoint: path.resolve('src/index.ts')});

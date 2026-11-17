@@ -11,7 +11,9 @@ import {GWaveform} from '../components/Glyphs';
 import {Caret} from '../components/TypingText';
 import {AppShell, navPoint} from '../ui/AppShell';
 import {UI, UI_FONT} from '../ui/tokens';
-import {CALL, TYPE_WPS} from '../pacing';
+import {CALL, TYPE_CPS} from '../pacing';
+// the teammate's reply types in the Message input at about 5 words per second
+const TYPE_WPS = TYPE_CPS / 6.4;
 import {LineToCircle} from '../components/Morph';
 import {beatUnderline} from '../ui/TextBeat';
 import {envelope, SceneLayerProps} from './kit';

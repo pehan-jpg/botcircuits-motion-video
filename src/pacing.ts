@@ -6,21 +6,27 @@
 // (The Console prompt, Procedure rows and URL typing keep their own speed.)
 // ---------------------------------------------------------------------------
 import type {Msg} from './ui/ChatThread';
+import {charTimes} from './ui/typewriter';
 
-export const TYPE_WPS = 5; // normal bubbles, words per second
+export const TYPE_CPS = 32; // normal messages, characters per second (about 5 words per second)
+export const REPLAY_CPS = 70; // replayed messages (already seen), about 2.2x faster
+/** The guard's limit for normal messages. */
+export const MAX_CPS = 40;
 export const HOLD = (words: number) => Math.max(0.8, 0.4 + 0.04 * words); // after a bubble finishes typing
 export const MSG_GAP = 0.3;
 export const CHIP_TIME = 0.5; // a result or source chip drawing in
-export const REPLAY_WPS = 10; // content the viewer has already seen
-export const REPLAY_STAGGER = 0.3;
+export const REPLAY_GAP = 0.15; // between replayed messages
 export const REPLAY_HOLD = 0.3;
 /** Readability limit checked by the ReadabilityGuard. */
 export const MAX_WPS = 5.5;
 /** Agent typing indicator before a bubble (shorter for messages of four words or fewer). */
-export const INDICATOR_TIME = (words: number) => (words <= 4 ? 0.5 : 0.7);
-/** Customer messages: after typing in the input, the send press (0.15 s) and the bubble sliding up (0.3 s). */
-export const SEND_TIME = 0.5;
-export const SEND_PRESS = 0.15;
+export const INDICATOR_TIME = (words: number) => (words <= 4 ? 0.35 : 0.5);
+/** Agent: the bubble expands from the indicator to its final width before typing. */
+export const EXPAND_TIME = 0.25;
+/** Customer (and replay): the avatar and an empty one line bubble pop in before typing. */
+export const POP_TIME = 0.2;
+/** Timestamps and ticks fade in after typing. */
+export const META_FADE = 0.2;
 /** The scene tail that overlaps the next item (blur dissolve). */
 export const TAIL = 0.4;
 
@@ -34,49 +40,45 @@ export type Timed = Msg & {mode: Mode; typedEnd: number; chipEnd: number; holdEn
 export const words = (t: string) => t.split(/\s+/).filter(Boolean).length;
 
 /**
- * Times a chat sequence from `startAt`.
- *  - customer, normal: types in the Message input at TYPE_WPS, then SEND_TIME
- *    (send press + bubble slides up); the bubble lands at `at`.
- *  - agent, normal: typing indicator INDICATOR_TIME, then the bubble appears at
- *    its final size (`at`) and its words reveal at TYPE_WPS.
- *  - then an optional chip (CHIP_TIME), HOLD(words), and MSG_GAP.
- *  - replay: bubbles appear instantly, REPLAY_STAGGER apart; the block ends
- *    REPLAY_HOLD after the last bubble has slid in.
+ * Times a chat sequence from `startAt`. Every message types character by
+ * character (src/ui/typewriter.ts), never appearing whole:
+ *  - customer: the avatar and an empty one line bubble pop in (POP_TIME), then type at TYPE_CPS.
+ *  - agent: typing indicator (INDICATOR_TIME), the bubble expands to its final width (EXPAND_TIME), then types.
+ *  - after typing: timestamps fade (META_FADE) or a chip draws in (CHIP_TIME), then HOLD(words), then MSG_GAP.
+ *  - replay: no indicator; pops in and types at REPLAY_CPS, REPLAY_GAP between messages, REPLAY_HOLD after the block.
  */
 export const chatTimeline = (msgs: In[], startAt = 0) => {
   const out: Timed[] = [];
   let t = startAt;
-  let replayEnd = startAt;
   msgs.forEach((m, i) => {
     const w = words(m.text);
     const next = msgs[i + 1];
     const base = {from: m.from, text: m.text, time: m.time, chip: m.chip, source: m.source, mode: m.mode, words: w};
     if (m.mode === 'replay') {
       const at = t;
-      const holdEnd = at + REPLAY_STAGGER + REPLAY_HOLD;
-      out.push({...base, at, replay: true, typedEnd: at, chipEnd: at, holdEnd});
-      replayEnd = Math.max(replayEnd, holdEnd);
-      t = next && next.mode === 'replay' ? at + REPLAY_STAGGER : replayEnd;
+      const typeStart = at + POP_TIME;
+      const tw = charTimes(m.text, typeStart, REPLAY_CPS, m.text);
+      const holdEnd = tw.end + REPLAY_HOLD;
+      out.push({...base, at, typeStart, cps: REPLAY_CPS, replay: true, typedEnd: tw.end, chipEnd: tw.end, holdEnd});
+      t = next && next.mode === 'replay' ? tw.end + REPLAY_GAP : holdEnd;
       return;
     }
     let at: number;
-    let typedEnd: number;
+    let typeStart: number;
     let extra: Partial<Msg> = {};
     if (m.from === 'maya') {
-      const inputAt = t;
-      const inputEnd = inputAt + w / TYPE_WPS;
-      at = inputEnd + SEND_TIME;
-      typedEnd = at; // the bubble lands complete
-      extra = {inputAt, inputEnd};
+      at = t;
+      typeStart = at + POP_TIME;
     } else {
       const indicatorAt = t;
       at = indicatorAt + INDICATOR_TIME(w);
-      typedEnd = at + w / TYPE_WPS; // word reveal
-      extra = {indicatorAt, wps: TYPE_WPS};
+      typeStart = at + EXPAND_TIME;
+      extra = {indicatorAt};
     }
-    const chipEnd = typedEnd + (m.chip || m.source ? CHIP_TIME : 0);
+    const tw = charTimes(m.text, typeStart, TYPE_CPS, m.text);
+    const chipEnd = tw.end + (m.chip || m.source ? CHIP_TIME : META_FADE);
     const holdEnd = chipEnd + HOLD(w);
-    out.push({...base, ...extra, at, typedEnd, chipEnd, holdEnd});
+    out.push({...base, ...extra, at, typeStart, cps: TYPE_CPS, typedEnd: tw.end, chipEnd, holdEnd});
     t = holdEnd + (next ? MSG_GAP : 0);
   });
   const end = Math.max(t, ...out.map((m) => m.holdEnd));
@@ -141,21 +143,20 @@ export const CONVO = {s5: s5.msgs as Msg[], s6: s6.msgs as Msg[], s7: s7.msgs as
 export const INCLUDE_THANKS = true;
 export type Slot = {who: 'customer' | 'agent'; text: string; from: number; to: number};
 const SLOTS_ALL: Slot[] = [
-  {who: 'customer', text: 'Hello?', from: 0.8, to: 2.0},
-  {who: 'agent', text: 'Hello Daniel, welcome to Harbour Hotel. How can I help?', from: 2.8, to: 6.4},
-  {who: 'customer', text: "Hi, I'd like to extend my stay by one night.", from: 7.2, to: 11.2},
-  {who: 'agent', text: "Done. You're now booked until Saturday.", from: 12.2, to: 15.0},
-  {who: 'customer', text: 'Thank you.', from: 15.8, to: 17.0},
+  {who: 'customer', text: 'Hello, this is Daniel speaking from room 219. Can you extend my stay by one night?', from: 0.8, to: 7.2},
+  {who: 'agent', text: 'Of course, Daniel. Let me check that for you.', from: 8.0, to: 11.4},
+  {who: 'agent', text: 'Done. Your stay is now extended until Saturday, and a confirmation is on its way.', from: 12.4, to: 18.0},
+  {who: 'customer', text: 'Thank you.', from: 18.8, to: 20.0},
 ];
 const SLOTS = INCLUDE_THANKS ? SLOTS_ALL : SLOTS_ALL.slice(0, 4);
 const LAST = SLOTS[SLOTS.length - 1].to;
 export const CALL = {
   agentName: 'Guest Concierge',
   business: 'Harbour Hotel',
-  caller: 'Daniel',
+  caller: 'Room 219', // the caller's name comes from his own words
   connected: 0.8, // "Calling" -> "Connected"
   slots: SLOTS,
-  tool: {from: 11.2, done: 12.0, to: 12.2, busy: 'Checking availability', ok: 'Saturday available', after: 'Booking updated'},
+  tool: {from: 11.4, done: 12.2, to: 12.4, busy: 'Checking availability', ok: 'Saturday available', after: 'Booking updated'},
   collapse: [LAST, LAST + 0.6] as [number, number],
   end: LAST + 0.6,
   /** Scene 12 (Priya's conversation, replay). */
@@ -188,9 +189,9 @@ export const readabilityWarnings = (): string[] => {
   const check = (scene: string, tl: ReturnType<typeof chatTimeline>, nextChangeAfterLast: number) => {
     tl.msgs.forEach((m, i) => {
       if (m.mode !== 'normal') return;
-      // customers type in the input; agents reveal word by word in the bubble
-      const wps = m.from === 'maya' ? m.words / (m.inputEnd! - m.inputAt!) : m.words / (m.typedEnd - m.at);
-      if (wps > MAX_WPS + 1e-6) w.push(`READABILITY ${scene} "${m.text}" types at ${wps.toFixed(2)} wps`);
+      // every message types character by character; normal messages no faster than MAX_CPS
+      const cps = m.text.length / (m.typedEnd - m.typeStart!);
+      if (cps > MAX_CPS + 1e-6 || TYPE_CPS * 1.1 > MAX_CPS) w.push(`READABILITY ${scene} "${m.text}" types at ${cps.toFixed(1)} chars/s`);
       const next = i < tl.msgs.length - 1 ? tl.msgs[i + 1].at : nextChangeAfterLast;
       const hold = next - m.chipEnd;
       if (hold < HOLD(m.words) - 1e-6) w.push(`READABILITY ${scene} "${m.text}" holds ${hold.toFixed(2)} s < ${HOLD(m.words).toFixed(2)} s`);
@@ -203,8 +204,8 @@ export const readabilityWarnings = (): string[] => {
   check('s10', s10, SCENE_LEN.s10 - TAIL);
   // the call transcript (words revealed across each voice slot)
   for (const sl of CALL.slots) {
-    const r = words(sl.text) / (sl.to - sl.from);
-    if (r > MAX_WPS) w.push(`READABILITY s11 "${sl.text}" reveals at ${r.toFixed(2)} wps`);
+    const r = sl.text.length / (sl.to - sl.from);
+    if (r > MAX_CPS) w.push(`READABILITY s11 "${sl.text}" types at ${r.toFixed(1)} chars/s`);
   }
   return w;
 };

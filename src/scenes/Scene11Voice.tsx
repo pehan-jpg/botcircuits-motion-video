@@ -7,10 +7,11 @@ import {GWaveform} from '../components/Glyphs';
 import {CheckStroke} from '../components/Chip';
 import {Spinner} from '../ui/Panels';
 import {UI, UI_FAMILY, UI_FONT} from '../ui/tokens';
-import {CALL, Slot} from '../pacing';
+import {CALL, Slot, TYPE_CPS} from '../pacing';
 import {LineToCircle} from '../components/Morph';
 import {beatUnderline} from '../ui/TextBeat';
-import {wrapText} from '../components/measure';
+import {measureText, wrapText} from '../components/measure';
+import {CHAR_FADE, charTimes, typedChars} from '../ui/typewriter';
 import {envelope, SceneLayerProps} from './kit';
 
 const C = CENTER_CARD;
@@ -53,8 +54,27 @@ const InkAvatar: React.FC<{size: number; letter: string}> = ({size, letter}) => 
 /** Transcript rows: one per voice slot; the agent's booking row also carries the tool chips. */
 type Row = Slot & {appear: number; tool: boolean};
 const ROWS: Row[] = CALL.slots.map((sl, i) => ({...sl, appear: i === TOOL_SLOT ? CALL.tool.from : sl.from, tool: i === TOOL_SLOT}));
-/** Reserved (final) height of a row: never changes once on screen. */
-const rowHeight = (r: Row) => wrapText(r.text, ROW_FONT, TEXT_W, 13).length * 36 + 20 + (r.tool ? 2 * CHIP_ROW : 0);
+const LH = 36;
+const ease3 = (s: number, a: number, b: number) => 1 - Math.pow(1 - Math.min(1, Math.max(0, (s - a) / (b - a))), 3);
+/** A row's typewriter, fitted so typing ends exactly when its speech slot ends. */
+const rowTyping = (r: Row) => {
+  const lines = wrapText(r.text, ROW_FONT, TEXT_W, 13);
+  const lineStart: number[] = [];
+  let acc = 0;
+  lines.forEach((l) => {
+    lineStart.push(acc);
+    acc += l.length + 1;
+  });
+  const tw = charTimes(r.text, r.from, TYPE_CPS, r.text, r.to - r.from);
+  return {lines, lineStart, ...tw};
+};
+/** Current height of a row: grows one line at a time as the typing reaches each line. */
+const rowHeightAt = (r: Row, s: number) => {
+  const t = rowTyping(r);
+  const grow = t.lines.reduce((h, _, k) => (k === 0 ? h : h + ease3(s, t.times[t.lineStart[k]], t.times[t.lineStart[k]] + 0.18)), 1);
+  const after = r.tool ? ease3(s, CALL.slots[TOOL_SLOT].to, CALL.slots[TOOL_SLOT].to + 0.2) : 0;
+  return 20 + LH * grow + (r.tool ? CHIP_ROW + CHIP_ROW * after : 0);
+};
 
 const MintChip: React.FC<{label: string; draw: number}> = ({label, draw}) => (
   <span style={{display: 'inline-flex', alignItems: 'center', gap: 8, height: 42, padding: '0 16px', borderRadius: 21, background: UI.chipMint, color: UI.chipText, fontSize: 22, fontWeight: 600, whiteSpace: 'nowrap'}}>
@@ -64,20 +84,26 @@ const MintChip: React.FC<{label: string; draw: number}> = ({label, draw}) => (
 );
 
 const TranscriptRow: React.FC<{r: Row; frame: number; s: number}> = ({r, frame, s}) => {
-  const ws = r.text.split(' ');
-  const per = (r.to - r.from) / ws.length; // words revealed in sync across the voice slot
-  const appear = Math.min(1, Math.max(0, popIn(frame, r.appear, 0.3, 1.02)));
+  const t = rowTyping(r);
+  const enter = ease3(s, r.appear, r.appear + 0.4); // eases into the layout (smooth scroll)
+  const appear = Math.min(1, Math.max(0, (s - r.appear) / 0.2));
   const toolOk = r.tool ? tween(frame, CALL.tool.done, CALL.tool.done + 0.15) : 0;
-  const after = r.tool ? tween(frame, r.to, r.to + 0.5) : 0;
+  const slotEnd = r.to;
+  const after = r.tool ? tween(frame, slotEnd + 0.05, slotEnd + 0.55) : 0; // "Booking updated" draws in during the gap
+  const chars = typedChars(t.times, s);
+  const curLine = t.lineStart.reduce((k, st, i) => (st <= Math.max(0, chars - 1) ? i : k), 0);
+  const caretX = measureText(t.lines[curLine].slice(0, Math.max(0, chars - t.lineStart[curLine])), ROW_FONT, 13) + 2;
+  const caret = s >= r.from ? (1 - tween(frame, t.end, t.end + 0.3)) * (Math.floor((s - r.from) * 2.2) % 2 === 0 ? 1 : 0.15) : 0;
+  let ci = 0;
   return (
-    <div style={{position: 'relative', height: rowHeight(r), opacity: appear}}>
-      <div style={{position: 'absolute', left: 0, top: 10}}>
+    <div style={{position: 'relative', height: rowHeightAt(r, s) * enter, opacity: appear}}>
+      <div style={{position: 'absolute', left: 0, top: 10 + (r.tool ? CHIP_ROW : 0)}}>
         {r.who === 'agent' ? (
           <div style={{position: 'relative', width: 40, height: 40}}>
             <Orb cx={20} cy={20} size={40} frame={frame} shadow={false} />
           </div>
         ) : (
-          <InkAvatar size={40} letter={CALL.caller[0]} />
+          <InkAvatar size={40} letter="D" />
         )}
       </div>
       <div style={{position: 'absolute', left: 56, top: 10, width: TEXT_W}}>
@@ -92,24 +118,31 @@ const TranscriptRow: React.FC<{r: Row; frame: number; s: number}> = ({r, frame, 
             </span>
           </div>
         ) : null}
-        <div style={{fontFamily: FONT_SANS, fontSize: 26, lineHeight: '36px', color: UI.ink}}>
-          {ws.map((w, i) => {
-            const q = tween(frame, r.from + i * per, r.from + i * per + 0.15);
+        <div style={{position: 'relative', fontFamily: FONT_SANS, fontSize: 26, lineHeight: `${LH}px`, color: UI.ink, whiteSpace: 'pre'}}>
+          {t.lines.map((l, li) => {
+            const start = ci;
+            ci += l.length + 1;
             return (
-              <span key={i} style={{display: 'inline-block', opacity: q, transform: `translateY(${4 * (1 - q)}px)`}}>
-                {w}
-                {i < ws.length - 1 ? ' ' : ''}
-              </span>
+              <div key={li} style={{height: LH}}>
+                {l.split('').map((ch, j) => {
+                  const ct = t.times[start + j];
+                  return (
+                    <span key={j} style={{opacity: s < ct ? 0 : Math.min(1, (s - ct) / CHAR_FADE)}}>
+                      {ch}
+                    </span>
+                  );
+                })}
+              </div>
             );
           })}
+          {caret > 0 ? <div style={{position: 'absolute', left: caretX, top: curLine * LH + 4, width: 2, height: LH - 8, background: UI.ink, opacity: 0.7 * caret}} /> : null}
         </div>
-        {r.tool ? (
+        {r.tool && after > 0 ? (
           <div style={{marginTop: 12, opacity: after}}>
             <MintChip label={CALL.tool.after} draw={after} />
           </div>
         ) : null}
       </div>
-      <span style={{display: 'none'}}>{s}</span>
     </div>
   );
 };
@@ -166,7 +199,11 @@ export const Scene11Voice: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
               {/* caller chip: "Calling" -> mint "Connected" (why the agent greets Daniel by name) */}
               <div style={{position: 'absolute', left: 0, right: 0, top: 112, display: 'flex', justifyContent: 'center', opacity: tween(f, 0.1, 0.35)}}>
                 <div style={{display: 'inline-flex', alignItems: 'center', gap: 12, height: 52, padding: '0 8px 0 8px', borderRadius: 26, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: '0 6px 18px rgba(13,18,36,0.06)'}}>
-                  <InkAvatar size={36} letter={CALL.caller[0]} />
+                  <div style={{width: 36, height: 36, borderRadius: 18, background: UI.ink, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke={COLORS.white} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
+                    </svg>
+                  </div>
                   <span style={{fontSize: 22, fontWeight: 600, color: UI.ink}}>{CALL.caller}</span>
                   <span style={{position: 'relative', display: 'inline-flex', height: 36, minWidth: 140}}>
                     <span style={{position: 'absolute', left: 0, top: 0, display: 'inline-flex', alignItems: 'center', gap: 8, height: 36, padding: '0 14px', borderRadius: 18, background: '#F1F2F4', color: UI.text2, fontSize: 20, fontWeight: 600, opacity: 1 - connected, whiteSpace: 'nowrap'}}>
@@ -197,8 +234,8 @@ export const Scene11Voice: React.FC<SceneLayerProps> = ({layer = 'all'}) => {
             {/* the conversation row it becomes */}
             {rowIn > 0 ? (
               <div style={{position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', gap: 16, paddingLeft: 20, opacity: rowIn, whiteSpace: 'nowrap'}}>
-                <InkAvatar size={48} letter={CALL.caller[0]} />
-                <span style={{fontSize: 24, fontWeight: 600, color: UI.ink}}>{CALL.caller}</span>
+                <InkAvatar size={48} letter="D" />
+                <span style={{fontSize: 24, fontWeight: 600, color: UI.ink}}>Daniel</span>
               </div>
             ) : null}
           </div>

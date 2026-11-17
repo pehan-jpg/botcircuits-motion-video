@@ -1,6 +1,7 @@
 import React from 'react';
 import {COLORS, FONT_MONO, FONT_SANS, FONT_SANS_FAMILY, kf, tween} from '../theme';
-import {TYPE_WPS} from '../pacing';
+import {CHIP_TIME, EXPAND_TIME, META_FADE, TYPE_CPS} from '../pacing';
+import {charTimes, CHAR_FADE, typedChars} from './typewriter';
 import {sec} from '../timeline';
 import {UI, UI_FONT} from './tokens';
 import {AGENT, CHAT} from '../v7';
@@ -20,8 +21,9 @@ export type Msg = {
   instant?: boolean;
   wps?: number; // agent: word reveal speed (words per second, src/pacing.ts)
   replay?: boolean; // already seen by the viewer: appears instantly with a 12px slide
-  inputAt?: number; // customer: starts typing in the Message input
-  inputEnd?: number; // customer: input typing done (then send press + bubble slides up)
+  typeStart?: number; // the first character starts to type
+  typedEnd?: number; // the last character has started
+  cps?: number; // characters per second (src/pacing.ts)
   indicatorAt?: number; // agent: typing indicator before the bubble
 };
 
@@ -43,29 +45,57 @@ export const CHAT_TEXT = {fs: FS, lh: LH, padX: PAD_X, padY: PAD_Y, max: TEXT_MA
 const CHIP_H = 48;
 const SOURCE_H = 46;
 const IND = {w: 104, h: 64};
-const SEND_PRESS = 0.15;
-const SLIDE = 0.3;
+const LINE_GROW = 0.18; // the bubble grows one line at a time
+const ENTER = 0.4; // a new block eases into the layout (smooth scroll)
 
 const bubbleDims = (text: string) => {
   const lines = wrapText(text, FONT, TEXT_MAX, FS * 0.5);
   const w = Math.max(...lines.map((l) => measureText(l, FONT, FS * 0.5)));
   return {lines, w: Math.ceil(w) + PAD_X * 2 + 2, h: lines.length * LH + PAD_Y * 2};
 };
+const easeT = (s: number, a: number, b: number) => {
+  const t = Math.min(1, Math.max(0, (s - a) / (b - a)));
+  return 1 - Math.pow(1 - t, 3);
+};
 
-/** The final box of a message, pre-measured: it never changes size once on screen. */
-export const messageBox = (m: Msg) => {
+/**
+ * Pure geometry of a message at time s: final pre-wrapped lines and width,
+ * per-character typing times, how many characters have started, the bubble's
+ * current width and height (it grows one line at a time; it never shrinks and
+ * never changes width once typing starts) and its layout height.
+ */
+export const messageGeom = (m: Msg, s: number) => {
   const d = bubbleDims(m.text);
   const chipW = m.chip ? measureText(m.chip, `600 22px "Plus Jakarta Sans"`, 12) + 64 : 0;
   const bw = Math.min(BUBBLE_MAX, Math.max(d.w, m.chip ? chipW + PAD_X * 2 : 0));
-  const bh = d.h + (m.chip ? CHIP_H + 12 : 0);
-  const block = bh + (m.source ? SOURCE_H + 10 : 0) + META + GAP;
-  return {lines: d.lines, bw, bh, textH: d.h, block};
+  const old = m.at === -Infinity;
+  const typeStart = m.typeStart ?? m.at;
+  const tw = old ? {times: m.text.split('').map(() => -Infinity), end: -Infinity} : charTimes(m.text, typeStart, m.cps ?? TYPE_CPS, m.text);
+  const lineStart: number[] = [];
+  let acc = 0;
+  d.lines.forEach((l) => {
+    lineStart.push(acc);
+    acc += l.length + 1;
+  });
+  const chars = old ? m.text.length : typedChars(tw.times, s);
+  // height: one line, then +1 line (0.18 s ease) as typing reaches each new line
+  const grow = d.lines.reduce((h, _, k) => (k === 0 ? h : h + (old ? 1 : easeT(s, tw.times[lineStart[k]], tw.times[lineStart[k]] + LINE_GROW))), 1);
+  const after = old ? 1 : easeT(s, tw.end, tw.end + META_FADE);
+  const textH = PAD_Y * 2 + LH * grow;
+  const bh = textH + (m.chip ? (CHIP_H + 12) * after : 0);
+  // agent: expands from the typing indicator to its final width before typing
+  const expand = old || m.indicatorAt === undefined ? 1 : easeT(s, m.at, m.at + EXPAND_TIME);
+  const w = IND.w + (bw - IND.w) * expand;
+  const h = m.indicatorAt === undefined || old ? bh : IND.h + (bh - IND.h) * expand;
+  const block = h + (m.source ? (SOURCE_H + 10) * after : 0) + META + GAP;
+  // layout: customer and replay blocks ease in; agent blocks continue from the indicator
+  const enter = old ? 1 : m.indicatorAt !== undefined ? 1 : easeT(s, m.at, m.at + ENTER);
+  const layoutH = m.indicatorAt !== undefined && !old ? block : block * enter;
+  return {lines: d.lines, lineStart, bw, w, h, textH, block, layoutH, times: tw.times, typedEnd: tw.end, chars, linesWithText: d.lines.filter((_, k) => lineStart[k] < chars).length, grow, after};
 };
-const nWords = (t: string) => t.split(' ').length;
-/** When everything in the bubble has appeared (agent: last word revealed). */
-export const msgEnd = (m: Msg) => m.at + (m.from === 'agent' && !m.replay && m.wps ? nWords(m.text) / m.wps : 0);
-/** From when the message block is on screen. */
-const visibleFrom = (m: Msg) => (m.at === -Infinity ? -Infinity : m.from === 'maya' && m.inputAt !== undefined ? m.at - SLIDE : m.at);
+/** When the last character has started (timestamps and chips follow). */
+export const msgEnd = (m: Msg) => (m.at === -Infinity ? -Infinity : messageGeom(m, 0).typedEnd);
+const visibleFrom = (m: Msg) => (m.at === -Infinity ? -Infinity : m.at);
 
 export const MAvatar: React.FC<{size: number; border?: boolean}> = ({size, border}) => (
   <div
@@ -117,18 +147,26 @@ const Avatar: React.FC<{agent: boolean; frame: number; orbColor: number}> = ({ag
 const AVATAR_TOP = PAD_Y + LH / 2 - AV / 2; // level with the first text line, fixed
 
 const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame, orbColor}) => {
+  const s = frame / 60;
   const isAgent = m.from === 'agent';
-  const box = messageBox(m);
+  const g = messageGeom(m, s);
   const old = m.at === -Infinity;
-  // arrival: replay = instant 12px slide; customer = slides up from the input; agent = appears at final size
-  const p = old ? 1 : m.replay ? tween(frame, m.at, m.at + SLIDE) : m.from === 'maya' && m.inputAt !== undefined ? tween(frame, m.at - SLIDE, m.at) : tween(frame, m.at, m.at + 0.15);
-  const slide = old ? 0 : m.replay ? 12 : m.from === 'maya' && m.inputAt !== undefined ? 70 : 4;
-  const reveal = isAgent && !old && !m.replay && !!m.wps;
-  const end = msgEnd(m);
-  const after = old ? 1 : tween(frame, end, end + 0.3);
-  let wi = 0;
+  // customer / replay: the avatar and an empty one line bubble pop in (0.2 s, scale 0.96 -> 1)
+  const pop = old || m.indicatorAt !== undefined ? 1 : easeT(s, m.at, m.at + 0.2);
+  const dots = m.indicatorAt !== undefined && !old ? 1 - easeT(s, m.at, m.at + 0.15) : 0;
+  const metaP = old ? 1 : easeT(s, g.typedEnd, g.typedEnd + META_FADE);
+  // chips fade in with the space that opens for them (never an empty area)
+  const chipP = old ? 1 : easeT(s, g.typedEnd + 0.03, g.typedEnd + 0.25);
+  // caret: 2px ink at 70%, blinking at 1.1 Hz at the typing position; fades 0.3 s after the last character
+  const typing = !old && s >= (m.typeStart ?? m.at);
+  const caretFade = old ? 0 : 1 - easeT(s, g.typedEnd, g.typedEnd + 0.3);
+  const blink = Math.floor((s - (m.typeStart ?? 0)) * 2.2) % 2 === 0 ? 1 : 0.15;
+  const curLine = Math.max(0, g.lineStart.reduce((k, st, i) => (st <= Math.max(0, g.chars - 1) ? i : k), 0));
+  const inLine = g.chars - g.lineStart[curLine];
+  const caretX = PAD_X + measureText(g.lines[curLine].slice(0, Math.max(0, inLine)), FONT, FS * 0.5) + 2;
+  let ci = 0;
   return (
-    <div style={{position: 'relative', height: box.block, opacity: p, transform: `translateY(${(1 - p) * slide}px)`}}>
+    <div style={{position: 'relative', height: g.layoutH, opacity: pop, transform: `scale(${0.96 + 0.04 * pop})`, transformOrigin: '0 0'}}>
       <div style={{position: 'absolute', left: 24, top: AVATAR_TOP}}>
         <Avatar agent={isAgent} frame={frame} orbColor={orbColor} />
       </div>
@@ -138,38 +176,50 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
           position: 'absolute',
           left: BUBBLE_X,
           top: 0,
-          width: box.bw,
-          height: box.bh,
+          width: g.w,
+          height: g.h,
           borderRadius: `26px 26px 26px 8px`,
           border: isAgent ? '1.5px solid transparent' : 'none',
           background: isAgent ? `linear-gradient(#F7F9F8, #F7F9F8) padding-box, linear-gradient(120deg, #6FD3A4, #CDE7FF) border-box` : '#EEF0F3',
           boxSizing: 'border-box',
+          overflow: 'visible',
         }}
       >
+        {dots > 0 ? (
+          <div style={{position: 'absolute', left: 0, top: 0, width: IND.w, height: IND.h, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, opacity: dots}}>
+            {[0, 1, 2].map((i) => (
+              <span key={i} style={{width: 10, height: 10, borderRadius: 5, background: UI.text2, opacity: 0.6}} />
+            ))}
+          </div>
+        ) : null}
         <div style={{position: 'absolute', left: PAD_X, top: PAD_Y - (isAgent ? 1.5 : 0), fontFamily: FONT_SANS, fontSize: FS, lineHeight: `${LH}px`, color: UI.ink, whiteSpace: 'pre'}}>
-          {box.lines.map((l, li) => (
-            <div key={li}>
-              {l.split(' ').map((w, j, arr) => {
-                const k = wi++;
-                const q = reveal ? tween(frame, m.at + k / m.wps!, m.at + k / m.wps! + 0.15) : 1;
-                return (
-                  <span key={j} style={{display: 'inline-block', opacity: q, transform: `translateY(${4 * (1 - q)}px)`}}>
-                    {w}
-                    {j < arr.length - 1 ? '\u00A0' : ''}
-                  </span>
-                );
-              })}
-            </div>
-          ))}
+          {g.lines.map((l, li) => {
+            const start = ci;
+            ci += l.length + 1;
+            return (
+              <div key={li} style={{height: LH}}>
+                {l.split('').map((ch, j) => {
+                  const t = g.times[start + j];
+                  const q = old ? 1 : s < t ? 0 : Math.min(1, (s - t) / CHAR_FADE);
+                  return (
+                    <span key={j} style={{opacity: q}}>
+                      {ch}
+                    </span>
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
-        {m.chip ? (
-          <div style={{position: 'absolute', left: PAD_X - 4, top: box.textH - 6, opacity: after}}>
-            <ResultChip label={m.chip} draw={old ? 1 : tween(frame, end + 0.1, end + 0.5)} />
+        {typing && caretFade > 0 ? <div style={{position: 'absolute', left: caretX, top: PAD_Y + curLine * LH + 4, width: 2, height: LH - 8, background: UI.ink, opacity: 0.7 * blink * caretFade}} /> : null}
+        {m.chip && g.after > 0 ? (
+          <div style={{position: 'absolute', left: PAD_X - 4, top: g.textH - 6, opacity: chipP}}>
+            <ResultChip label={m.chip} draw={old ? 1 : easeT(s, g.typedEnd + 0.1, g.typedEnd + CHIP_TIME)} />
           </div>
         ) : null}
       </div>
-      {m.source ? (
-        <div style={{position: 'absolute', left: BUBBLE_X, top: box.bh + 10, opacity: after}}>
+      {m.source && g.after > 0 ? (
+        <div style={{position: 'absolute', left: BUBBLE_X, top: g.h + 10, opacity: chipP}}>
           <SourceChip label={m.source} />
         </div>
       ) : null}
@@ -177,14 +227,14 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
         style={{
           position: 'absolute',
           left: BUBBLE_X + 4,
-          top: box.bh + (m.source ? SOURCE_H + 10 : 0) + 6,
+          top: g.h + (m.source ? (SOURCE_H + 10) * g.after : 0) + 6,
           height: 28,
           display: 'flex',
           alignItems: 'center',
           gap: 10,
           color: UI.text2,
           fontSize: 22,
-          opacity: old ? 1 : tween(frame, end, end + 0.2),
+          opacity: metaP,
           whiteSpace: 'nowrap',
         }}
       >
@@ -206,8 +256,9 @@ const Message: React.FC<{m: Msg; frame: number; orbColor: number}> = ({m, frame,
 /** Agent typing indicator: a small bubble at the orb avatar with three softly pulsing dots. */
 const Indicator: React.FC<{frame: number; at: number; orbColor: number}> = ({frame, at, orbColor}) => {
   const p = tween(frame, at, at + 0.15);
+  const enter = easeT(frame / 60, at, at + ENTER);
   return (
-    <div style={{position: 'relative', height: IND.h + GAP, opacity: p}}>
+    <div style={{position: 'relative', height: (IND.h + META + GAP) * enter, opacity: p}}>
       <div style={{position: 'absolute', left: 24, top: IND.h / 2 - AV / 2}}>
         <Avatar agent frame={frame} orbColor={orbColor} />
       </div>
@@ -250,21 +301,13 @@ export const ChatThread: React.FC<{
   const visibleH = AREA.bottom - AREA.top;
   const shown = msgs.filter((m) => s >= visibleFrom(m));
   const typingAgent = msgs.find((m) => m.indicatorAt !== undefined && s >= m.indicatorAt && s < m.at);
-  const total = shown.reduce((a, m) => a + messageBox(m).block, 0) + (typingAgent ? IND.h + GAP : 0);
+  const total = shown.reduce((a, m) => a + messageGeom(m, s).layoutH, 0) + (typingAgent ? (IND.h + META + GAP) * easeT(s, typingAgent.indicatorAt!, typingAgent.indicatorAt! + ENTER) : 0);
   const scroll = Math.max(0, total - visibleH + 8);
-  // customer messages are typed in the Message input first (caret only there), then sent
-  const typingCustomer = draft === undefined ? msgs.find((m) => m.inputAt !== undefined && s >= m.inputAt - 0.15 && s < m.at - SLIDE) : undefined;
-  let inputText = draft;
-  let inputFocus = focus;
-  let inputPress = sendPress;
-  if (typingCustomer) {
-    const ws = typingCustomer.text.split(' ');
-    const k = s < typingCustomer.inputAt! ? 0 : Math.min(ws.length, Math.floor((s - typingCustomer.inputAt!) * TYPE_WPS) + 1);
-    inputText = ws.slice(0, k).join(' ');
-    inputFocus = 1;
-    inputPress = kf(frame, [typingCustomer.inputEnd!, typingCustomer.inputEnd! + SEND_PRESS / 2, typingCustomer.inputEnd! + SEND_PRESS], [0, 1, 0]);
-  }
+  const inputText = draft;
+  const inputFocus = focus;
+  const inputPress = sendPress;
   const hasDraft = !!inputText && inputText.length > 0;
+  void kf;
   return (
     <div data-safe="chat card" style={{position: 'absolute', left: x, top: y, width: CHAT.width, height, fontFamily: FONT_SANS, transformOrigin: '0 0', transform: scale !== 1 ? `scale(${scale})` : undefined}}>
       <div style={{position: 'absolute', inset: 0, borderRadius: CHAT.radius, background: COLORS.white, border: `1px solid ${UI.border}`, boxShadow: UI.shadow}} />
@@ -381,9 +424,9 @@ export const ChatThread: React.FC<{
 export const lastBlockGeom = (msgs: Msg[], height = CHAT.height) => {
   const m = msgs[msgs.length - 1];
   const AREA = {top: 112, bottom: height - 160};
-  const box = messageBox(m);
-  const top = AREA.bottom - 8 - box.block;
-  return {bubble: {x: BUBBLE_X, y: top, w: box.bw, h: box.bh}, source: {x: BUBBLE_X, y: top + box.bh + 10, h: SOURCE_H}};
+  const g = messageGeom({...m, at: -Infinity}, 0);
+  const top = AREA.bottom - 8 - g.block;
+  return {bubble: {x: BUBBLE_X, y: top, w: g.bw, h: g.h}, source: {x: BUBBLE_X, y: top + g.h + 10, h: SOURCE_H}};
 };
 
 /** World position (relative to the card) of the send arrow and the message field. */

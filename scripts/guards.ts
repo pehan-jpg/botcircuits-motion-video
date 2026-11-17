@@ -1,19 +1,26 @@
-// Dev guards (no render needed): ReadabilityGuard (+ the no resize rule) and assertGaps (scene 11).
+// Dev guards (no render needed): ReadabilityGuard and assertGaps (scene 11).
 // npx tsx scripts/guards.ts  -> exits 1 on any warning.
 import {readabilityWarnings, gapWarnings, SCENE_LEN, BEAT_LEN, CHATS} from '../src/pacing';
-import {messageBox} from '../src/ui/ChatThread';
+import {messageGeom} from '../src/ui/ChatThread';
 
 const w = [...readabilityWarnings(), ...gapWarnings()];
-// no resize: a bubble's box is fixed from its first frame (sampled over its whole life)
+// frame by frame over each message's life, using the same pure geometry the renderer uses
 for (const [scene, tl] of Object.entries(CHATS)) {
   for (const m of tl.msgs) {
-    const first = JSON.stringify(messageBox(m));
-    for (let t = m.at; t <= m.holdEnd + 1; t += 0.05) {
-      const now = JSON.stringify(messageBox({...m}));
-      if (now !== first) {
-        w.push(`READABILITY ${scene} "${m.text}" bubble changes size at ${t.toFixed(2)} s`);
-        break;
+    const fail = (why: string, t: number) => w.push(`READABILITY ${scene} "${m.text}" ${why} at ${t.toFixed(2)} s`);
+    const first = messageGeom(m, m.at);
+    if (first.chars > 0) fail(`shows ${first.chars} characters in its first frame`, m.at);
+    let prevH = 0;
+    let widthAtStart: number | null = null;
+    for (let t = m.at; t <= m.holdEnd + 0.5; t += 1 / 60) {
+      const g = messageGeom(m, t);
+      if (g.grow - g.linesWithText > 1 + 1e-6) { fail(`has ${(g.grow - g.linesWithText).toFixed(2)} empty lines`, t); break; }
+      if (t >= m.typeStart!) {
+        if (widthAtStart === null) widthAtStart = g.w;
+        else if (Math.abs(g.w - widthAtStart) > 0.5) { fail('changes width after its typing starts', t); break; }
       }
+      if (g.h < prevH - 0.01) { fail('shrinks', t); break; }
+      prevH = g.h;
     }
   }
 }
