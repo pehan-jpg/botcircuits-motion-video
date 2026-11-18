@@ -165,3 +165,81 @@ export const Typewriter: React.FC<TypewriterProps> = ({
     </div>
   );
 };
+
+/**
+ * Multi line typed text with pre-wrapped lines in a fixed width box.
+ * Every character is laid out from the first frame at opacity 0, so nothing shifts.
+ * The box carries data attributes the ReadabilityGuard checks.
+ */
+export const TypeBlock: React.FC<{
+  lines: string[];
+  startFrame: number;
+  cps: number;
+  width: number;
+  fontFamily: string;
+  fontSize: number;
+  fontWeight: number;
+  lineHeight?: number;
+  color?: string;
+  id: string;
+  style?: React.CSSProperties;
+}> = ({ lines, startFrame, cps, width, fontFamily, fontSize, fontWeight, lineHeight = 1.45, color = INK, id, style }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const text = lines.join(" ");
+  const state = getTypewriterState(text, frame, startFrame, fps, cps);
+  // Index of the first char of each line in the joined text (the joining space is not rendered).
+  const offsets: number[] = [];
+  lines.reduce((o, l) => {
+    offsets.push(o);
+    return o + l.length + 1;
+  }, 0);
+  const rendered = new Set<number>();
+  lines.forEach((l, li) => {
+    for (let i = 0; i < l.length; i++) rendered.add(offsets[li] + i);
+  });
+  let host = state.caretAfter;
+  while (host >= 0 && !rendered.has(host)) host--;
+
+  const caret = (before: boolean) => (
+    <span
+      aria-hidden
+      style={{
+        position: "absolute",
+        left: before ? -2 : "100%",
+        marginLeft: before ? 0 : 2,
+        top: "50%",
+        width: 2,
+        height: fontSize * 1.05,
+        transform: "translateY(-50%)",
+        background: color,
+        opacity: state.caretOpacity,
+        borderRadius: 1,
+      }}
+    />
+  );
+
+  return (
+    <div
+      data-tw-box={id}
+      data-tw-start={startFrame}
+      data-tw-width={width}
+      style={{ width, fontFamily, fontSize, fontWeight, lineHeight, color, position: "relative", ...style }}
+    >
+      {lines.map((l, li) => (
+        <div key={li} style={{ whiteSpace: "pre", position: "relative" }}>
+          {Array.from(l).map((ch, i) => {
+            const gi = offsets[li] + i;
+            return (
+              <span key={i} data-tw-char style={{ position: "relative" }}>
+                <span style={{ opacity: state.opacities[gi] }}>{ch}</span>
+                {host === gi ? caret(false) : null}
+                {host < 0 && gi === 0 ? caret(true) : null}
+              </span>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+};

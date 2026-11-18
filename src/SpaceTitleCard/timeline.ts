@@ -1,59 +1,82 @@
-import { sec } from "../constants";
+import { HEADLINE_CPS, sec } from "../constants";
 
-export const DURATION = 480; // 8.0s at 60 fps
+export const BASE_DURATION = 600; // 10.0s at 60 fps
+export const END_MARK_DURATION = 648; // 10.8s when END_MARK is "symbol"
+
+export const CHAT_CPS = 32;
+export const TABLE_CPS = CHAT_CPS * 1.4; // 40 percent faster than chat
+export { HEADLINE_CPS };
 
 type R = readonly [number, number];
 const r = (a: number, b: number): R => [sec(a), sec(b)];
 
-/** All beats in frames (60 fps); arguments are seconds. */
+export const REQUEST_LINES = ["Prepare this week's invoice", "exceptions for review."];
+
+export const ROWS = [
+  { vendor: "Acme Ltd", amount: "4,200", status: "ok" as const, from: "inv" as const },
+  { vendor: "Northwind", amount: "18,900", status: "over" as const, from: "pol" as const },
+  { vendor: "Globex", amount: "2,750", status: "ok" as const, from: "inv" as const },
+];
+
+/** All beats in frames; arguments are seconds. */
 export const T = {
-  canvasIn: r(0, 0.6),
+  stageIn: r(0, 0.5),
+  cardIn: (i: number): R => r(0.06 + 0.08 * i, 0.26 + 0.08 * i), // 0.08s stagger, 0.2s each
 
-  // 0.6 to 1.8 inbound events (tiles 0.15s apart)
-  eventTile: [0.6, 0.75, 0.9].map((s) => r(s, s + 0.3)),
-  eventLine: [0.7, 0.85, 1.0].map((s) => r(s, s + 0.3)),
-  eventPulse: [1.0, 1.2, 1.4].map((s) => r(s, s + 0.32)),
-  popStart: sec(1.17),
+  // 0.5 to 2.4 request
+  fieldIn: r(0.45, 0.6),
+  typeRequest: sec(0.62),
+  sendHighlight: r(2.12, 2.32),
+  reqLine: r(2.2, 2.42),
+  reqPulse: r(2.3, 2.52),
 
-  // 1.8 to 3.2 the process draws
-  lines: {
-    startAgent: r(1.8, 2.1),
-    agentBranch: r(2.05, 2.35),
-    branchPerson: r(2.3, 2.6),
-    personDone: r(2.55, 2.85),
-    auto: r(2.65, 2.95),
-  },
-  popAgent: sec(2.0),
-  popBranch: sec(2.25),
-  popPerson: sec(2.5),
-  popDone: sec(2.75),
-  popDur: sec(0.26),
-  runToAgent: r(2.6, 2.85),
-  haloAgent: r(2.85, 3.25),
+  // 2.4 to 3.4 agent team
+  leadPulse: r(2.45, 2.8),
+  agentLines: r(2.6, 2.9),
+  agentPulse: r(2.6, 2.9),
+  fillInvoice: r(2.85, 3.15),
+  fillPolicy: r(2.95, 3.25),
 
-  // 3.2 to 4.8 connected tools
-  toolTile: [3.2, 3.3, 3.4, 3.5].map((s) => r(s, s + 0.3)),
-  toolLine: [3.3, 3.4, 3.5, 3.6].map((s) => r(s, s + 0.3)),
-  toolCall: [3.72, 3.99, 4.26, 4.53].map((s) => ({ out: r(s, s + 0.13), back: r(s + 0.14, s + 0.27) })),
-  newRow: r(4.8, 5.1),
+  // 3.4 to 5.0 tools and Brain
+  gmailChip: r(3.45, 3.65),
+  gmailSpin: r(3.55, 4.05),
+  sheetsChip: r(3.6, 3.8),
+  sheetsSpin: r(3.7, 4.2),
+  policyChip: r(3.45, 3.65),
+  policySpin: r(4.05, 4.55),
+  brainLine: r(3.45, 3.75),
+  brainPulseOut: r(3.75, 3.98),
+  brainFill: r(3.85, 4.15),
+  highlight: r(4.2, 4.6),
+  brainPulseBack: r(4.55, 4.78),
+  cite: r(4.75, 4.95),
 
-  // 4.8 to 6.2 the run continues
-  agentBranch: r(4.85, 5.0),
-  branchPerson: r(5.0, 5.2),
-  ring: [sec(5.2), sec(5.4)],
-  ringDur: sec(0.24),
-  approve: r(5.58, 5.76),
-  personDone: r(5.76, 5.96),
-  donePop: r(5.94, 6.14),
-  rowDone: r(6.0, 6.2),
+  // 5.0 to 6.4 table
+  tableFill: r(4.85, 5.0),
+  rowStart: [sec(5.0), sec(5.45), sec(5.9)],
+  dataPulse: [r(4.75, 5.0), r(5.2, 5.45), r(5.65, 5.9)],
 
-  // 6.2 to 6.8 a row change starts another run
-  rowToStart: r(6.25, 6.65),
-  startLight: r(6.6, 6.9),
+  // 6.4 to 7.0 review
+  lift: r(6.4, 6.9),
+  reviewFill: r(6.72, 6.98),
+  calmIn: r(6.45, 6.7),
 
-  // 6.8 to 8.0 hold
-  ambient: r(6.8, 7.5),
-  loopOut: r(7.6, 8.0),
-  endMarkCollapse: r(7.2, 7.4),
-  endMarkSymbol: r(7.3, 7.45),
+  // 7.0 to 7.8 cursor
+  cursorIn: r(6.95, 7.05),
+  cursorMove: r(7.0, 7.5),
+  click: r(7.65, 7.8),
+
+  // 7.8 to 8.6 approved
+  approved: r(7.85, 8.1),
+  wake: r(7.9, 8.35),
+  statusFlip: r(8.0, 8.25),
+  cursorOut: r(8.05, 8.3),
+  delivery: r(8.25, 8.5),
+  deliveryCheck: r(8.45, 8.6),
+
+  // 8.6 to 10.0 hold
+  ambient: [r(8.7, 8.88), r(8.88, 9.12), r(9.12, 9.28)],
+  loopOut: r(9.6, 10.0),
+  endCollapse: r(10.0, 10.2),
+  endSymbol: r(10.1, 10.25),
 };

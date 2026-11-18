@@ -2,14 +2,15 @@ import React from "react";
 import { Composition } from "remotion";
 import { FPS, HEIGHT, WIDTH } from "./constants";
 import { SpaceTitleCard, SpaceTitleCardProps } from "./SpaceTitleCard/SpaceTitleCard";
-import { DURATION } from "./SpaceTitleCard/timeline";
+import { BASE_DURATION, END_MARK_DURATION } from "./SpaceTitleCard/timeline";
 
 const defaults: SpaceTitleCardProps = {
-  loop: false,
+  loop: false, // LOOP
   guards: true,
   endMark: "none", // END_MARK
-  showLabels: false, // SHOW_LABELS
+  pageBg: "#FFFFFF", // PAGE_BG
   availableFiles: null,
+  reportedPlaceholders: [],
 };
 
 export const RemotionRoot: React.FC = () => {
@@ -17,11 +18,14 @@ export const RemotionRoot: React.FC = () => {
     <Composition
       id="SpaceTitleCard"
       component={SpaceTitleCard}
-      durationInFrames={DURATION}
+      durationInFrames={BASE_DURATION}
       fps={FPS}
       width={WIDTH}
       height={HEIGHT}
       defaultProps={defaults}
+      calculateMetadata={({ props }) => ({
+        durationInFrames: props.endMark === "symbol" ? END_MARK_DURATION : BASE_DURATION,
+      })}
     />
   );
 };

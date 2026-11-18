@@ -79,9 +79,11 @@ export const SafeAreaGuard: React.FC<SafeAreaGuardProps> = ({
     if (noOverlap) {
       const solids = Array.from(nodes)
         .filter((el) => el.dataset.guardContainer === undefined && Number(getComputedStyle(el).opacity) > 0.01)
-        .map((el) => ({ name: el.dataset.guard, r: el.getBoundingClientRect() }));
+        .map((el) => ({ el, name: el.dataset.guard, r: el.getBoundingClientRect() }));
       for (let i = 0; i < solids.length; i++) {
         for (let j = i + 1; j < solids.length; j++) {
+          // a card and the chips inside it are related, not overlapping
+          if (solids[i].el.contains(solids[j].el) || solids[j].el.contains(solids[i].el)) continue;
           const a = solids[i].r;
           const b = solids[j].r;
           if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) {

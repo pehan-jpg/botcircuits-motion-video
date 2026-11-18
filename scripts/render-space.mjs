@@ -1,4 +1,4 @@
-// Flags: --loop, --end-mark=symbol, --labels, --only=stills,poster,mp4,webm
+// Flags: --loop, --end-mark=symbol, --allow-placeholders, --only=stills,poster,mp4,webm
 // Renders SpaceTitleCard: MP4 (H.264), WebM (VP9), poster PNG and stills every 0.25s.
 // Guards run during every render (guards: true); any violation fails the render.
 import { bundle } from "@remotion/bundler";
@@ -12,9 +12,9 @@ const stillsDir = path.join(out, "space_stills");
 
 
 const loop = process.argv.includes("--loop");
-const endMark = process.argv.find((a) => a.startsWith("--end-mark="))?.slice(11) ?? "none";
-const showLabels = process.argv.includes("--labels");
 const only = process.argv.find((a) => a.startsWith("--only="))?.slice(7);
+const endMark = process.argv.find((a) => a.startsWith("--end-mark="))?.slice(11) ?? "none";
+const allowPlaceholders = process.argv.includes("--allow-placeholders");
 const publicDir = path.join(root, "public");
 const listFiles = (dir, prefix = "") =>
   fs.existsSync(dir)
@@ -23,12 +23,21 @@ const listFiles = (dir, prefix = "") =>
       )
     : [];
 const availableFiles = listFiles(publicDir);
-const inputProps = { loop, guards: true, endMark, showLabels, availableFiles };
-const expected = ["logos/gmail.svg", "logos/slack.svg", "logos/salesforce.svg", "logos/zendesk.svg", "logos/google-drive.svg", "logos/google-sheets.svg"];
-if (endMark === "symbol") expected.push("botcircuits-logo.svg");
-for (const f of expected) {
-  if (!availableFiles.includes(f)) console.warn(`WARNING: public/${f} missing, rendering a neutral placeholder.`);
+
+// Section 0: official logos must be present before anything renders.
+const requiredLogos = ["logos/gmail.webp", "logos/google-sheets.webp", "logos/google-drive.webp", "logos/slack.webp"];
+const missing = requiredLogos.filter((f) => !availableFiles.includes(f));
+if (missing.length && !allowPlaceholders) {
+  console.error(`STOP: official logo files missing: ${missing.map((f) => `public/${f}`).join(", ")}. Add them, or rerun with --allow-placeholders.`);
+  process.exit(1);
 }
+if (endMark === "symbol" && !availableFiles.includes("botcircuits-logo.svg")) {
+  console.error("STOP: END_MARK \"symbol\" needs public/botcircuits-logo.svg. Add it first.");
+  process.exit(1);
+}
+for (const f of missing) console.warn(`PLACEHOLDER: public/${f} missing, rendering a named neutral tile.`);
+const inputProps = { loop, guards: true, endMark, pageBg: "#FFFFFF", availableFiles, reportedPlaceholders: missing };
+console.log(`Logos used: ${requiredLogos.filter((f) => !missing.includes(f)).map((f) => `public/${f}`).join(", ")}`);
 
 const serveUrl = await bundle({ entryPoint: path.join(root, "src", "index.ts") });
 // Uses a locally installed headless shell when REMOTION_BROWSER is set or a known path exists.
