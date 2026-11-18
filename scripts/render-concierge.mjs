@@ -25,6 +25,19 @@ const browserExecutable = process.env.REMOTION_BROWSER ?? (fs.existsSync(localSh
 const chromiumOptions = { enableMultiProcessOnLinux: true };
 const log = (m) => console.log(`[render:concierge] ${m}`);
 
+// Brand file check before bundling: the official WhatsApp logo must be present and intact.
+const logoPath = path.join(root, "public/logos/whatsapp.svg");
+if (!fs.existsSync(logoPath)) {
+  throw new Error("[render:concierge] public/logos/whatsapp.svg is missing (see public/logos/SOURCES.md)");
+}
+const logoSvg = fs.readFileSync(logoPath, "utf8");
+if (!/^\s*(<\?xml[^>]*>\s*)?<svg[\s>]/i.test(logoSvg) || !/viewBox\s*=\s*"[^"]+"/i.test(logoSvg)) {
+  throw new Error("[render:concierge] public/logos/whatsapp.svg is not a valid SVG with a viewBox");
+}
+if (!/#(57d163|23b33a|25d366)/i.test(logoSvg)) {
+  throw new Error("[render:concierge] public/logos/whatsapp.svg does not contain the WhatsApp brand green");
+}
+
 log("bundling");
 const serveUrl = await bundle({ entryPoint: path.join(root, "src/index.ts"), publicDir: path.join(root, "public") });
 const composition = await selectComposition({ serveUrl, id: "ConciergeTitleCard", inputProps, browserExecutable, chromiumOptions });

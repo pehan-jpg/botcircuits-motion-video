@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
-import { BRAND_LIME, DURATION, EndMark, INK, PAGE_BG } from "../constants";
+import { BRAND_LIME, DURATION, EndMark, INK, PAGE_BG, WHATSAPP_LOGO_FILE } from "../constants";
 import { lerp, tween } from "../anim";
 import { SANS, useFontsReady } from "../fonts";
 import { Orb } from "../components/Orb";
@@ -10,6 +10,7 @@ import { MicIcon, SendIcon } from "../components/Glyphs";
 import { StageMist } from "../components/StageMist";
 import { SafeAreaGuard } from "../components/SafeAreaGuard";
 import { ReadabilityGuard } from "../components/ReadabilityGuard";
+import { BrandGuard } from "../components/BrandGuard";
 import {
   AVATAR,
   AVATAR_GAP,
@@ -237,6 +238,12 @@ const Scene: React.FC<ConciergeTitleCardProps & { brand: BrandAssets }> = ({ loo
       ) : null}
 
       <SafeAreaGuard enabled={guards} frame={frame} rootId={ROOT_ID} centreBox={false} />
+      <BrandGuard
+        enabled={guards}
+        frame={frame}
+        rootId={ROOT_ID}
+        required={[{ id: "whatsapp", present: brand.hasWhatsApp, file: WHATSAPP_LOGO_FILE, minHeight: 28 }]}
+      />
       <ReadabilityGuard
         enabled={guards}
         frame={frame}

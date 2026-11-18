@@ -93,6 +93,7 @@ export const BrandSymbol: React.FC<{ size: number; present: boolean }> = ({
   }
   return (
     <div
+      data-placeholder="botcircuits-symbol"
       style={{
         width: size,
         height: size,
@@ -128,6 +129,7 @@ export const BrandWordmark: React.FC<{
   }
   return (
     <div
+      data-placeholder="botcircuits-wordmark"
       style={{
         width,
         height,
@@ -153,10 +155,18 @@ export const BrandWordmark: React.FC<{
 /** The real WhatsApp logo from /public/logos/whatsapp.svg, never redrawn. Neutral labelled placeholder when missing. */
 export const WhatsAppLogo: React.FC<{ size: number; present: boolean }> = ({ size, present }) => {
   if (present) {
-    return <Img src={staticFile(WHATSAPP_LOGO_FILE)} style={{ width: size, height: size, objectFit: "contain" }} />;
+    // Shown as supplied: original colours, no filter, mask, tint or stretch.
+    return (
+      <Img
+        data-brand-logo="whatsapp"
+        src={staticFile(WHATSAPP_LOGO_FILE)}
+        style={{ display: "block", width: size, height: size, objectFit: "contain" }}
+      />
+    );
   }
   return (
     <div
+      data-placeholder="whatsapp-logo"
       style={{
         width: size,
         height: size,

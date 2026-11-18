@@ -26,7 +26,8 @@ export const CHAT: Rect & { radius: number } = {
   y: STAGE.y + (STAGE.h - 620) / 2,
   radius: 24,
 };
-export const CHAT_HEADER = { h: 76, padX: 22, logo: 36, nameSize: 22, orb: 40 };
+// Logo: 40px, with at least a quarter of its height (10px) of clear space on every side.
+export const CHAT_HEADER = { h: 76, padX: 22, logo: 40, nameSize: 22, orb: 40 };
 export const COMPOSER = { h: 52, padX: 20, padBottom: 20, send: 52, gap: 10 };
 export const THREAD = {
   padX: 20,
