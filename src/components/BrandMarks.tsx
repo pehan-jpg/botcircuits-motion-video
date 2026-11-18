@@ -6,12 +6,13 @@ import {
   getStaticFiles,
   staticFile,
 } from "remotion";
-import { INK, LOGO_SYMBOL_FILE, LOGO_WORDMARK_FILE } from "../constants";
+import { INK, LOGO_SYMBOL_FILE, LOGO_WORDMARK_FILE, WHATSAPP_LOGO_FILE } from "../constants";
 import { MONO } from "../fonts";
 
 export type BrandAssets = {
   hasSymbol: boolean;
   hasWordmark: boolean;
+  hasWhatsApp: boolean;
   /** Width over height of the wordmark artwork (placeholder ratio when missing). */
   wordmarkAspect: number;
 };
@@ -38,8 +39,9 @@ export const useBrandAssets = (): BrandAssets | null => {
     const names = new Set(getStaticFiles().map((f) => f.name));
     const hasSymbol = names.has(LOGO_SYMBOL_FILE);
     const hasWordmark = names.has(LOGO_WORDMARK_FILE);
+    const hasWhatsApp = names.has(WHATSAPP_LOGO_FILE);
     const finish = (aspect: number) => {
-      setAssets({ hasSymbol, hasWordmark, wordmarkAspect: aspect });
+      setAssets({ hasSymbol, hasWordmark, hasWhatsApp, wordmarkAspect: aspect });
       continueRender(handle);
     };
     if (!hasWordmark) {
@@ -144,6 +146,33 @@ export const BrandWordmark: React.FC<{
       <div style={{ fontSize: 12, opacity: 0.7, textTransform: "none" }}>
         {LOGO_WORDMARK_FILE}
       </div>
+    </div>
+  );
+};
+
+/** The real WhatsApp logo from /public/logos/whatsapp.svg, never redrawn. Neutral labelled placeholder when missing. */
+export const WhatsAppLogo: React.FC<{ size: number; present: boolean }> = ({ size, present }) => {
+  if (present) {
+    return <Img src={staticFile(WHATSAPP_LOGO_FILE)} style={{ width: size, height: size, objectFit: "contain" }} />;
+  }
+  return (
+    <div
+      style={{
+        width: size,
+        height: size,
+        boxSizing: "border-box",
+        borderRadius: "50%",
+        border: "1.5px dashed rgba(13,18,36,0.45)",
+        background: "#F1F2F5",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        ...placeholderLabel,
+        fontSize: size * 0.24,
+        lineHeight: 1,
+      }}
+    >
+      Logo
     </div>
   );
 };

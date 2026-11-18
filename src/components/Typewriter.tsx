@@ -31,7 +31,7 @@ export type TypeSchedule = {
 
 /**
  * Deterministic typing schedule. Each gap is 1/cps with a jitter of plus or
- * minus 10 percent seeded from the character index, plus punctuation pauses.
+ * minus 10 percent seeded from the character index, plus punctuation pauses (comma 140ms; full stop or question mark 260ms).
  */
 export const typeSchedule = (text: string, cps: number): TypeSchedule => {
   const chars = Array.from(text);
@@ -43,7 +43,7 @@ export const typeSchedule = (text: string, cps: number): TypeSchedule => {
     const jitter = (random(`typewriter-${i}`) * 2 - 1) * TYPE_RULES.jitter;
     let gap = (1 / cps) * (1 + jitter);
     if (ch === ",") gap += TYPE_RULES.commaPause;
-    if (ch === ".") gap += TYPE_RULES.stopPause;
+    if (ch === "." || ch === "?") gap += TYPE_RULES.stopPause;
     if (i < chars.length - 1) minGap = Math.min(minGap, gap);
     t += gap;
   });

@@ -20,7 +20,9 @@ export const SafeAreaGuard: React.FC<{
   rootId: string;
   /** Optional title checks (unused when a composition has no typed title). */
   title?: TitleGuardSpec;
-}> = ({ enabled, frame, rootId, title }) => {
+  /** Also require the centre 60 percent of the frame (v1 and v2 rule; off for v3). */
+  centreBox?: boolean;
+}> = ({ enabled, frame, rootId, title, centreBox = true }) => {
   useLayoutEffect(() => {
     if (!enabled) return;
     const root = document.getElementById(rootId);
@@ -55,10 +57,11 @@ export const SafeAreaGuard: React.FC<{
         fail(`"${name}" leaves the ${SAFE_AREA}px safe area (${JSON.stringify(r)})`);
       }
       if (
-        r.left < CENTRE_BOX.left - tol ||
+        centreBox &&
+        (r.left < CENTRE_BOX.left - tol ||
         r.top < CENTRE_BOX.top - tol ||
         r.right > CENTRE_BOX.right + tol ||
-        r.bottom > CENTRE_BOX.bottom + tol
+        r.bottom > CENTRE_BOX.bottom + tol)
       ) {
         fail(`"${name}" leaves the centre 60 percent (${JSON.stringify(r)})`);
       }
