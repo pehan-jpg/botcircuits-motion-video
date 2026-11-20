@@ -1,0 +1,8 @@
+node_modules
+dist
+.DS_Store
+.env
+
+# Renders: keep the deliverables (mp4s and 1s stills), skip working files.
+out/guards/bg
+out/*.log

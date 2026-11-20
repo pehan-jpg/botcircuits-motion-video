@@ -1,0 +1,132 @@
+"""
+Reads out/guards/report*.json from scripts/stills.mjs and checks, per still:
+  SafeAreaGuard      nothing within 96px of the edge (from runtime rects)
+  ReadabilityGuard   text at least 28px; contrast at least 4.5:1 against the
+                     luminance sampled behind the text (text-hidden background pass)
+  LogoGuard          on white, at least 28px high
+  Copy rules         no "workflow", no dashes used as hyphens, American spelling
+  Colour rules       no green orb pixels; amber only where a person decides
+Usage: python3 -I scripts/check.py [report.json ...]
+"""
+import json, re, sys, glob, os
+from PIL import Image
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SAFE, W, H, MIN_PX, MIN_CR = 96, 1920, 1080, 28, 4.5
+
+def lin(c):
+    c = c / 255
+    return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+
+def lum(r, g, b):
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+
+def cr(a, b):
+    hi, lo = max(a, b), min(a, b)
+    return (hi + 0.05) / (lo + 0.05)
+
+def parse_rgba(s):
+    m = re.match(r"rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\)", s or "")
+    if not m:
+        return (13, 18, 36, 1.0)
+    return (float(m[1]), float(m[2]), float(m[3]), float(m[4]) if m[4] else 1.0)
+
+BRITISH = re.compile(r"\b(colour|centre|organis|behaviour|licence|analys(e|ing)|favour|catalogue|optimis|prioritis|recognis|travelled|cancelled)\w*", re.I)
+DASH = re.compile(r"\s[-–—]\s|[–—]")
+
+def check_copy(text):
+    out = []
+    if re.search(r"workflow", text, re.I):
+        out.append(f'Copy: "workflow" in "{text}"')
+    if DASH.search(text):
+        out.append(f'Copy: dash used as punctuation in "{text}"')
+    m = BRITISH.search(text)
+    if m:
+        out.append(f'Copy: non-American spelling "{m[0]}" in "{text}"')
+    return out
+
+def colour_checks(img, scene):
+    """Green orb check: any strongly green, saturated pixels outside the grass band.
+    Amber check: pixels near #F2A43A. Scenes 1 and 2 have no decision moment, so amber must be absent."""
+    issues = []
+    small = img.convert("RGB").resize((480, 270))
+    px = small.load()
+    amber = 0
+    green_sky = 0
+    for y in range(270):
+        for x in range(480):
+            r, g, b = px[x, y]
+            if abs(r - 242) < 22 and abs(g - 164) < 26 and abs(b - 58) < 30 and r - b > 140:
+                amber += 1
+            # Saturated green above the horizon would mean a green orb.
+            if y < 140 and g > 120 and g > r * 1.35 and g > b * 1.35:
+                green_sky += 1
+    if amber > 6:
+        issues.append(f"Colour: {amber} amber pixels with no person deciding in {scene}")
+    if green_sky > 6:
+        issues.append(f"Colour: {green_sky} saturated green pixels in the upper frame (orb?) in {scene}")
+    return issues
+
+def main(paths):
+    total, problems, stats = 0, [], []
+    for p in paths:
+        for entry in json.load(open(p)):
+            total += 1
+            where = f'{entry["scene"]} t={entry["second"]}s'
+            g = entry.get("guard") or {"items": []}
+            still = Image.open(os.path.join(ROOT, entry["still"]))
+            problems += [f"{where}: {m}" for m in colour_checks(still, entry["scene"])]
+            bg = Image.open(os.path.join(ROOT, entry["bg"])).convert("RGB") if entry.get("bg") else None
+            for it in g["items"]:
+                for iss in it.get("issues", []):
+                    problems.append(f'{where}: {iss["guard"]}: {iss["message"]}')
+                if it["kind"] != "text":
+                    continue
+                problems += [f"{where}: {m}" for m in check_copy(it.get("text", ""))]
+                presented = it["opacity"] >= 0.85
+                if not presented:
+                    continue
+                if it["fontPx"] < MIN_PX - 0.01:
+                    problems.append(f'{where}: ReadabilityGuard: "{it["label"]}" is {it["fontPx"]}px')
+                if bg is None:
+                    continue
+                r = it["rect"]
+                # Inset the sample so borders of pills and stamps are not read as background.
+                ix, iy = min(12, r["w"] * 0.15), min(12, r["h"] * 0.15)
+                box = (max(0, int(r["x"] + ix)), max(0, int(r["y"] + iy)), min(W, int(r["x"] + r["w"] - ix)), min(H, int(r["y"] + r["h"] - iy)))
+                if box[2] - box[0] < 2 or box[3] - box[1] < 2:
+                    continue
+                crop = bg.crop(box).resize((max(1, (box[2] - box[0]) // 4), max(1, (box[3] - box[1]) // 4)))
+                lums = sorted(lum(*c) for c in (crop.get_flattened_data() if hasattr(crop, 'get_flattened_data') else crop.getdata()))
+                tr, tg, tb, ta = parse_rgba(it["color"])
+                # Worst case: the background sample that gives the lowest contrast.
+                worst_bg = lums[int(len(lums) * 0.05)] if lums else 1
+                mean_bg = sum(lums) / len(lums)
+                def eff(bl):
+                    # Text colour blended over the background at its alpha.
+                    if ta >= 0.999:
+                        return lum(tr, tg, tb)
+                    v = (bl ** (1 / 2.4)) * 255  # approximate sRGB value of the background
+                    return lum(tr * ta + v * (1 - ta), tg * ta + v * (1 - ta), tb * ta + v * (1 - ta))
+                tl = eff(mean_bg)
+                ratio = min(cr(tl, worst_bg), cr(tl, mean_bg))
+                stats.append((ratio, where, it["label"]))
+                if ratio < MIN_CR:
+                    problems.append(f'{where}: ReadabilityGuard: "{it["label"]}" contrast {ratio:.2f}:1 (bg lum mean {mean_bg:.2f}, 5th pct {worst_bg:.2f})')
+    print(f"Checked {total} stills.")
+    if stats:
+        stats.sort()
+        print("Lowest contrast samples:")
+        for s in stats[:5]:
+            print(f"  {s[0]:.2f}:1  {s[1]}  {s[2]}")
+    if problems:
+        print(f"\n{len(problems)} issue(s):")
+        for p in problems:
+            print("  " + p)
+        return 1
+    print("All guards passed.")
+    return 0
+
+if __name__ == "__main__":
+    paths = sys.argv[1:] or sorted(glob.glob(os.path.join(ROOT, "out/guards/report*.json")))
+    sys.exit(main(paths))
