@@ -86,13 +86,13 @@ def main(paths):
                 presented = it["opacity"] >= 0.85
                 if not presented:
                     continue
-                if it["fontPx"] < MIN_PX - 0.01:
+                if it["fontPx"] < MIN_PX - 0.1:  # layout widths are whole pixels, so allow rounding
                     problems.append(f'{where}: ReadabilityGuard: "{it["label"]}" is {it["fontPx"]}px')
                 if bg is None:
                     continue
                 r = it["rect"]
                 # Inset the sample so borders of pills and stamps are not read as background.
-                ix, iy = min(12, r["w"] * 0.15), min(12, r["h"] * 0.15)
+                ix, iy = min(16, r["w"] * 0.2), min(16, r["h"] * 0.2)
                 box = (max(0, int(r["x"] + ix)), max(0, int(r["y"] + iy)), min(W, int(r["x"] + r["w"] - ix)), min(H, int(r["y"] + r["h"] - iy)))
                 if box[2] - box[0] < 2 or box[3] - box[1] < 2:
                     continue

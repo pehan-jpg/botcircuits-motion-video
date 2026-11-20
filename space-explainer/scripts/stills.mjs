@@ -10,7 +10,7 @@ import {getCompositions, renderStill, openBrowser} from '@remotion/renderer';
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const outDir = path.join(root, 'out');
-const BUILT = ['Scene01', 'Scene02'];
+const BUILT = (id) => /^Scene\d\d$/.test(id); // every registered scene is built
 const browserExecutable =
 	process.env.REMOTION_BROWSER ??
 	'/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell';
@@ -46,7 +46,7 @@ for (const comp of scenes) {
 			},
 		});
 		let bg = null;
-		if (BUILT.includes(comp.id)) {
+		if (BUILT(comp.id)) {
 			fs.mkdirSync(bgDir, {recursive: true});
 			bg = path.join(bgDir, `t${String(s).padStart(2, '0')}s.png`);
 			await renderStill({composition: comp, serveUrl, frame, output: bg, puppeteerInstance: browser, logLevel: 'error', inputProps: {hideText: true}});

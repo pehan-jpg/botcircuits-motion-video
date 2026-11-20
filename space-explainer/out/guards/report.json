@@ -1,0 +1,4430 @@
+[
+ {
+  "scene": "Scene02",
+  "second": 0,
+  "frame": 0,
+  "still": "out/stills/scene-02/scene-02-t00s.png",
+  "bg": "out/guards/bg/scene-02/t00s.png",
+  "guard": {
+   "scene": "S02",
+   "frame": 0,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 778.9375,
+      "y": 358.9375,
+      "w": 362.125,
+      "h": 362.125
+     },
+     "fontPx": 16.005524861878452,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Lockup: Space by",
+     "text": "Space by",
+     "opacity": 1,
+     "rect": {
+      "x": 479.796875,
+      "y": 590,
+      "w": 960.390625,
+      "h": 125.078125
+     },
+     "fontPx": 104.04231770833334,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene02",
+  "second": 1,
+  "frame": 60,
+  "still": "out/stills/scene-02/scene-02-t01s.png",
+  "bg": "out/guards/bg/scene-02/t01s.png",
+  "guard": {
+   "scene": "S02",
+   "frame": 60,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 813.546875,
+      "y": 191.546875,
+      "w": 292.890625,
+      "h": 292.890625
+     },
+     "fontPx": 15.994027303754267,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Introducing",
+     "text": "Introducing",
+     "opacity": 0.88726,
+     "rect": {
+      "x": 830.625,
+      "y": 550.2548217773438,
+      "w": 258.734375,
+      "h": 37
+     },
+     "fontPx": 27.971283783783786,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Lockup: Space by",
+     "text": "Space by",
+     "opacity": 1,
+     "rect": {
+      "x": 479.796875,
+      "y": 590,
+      "w": 960.390625,
+      "h": 125.078125
+     },
+     "fontPx": 104.04231770833334,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene02",
+  "second": 2,
+  "frame": 120,
+  "still": "out/stills/scene-02/scene-02-t02s.png",
+  "bg": "out/guards/bg/scene-02/t02s.png",
+  "guard": {
+   "scene": "S02",
+   "frame": 120,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 813.546875,
+      "y": 191.546875,
+      "w": 292.890625,
+      "h": 292.890625
+     },
+     "fontPx": 15.994027303754267,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Introducing",
+     "text": "Introducing",
+     "opacity": 1,
+     "rect": {
+      "x": 830.625,
+      "y": 548,
+      "w": 258.734375,
+      "h": 37
+     },
+     "fontPx": 27.971283783783786,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Lockup: Space by",
+     "text": "Space by",
+     "opacity": 1,
+     "rect": {
+      "x": 479.796875,
+      "y": 590,
+      "w": 960.390625,
+      "h": 125.078125
+     },
+     "fontPx": 104.04231770833334,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "logo",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 950.765625,
+      "y": 614.515625,
+      "w": 489.421875,
+      "h": 100.5625
+     },
+     "fontPx": 104.08972392638037,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tagline",
+     "text": "An agent workspace where agents prepare and people decide.",
+     "opacity": 1,
+     "rect": {
+      "x": 367.015625,
+      "y": 742,
+      "w": 1185.96875,
+      "h": 51
+     },
+     "fontPx": 39.99894603709949,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene02",
+  "second": 3,
+  "frame": 180,
+  "still": "out/stills/scene-02/scene-02-t03s.png",
+  "bg": "out/guards/bg/scene-02/t03s.png",
+  "guard": {
+   "scene": "S02",
+   "frame": 180,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 813.546875,
+      "y": 191.546875,
+      "w": 292.890625,
+      "h": 292.890625
+     },
+     "fontPx": 15.994027303754267,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Introducing",
+     "text": "Introducing",
+     "opacity": 1,
+     "rect": {
+      "x": 830.625,
+      "y": 548,
+      "w": 258.734375,
+      "h": 37
+     },
+     "fontPx": 27.971283783783786,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Lockup: Space by",
+     "text": "Space by",
+     "opacity": 1,
+     "rect": {
+      "x": 479.796875,
+      "y": 590,
+      "w": 960.390625,
+      "h": 125.078125
+     },
+     "fontPx": 104.04231770833334,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "logo",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 950.765625,
+      "y": 614.515625,
+      "w": 489.421875,
+      "h": 100.5625
+     },
+     "fontPx": 104.08972392638037,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tagline",
+     "text": "An agent workspace where agents prepare and people decide.",
+     "opacity": 1,
+     "rect": {
+      "x": 367.015625,
+      "y": 742,
+      "w": 1185.96875,
+      "h": 51
+     },
+     "fontPx": 39.99894603709949,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene02",
+  "second": 4,
+  "frame": 240,
+  "still": "out/stills/scene-02/scene-02-t04s.png",
+  "bg": "out/guards/bg/scene-02/t04s.png",
+  "guard": {
+   "scene": "S02",
+   "frame": 240,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 813.546875,
+      "y": 191.546875,
+      "w": 292.890625,
+      "h": 292.890625
+     },
+     "fontPx": 15.994027303754267,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Introducing",
+     "text": "Introducing",
+     "opacity": 1,
+     "rect": {
+      "x": 830.625,
+      "y": 548,
+      "w": 258.734375,
+      "h": 37
+     },
+     "fontPx": 27.971283783783786,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Lockup: Space by",
+     "text": "Space by",
+     "opacity": 1,
+     "rect": {
+      "x": 479.796875,
+      "y": 590,
+      "w": 960.390625,
+      "h": 125.078125
+     },
+     "fontPx": 104.04231770833334,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "logo",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 950.765625,
+      "y": 614.515625,
+      "w": 489.421875,
+      "h": 100.5625
+     },
+     "fontPx": 104.08972392638037,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tagline",
+     "text": "An agent workspace where agents prepare and people decide.",
+     "opacity": 1,
+     "rect": {
+      "x": 367.015625,
+      "y": 742,
+      "w": 1185.96875,
+      "h": 51
+     },
+     "fontPx": 39.99894603709949,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 0,
+  "frame": 0,
+  "still": "out/stills/scene-03/scene-03-t00s.png",
+  "bg": "out/guards/bg/scene-03/t00s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 0,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 300,
+      "y": 520,
+      "w": 1320,
+      "h": 300
+     },
+     "fontPx": 16,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Introducing",
+     "text": "Introducing",
+     "opacity": 1,
+     "rect": {
+      "x": 830.625,
+      "y": 548,
+      "w": 258.734375,
+      "h": 37
+     },
+     "fontPx": 27.971283783783786,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Lockup: Space by",
+     "text": "Space by",
+     "opacity": 1,
+     "rect": {
+      "x": 479.828125,
+      "y": 590,
+      "w": 960.34375,
+      "h": 125.078125
+     },
+     "fontPx": 104.03723958333332,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "logo",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 950.75,
+      "y": 614.515625,
+      "w": 489.421875,
+      "h": 100.5625
+     },
+     "fontPx": 104.08972392638037,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tagline",
+     "text": "An agent workspace where agents prepare and people decide.",
+     "opacity": 1,
+     "rect": {
+      "x": 367.015625,
+      "y": 742,
+      "w": 1185.96875,
+      "h": 51
+     },
+     "fontPx": 39.99894603709949,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 1,
+  "frame": 60,
+  "still": "out/stills/scene-03/scene-03-t01s.png",
+  "bg": "out/guards/bg/scene-03/t01s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 60,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 210,
+      "y": 210.046875,
+      "w": 1499.96875,
+      "h": 715.921875
+     },
+     "fontPx": 15.999666666666666,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 2,
+  "frame": 120,
+  "still": "out/stills/scene-03/scene-03-t02s.png",
+  "bg": "out/guards/bg/scene-03/t02s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 120,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 208.0555419921875,
+      "y": 209.07183837890625,
+      "w": 1503.8887939453125,
+      "h": 717.8562622070312
+     },
+     "fontPx": 16.04148046875,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Ask in plain language",
+     "text": "Ask in plain language",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 539.203125,
+      "h": 64.390625
+     },
+     "fontPx": 56.021103896103895,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 3,
+  "frame": 180,
+  "still": "out/stills/scene-03/scene-03-t03s.png",
+  "bg": "out/guards/bg/scene-03/t03s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 180,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 205.62496948242188,
+      "y": 207.91165161132812,
+      "w": 1508.75,
+      "h": 720.1767578125
+     },
+     "fontPx": 16.093333333333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chat prompt",
+     "text": "Prepare claim CL-7305 for review.Check the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 802.6876831054688,
+      "y": 579.6676635742188,
+      "w": 466.44268798828125,
+      "h": 73.2247314453125
+     },
+     "fontPx": 28.14740358549973,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Ask in plain language",
+     "text": "Ask in plain language",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 539.203125,
+      "h": 64.390625
+     },
+     "fontPx": 56.021103896103895,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 4,
+  "frame": 240,
+  "still": "out/stills/scene-03/scene-03-t04s.png",
+  "bg": "out/guards/bg/scene-03/t04s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 240,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 203.19444274902344,
+      "y": 206.75144958496094,
+      "w": 1513.6112060546875,
+      "h": 722.4970092773438
+     },
+     "fontPx": 16.145186197916665,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chat prompt",
+     "text": "Prepare claim CL-7305 for review.Check the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 802.1808471679688,
+      "y": 579.7052001953125,
+      "w": 467.94537353515625,
+      "h": 73.46063232421875
+     },
+     "fontPx": 28.238082885742188,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Ask in plain language",
+     "text": "Ask in plain language",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 539.203125,
+      "h": 64.390625
+     },
+     "fontPx": 56.021103896103895,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 5,
+  "frame": 300,
+  "still": "out/stills/scene-03/scene-03-t05s.png",
+  "bg": "out/guards/bg/scene-03/t05s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 300,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 200.76390075683594,
+      "y": 205.59129333496094,
+      "w": 1518.47216796875,
+      "h": 724.8173828125
+     },
+     "fontPx": 16.197036458333333,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chat prompt",
+     "text": "Prepare claim CL-7305 for review.Check the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 801.6740112304688,
+      "y": 579.7427978515625,
+      "w": 469.44830322265625,
+      "h": 73.69659423828125
+     },
+     "fontPx": 28.328776918608565,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Ask in plain language",
+     "text": "Ask in plain language",
+     "opacity": 0.210358,
+     "rect": {
+      "x": 96,
+      "y": 103.89642333984375,
+      "w": 539.203125,
+      "h": 64.390625
+     },
+     "fontPx": 56.021103896103895,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 6,
+  "frame": 360,
+  "still": "out/stills/scene-03/scene-03-t06s.png",
+  "bg": "out/guards/bg/scene-03/t06s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 360,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 198.3333740234375,
+      "y": 204.43115234375,
+      "w": 1523.3331298828125,
+      "h": 727.1377563476562
+     },
+     "fontPx": 16.24888671875,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1141.25146484375,
+      "y": 261.30224609375,
+      "w": 519.48193359375,
+      "h": 103.18045043945312
+     },
+     "fontPx": 28.453627035651408,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Status: Checking policy",
+     "text": "Checking policy",
+     "opacity": 0.991587,
+     "rect": {
+      "x": 442.0666809082031,
+      "y": 407.605712890625,
+      "w": 301.2264709472656,
+      "h": 56.871124267578125
+     },
+     "fontPx": 28.417591598798644,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 7,
+  "frame": 420,
+  "still": "out/stills/scene-03/scene-03-t07s.png",
+  "bg": "out/guards/bg/scene-03/t07s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 420,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 195.90274047851562,
+      "y": 203.27090454101562,
+      "w": 1528.1944580078125,
+      "h": 729.4581298828125
+     },
+     "fontPx": 16.300740885416666,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1141.829833984375,
+      "y": 260.323486328125,
+      "w": 521.1396484375,
+      "h": 103.50970458984375
+     },
+     "fontPx": 28.54442518828247,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Status: Matching evidence",
+     "text": "Matching evidence",
+     "opacity": 1,
+     "rect": {
+      "x": 440.4138488769531,
+      "y": 407.0301513671875,
+      "w": 340.7237243652344,
+      "h": 57.0526123046875
+     },
+     "fontPx": 28.52949845163446,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 8,
+  "frame": 480,
+  "still": "out/stills/scene-03/scene-03-t08s.png",
+  "bg": "out/guards/bg/scene-03/t08s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 480,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 193.47225952148438,
+      "y": 202.11074829101562,
+      "w": 1533.0555419921875,
+      "h": 731.778564453125
+     },
+     "fontPx": 16.352592447916667,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1142.408203125,
+      "y": 259.3448181152344,
+      "w": 522.79736328125,
+      "h": 103.83895874023438
+     },
+     "fontPx": 28.635223340913534,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Answer",
+     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 438.7611389160156,
+      "y": 404.8829040527344,
+      "w": 666.35546875,
+      "h": 162.50387573242188
+     },
+     "fontPx": 28.616492523006134,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S1",
+     "text": "S1",
+     "opacity": 1,
+     "rect": {
+      "x": 1039.6806640625,
+      "y": 408.65167236328125,
+      "w": 55.611572265625,
+      "h": 33.113983154296875
+     },
+     "fontPx": 28.623603372012866,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 9,
+  "frame": 540,
+  "still": "out/stills/scene-03/scene-03-t09s.png",
+  "bg": "out/guards/bg/scene-03/t09s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 540,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 191.04171752929688,
+      "y": 200.95059204101562,
+      "w": 1537.9166259765625,
+      "h": 734.098876953125
+     },
+     "fontPx": 16.404444010416668,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1142.986572265625,
+      "y": 258.36614990234375,
+      "w": 524.455078125,
+      "h": 104.168212890625
+     },
+     "fontPx": 28.726021493544604,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Answer",
+     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 437.1083679199219,
+      "y": 404.36572265625,
+      "w": 668.46826171875,
+      "h": 163.0191650390625
+     },
+     "fontPx": 28.7072259633819,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S1",
+     "text": "S1",
+     "opacity": 1,
+     "rect": {
+      "x": 1039.9332275390625,
+      "y": 408.14642333984375,
+      "w": 55.7879638671875,
+      "h": 33.218963623046875
+     },
+     "fontPx": 28.71439316693474,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S2",
+     "text": "S2",
+     "opacity": 1,
+     "rect": {
+      "x": 746.626953125,
+      "y": 448.9012145996094,
+      "w": 55.787841796875,
+      "h": 33.218994140625
+     },
+     "fontPx": 28.714330336626837,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 10,
+  "frame": 600,
+  "still": "out/stills/scene-03/scene-03-t10s.png",
+  "bg": "out/guards/bg/scene-03/t10s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 600,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 188.611083984375,
+      "y": 199.79034423828125,
+      "w": 1542.77783203125,
+      "h": 736.4193115234375
+     },
+     "fontPx": 16.456296875,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1143.56494140625,
+      "y": 257.38739013671875,
+      "w": 526.1129150390625,
+      "h": 104.49749755859375
+     },
+     "fontPx": 28.816826332343016,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Answer",
+     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 435.4555358886719,
+      "y": 403.84844970703125,
+      "w": 670.581298828125,
+      "h": 163.53448486328125
+     },
+     "fontPx": 28.79796988832439,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S1",
+     "text": "S1",
+     "opacity": 1,
+     "rect": {
+      "x": 1040.1859130859375,
+      "y": 407.64111328125,
+      "w": 55.9642333984375,
+      "h": 33.323974609375
+     },
+     "fontPx": 28.805120131548712,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S2",
+     "text": "S2",
+     "opacity": 1,
+     "rect": {
+      "x": 745.9524536132812,
+      "y": 448.52471923828125,
+      "w": 55.9642333984375,
+      "h": 33.324005126953125
+     },
+     "fontPx": 28.805120131548712,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 11,
+  "frame": 660,
+  "still": "out/stills/scene-03/scene-03-t11s.png",
+  "bg": "out/guards/bg/scene-03/t11s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 660,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 186.18055725097656,
+      "y": 198.6302032470703,
+      "w": 1547.638916015625,
+      "h": 738.7396240234375
+     },
+     "fontPx": 16.5081484375,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1144.143310546875,
+      "y": 256.4087219238281,
+      "w": 527.7706298828125,
+      "h": 104.82675170898438
+     },
+     "fontPx": 28.90762448497408,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Answer",
+     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 433.8027648925781,
+      "y": 403.3312683105469,
+      "w": 672.6942138671875,
+      "h": 164.04971313476562
+     },
+     "fontPx": 28.88870857098351,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S1",
+     "text": "S1",
+     "opacity": 1,
+     "rect": {
+      "x": 1040.4385986328125,
+      "y": 407.1358642578125,
+      "w": 56.1405029296875,
+      "h": 33.428985595703125
+     },
+     "fontPx": 28.895847096162687,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S2",
+     "text": "S2",
+     "opacity": 1,
+     "rect": {
+      "x": 745.2780151367188,
+      "y": 448.1483154296875,
+      "w": 56.14056396484375,
+      "h": 33.428985595703125
+     },
+     "fontPx": 28.895878511316635,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Source card",
+     "text": "Home Policy Wording 2026, p. 124.2 We cover sudden and accidental escape of water from a fixed pipe or appliance in your home. We do not cover damage caused by gradual leaks, wear and tear, or poor maintenance.",
+     "opacity": 1,
+     "rect": {
+      "x": 1232.797119140625,
+      "y": 385.1722717285156,
+      "w": 455.6248779296875,
+      "h": 415.8506164550781
+     },
+     "fontPx": 28.88925856438236,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 0,
+  "frame": 0,
+  "still": "out/stills/scene-01/scene-01-t00s.png",
+  "bg": "out/guards/bg/scene-01/t00s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 0,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": []
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 1,
+  "frame": 60,
+  "still": "out/stills/scene-01/scene-01-t01s.png",
+  "bg": "out/guards/bg/scene-01/t01s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 60,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "Inboxv1",
+     "text": "Inboxv1",
+     "opacity": 1,
+     "rect": {
+      "x": 120.89820861816406,
+      "y": 341.875,
+      "w": 391.1602783203125,
+      "h": 315.5
+     },
+     "fontPx": 35.33060578377017,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Inbox",
+     "text": "Inbox",
+     "opacity": 1,
+     "rect": {
+      "x": 144.87254333496094,
+      "y": 354.5,
+      "w": 106.01152038574219,
+      "h": 46.6875
+     },
+     "fontPx": 35.33717346191406,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v1",
+     "text": "v1",
+     "opacity": 1,
+     "rect": {
+      "x": 445.6755676269531,
+      "y": 354.5,
+      "w": 42.408538818359375,
+      "h": 46.6875
+     },
+     "fontPx": 34.92467902688419,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Sheetv2",
+     "text": "Sheetv2",
+     "opacity": 1,
+     "rect": {
+      "x": 549.9126586914062,
+      "y": 341.875,
+      "w": 391.1602783203125,
+      "h": 315.5
+     },
+     "fontPx": 35.33060578377017,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Sheet",
+     "text": "Sheet",
+     "opacity": 1,
+     "rect": {
+      "x": 573.8870239257812,
+      "y": 354.5,
+      "w": 106.01153564453125,
+      "h": 46.6875
+     },
+     "fontPx": 35.33717854817708,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Chatv2 final",
+     "text": "Chatv2 final",
+     "opacity": 1,
+     "rect": {
+      "x": 978.9271240234375,
+      "y": 341.875,
+      "w": 391.1602783203125,
+      "h": 315.5
+     },
+     "fontPx": 35.33060578377017,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Chat",
+     "text": "Chat",
+     "opacity": 1,
+     "rect": {
+      "x": 1002.9014892578125,
+      "y": 354.5,
+      "w": 84.7974853515625,
+      "h": 46.6875
+     },
+     "fontPx": 35.43775507229478,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "PDFv3",
+     "text": "PDFv3",
+     "opacity": 1,
+     "rect": {
+      "x": 1407.941650390625,
+      "y": 341.875,
+      "w": 391.16015625,
+      "h": 315.5
+     },
+     "fontPx": 35.330594758064514,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile PDF",
+     "text": "PDF",
+     "opacity": 1,
+     "rect": {
+      "x": 1431.916015625,
+      "y": 354.5,
+      "w": 63.602783203125,
+      "h": 46.6875
+     },
+     "fontPx": 35.617558593750005,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 1,
+     "rect": {
+      "x": 171.37049865722656,
+      "y": 490.1875,
+      "w": 296.52471923828125,
+      "h": 89.5625
+     },
+     "fontPx": 35.33060484541223,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Work moves between people, tools and inboxes.",
+     "text": "Work moves between people, tools and inboxes.",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 1273.640625,
+      "h": 64.375
+     },
+     "fontPx": 55.9842032967033,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 2,
+  "frame": 120,
+  "still": "out/stills/scene-01/scene-01-t02s.png",
+  "bg": "out/guards/bg/scene-01/t02s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 120,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "Inboxv1",
+     "text": "Inboxv1",
+     "opacity": 1,
+     "rect": {
+      "x": 114.83193969726562,
+      "y": 340.4375,
+      "w": 393.9881286621094,
+      "h": 317.75
+     },
+     "fontPx": 35.586024524319555,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Inbox",
+     "text": "Inbox",
+     "opacity": 1,
+     "rect": {
+      "x": 138.97959899902344,
+      "y": 353.1875,
+      "w": 106.77793884277344,
+      "h": 47
+     },
+     "fontPx": 35.59264628092448,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v1",
+     "text": "v1",
+     "opacity": 1,
+     "rect": {
+      "x": 441.9572448730469,
+      "y": 353.1875,
+      "w": 42.71514892578125,
+      "h": 47
+     },
+     "fontPx": 35.17718146829044,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Sheetv2",
+     "text": "Sheetv2",
+     "opacity": 1,
+     "rect": {
+      "x": 546.9479370117188,
+      "y": 340.4375,
+      "w": 393.9881591796875,
+      "h": 317.75
+     },
+     "fontPx": 35.58602728074597,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Sheet",
+     "text": "Sheet",
+     "opacity": 1,
+     "rect": {
+      "x": 571.0955810546875,
+      "y": 353.1875,
+      "w": 106.7779541015625,
+      "h": 47
+     },
+     "fontPx": 35.5926513671875,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2",
+     "text": "v2",
+     "opacity": 1,
+     "rect": {
+      "x": 874.0732421875,
+      "y": 353.1875,
+      "w": 42.71514892578125,
+      "h": 47
+     },
+     "fontPx": 35.17718146829044,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Chatv2 final",
+     "text": "Chatv2 final",
+     "opacity": 1,
+     "rect": {
+      "x": 979.06396484375,
+      "y": 340.4375,
+      "w": 393.988037109375,
+      "h": 317.75
+     },
+     "fontPx": 35.58601625504032,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Chat",
+     "text": "Chat",
+     "opacity": 1,
+     "rect": {
+      "x": 1003.2116088867188,
+      "y": 353.1875,
+      "w": 85.41046142578125,
+      "h": 47
+     },
+     "fontPx": 35.693924177938435,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "PDFv3",
+     "text": "PDFv3",
+     "opacity": 1,
+     "rect": {
+      "x": 1411.179931640625,
+      "y": 340.4375,
+      "w": 393.988037109375,
+      "h": 317.75
+     },
+     "fontPx": 35.58601625504032,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile PDF",
+     "text": "PDF",
+     "opacity": 1,
+     "rect": {
+      "x": 1435.32763671875,
+      "y": 353.1875,
+      "w": 64.062744140625,
+      "h": 47
+     },
+     "fontPx": 35.87513671875,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.72,
+     "rect": {
+      "x": 156.21466064453125,
+      "y": 490.8125,
+      "w": 302.3201599121094,
+      "h": 103.1875
+     },
+     "fontPx": 36.02112543633643,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 1,
+     "rect": {
+      "x": 591.4304809570312,
+      "y": 489.8125,
+      "w": 305.0230712890625,
+      "h": 90.25
+     },
+     "fontPx": 35.58602498372396,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Work moves between people, tools and inboxes.",
+     "text": "Work moves between people, tools and inboxes.",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 1273.640625,
+      "h": 64.375
+     },
+     "fontPx": 55.9842032967033,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 3,
+  "frame": 180,
+  "still": "out/stills/scene-01/scene-01-t03s.png",
+  "bg": "out/guards/bg/scene-01/t03s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 180,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "Inboxv1",
+     "text": "Inboxv1",
+     "opacity": 1,
+     "rect": {
+      "x": 110.62496948242188,
+      "y": 339.5,
+      "w": 395.9492492675781,
+      "h": 319.3125
+     },
+     "fontPx": 35.76315799836189,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Inbox",
+     "text": "Inbox",
+     "opacity": 1,
+     "rect": {
+      "x": 134.892822265625,
+      "y": 352.25,
+      "w": 107.3094482421875,
+      "h": 47.25
+     },
+     "fontPx": 35.76981608072917,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v1",
+     "text": "v1",
+     "opacity": 1,
+     "rect": {
+      "x": 439.37860107421875,
+      "y": 352.25,
+      "w": 42.927764892578125,
+      "h": 47.25
+     },
+     "fontPx": 35.35227697035845,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Sheetv2",
+     "text": "Sheetv2",
+     "opacity": 1,
+     "rect": {
+      "x": 544.8919067382812,
+      "y": 339.5,
+      "w": 395.94927978515625,
+      "h": 319.3125
+     },
+     "fontPx": 35.7631607547883,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Sheet",
+     "text": "Sheet",
+     "opacity": 1,
+     "rect": {
+      "x": 569.1597900390625,
+      "y": 352.25,
+      "w": 107.30938720703125,
+      "h": 47.25
+     },
+     "fontPx": 35.769795735677086,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2",
+     "text": "v2",
+     "opacity": 1,
+     "rect": {
+      "x": 873.6455688476562,
+      "y": 352.25,
+      "w": 42.927734375,
+      "h": 47.25
+     },
+     "fontPx": 35.3522518382353,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Chatv2 final",
+     "text": "Chatv2 final",
+     "opacity": 1,
+     "rect": {
+      "x": 979.1588745117188,
+      "y": 339.5,
+      "w": 395.94927978515625,
+      "h": 319.3125
+     },
+     "fontPx": 35.7631607547883,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Chat",
+     "text": "Chat",
+     "opacity": 1,
+     "rect": {
+      "x": 1003.4267578125,
+      "y": 352.25,
+      "w": 85.8355712890625,
+      "h": 47.25
+     },
+     "fontPx": 35.87158203125,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2 final",
+     "text": "v2 final",
+     "opacity": 1,
+     "rect": {
+      "x": 1179.1690673828125,
+      "y": 352.25,
+      "w": 171.671142578125,
+      "h": 47.25
+     },
+     "fontPx": 35.87158203125,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "PDFv3",
+     "text": "PDFv3",
+     "opacity": 1,
+     "rect": {
+      "x": 1413.42578125,
+      "y": 339.5,
+      "w": 395.9493408203125,
+      "h": 319.3125
+     },
+     "fontPx": 35.76316626764113,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile PDF",
+     "text": "PDF",
+     "opacity": 1,
+     "rect": {
+      "x": 1437.693603515625,
+      "y": 352.25,
+      "w": 64.3817138671875,
+      "h": 47.25
+     },
+     "fontPx": 36.053759765624996,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.72,
+     "rect": {
+      "x": 152.2136688232422,
+      "y": 490.5625,
+      "w": 303.82501220703125,
+      "h": 103.6875
+     },
+     "fontPx": 36.200426986369685,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.72,
+     "rect": {
+      "x": 580.4432983398438,
+      "y": 491.875,
+      "w": 309.51947021484375,
+      "h": 101.3125
+     },
+     "fontPx": 36.11060485839844,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.811286,
+     "rect": {
+      "x": 1017.9178466796875,
+      "y": 492,
+      "w": 308.093505859375,
+      "h": 96.0625
+     },
+     "fontPx": 35.94424235026042,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 1,
+     "rect": {
+      "x": 1270.3157958984375,
+      "y": 445.375,
+      "w": 322.70166015625,
+      "h": 110.125
+     },
+     "fontPx": 37.64852701822917,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Work moves between people, tools and inboxes.",
+     "text": "Work moves between people, tools and inboxes.",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 1273.640625,
+      "h": 64.375
+     },
+     "fontPx": 55.9842032967033,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 4,
+  "frame": 240,
+  "still": "out/stills/scene-01/scene-01-t04s.png",
+  "bg": "out/guards/bg/scene-01/t04s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 240,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "Inboxv1",
+     "text": "Inboxv1",
+     "opacity": 1,
+     "rect": {
+      "x": 107.91119384765625,
+      "y": 338.83013916015625,
+      "w": 397.21435546875,
+      "h": 320.3341064453125
+     },
+     "fontPx": 35.877425655241936,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Inbox",
+     "text": "Inbox",
+     "opacity": 1,
+     "rect": {
+      "x": 132.256591796875,
+      "y": 351.64349365234375,
+      "w": 107.65228271484375,
+      "h": 47.409454345703125
+     },
+     "fontPx": 35.88409423828125,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v1",
+     "text": "v1",
+     "opacity": 1,
+     "rect": {
+      "x": 437.7152099609375,
+      "y": 351.64349365234375,
+      "w": 43.064910888671875,
+      "h": 47.409454345703125
+     },
+     "fontPx": 35.465220731847424,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Sheetv2",
+     "text": "Sheetv2",
+     "opacity": 1,
+     "rect": {
+      "x": 543.5656127929688,
+      "y": 338.83013916015625,
+      "w": 397.21435546875,
+      "h": 320.3341064453125
+     },
+     "fontPx": 35.877425655241936,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Sheet",
+     "text": "Sheet",
+     "opacity": 1,
+     "rect": {
+      "x": 567.9110107421875,
+      "y": 351.64349365234375,
+      "w": 107.65228271484375,
+      "h": 47.409454345703125
+     },
+     "fontPx": 35.88409423828125,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2",
+     "text": "v2",
+     "opacity": 1,
+     "rect": {
+      "x": 873.36962890625,
+      "y": 351.64349365234375,
+      "w": 43.06494140625,
+      "h": 47.409454345703125
+     },
+     "fontPx": 35.46524586397059,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Chatv2 final",
+     "text": "Chatv2 final",
+     "opacity": 1,
+     "rect": {
+      "x": 979.2200317382812,
+      "y": 338.83013916015625,
+      "w": 397.21429443359375,
+      "h": 320.3341064453125
+     },
+     "fontPx": 35.87742014238911,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Chat",
+     "text": "Chat",
+     "opacity": 1,
+     "rect": {
+      "x": 1003.5654907226562,
+      "y": 351.64349365234375,
+      "w": 86.10980224609375,
+      "h": 47.409454345703125
+     },
+     "fontPx": 35.98618601329291,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2 final",
+     "text": "v2 final",
+     "opacity": 1,
+     "rect": {
+      "x": 1179.869384765625,
+      "y": 351.64349365234375,
+      "w": 172.219482421875,
+      "h": 47.409454345703125
+     },
+     "fontPx": 35.986160506063435,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "PDFv3",
+     "text": "PDFv3",
+     "opacity": 1,
+     "rect": {
+      "x": 1414.87451171875,
+      "y": 338.83013916015625,
+      "w": 397.21435546875,
+      "h": 320.3341064453125
+     },
+     "fontPx": 35.877425655241936,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile PDF",
+     "text": "PDF",
+     "opacity": 1,
+     "rect": {
+      "x": 1439.219970703125,
+      "y": 351.64349365234375,
+      "w": 64.587158203125,
+      "h": 47.409454345703125
+     },
+     "fontPx": 36.16880859375,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v3",
+     "text": "v3",
+     "opacity": 1,
+     "rect": {
+      "x": 1744.678466796875,
+      "y": 351.64349365234375,
+      "w": 43.06494140625,
+      "h": 47.409454345703125
+     },
+     "fontPx": 35.46524586397059,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.72,
+     "rect": {
+      "x": 149.63278198242188,
+      "y": 490.4114990234375,
+      "w": 304.7957458496094,
+      "h": 104.02276611328125
+     },
+     "fontPx": 36.316088867187496,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.72,
+     "rect": {
+      "x": 579.2305908203125,
+      "y": 491.73675537109375,
+      "w": 310.50836181640625,
+      "h": 101.65179443359375
+     },
+     "fontPx": 36.225975545247394,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.72,
+     "rect": {
+      "x": 1015.2407836914062,
+      "y": 493.0657653808594,
+      "w": 309.79681396484375,
+      "h": 98.99374389648438
+     },
+     "fontPx": 36.14296162923177,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 1,
+     "rect": {
+      "x": 1459.72119140625,
+      "y": 489.3871765136719,
+      "w": 307.520751953125,
+      "h": 90.97488403320312
+     },
+     "fontPx": 35.87742106119792,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chip: Who has it now?",
+     "text": "Who has it now?",
+     "opacity": 1,
+     "rect": {
+      "x": 637.8239135742188,
+      "y": 718.3619995117188,
+      "w": 297.39825439453125,
+      "h": 69.7047119140625
+     },
+     "fontPx": 30.76533666150323,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chip: Who approved it?",
+     "text": "Who approved it?",
+     "opacity": 0.97884,
+     "rect": {
+      "x": 959.8237915039062,
+      "y": 718.7958374023438,
+      "w": 322.33636474609375,
+      "h": 69.7047119140625
+     },
+     "fontPx": 30.796467969372014,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Work moves between people, tools and inboxes.",
+     "text": "Work moves between people, tools and inboxes.",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 1273.640625,
+      "h": 64.390625
+     },
+     "fontPx": 55.9842032967033,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 5,
+  "frame": 300,
+  "still": "out/stills/scene-01/scene-01-t05s.png",
+  "bg": "out/guards/bg/scene-01/t05s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 300,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "Inboxv1",
+     "text": "Inboxv1",
+     "opacity": 1,
+     "rect": {
+      "x": 106.22164916992188,
+      "y": 338.4375,
+      "w": 398.0019226074219,
+      "h": 320.9375
+     },
+     "fontPx": 35.948560751638105,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Inbox",
+     "text": "Inbox",
+     "opacity": 1,
+     "rect": {
+      "x": 130.6153106689453,
+      "y": 351.25,
+      "w": 107.86573791503906,
+      "h": 47.5
+     },
+     "fontPx": 35.95524597167969,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v1",
+     "text": "v1",
+     "opacity": 1,
+     "rect": {
+      "x": 436.6795959472656,
+      "y": 351.25,
+      "w": 43.15032958984375,
+      "h": 47.5
+     },
+     "fontPx": 35.5355655445772,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Sheetv2",
+     "text": "Sheetv2",
+     "opacity": 1,
+     "rect": {
+      "x": 542.7398681640625,
+      "y": 338.4375,
+      "w": 398.001953125,
+      "h": 320.9375
+     },
+     "fontPx": 35.94856350806452,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Sheet",
+     "text": "Sheet",
+     "opacity": 1,
+     "rect": {
+      "x": 567.133544921875,
+      "y": 351.25,
+      "w": 107.86578369140625,
+      "h": 47.5
+     },
+     "fontPx": 35.95526123046875,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2",
+     "text": "v2",
+     "opacity": 1,
+     "rect": {
+      "x": 873.1978759765625,
+      "y": 351.25,
+      "w": 43.1502685546875,
+      "h": 47.5
+     },
+     "fontPx": 35.535515280330884,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Chatv2 final",
+     "text": "Chatv2 final",
+     "opacity": 1,
+     "rect": {
+      "x": 979.2581176757812,
+      "y": 338.4375,
+      "w": 398.00201416015625,
+      "h": 320.9375
+     },
+     "fontPx": 35.94856902091733,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Chat",
+     "text": "Chat",
+     "opacity": 1,
+     "rect": {
+      "x": 1003.65185546875,
+      "y": 351.25,
+      "w": 86.280517578125,
+      "h": 47.5
+     },
+     "fontPx": 36.05752973414179,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2 final",
+     "text": "v2 final",
+     "opacity": 1,
+     "rect": {
+      "x": 1180.3052978515625,
+      "y": 351.25,
+      "w": 172.5611572265625,
+      "h": 47.5
+     },
+     "fontPx": 36.05755524137127,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "PDFv3",
+     "text": "PDFv3",
+     "opacity": 1,
+     "rect": {
+      "x": 1415.7763671875,
+      "y": 338.4375,
+      "w": 398.001953125,
+      "h": 320.9375
+     },
+     "fontPx": 35.94856350806452,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile PDF",
+     "text": "PDF",
+     "opacity": 1,
+     "rect": {
+      "x": 1440.1700439453125,
+      "y": 351.25,
+      "w": 64.7154541015625,
+      "h": 47.5
+     },
+     "fontPx": 36.240654296875,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v3",
+     "text": "v3",
+     "opacity": 1,
+     "rect": {
+      "x": 1746.234375,
+      "y": 351.25,
+      "w": 43.1502685546875,
+      "h": 47.5
+     },
+     "fontPx": 35.535515280330884,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.72,
+     "rect": {
+      "x": 148.0259552001953,
+      "y": 490.3125,
+      "w": 305.40008544921875,
+      "h": 104.25
+     },
+     "fontPx": 36.388095287566486,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.72,
+     "rect": {
+      "x": 578.4755859375,
+      "y": 491.625,
+      "w": 311.1240234375,
+      "h": 101.875
+     },
+     "fontPx": 36.297802734375004,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.72,
+     "rect": {
+      "x": 1015.3502197265625,
+      "y": 493,
+      "w": 310.4112548828125,
+      "h": 99.1875
+     },
+     "fontPx": 36.21464640299479,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 1,
+     "rect": {
+      "x": 1459.42822265625,
+      "y": 489.3125,
+      "w": 310.6982421875,
+      "h": 91.125
+     },
+     "fontPx": 35.948556947314046,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chip: Who has it now?",
+     "text": "Who has it now?",
+     "opacity": 1,
+     "rect": {
+      "x": 431.26727294921875,
+      "y": 718.6875,
+      "w": 297.98785400390625,
+      "h": 69.875
+     },
+     "fontPx": 30.826329724542024,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chip: Who approved it?",
+     "text": "Who approved it?",
+     "opacity": 1,
+     "rect": {
+      "x": 753.9055786132812,
+      "y": 718.6875,
+      "w": 322.97540283203125,
+      "h": 69.875
+     },
+     "fontPx": 30.857522563569862,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chip: Which version is right?",
+     "text": "Which version is right?",
+     "opacity": 1,
+     "rect": {
+      "x": 1101.5313720703125,
+      "y": 718.6875,
+      "w": 387.185302734375,
+      "h": 69.875
+     },
+     "fontPx": 30.81050154384947,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Work moves between people, tools and inboxes.",
+     "text": "Work moves between people, tools and inboxes.",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 1273.640625,
+      "h": 64.375
+     },
+     "fontPx": 55.9842032967033,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 6,
+  "frame": 360,
+  "still": "out/stills/scene-01/scene-01-t06s.png",
+  "bg": "out/guards/bg/scene-01/t06s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 360,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "Inboxv1",
+     "text": "Inboxv1",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 105.18743896484375,
+      "y": 341.18646240234375,
+      "w": 398.48406982421875,
+      "h": 321.3580322265625
+     },
+     "fontPx": 35.99210953251008,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Inbox",
+     "text": "Inbox",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 129.61065673828125,
+      "y": 354.040771484375,
+      "w": 107.99639892578125,
+      "h": 47.561004638671875
+     },
+     "fontPx": 35.998799641927086,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v1",
+     "text": "v1",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 436.0456848144531,
+      "y": 354.040771484375,
+      "w": 43.202606201171875,
+      "h": 47.561004638671875
+     },
+     "fontPx": 35.57861687155331,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Sheetv2",
+     "text": "Sheetv2",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 542.2344970703125,
+      "y": 341.18646240234375,
+      "w": 398.4840087890625,
+      "h": 321.3580322265625
+     },
+     "fontPx": 35.992104019657255,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Sheet",
+     "text": "Sheet",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 566.65771484375,
+      "y": 354.040771484375,
+      "w": 107.99639892578125,
+      "h": 47.561004638671875
+     },
+     "fontPx": 35.998799641927086,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2",
+     "text": "v2",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 873.0927124023438,
+      "y": 354.040771484375,
+      "w": 43.20257568359375,
+      "h": 47.561004638671875
+     },
+     "fontPx": 35.57859173943015,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Chatv2 final",
+     "text": "Chatv2 final",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 979.281494140625,
+      "y": 341.18646240234375,
+      "w": 398.484130859375,
+      "h": 321.3580322265625
+     },
+     "fontPx": 35.99211504536291,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Chat",
+     "text": "Chat",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 1003.7046508789062,
+      "y": 354.040771484375,
+      "w": 86.38519287109375,
+      "h": 47.561004638671875
+     },
+     "fontPx": 36.1012746326959,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2 final",
+     "text": "v2 final",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 1180.572265625,
+      "y": 354.040771484375,
+      "w": 172.77001953125,
+      "h": 47.561004638671875
+     },
+     "fontPx": 36.10119811100746,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "PDFv3",
+     "text": "PDFv3",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 1416.32861328125,
+      "y": 341.18646240234375,
+      "w": 398.48388671875,
+      "h": 321.3580322265625
+     },
+     "fontPx": 35.992092993951616,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile PDF",
+     "text": "PDF",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 1440.751708984375,
+      "y": 354.040771484375,
+      "w": 64.7939453125,
+      "h": 47.561004638671875
+     },
+     "fontPx": 36.284609375,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v3",
+     "text": "v3",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 1747.186767578125,
+      "y": 354.040771484375,
+      "w": 43.20263671875,
+      "h": 47.561004638671875
+     },
+     "fontPx": 35.57864200367647,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.1448496,
+     "rect": {
+      "x": 147.04238891601562,
+      "y": 493.2523498535156,
+      "w": 305.7700500488281,
+      "h": 104.35519409179688
+     },
+     "fontPx": 36.43217617603059,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.1448496,
+     "rect": {
+      "x": 578.013427734375,
+      "y": 494.581787109375,
+      "w": 311.5009765625,
+      "h": 101.97674560546875
+     },
+     "fontPx": 36.34178059895834,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.1448496,
+     "rect": {
+      "x": 1015.4172973632812,
+      "y": 495.9150390625,
+      "w": 310.78729248046875,
+      "h": 99.31024169921875
+     },
+     "fontPx": 36.25851745605468,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1306.85791015625,
+      "y": 366.6112060546875,
+      "w": 247.831298828125,
+      "h": 247.83135986328125
+     },
+     "fontPx": 16.4535302126556,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chip: Who has it now?",
+     "text": "Who has it now?",
+     "opacity": 1,
+     "rect": {
+      "x": 430.6268005371094,
+      "y": 718.9321899414062,
+      "w": 298.3488464355469,
+      "h": 69.927490234375
+     },
+     "fontPx": 30.863673769194502,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chip: Who approved it?",
+     "text": "Who approved it?",
+     "opacity": 1,
+     "rect": {
+      "x": 753.6559448242188,
+      "y": 718.9321899414062,
+      "w": 323.36651611328125,
+      "h": 69.927490234375
+     },
+     "fontPx": 30.894890074517317,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chip: Which version is right?",
+     "text": "Which version is right?",
+     "opacity": 1,
+     "rect": {
+      "x": 1101.702880859375,
+      "y": 718.9321899414062,
+      "w": 387.654296875,
+      "h": 69.927490234375
+     },
+     "fontPx": 30.84782203249337,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: AI can do the work. But who checks it?",
+     "text": "AI can do the work. But who checks it?",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 997.984375,
+      "h": 64.390625
+     },
+     "fontPx": 55.999123246492985,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 7,
+  "frame": 420,
+  "still": "out/stills/scene-01/scene-01-t07s.png",
+  "bg": "out/guards/bg/scene-01/t07s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 420,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "Inboxv1",
+     "text": "Inboxv1",
+     "opacity": 0.2,
+     "rect": {
+      "x": 104.56391906738281,
+      "y": 344.0625,
+      "w": 398.77471923828125,
+      "h": 321.5625
+     },
+     "fontPx": 36.01836173765121,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Inbox",
+     "text": "Inbox",
+     "opacity": 0.2,
+     "rect": {
+      "x": 129.00494384765625,
+      "y": 356.9375,
+      "w": 108.0751953125,
+      "h": 47.5625
+     },
+     "fontPx": 36.025065104166664,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v1",
+     "text": "v1",
+     "opacity": 0.2,
+     "rect": {
+      "x": 435.66351318359375,
+      "y": 356.9375,
+      "w": 43.23406982421875,
+      "h": 47.5625
+     },
+     "fontPx": 35.60452809053309,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Sheetv2",
+     "text": "Sheetv2",
+     "opacity": 0.2,
+     "rect": {
+      "x": 541.9297485351562,
+      "y": 344.0625,
+      "w": 398.774658203125,
+      "h": 321.5625
+     },
+     "fontPx": 36.01835622479838,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Sheet",
+     "text": "Sheet",
+     "opacity": 0.2,
+     "rect": {
+      "x": 566.3707275390625,
+      "y": 356.9375,
+      "w": 108.0751953125,
+      "h": 47.5625
+     },
+     "fontPx": 36.025065104166664,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2",
+     "text": "v2",
+     "opacity": 0.2,
+     "rect": {
+      "x": 873.029296875,
+      "y": 356.9375,
+      "w": 43.23406982421875,
+      "h": 47.5625
+     },
+     "fontPx": 35.60452809053309,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Chatv2 final",
+     "text": "Chatv2 final",
+     "opacity": 0.2,
+     "rect": {
+      "x": 979.2955322265625,
+      "y": 344.0625,
+      "w": 398.7747802734375,
+      "h": 321.5625
+     },
+     "fontPx": 36.018367250504035,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Chat",
+     "text": "Chat",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1003.7365112304688,
+      "y": 356.9375,
+      "w": 86.44805908203125,
+      "h": 47.5625
+     },
+     "fontPx": 36.127547079057834,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2 final",
+     "text": "v2 final",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1180.73291015625,
+      "y": 356.9375,
+      "w": 172.896240234375,
+      "h": 47.5625
+     },
+     "fontPx": 36.127572586287314,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "PDFv3",
+     "text": "PDFv3",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1416.661376953125,
+      "y": 344.0625,
+      "w": 398.774658203125,
+      "h": 321.5625
+     },
+     "fontPx": 36.01835622479838,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile PDF",
+     "text": "PDF",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1441.102294921875,
+      "y": 356.9375,
+      "w": 64.841064453125,
+      "h": 47.5625
+     },
+     "fontPx": 36.31099609375,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v3",
+     "text": "v3",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1747.760986328125,
+      "y": 356.9375,
+      "w": 43.234130859375,
+      "h": 47.5625
+     },
+     "fontPx": 35.60457835477941,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 146.44940185546875,
+      "y": 496.25,
+      "w": 305.9930725097656,
+      "h": 104.375
+     },
+     "fontPx": 36.458749064993356,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 577.7348022460938,
+      "y": 497.5625,
+      "w": 311.7281494140625,
+      "h": 102.0625
+     },
+     "fontPx": 36.36828409830729,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 1015.4577026367188,
+      "y": 498.875,
+      "w": 311.01397705078125,
+      "h": 99.375
+     },
+     "fontPx": 36.28496398925781,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 622.2313842773438,
+      "y": 366,
+      "w": 248.01214599609375,
+      "h": 248
+     },
+     "fontPx": 16.46553666364108,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chip: Who has it now?",
+     "text": "Who has it now?",
+     "opacity": 1,
+     "rect": {
+      "x": 430.24066162109375,
+      "y": 719.0625,
+      "w": 298.56646728515625,
+      "h": 70
+     },
+     "fontPx": 30.88618627087823,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chip: Who approved it?",
+     "text": "Who approved it?",
+     "opacity": 1,
+     "rect": {
+      "x": 753.5054321289062,
+      "y": 719.0625,
+      "w": 323.60247802734375,
+      "h": 70
+     },
+     "fontPx": 30.917434206434113,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chip: Which version is right?",
+     "text": "Which version is right?",
+     "opacity": 1,
+     "rect": {
+      "x": 1101.80615234375,
+      "y": 719.0625,
+      "w": 387.93701171875,
+      "h": 70
+     },
+     "fontPx": 30.870319234913794,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: AI can do the work. But who checks it?",
+     "text": "AI can do the work. But who checks it?",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 997.984375,
+      "h": 64.375
+     },
+     "fontPx": 55.999123246492985,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 8,
+  "frame": 480,
+  "still": "out/stills/scene-01/scene-01-t08s.png",
+  "bg": "out/guards/bg/scene-01/t08s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 480,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "Inboxv1",
+     "text": "Inboxv1",
+     "opacity": 0.2,
+     "rect": {
+      "x": 104.19720458984375,
+      "y": 346.9375,
+      "w": 398.9456787109375,
+      "h": 321.75
+     },
+     "fontPx": 36.03380323840726,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Inbox",
+     "text": "Inbox",
+     "opacity": 0.2,
+     "rect": {
+      "x": 128.64871215820312,
+      "y": 359.8125,
+      "w": 108.12152099609375,
+      "h": 47.625
+     },
+     "fontPx": 36.040506998697914,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v1",
+     "text": "v1",
+     "opacity": 0.2,
+     "rect": {
+      "x": 435.438720703125,
+      "y": 359.8125,
+      "w": 43.25262451171875,
+      "h": 47.625
+     },
+     "fontPx": 35.61980842141544,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Sheetv2",
+     "text": "Sheetv2",
+     "opacity": 0.2,
+     "rect": {
+      "x": 541.75048828125,
+      "y": 346.9375,
+      "w": 398.9456787109375,
+      "h": 321.75
+     },
+     "fontPx": 36.03380323840726,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Sheet",
+     "text": "Sheet",
+     "opacity": 0.2,
+     "rect": {
+      "x": 566.2020263671875,
+      "y": 359.8125,
+      "w": 108.12152099609375,
+      "h": 47.625
+     },
+     "fontPx": 36.040506998697914,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2",
+     "text": "v2",
+     "opacity": 0.2,
+     "rect": {
+      "x": 872.9920654296875,
+      "y": 359.8125,
+      "w": 43.25262451171875,
+      "h": 47.625
+     },
+     "fontPx": 35.61980842141544,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Chatv2 final",
+     "text": "Chatv2 final",
+     "opacity": 0.2,
+     "rect": {
+      "x": 979.3038330078125,
+      "y": 346.9375,
+      "w": 398.9456787109375,
+      "h": 321.75
+     },
+     "fontPx": 36.03380323840726,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Chat",
+     "text": "Chat",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1003.75537109375,
+      "y": 359.8125,
+      "w": 86.485107421875,
+      "h": 47.625
+     },
+     "fontPx": 36.14302996735074,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2 final",
+     "text": "v2 final",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1180.82763671875,
+      "y": 359.8125,
+      "w": 172.9703369140625,
+      "h": 47.625
+     },
+     "fontPx": 36.14305547458022,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "PDFv3",
+     "text": "PDFv3",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1416.857177734375,
+      "y": 346.9375,
+      "w": 398.9456787109375,
+      "h": 321.75
+     },
+     "fontPx": 36.03380323840726,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile PDF",
+     "text": "PDF",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1441.30859375,
+      "y": 359.8125,
+      "w": 64.868896484375,
+      "h": 47.625
+     },
+     "fontPx": 36.326582031250005,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v3",
+     "text": "v3",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1748.0986328125,
+      "y": 359.8125,
+      "w": 43.252685546875,
+      "h": 47.625
+     },
+     "fontPx": 35.61985868566176,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 146.1006317138672,
+      "y": 499.1875,
+      "w": 306.124267578125,
+      "h": 104.5
+     },
+     "fontPx": 36.47438081781915,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 577.5709228515625,
+      "y": 500.5625,
+      "w": 311.86181640625,
+      "h": 102.0625
+     },
+     "fontPx": 36.38387858072917,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 1015.4815673828125,
+      "y": 501.875,
+      "w": 311.147216796875,
+      "h": 99.4375
+     },
+     "fontPx": 36.30050862630208,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Stamp Sent",
+     "text": "Sent",
+     "opacity": 1,
+     "rect": {
+      "x": 1024.0960693359375,
+      "y": 383.875,
+      "w": 180.6690673828125,
+      "h": 90.125
+     },
+     "fontPx": 40.148681640625,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Stamp Paid",
+     "text": "Paid",
+     "opacity": 1,
+     "rect": {
+      "x": 1024.9857177734375,
+      "y": 536.3125,
+      "w": 178.8896484375,
+      "h": 84.375
+     },
+     "fontPx": 39.75325520833333,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 627.5399169921875,
+      "y": 375.3125,
+      "w": 248.11846923828125,
+      "h": 248.125
+     },
+     "fontPx": 16.47259546810166,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: AI can do the work. But who checks it?",
+     "text": "AI can do the work. But who checks it?",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 997.984375,
+      "h": 64.375
+     },
+     "fontPx": 55.999123246492985,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 9,
+  "frame": 540,
+  "still": "out/stills/scene-01/scene-01-t09s.png",
+  "bg": "out/guards/bg/scene-01/t09s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 540,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "Inboxv1",
+     "text": "Inboxv1",
+     "opacity": 0.2,
+     "rect": {
+      "x": 103.99040222167969,
+      "y": 349.9375,
+      "w": 399.04205322265625,
+      "h": 321.8125
+     },
+     "fontPx": 36.042508033014116,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Inbox",
+     "text": "Inbox",
+     "opacity": 0.2,
+     "rect": {
+      "x": 128.44781494140625,
+      "y": 362.8125,
+      "w": 108.14764404296875,
+      "h": 47.625
+     },
+     "fontPx": 36.049214680989586,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v1",
+     "text": "v1",
+     "opacity": 0.2,
+     "rect": {
+      "x": 435.3119812011719,
+      "y": 362.8125,
+      "w": 43.2630615234375,
+      "h": 47.625
+     },
+     "fontPx": 35.62840360753676,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Sheetv2",
+     "text": "Sheetv2",
+     "opacity": 0.2,
+     "rect": {
+      "x": 541.6494750976562,
+      "y": 349.9375,
+      "w": 399.04205322265625,
+      "h": 321.8125
+     },
+     "fontPx": 36.042508033014116,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Sheet",
+     "text": "Sheet",
+     "opacity": 0.2,
+     "rect": {
+      "x": 566.1068725585938,
+      "y": 362.8125,
+      "w": 108.14764404296875,
+      "h": 47.625
+     },
+     "fontPx": 36.049214680989586,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2",
+     "text": "v2",
+     "opacity": 0.2,
+     "rect": {
+      "x": 872.9710083007812,
+      "y": 362.8125,
+      "w": 43.26312255859375,
+      "h": 47.625
+     },
+     "fontPx": 35.62845387178309,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Chatv2 final",
+     "text": "Chatv2 final",
+     "opacity": 0.2,
+     "rect": {
+      "x": 979.3084716796875,
+      "y": 349.9375,
+      "w": 399.0421142578125,
+      "h": 321.8125
+     },
+     "fontPx": 36.04251354586694,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Chat",
+     "text": "Chat",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1003.7659301757812,
+      "y": 362.8125,
+      "w": 86.50604248046875,
+      "h": 47.625
+     },
+     "fontPx": 36.151778947061565,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2 final",
+     "text": "v2 final",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1180.881103515625,
+      "y": 362.8125,
+      "w": 173.011962890625,
+      "h": 47.625
+     },
+     "fontPx": 36.15175343983209,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "PDFv3",
+     "text": "PDFv3",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1416.967529296875,
+      "y": 349.9375,
+      "w": 399.0419921875,
+      "h": 321.8125
+     },
+     "fontPx": 36.04250252016129,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile PDF",
+     "text": "PDF",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1441.425048828125,
+      "y": 362.8125,
+      "w": 64.884521484375,
+      "h": 47.625
+     },
+     "fontPx": 36.335332031250005,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v3",
+     "text": "v3",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1748.2890625,
+      "y": 362.8125,
+      "w": 43.26318359375,
+      "h": 47.625
+     },
+     "fontPx": 35.62850413602941,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 145.90396118164062,
+      "y": 502.1875,
+      "w": 306.1982421875,
+      "h": 104.5
+     },
+     "fontPx": 36.48319481382979,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 577.478515625,
+      "y": 503.5,
+      "w": 311.9371337890625,
+      "h": 102.125
+     },
+     "fontPx": 36.39266560872396,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 1015.4949340820312,
+      "y": 504.875,
+      "w": 311.22235107421875,
+      "h": 99.4375
+     },
+     "fontPx": 36.30927429199219,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Stamp Sent",
+     "text": "Sent",
+     "opacity": 1,
+     "rect": {
+      "x": 1024.111572265625,
+      "y": 375.6875,
+      "w": 180.712646484375,
+      "h": 90.125
+     },
+     "fontPx": 40.158365885416664,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Stamp Paid",
+     "text": "Paid",
+     "opacity": 1,
+     "rect": {
+      "x": 1025.00146484375,
+      "y": 530.5625,
+      "w": 178.932861328125,
+      "h": 84.375
+     },
+     "fontPx": 39.762858072916664,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1379.6376953125,
+      "y": 390.6875,
+      "w": 216.255126953125,
+      "h": 216.25
+     },
+     "fontPx": 20.595726376488095,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 637.6930541992188,
+      "y": 382.9375,
+      "w": 248.178466796875,
+      "h": 248.125
+     },
+     "fontPx": 16.476578708506224,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: AI can do the work. But who checks it?",
+     "text": "AI can do the work. But who checks it?",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 997.984375,
+      "h": 64.375
+     },
+     "fontPx": 55.999123246492985,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 10,
+  "frame": 600,
+  "still": "out/stills/scene-01/scene-01-t10s.png",
+  "bg": "out/guards/bg/scene-01/t10s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 600,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "Inboxv1",
+     "text": "Inboxv1",
+     "opacity": 0.2,
+     "rect": {
+      "x": 103.88226318359375,
+      "y": 352.875,
+      "w": 399.09246826171875,
+      "h": 321.875
+     },
+     "fontPx": 36.04706164944557,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Inbox",
+     "text": "Inbox",
+     "opacity": 0.2,
+     "rect": {
+      "x": 128.3427734375,
+      "y": 365.75,
+      "w": 108.16131591796875,
+      "h": 47.625
+     },
+     "fontPx": 36.05377197265625,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v1",
+     "text": "v1",
+     "opacity": 0.2,
+     "rect": {
+      "x": 435.2456970214844,
+      "y": 365.75,
+      "w": 43.268524169921875,
+      "h": 47.625
+     },
+     "fontPx": 35.63290225758272,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Sheetv2",
+     "text": "Sheetv2",
+     "opacity": 0.2,
+     "rect": {
+      "x": 541.5966186523438,
+      "y": 352.875,
+      "w": 399.09246826171875,
+      "h": 321.875
+     },
+     "fontPx": 36.04706164944557,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Sheet",
+     "text": "Sheet",
+     "opacity": 0.2,
+     "rect": {
+      "x": 566.0570678710938,
+      "y": 365.75,
+      "w": 108.16131591796875,
+      "h": 47.625
+     },
+     "fontPx": 36.05377197265625,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2",
+     "text": "v2",
+     "opacity": 0.2,
+     "rect": {
+      "x": 872.9600219726562,
+      "y": 365.75,
+      "w": 43.2685546875,
+      "h": 47.625
+     },
+     "fontPx": 35.632927389705884,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Chatv2 final",
+     "text": "Chatv2 final",
+     "opacity": 0.2,
+     "rect": {
+      "x": 979.3109130859375,
+      "y": 352.875,
+      "w": 399.0924072265625,
+      "h": 321.875
+     },
+     "fontPx": 36.04705613659274,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile Chat",
+     "text": "Chat",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1003.7714233398438,
+      "y": 365.75,
+      "w": 86.51690673828125,
+      "h": 47.625
+     },
+     "fontPx": 36.156319233908576,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v2 final",
+     "text": "v2 final",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1180.908935546875,
+      "y": 365.75,
+      "w": 173.033935546875,
+      "h": 47.625
+     },
+     "fontPx": 36.15634474113806,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "PDFv3",
+     "text": "PDFv3",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1417.025146484375,
+      "y": 352.875,
+      "w": 399.092529296875,
+      "h": 321.875
+     },
+     "fontPx": 36.04706716229839,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Tile PDF",
+     "text": "PDF",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1441.48583984375,
+      "y": 365.75,
+      "w": 64.892578125,
+      "h": 47.625
+     },
+     "fontPx": 36.33984375,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Version v3",
+     "text": "v3",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1748.388671875,
+      "y": 365.75,
+      "w": 43.2685546875,
+      "h": 47.625
+     },
+     "fontPx": 35.632927389705884,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 145.80111694335938,
+      "y": 505.1875,
+      "w": 306.2369079589844,
+      "h": 104.5
+     },
+     "fontPx": 36.487801799368356,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 577.43017578125,
+      "y": 506.5,
+      "w": 311.9765625,
+      "h": 102.1875
+     },
+     "fontPx": 36.397265624999996,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Claim card",
+     "text": "Claim CL-7305James Whitfield",
+     "opacity": 0.144,
+     "rect": {
+      "x": 1015.5018920898438,
+      "y": 507.875,
+      "w": 311.26177978515625,
+      "h": 99.4375
+     },
+     "fontPx": 36.313874308268225,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Stamp Sent",
+     "text": "Sent",
+     "opacity": 1,
+     "rect": {
+      "x": 1024.11962890625,
+      "y": 376.4375,
+      "w": 180.735595703125,
+      "h": 90.1875
+     },
+     "fontPx": 40.16346571180555,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Stamp Paid",
+     "text": "Paid",
+     "opacity": 1,
+     "rect": {
+      "x": 1025.009765625,
+      "y": 526.6875,
+      "w": 178.955322265625,
+      "h": 84.375
+     },
+     "fontPx": 39.76784939236111,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1379.690673828125,
+      "y": 390.6875,
+      "w": 216.282470703125,
+      "h": 216.25
+     },
+     "fontPx": 20.598330543154763,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 632.9855346679688,
+      "y": 364.9375,
+      "w": 248.20977783203125,
+      "h": 248.1875
+     },
+     "fontPx": 16.47865744942946,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: AI can do the work. But who checks it?",
+     "text": "AI can do the work. But who checks it?",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 997.984375,
+      "h": 64.375
+     },
+     "fontPx": 55.999123246492985,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 11,
+  "frame": 660,
+  "still": "out/stills/scene-01/scene-01-t11s.png",
+  "bg": "out/guards/bg/scene-01/t11s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 660,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "text",
+     "label": "Stamp Sent",
+     "text": "Sent",
+     "opacity": 1,
+     "rect": {
+      "x": 1024.1234130859375,
+      "y": 384.125,
+      "w": 180.7459716796875,
+      "h": 90.125
+     },
+     "fontPx": 40.165771484375,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Stamp Paid",
+     "text": "Paid",
+     "opacity": 1,
+     "rect": {
+      "x": 1025.013427734375,
+      "y": 535,
+      "w": 178.9658203125,
+      "h": 84.375
+     },
+     "fontPx": 39.770182291666664,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 622.3611450195312,
+      "y": 377.4375,
+      "w": 248.22412109375,
+      "h": 248.25
+     },
+     "fontPx": 16.479609699170126,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Line: No record of who decided.",
+     "text": "No record of who decided.",
+     "opacity": 0.999504,
+     "rect": {
+      "x": 623.9382934570312,
+      "y": 733.8125,
+      "w": 672.1234741210938,
+      "h": 68
+     },
+     "fontPx": 53.52284939402278,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: AI can do the work. But who checks it?",
+     "text": "AI can do the work. But who checks it?",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 997.984375,
+      "h": 64.375
+     },
+     "fontPx": 55.999123246492985,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 12,
+  "frame": 720,
+  "still": "out/stills/scene-01/scene-01-t12s.png",
+  "bg": "out/guards/bg/scene-01/t12s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 720,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "text",
+     "label": "Stamp Sent",
+     "text": "Sent",
+     "opacity": 1,
+     "rect": {
+      "x": 1024.124755859375,
+      "y": 378.3125,
+      "w": 180.7496337890625,
+      "h": 90.1875
+     },
+     "fontPx": 40.16658528645833,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Stamp Paid",
+     "text": "Paid",
+     "opacity": 1,
+     "rect": {
+      "x": 1025.0147705078125,
+      "y": 533.375,
+      "w": 178.969482421875,
+      "h": 84.375
+     },
+     "fontPx": 39.77099609375,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 626.216796875,
+      "y": 381.375,
+      "w": 248.22918701171875,
+      "h": 248.1875
+     },
+     "fontPx": 16.479946025674273,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Line: No record of who decided.",
+     "text": "No record of who decided.",
+     "opacity": 1,
+     "rect": {
+      "x": 623.9315185546875,
+      "y": 730.75,
+      "w": 672.136962890625,
+      "h": 68
+     },
+     "fontPx": 53.5239235379977,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Line: No one deciding.",
+     "text": "No one deciding.",
+     "opacity": 0.932903,
+     "rect": {
+      "x": 746.372314453125,
+      "y": 816.0625,
+      "w": 427.25537109375,
+      "h": 67.9375
+     },
+     "fontPx": 53.53561276355421,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 13,
+  "frame": 780,
+  "still": "out/stills/scene-01/scene-01-t13s.png",
+  "bg": "out/guards/bg/scene-01/t13s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 780,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "text",
+     "label": "Stamp Sent",
+     "text": "Sent",
+     "opacity": 0.402472,
+     "rect": {
+      "x": 1024.125,
+      "y": 374.4375,
+      "w": 180.750244140625,
+      "h": 90.1875
+     },
+     "fontPx": 40.16672092013889,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Stamp Paid",
+     "text": "Paid",
+     "opacity": 0.402472,
+     "rect": {
+      "x": 1025.014892578125,
+      "y": 526.125,
+      "w": 178.97021484375,
+      "h": 84.4375
+     },
+     "fontPx": 39.771158854166664,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 637.111083984375,
+      "y": 364.4375,
+      "w": 248.22998046875,
+      "h": 248.25
+     },
+     "fontPx": 16.479998703319502,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Line: No record of who decided.",
+     "text": "No record of who decided.",
+     "opacity": 1,
+     "rect": {
+      "x": 623.9302978515625,
+      "y": 727.625,
+      "w": 672.1392822265625,
+      "h": 68
+     },
+     "fontPx": 53.524108232436824,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Line: No one deciding.",
+     "text": "No one deciding.",
+     "opacity": 1,
+     "rect": {
+      "x": 746.37158203125,
+      "y": 810.0625,
+      "w": 427.2568359375,
+      "h": 68
+     },
+     "fontPx": 53.53579631024097,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene01",
+  "second": 14,
+  "frame": 840,
+  "still": "out/stills/scene-01/scene-01-t14s.png",
+  "bg": "out/guards/bg/scene-01/t14s.png",
+  "guard": {
+   "scene": "S01",
+   "frame": 840,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "box",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 831.7734985351562,
+      "y": 418,
+      "w": 241.27923583984375,
+      "h": 241.25
+     },
+     "fontPx": 16.018538478993776,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Line: No record of who decided.",
+     "text": "No record of who decided.",
+     "opacity": 1,
+     "rect": {
+      "x": 633.3407592773438,
+      "y": 719.375,
+      "w": 653.3184204101562,
+      "h": 66.125
+     },
+     "fontPx": 52.02535660234016,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Line: No one deciding.",
+     "text": "No one deciding.",
+     "opacity": 1,
+     "rect": {
+      "x": 752.353515625,
+      "y": 798.0625,
+      "w": 415.29296875,
+      "h": 66.0625
+     },
+     "fontPx": 52.0367093373494,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ }
+]

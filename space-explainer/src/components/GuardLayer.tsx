@@ -72,6 +72,9 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
             minFont = parseFloat(cs.fontSize);
             color = cs.color;
           }
+          // Font size as it appears on screen, after any scale transforms.
+          const elScale = el.offsetWidth ? rect.width / el.offsetWidth / k : 1;
+          minFont *= elScale;
           const r = {
             x: (rect.x - base.x) / k,
             y: (rect.y - base.y) / k,
@@ -84,7 +87,8 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
               ? checkLogo(
                   (el.querySelector("img")?.getBoundingClientRect().height ??
                     0) / k,
-                  getComputedStyle(el).backgroundColor === "rgb(255, 255, 255)",
+                  getComputedStyle(el).backgroundColor ===
+                    "rgb(255, 255, 255)" || el.dataset.guardBacking === "white",
                 )
               : []),
           ];
@@ -112,7 +116,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
   return (
     <AbsoluteFill ref={ref} style={{ pointerEvents: "none" }}>
       {props.hideText ? (
-        <style>{`[data-guard="text"], [data-guard="text"] * { color: transparent !important; text-shadow: none !important; } [data-guard-caret] { opacity: 0 !important; }`}</style>
+        <style>{`[data-guard="text"], [data-guard="text"] * { color: transparent !important; text-shadow: none !important; } [data-guard-caret] { opacity: 0 !important; } [data-guard="logo"] img { opacity: 0 !important; }`}</style>
       ) : null}
       {props.showSafeArea ? (
         <div

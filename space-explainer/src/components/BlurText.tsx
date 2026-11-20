@@ -30,7 +30,8 @@ export const useBlurInOut = (
         );
   const opacity = pIn * (1 - pOut);
   const blur = BLUR_IN.blur * (1 - pIn) + BLUR_IN.blur * pOut;
-  const y = BLUR_IN.rise * (1 - pIn) - (BLUR_IN.rise / 2) * pOut;
+  // Exits settle slightly downward so nothing drifts toward the top margin.
+  const y = BLUR_IN.rise * (1 - pIn) + (BLUR_IN.rise / 2) * pOut;
   const visible =
     frame >= inFrame &&
     (outFrame === undefined || frame < outFrame + outSeconds * fps);

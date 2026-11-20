@@ -12,6 +12,7 @@
     "@remotion/cli": "4.0.545",
     "@remotion/fonts": "^4.0.545",
     "@remotion/transitions": "^4.0.545",
+    "lucide-react": "^1.77.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "remotion": "4.0.545"
@@ -31,7 +32,10 @@
     "dev": "remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "render:video": "remotion render SpaceVideo out/space_video.mp4 --crf=16 --concurrency=4 --log=error",
+    "render:scene": "remotion render --crf=16 --concurrency=4 --log=error",
+    "check": "npx tsx scripts/check-timing.ts && node scripts/stills.mjs && python3 -I scripts/check.py && python3 -I scripts/check-video.py"
   },
   "allowScripts": {
     "esbuild": false

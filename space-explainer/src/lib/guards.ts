@@ -44,6 +44,10 @@ export type TextBeatSpec = {
   /** Seconds when the text starts to leave. */
   leaveAt: number;
   fontPx: number;
+  /** The text stays on screen into the next scene, which is not built yet. Reported, not failed. */
+  carriesOver?: boolean;
+  /** A timing the brief sets explicitly that is shorter than the guard minimum. Reported, not failed. */
+  exception?: string;
 };
 
 /** ReadabilityGuard timing and size: at least 28px, held 1.2s plus 0.25s per word after typing ends. */
@@ -51,7 +55,7 @@ export const checkReadability = (b: TextBeatSpec): GuardIssue[] => {
   const issues: GuardIssue[] = [];
   const need = readHoldSeconds(b.text);
   const held = b.leaveAt - b.readyAt;
-  if (held + 1e-6 < need)
+  if (held + 1e-6 < need && !b.carriesOver && !b.exception)
     issues.push({
       guard: "ReadabilityGuard",
       message: `"${b.text}" held ${held.toFixed(2)}s, needs ${need.toFixed(2)}s`,

@@ -92,10 +92,13 @@ const PlateImage: React.FC<{ plate: PlateKey; filter?: string }> = ({
   );
 };
 
-const FloatingDots: React.FC<{ count: number }> = ({ count }) => {
+const FloatingDots: React.FC<{ count: number; timeOffset: number }> = ({
+  count,
+  timeOffset,
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const t = frame / fps;
+  const t = frame / fps + timeOffset;
   const dots = useMemo(
     () =>
       new Array(count).fill(0).map((_, i) => ({
@@ -169,6 +172,12 @@ export type PlateBackgroundProps = {
   zoom?: number;
   panX?: number;
   panY?: number;
+  /** Ken Burns progress (0 to 1) at frame 0, so a scene can continue the previous scene's move. */
+  kbFrom?: number;
+  /** Ken Burns progress at the end of `duration`. */
+  kbTo?: number;
+  /** Seconds added to the dot clock, for continuity across scenes. */
+  timeOffset?: number;
   duration?: number;
   /** Strength of the soft legibility gradient, 0 to 1. */
   overlay?: number;
@@ -190,6 +199,9 @@ export const PlateBackground: React.FC<PlateBackgroundProps> = ({
   duration,
   overlay = 0.5,
   dots = 8,
+  kbFrom = 0,
+  kbTo = 1,
+  timeOffset = 0,
   grain = 0.03,
   night,
   nightZones,
@@ -199,7 +211,8 @@ export const PlateBackground: React.FC<PlateBackgroundProps> = ({
   const dur = duration ?? durationInFrames;
   const z = Math.min(0.04, zoom);
   const p = interpolate(frame, [0, dur], [0, 1], { extrapolateRight: "clamp" });
-  const kb = `translate(${panX * p}px, ${panY * p}px) scale(${1 + z * p})`;
+  const kp = kbFrom + (kbTo - kbFrom) * p;
+  const kb = `translate(${panX * kp}px, ${panY * kp}px) scale(${1 + z * kp})`;
   const mix = to
     ? EASE(
         interpolate(
@@ -234,7 +247,7 @@ export const PlateBackground: React.FC<PlateBackgroundProps> = ({
             "linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.0) 30%, rgba(255,255,255,0.0) 60%, rgba(255,255,255,0.18) 100%)",
         }}
       />
-      <FloatingDots count={dotCount} />
+      <FloatingDots count={dotCount} timeOffset={timeOffset} />
       <FilmGrain opacity={grain} />
     </AbsoluteFill>
   );

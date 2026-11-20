@@ -1,14 +1,14 @@
-import { ScenePlaceholder } from "./ScenePlaceholder";
-export { Scene01Problem } from "./Scene01Problem";
-export { Scene02Intro } from "./Scene02Intro";
+import type React from "react";
+import type { SceneId } from "../timeline";
+import { Scene01Problem } from "./Scene01Problem";
+import { Scene02Intro } from "./Scene02Intro";
+import { Scene03Chat } from "./Scene03Chat";
 
-// Scenes 3 to 11 render a labelled placeholder until later prompts build them.
-export const Scene03 = () => <ScenePlaceholder scene="S03" />;
-export const Scene04 = () => <ScenePlaceholder scene="S04" />;
-export const Scene05 = () => <ScenePlaceholder scene="S05" />;
-export const Scene06 = () => <ScenePlaceholder scene="S06" />;
-export const Scene07 = () => <ScenePlaceholder scene="S07" />;
-export const Scene08 = () => <ScenePlaceholder scene="S08" />;
-export const Scene09 = () => <ScenePlaceholder scene="S09" />;
-export const Scene10 = () => <ScenePlaceholder scene="S10" />;
-export const Scene11 = () => <ScenePlaceholder scene="S11" />;
+export { Scene01Problem, Scene02Intro, Scene03Chat };
+
+/** Component for each built scene. Add a scene here when a later prompt builds it. */
+export const SCENE_COMPONENTS: Partial<Record<SceneId, React.FC>> = {
+  S01: Scene01Problem,
+  S02: Scene02Intro,
+  S03: Scene03Chat,
+};

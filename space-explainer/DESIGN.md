@@ -9,8 +9,15 @@ agent workspace where agents prepare and people decide.
 
 ## 0. Assets and rules
 
-- Logo: `public/logo.png` (supplied PNG, black on transparent). Use exactly as
-  supplied. Never redraw or recolour it. If it is missing, stop and ask.
+- Logo: `public/logo.png` (supplied PNG, black on transparent; briefs may call
+  it `logo.svg`). Use exactly as supplied. Never redraw or recolour it. If it
+  is missing, stop and ask.
+- Product name: always the `SpaceByLockup` component ("Space by" in Plus
+  Jakarta Sans semibold, then the logo at cap height plus descender, baseline
+  aligned, 0.25em gap). Never type "BotCircuits" or "by BotCircuits" as text.
+  Use the lockup wherever the product name appears, including the Scene 11 end card.
+- Chat UI reference: `reference/ui/01-chat.png` (1875x895). Scene 3 rebuilds it
+  as `src/components/chat/ChatScreen.tsx` at native size, scaled 0.8 into the frame.
 - Plates: `public/backgrounds/01-dawn-meadow.jpg`, `02-morning-field.jpg`,
   `03-day-hills.jpg`, `04-dusk-horizon.jpg` (1672x941 originals upscaled to
   1920x1080). If a plate is missing, `PlateBackground` falls back to a
@@ -31,6 +38,21 @@ agent workspace where agents prepare and people decide.
   - Direct, concise, unexaggerated. Never claim AI output is always correct.
   - American English spelling on screen.
 - Every name, amount and ID shown on screen lives in `src/placeholders.ts`.
+
+## Delivery: one video that grows
+
+- The deliverable is ONE file, `out/space_video.mp4`, rendered from the
+  `SpaceVideo` composition with `npm run render:video`.
+- `src/timeline.ts` has a `built` flag per scene. SpaceVideo plays only built
+  scenes, back to back: no gaps, no placeholders, no black frames. To add a
+  scene: build it, register it in `src/scenes/index.tsx` (`SCENE_COMPONENTS`),
+  flip `built` to true, re-render the same file.
+- Continuity: the first frame of each scene equals the last frame of the
+  previous one. Share layout constants across the boundary (see
+  `src/scenes/shared/intro.tsx`) and continue background state with
+  `PlateBackground` `kbFrom`, `kbTo` and `timeOffset`, and orbs with `timeOffset`.
+- `npm run check` runs every check; `scripts/check-video.py` verifies duration,
+  black frames, motion gaps and boundary similarity (PSNR per boundary).
 
 ## 1. Design system (`src/theme.ts`)
 
@@ -56,8 +78,9 @@ never be green. Ringed orb, core radial gradient `#8CC8FF`, `#3B6FE0`,
 `#1B2A6B`. A 2px halo ring at 60 percent opacity with soft glow, and one 10px
 satellite dot orbiting every 6 s. The lead "Space" orb is 1.3x with a double
 ring. Specialist orbs use the same form with a hue shift of at most 25 degrees
-(clamped; current shifts: Nora -14, Theo +12, Owen +24, all away from green).
-SVG, deterministic by frame. `nightGlow` adds a soft outer glow on the night
+(clamped, kept away from green). Scenes 1 to 3 show only the lead orb.
+SVG, deterministic by frame. There is no grey or metallic orb anywhere: the
+problem scene uses the same blue Space orb. `nightGlow` adds a soft outer glow on the night
 grade. `timeOffset` keeps the satellite continuous when an orb is carried across
 a scene boundary.
 
@@ -93,7 +116,10 @@ frame; `scripts/stills.mjs` renders stills plus a text hidden background pass;
 orb pixels and stray amber; `scripts/check-timing.ts` checks reading time and
 timeline consistency; ffmpeg `freezedetect` checks motion gaps on the MP4s.
 Tag new text with `data-guard="text"` and new non-text elements with
-`data-guard="box"`.
+`data-guard="box"`. Product UI chrome (sidebar, chips, labels) is drawn at the
+screenshot's size and is not held to 28px; story text inside the product
+(prompt, messages, pills, answer, source card) is 35px native, 28px on screen.
+Font size is measured after scaling.
 
 ## 1A. Plate background system (`src/backgrounds`)
 
@@ -120,9 +146,8 @@ crossfades to 02. Scene 6 is not in the brief's mapping; the placeholder uses 03
   events with `local()` / `localF()`. Scenes: 1 0 to 15, 2 15 to 20, 3 20 to 32,
   4 32 to 46, 5 46 to 56, 6 56 to 71, 7 71 to 80, 8 80 to 96, 9 96 to 108,
   10 108 to 114, 11 114 to 122.
-- `src/scenes/SceneNN*.tsx`, one per scene. Scenes 3 to 11 render
-  `ScenePlaceholder` until built.
-- `Preview` stitches all scenes; `Scene01` to `Scene11` render alone.
+- `src/scenes/SceneNN*.tsx`, one per built scene.
+- `SpaceVideo` plays the built scenes; `Scene01`, `Scene02`... render one built scene alone.
 
 ## 3. The story
 
@@ -139,26 +164,39 @@ State it as a flag, never as an accusation.
 Claim card lands in the Inbox, hops to Sheet, Chat and PDF, leaving a dashed
 stray copy (v1, v2, v2 final, v3) at each hop. Headline "Work moves between
 people, tools and inboxes." Chips one at a time: "Who has it now?", "Who
-approved it?", "Which version is right?". The card morphs into a lone,
-colourless orb; "Sent" and "Paid" stamp themselves; a dashed empty slot shows
-where a person would be (grey, no amber). Headline "AI can do the work. But who
-checks it?". Strays and slot fade; "No record of who decided." then "No one
-deciding." The orb moves to centre for Scene 2.
+approved it?", "Which version is right?". The document row and orb group are
+scaled 1.25x and centred below the headline. The card morphs into the blue
+Space orb; "Sent" and "Paid" stamp themselves; a dashed empty slot shows where a
+person would be (grey, no amber). Headline "AI can do the work. But who checks
+it?". Strays and slot fade; "No record of who decided." then "No one deciding."
+The orb ends at the centre, core 187.5px: exactly Scene 2's first frame.
 
 ### Scene 2, Intro (0:15 to 0:20), built
-Flat grey dissolves into plate 01 over 1 s as colour returns. The orb becomes
-the lead Space orb (double ring) and rises; Nora, Theo and Owen settle around
-it. "Introducing", then "Space by BotCircuits" typed large, the tagline under it,
-and the logo small on a white pill, all on a glass panel. The title group is
-still on screen at 20.0 s (`intro_handoff`): Scene 3 should open by morphing it
-(for example, the headline shrinking into an input pill).
+First frame equals Scene 1's last (orb on pale grey). Grey dissolves into plate
+01 over 1s; the orb becomes the lead Space orb (double ring) and eases up. Only
+the lead orb. The white title card (92 percent) fades in at its final place
+after the orb settles, then "Introducing", the SpaceByLockup typed ("Space by",
+then the logo blurs in at the caret), and the tagline. About 2.8s of hold.
+
+### Scene 3, Chat (0:20 to 0:32), built
+TextBeat "Ask in plain language". 0 to 1.2s: the title card grows into the dark
+product frame (1500x716, top 210), title group blurs out, the orb shrinks into
+the hero product mark, plate 01 crossfades to 02. Hero and input settle, chips
+fade in ("Run playbook"). The input focuses (lime) and the prompt types at
+CHAT_CPS. At 5.0s the send button becomes a status orb, the hero and chips fade,
+the user message appears. Three status pills, 0.6s each. The answer types at
+REPLAY_CPS with [S1] and [S2] chips. The cursor clicks [S1]; the source card
+"Home Policy Wording 2026, p. 12" opens with the Section 4.2 sentence
+highlighted. The scene ends on that frame. Scene 4 must open on it and keep the
+answer and card on screen long enough to finish the reading hold.
 
 ## Commands
 
 ```bash
 npm run dev                                   # Studio
-npx remotion render Scene01 out/scene-01.mp4 --crf=16
-npx remotion render Preview out/preview.mp4 --crf=16
+npm run render:video                          # out/space_video.mp4 (the deliverable)
+npx remotion render Scene03 out/scenes/scene-03.mp4 --crf=16   # one scene, for debugging
+npm run check                                 # all checks
 node scripts/stills.mjs Scene01 Scene02       # stills + guard report
 python3 -I scripts/check.py                   # guard checks on the report
 npx tsx scripts/check-timing.ts               # reading time and timeline
