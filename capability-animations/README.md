@@ -27,12 +27,15 @@ src/
                          PermissionChip, PlaybookCard, VariableRow, TypeChip,
                          ChecksCard (with CheckRow), RunHighlight, PausedChip,
                          TriggerRow, EventChip, AmberChip, RunList, RunRow,
-                         NoticeRow, ElapsedCounter, RunStatus
+                         NoticeRow, ElapsedCounter, RunStatus,
+                         IntegrationTile, McpTile, AccessChip, RecordCard,
+                         MaskPill, ModelCard, MaskedValue, AuditChip
     chat/                SpaceChat: timeline.ts, content.ts, SpaceChat.tsx
     agents/              SpaceAgents (10 s): timeline.ts, content.ts, SpaceAgents.tsx
     brain/               SpaceBrain (12 s): timeline.ts, content.ts, SpaceBrain.tsx
     build/               SpaceBuild (10 s): timeline.ts, content.ts, SpaceBuild.tsx
     automate/            SpaceAutomate (10 s): timeline.ts, content.ts, SpaceAutomate.tsx
+    connect/             SpaceConnect (12 s): timeline.ts, content.ts, SpaceConnect.tsx
   config.ts              width, height, fps, duration
   tokens.ts              colours, shadow, radii, easing (shared by all six)
   fonts.ts               local Inter loader
@@ -149,6 +152,9 @@ npm run render:space-build   # out/space/space-build-v1.mp4, .webm and -poster.p
 npm run stills:space-automate
 npm run preview:space-automate
 npm run render:space-automate  # out/space/space-automate-v1.mp4, .webm and -poster.png
+npm run stills:space-connect
+npm run preview:space-connect
+npm run render:space-connect   # out/space/space-connect-v1.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -183,6 +189,7 @@ browser instead of Remotion's download.
 | SpaceBrain v2 | `out/space/space-brain-v2.*` | First cut (named v2 as requested) |
 | SpaceBuild v1 | `out/space/space-build-v1.*` | First cut |
 | SpaceAutomate v1 | `out/space/space-automate-v1.*` | First cut |
+| SpaceConnect v1 | `out/space/space-connect-v1.*` | First cut |
 | Publish v3 | `out/publish-v3.*` | Brand logos for WhatsApp, Instagram and Messenger; customer renamed to Emily Carter |
 
 ## Integrate notes
@@ -273,3 +280,7 @@ browser instead of Remotion's download.
   the notice from the start; only the notice slot grows, so rows above it
   never move. The elapsed time uses the shared rolling Counter formatted as
   hours and minutes.
+* SpaceConnect: part 1 and part 2 are separate layers crossfaded by the
+  shared Veil (peak 0.45, as in Publish). Each flow dot starts at the Record
+  card's line, passes under the mask pill and takes 0.9s, so it arrives as
+  its Model card row appears (7.0, 7.5, 8.0s).

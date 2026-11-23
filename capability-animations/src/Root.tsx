@@ -20,6 +20,8 @@ import {SpaceBuild} from './space/build/SpaceBuild';
 import {SPACE_BUILD_DURATION_SECONDS} from './space/build/timeline';
 import {SpaceAutomate} from './space/automate/SpaceAutomate';
 import {SPACE_AUTOMATE_DURATION_SECONDS} from './space/automate/timeline';
+import {SpaceConnect} from './space/connect/SpaceConnect';
+import {SPACE_CONNECT_DURATION_SECONDS} from './space/connect/timeline';
 
 ensureInter();
 
@@ -52,6 +54,8 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="SpaceBuild" component={SpaceBuild} durationInFrames={SPACE_BUILD_DURATION_SECONDS * FPS} {...canvas} />
       {/* SpaceAutomate runs 10 seconds. */}
       <Composition id="SpaceAutomate" component={SpaceAutomate} durationInFrames={SPACE_AUTOMATE_DURATION_SECONDS * FPS} {...canvas} />
+      {/* SpaceConnect runs 12 seconds. */}
+      <Composition id="SpaceConnect" component={SpaceConnect} durationInFrames={SPACE_CONNECT_DURATION_SECONDS * FPS} {...canvas} />
     </Folder>
   </>
 );

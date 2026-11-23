@@ -38,7 +38,10 @@
     "render:space-build": "./scripts/render.sh SpaceBuild 510 space/space-build-v1",
     "stills:space-automate": "STILLS_DIR=out/space/stills/space-automate ./scripts/stills.sh SpaceAutomate 0 18 60 100 126 160 200 240 290 330 360 400 440 480 540 599",
     "preview:space-automate": "PREVIEW_DIR=out/space/preview ./scripts/preview.sh SpaceAutomate",
-    "render:space-automate": "./scripts/render.sh SpaceAutomate 480 space/space-automate-v1"
+    "render:space-automate": "./scripts/render.sh SpaceAutomate 480 space/space-automate-v1",
+    "stills:space-connect": "STILLS_DIR=out/space/stills/space-connect ./scripts/stills.sh SpaceConnect 0 18 60 120 180 210 246 282 324 360 408 456 504 552 594 648 719",
+    "preview:space-connect": "PREVIEW_DIR=out/space/preview ./scripts/preview.sh SpaceConnect",
+    "render:space-connect": "./scripts/render.sh SpaceConnect 594 space/space-connect-v1"
   },
   "dependencies": {
     "@remotion/cli": "4.0.545",

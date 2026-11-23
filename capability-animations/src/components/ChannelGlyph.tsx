@@ -24,7 +24,11 @@ export type ChannelKind =
   | 'clock'
   | 'link'
   | 'hourglass'
-  | 'restart';
+  | 'restart'
+  // Connect glyphs (Space Connect).
+  | 'card'
+  | 'plug'
+  | 'shield';
 
 /**
  * Generic channel glyphs: simple line drawings, no real logos or brand
@@ -168,6 +172,27 @@ const PATHS: Record<ChannelKind, React.ReactNode> = {
       <path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3" />
       <path d="M4.5 4v4.5H9" />
     </>
+  ),
+  // Payment card.
+  card: (
+    <>
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+      <path d="M2.5 10h19" />
+      <path d="M6.5 15h4" />
+    </>
+  ),
+  // Plug.
+  plug: (
+    <>
+      <path d="M9 3.5v4" />
+      <path d="M15 3.5v4" />
+      <path d="M6.5 7.5h11v3a5.5 5.5 0 0 1-11 0z" />
+      <path d="M12 16v4.5" />
+    </>
+  ),
+  // Shield.
+  shield: (
+    <path d="M12 3l7.5 3v6c0 4.5-3.2 7.6-7.5 9-4.3-1.4-7.5-4.5-7.5-9V6z" />
   ),
   // Plus.
   more: (
