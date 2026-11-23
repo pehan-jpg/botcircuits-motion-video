@@ -1,11 +1,11 @@
 # cx-capability-animations
 
 Six looping micro animations for the capability section of the BotCircuits CX
-product page, built with Remotion. Built so far: **Build**, **Integrate**, **Simulate**, **Publish** and **Monitor**.
+product page, built with Remotion. All six are built: **Build**, **Integrate**, **Simulate**, **Publish**, **Monitor** and **Optimize**.
 
 | Setting | Value |
 | --- | --- |
-| Canvas | 1600 x 1000, 60 fps, 8 s (480 frames), set in `src/config.ts`. Publish runs 12 s (720 frames) and Monitor 10 s (600 frames), each set in its own `timeline.ts` |
+| Canvas | 1600 x 1000, 60 fps, 8 s (480 frames), set in `src/config.ts`. Publish runs 12 s (720 frames) Monitor and Optimize 10 s (600 frames), each set in its own `timeline.ts` |
 | Loop | Frame 0 and frame 479 are both blank white and decode bit identical |
 | Font | Inter 400, 500 and 600, loaded locally from `public/fonts` |
 | Easing | `Easing.bezier(0.22, 1, 0.36, 1)` everywhere (`tokens.ts`) |
@@ -54,6 +54,12 @@ src/
     NoticeRow.tsx        amber notice line
     TakeOverButton.tsx   Take over button that becomes the Taken over pill
     ContextCard.tsx      who took over plus the attached facts
+    BubbleChart.tsx      BubbleChart and BubbleNode: area proportional, hand placed
+    AlertCard.tsx        insight card with badge, suggestion and two buttons
+    ProcedureCard.tsx    titled card holding StepRow elements
+    TrafficBar.tsx       two segment split bar with end labels
+    VariantPanel.tsx     A/B panel with rolling percentage and bar
+    RolledOutPill.tsx    lime tint confirmation pill
     Veil.tsx             the soft dissolve used for every state change
   compositions/build/
     timeline.ts          every scene time, in seconds (retime here)
@@ -75,6 +81,10 @@ src/
     timeline.ts          every scene time in seconds, plus the 10 s length
     content.ts           conversations and transcript copy
     Monitor.tsx          the scene (transcript heights computed, never measured)
+  compositions/optimize/
+    timeline.ts          every scene time in seconds, plus the 10 s length
+    content.ts           topics, alert copy, procedure steps and test results
+    Optimize.tsx         the scene
 ```
 
 To add the next animation, create `src/compositions/<name>/` with its own
@@ -100,6 +110,9 @@ npm run render:publish     # out/publish-v3.mp4, .webm and -poster.png
 npm run stills:monitor
 npm run preview:monitor
 npm run render:monitor     # out/monitor-v1.mp4, .webm and -poster.png
+npm run stills:optimize
+npm run preview:optimize
+npm run render:optimize    # out/optimize-v1.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -128,6 +141,7 @@ browser instead of Remotion's download.
 | Simulate v1 | `out/simulate-v1.*` | First cut |
 | Publish v2 | `out/publish-v2.*` | First cut (named v2 as requested) |
 | Monitor v1 | `out/monitor-v1.*` | First cut |
+| Optimize v1 | `out/optimize-v1.*` | First cut |
 | Publish v3 | `out/publish-v3.*` | Brand logos for WhatsApp, Instagram and Messenger; customer renamed to Emily Carter |
 
 ## Integrate notes
@@ -173,3 +187,15 @@ browser instead of Remotion's download.
 * "Needs attention" uses the amber pair from the brief (#a85a10 on #fdecd8),
   which measures 4.39 to 1. `colors.amberText` in `tokens.ts` switches it to
   the AA passing #a05510 used by the Tool tag.
+
+## Optimize notes
+
+* Bubble diameters are 232 x sqrt(share / 38), so circle area tracks the
+  share exactly: 232, 155, 141, 130, 119 and 113px.
+* The new fourth step types at about 67 characters per second, fitted to end
+  at 5.25s. At 30 per second it would run past the dissolve at 5.4s, because
+  the rows land 0.15s apart from 4.2s.
+* The board fades in from the second veil's midpoint (5.65s), as the Veil
+  hands over everywhere else; the traffic bar and panels follow from 5.9s.
+* The second dissolve spans both cards, so its veil peak is 0.45 as in
+  Publish. The first, over a single card, keeps Build's 0.8.

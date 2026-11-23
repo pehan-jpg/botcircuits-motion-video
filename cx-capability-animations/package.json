@@ -20,7 +20,10 @@
     "render:publish": "./scripts/render.sh Publish 648 publish-v3",
     "stills:monitor": "./scripts/stills.sh Monitor 0 18 60 120 156 198 270 324 354 408 492 540 588 599",
     "preview:monitor": "./scripts/preview.sh Monitor",
-    "render:monitor": "./scripts/render.sh Monitor 492 monitor-v1"
+    "render:monitor": "./scripts/render.sh Monitor 492 monitor-v1",
+    "stills:optimize": "./scripts/stills.sh Optimize 0 18 60 120 150 204 228 288 342 366 432 492 528 599",
+    "preview:optimize": "./scripts/preview.sh Optimize",
+    "render:optimize": "./scripts/render.sh Optimize 528 optimize-v1"
   },
   "dependencies": {
     "@remotion/cli": "4.0.545",

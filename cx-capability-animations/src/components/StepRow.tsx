@@ -64,6 +64,8 @@ export type StepRowProps = {
   typeDelay?: number;
   /** Seconds for the row entrance (fade plus small rise). */
   enter?: number;
+  /** Typing highlight on the newest word. Defaults to on. */
+  highlight?: boolean;
 };
 
 export const StepRow: React.FC<StepRowProps> = ({
@@ -75,6 +77,7 @@ export const StepRow: React.FC<StepRowProps> = ({
   cps,
   typeDelay = 0.08,
   enter = 0.3,
+  highlight = true,
 }) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -117,7 +120,7 @@ export const StepRow: React.FC<StepRowProps> = ({
           whiteSpace: 'nowrap',
         }}
       >
-        <TypedText text={text} startFrame={startFrame + Math.round(typeDelay * fps)} cps={cps} />
+        <TypedText text={text} startFrame={startFrame + Math.round(typeDelay * fps)} cps={cps} highlight={highlight} />
       </div>
     </div>
   );
