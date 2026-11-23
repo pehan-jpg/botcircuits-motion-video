@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { random, useCurrentFrame, useVideoConfig } from "remotion";
-import { ORB_PALETTE } from "../theme";
+import { ORB_PALETTE, ORB_PALETTES, type OrbPaletteKey } from "../theme";
 
 export type SpaceOrbProps = {
   /** Diameter of the sphere in px. */
@@ -11,11 +11,13 @@ export type SpaceOrbProps = {
   pulse?: boolean;
   /** Seconds added to the local clock, so an orb carried across scenes stays continuous. */
   timeOffset?: number;
+  /** Agent avatar palette. Defaults to the lead orb's violet. */
+  palette?: OrbPaletteKey;
   style?: React.CSSProperties;
 };
 
-const conic = (deg: number) =>
-  `conic-gradient(from ${deg}deg at 50% 50%, ${ORB_PALETTE.stops.map(([c, a]) => `${c} ${a}deg`).join(", ")})`;
+const conic = (deg: number, stops: readonly (readonly [string, number])[]) =>
+  `conic-gradient(from ${deg}deg at 50% 50%, ${stops.map(([c, a]) => `${c} ${a}deg`).join(", ")})`;
 
 /** Outer radius including the tick ring, for layout. */
 export const spaceOrbOuterRadius = (size: number, ticks = true) =>
@@ -32,6 +34,7 @@ export const SpaceOrb: React.FC<SpaceOrbProps> = ({
   ticks = false,
   pulse = false,
   timeOffset = 0,
+  palette = "iris",
   style,
 }) => {
   const frame = useCurrentFrame();
@@ -100,7 +103,7 @@ export const SpaceOrb: React.FC<SpaceOrbProps> = ({
     : null;
 
   return (
-    <div style={{ position: "relative", width: size, height: size, ...style }}>
+    <div data-orb style={{ position: "relative", width: size, height: size, ...style }}>
       {tickSvg}
       {pulse ? (
         <div
@@ -125,7 +128,7 @@ export const SpaceOrb: React.FC<SpaceOrbProps> = ({
         }}
       >
         <div
-          style={{ position: "absolute", inset: 0, background: conic(sheen) }}
+          style={{ position: "absolute", inset: 0, background: conic(sheen, ORB_PALETTES[palette]) }}
         />
         {/* Brushed metal sheen: fine radial lines turning with the sheen */}
         <div

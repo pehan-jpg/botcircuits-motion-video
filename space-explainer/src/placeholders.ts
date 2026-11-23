@@ -79,10 +79,16 @@ export const PLACEHOLDERS = {
   },
   controlRoom: {
     irisStatusIdle: "Listening for requests",
-    irisStatusBusy: "Routing claim",
+    irisStatusBusy: "Reading claim",
     statuses: ["Reading claim", "Checking policy", "Matching evidence"],
     irisMessage: "Claim CL-7305 is with the team.",
     resources: 4,
+    pills: ["Meet your team", "A new claim arrives", "The team works in tandem", "Prepared for Emily's review"],
+    outputs: [
+      { agent: "nora", text: "Claim CL-7305 | James Whitfield | Kitchen water damage | Estimate $1,840" },
+      { agent: "theo", text: "Covered under Section 4.2 | Excess $250" },
+      { agent: "owen", text: "3 photos and 1 plumber invoice found", flag: "1 flag: invoice date does not match the date of loss" },
+    ] as { agent: string; text: string; flag?: string }[],
     pedestals: ["Gmail", "Google Drive", "Google Sheets", "Slack"],
   },
 } as const;

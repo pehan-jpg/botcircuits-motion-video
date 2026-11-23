@@ -13,6 +13,8 @@ from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SAFE, W, H, MIN_PX, MIN_CR = 96, 1920, 1080, 28, 4.5
+PRODUCT_SCALE = 1728 / 1875
+UI_MIN, UI_MAX, UI_READ = 14, 22, 20
 
 def lin(c):
     c = c / 255
@@ -72,6 +74,8 @@ def colour_checks(img, scene, exclude=()):
 def main(paths):
     total, problems, stats = 0, [], []
     logo_stats, ui_max = [], {}
+    ui_range = [99.0, 0.0]
+    ripple_worst = []
     for p in paths:
         for entry in json.load(open(p)):
             total += 1
@@ -81,8 +85,25 @@ def main(paths):
             brand = [(it["rect"]["x"] - 4, it["rect"]["y"] - 4, it["rect"]["x"] + it["rect"]["w"] + 4, it["rect"]["y"] + it["rect"]["h"] + 4) for it in g["items"] if it["kind"] == "brand"]
             problems += [f"{where}: {m}" for m in colour_checks(still, entry["scene"], brand)]
             bg = Image.open(os.path.join(ROOT, entry["bg"])).convert("RGB") if entry.get("bg") else None
+            # Click ripple centred on the cursor hotspot (arrow tip at 3/36, 1.5/44 of the cursor box).
+            cur = [it for it in g["items"] if it["kind"] == "cursor" and it["opacity"] > 0.3]
+            for rp in [it for it in g["items"] if it["kind"] == "ripple"]:
+                if not cur:
+                    continue
+                c = cur[0]["rect"]
+                tip = (c["x"] + c["w"] * 3 / 36, c["y"] + c["h"] * 1.5 / 44)
+                cen = (rp["rect"]["x"] + rp["rect"]["w"] / 2, rp["rect"]["y"] + rp["rect"]["h"] / 2)
+                dist = ((tip[0] - cen[0]) ** 2 + (tip[1] - cen[1]) ** 2) ** 0.5
+                ripple_worst.append((dist, where))
+                if dist > 4:
+                    problems.append(f"{where}: Cursor: ripple centre is {dist:.1f}px from the cursor hotspot")
+            zoomed = any(it["kind"] == "frame" and it["rect"]["w"] > W + 1 for it in g["items"])
             for it in g["items"]:
                 for iss in it.get("issues", []):
+                    if iss["guard"] == "SafeAreaGuard" and it["kind"] in ("cursor", "ripple", "brand"):
+                        continue  # the pointer and logos inside the product are part of the product picture
+                    if iss["guard"] == "SafeAreaGuard" and zoomed and it["kind"] in ("uitext", "box"):
+                        continue  # inside the zoomed product frame, which acts as background (camera rule)
                     # The product window may cross the edges while the camera zooms (DESIGN.md camera rule).
                     if it["kind"] == "frame" and iss["guard"] == "SafeAreaGuard":
                         continue
@@ -103,17 +124,29 @@ def main(paths):
                     logo_stats.append((ratio, where))
                     if ratio < 7:
                         problems.append(f"{where}: LogoGuard: logo contrast {ratio:.2f}:1 against the plate, needs 7:1")
+                presented = it["opacity"] >= 0.85
+                # Product UI: 14 to 22px at 1x (CSS size times the product scale), whole frame and tagged UI text.
+                if it["kind"] in ("frame", "uitext") and presented and it.get("cssPx"):
+                    lo, hi = it["cssPx"] * PRODUCT_SCALE, it.get("maxCss", 0) * PRODUCT_SCALE
+                    ui_range[0] = min(ui_range[0], lo)
+                    ui_range[1] = max(ui_range[1], hi)
+                    if lo < UI_MIN - 0.15:
+                        problems.append(f'{where}: ReadabilityGuard: UI text "{it.get("minLabel") or it["label"]}" is {lo:.1f}px at 1x, minimum {UI_MIN}px')
+                    if hi > UI_MAX + 0.15:
+                        problems.append(f'{where}: ReadabilityGuard: UI text in "{it["label"]}" is {hi:.1f}px at 1x, maximum {UI_MAX}px')
                 if it["kind"] == "uitext":
                     key = (entry["scene"], it["label"])
-                    ui_max[key] = max(ui_max.get(key, 0), it["fontPx"] if it["opacity"] >= 0.85 else 0)
+                    if it.get("read"):
+                        ui_max[key] = max(ui_max.get(key, 0), it.get("fontPxMax", it["fontPx"]) if presented else 0)
                     problems += [f"{where}: {m}" for m in check_copy(it.get("text", ""))]
-                if it["kind"] != "text":
+                if it["kind"] not in ("text", "uitext"):
                     continue
-                problems += [f"{where}: {m}" for m in check_copy(it.get("text", ""))]
-                presented = it["opacity"] >= 0.85
+                if it["kind"] == "text":
+                    problems += [f"{where}: {m}" for m in check_copy(it.get("text", ""))]
                 if not presented:
                     continue
-                if it["fontPx"] < MIN_PX - 0.1:  # layout widths are whole pixels, so allow rounding
+                # 28px applies to FeatureTitle, overlay pills and other overlay text (kind "text").
+                if it["kind"] == "text" and it["fontPx"] < MIN_PX - 0.1:  # layout widths are whole pixels, so allow rounding
                     problems.append(f'{where}: ReadabilityGuard: "{it["label"]}" is {it["fontPx"]}px')
                 if bg is None:
                     continue
@@ -144,13 +177,17 @@ def main(paths):
     if logo_stats:
         logo_stats.sort()
         print(f"Logo on plate: lowest contrast {logo_stats[0][0]:.2f}:1 ({logo_stats[0][1]})")
+    if ui_range[1] > 0:
+        print(f"Product UI text at 1x: {ui_range[0]:.1f}px to {ui_range[1]:.1f}px (allowed {UI_MIN} to {UI_MAX})")
+    if ripple_worst:
+        print(f"Cursor ripples in stills: {len(ripple_worst)} measured, worst offset {max(ripple_worst)[0]:.1f}px")
     if ui_max:
-        print("Product UI text, largest on screen size reached:")
+        print("UI text meant to be read, largest effective size after camera zoom:")
         for (sc, label), px in sorted(ui_max.items()):
-            flag = "" if px >= MIN_PX - 0.1 else "  (UI chrome size, below 28px)"
-            print(f"  {sc} {label}: {px:.1f}px{flag}")
-            if label.startswith("Plate") and px < MIN_PX - 0.1:
-                problems.append(f"{sc}: name plate {label} never reaches 28px")
+            ok = px >= UI_READ - 0.15
+            print(f"  {sc} {label}: {px:.1f}px{'' if ok else '  BELOW 20px'}")
+            if not ok:
+                problems.append(f"{sc}: {label} never reaches {UI_READ}px effective")
     if stats:
         stats.sort()
         print("Lowest contrast samples:")

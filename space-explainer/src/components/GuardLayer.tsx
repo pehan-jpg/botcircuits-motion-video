@@ -54,24 +54,37 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
             el.dataset.guardLabel ?? (el.textContent ?? "").trim().slice(0, 60);
           // Font size and colour of text-bearing descendants.
           let minFont = Infinity;
+          let maxCss = 0;
+          let minLabel = "";
           let color = "";
+          const visible = (c: Element) => {
+            let o = 1;
+            for (let n: Element | null = c; n && n !== el; n = n.parentElement) o *= Number(getComputedStyle(n).opacity);
+            return o > 0.5;
+          };
           el.querySelectorAll<HTMLElement>("*").forEach((c) => {
             if (
               c.childNodes.length &&
               Array.from(c.childNodes).some(
                 (n) => n.nodeType === 3 && n.textContent?.trim(),
-              )
+              ) &&
+              (kind !== "frame" || visible(c))
             ) {
               const cs = getComputedStyle(c);
-              minFont = Math.min(minFont, parseFloat(cs.fontSize));
+              const fs = parseFloat(cs.fontSize);
+              if (fs < minFont) minLabel = (c.textContent ?? "").trim().slice(0, 40);
+              minFont = Math.min(minFont, fs);
+              maxCss = Math.max(maxCss, fs);
               if (!color) color = cs.color;
             }
           });
           if (minFont === Infinity) {
             const cs = getComputedStyle(el);
             minFont = parseFloat(cs.fontSize);
+            maxCss = minFont;
             color = cs.color;
           }
+          const cssPx = minFont;
           // Font size as it appears on screen, after any scale transforms.
           const elScale = el.offsetWidth ? rect.width / el.offsetWidth / k : 1;
           minFont *= elScale;
@@ -102,6 +115,11 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
             opacity: op,
             rect: r,
             fontPx: minFont,
+            cssPx: cssPx === Infinity ? null : cssPx,
+            fontPxMax: maxCss * elScale,
+            maxCss,
+            minLabel,
+            read: el.dataset.guardRead === "1",
             color,
             issues,
           };
@@ -119,7 +137,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
   return (
     <AbsoluteFill ref={ref} style={{ pointerEvents: "none" }}>
       {props.hideText ? (
-        <style>{`[data-guard="text"], [data-guard="text"] *, [data-guard="uitext"], [data-guard="uitext"] * { color: transparent !important; text-shadow: none !important; } [data-guard-caret] { opacity: 0 !important; } [data-guard="logo"] img { opacity: 0 !important; }`}</style>
+        <style>{`[data-guard="text"], [data-guard="text"] *, [data-guard="uitext"], [data-guard="uitext"] * { color: transparent !important; text-shadow: none !important; } [data-guard-caret] { opacity: 0 !important; } [data-guard="logo"] img { opacity: 0 !important; } [data-guard="uitext"] [data-orb] { visibility: hidden !important; }`}</style>
       ) : null}
       {props.showSafeArea ? (
         <div

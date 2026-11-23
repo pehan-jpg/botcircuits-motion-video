@@ -4,14 +4,29 @@ import { EASE } from "../theme";
 
 export type CursorKey = { x: number; y: number; t: number; click?: boolean };
 
-/** Standard arrow cursor moving on eased, gently curved paths, with a soft click ripple. */
-export const Cursor: React.FC<{ keys: CursorKey[]; opacity?: number }> = ({
-  keys,
-  opacity = 1,
-}) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const t = frame / fps;
+/** How long a click ripple lives. The cursor dwells on its hotspot for this long after every click. */
+export const RIPPLE_SECONDS = 0.45;
+
+/**
+ * Inserts a dwell after every click so the cursor stays on the ripple's
+ * centre until the ripple has finished. The next move is compressed into the
+ * time that is left before the next key.
+ */
+const withDwell = (keys: CursorKey[]): CursorKey[] => {
+  const out: CursorKey[] = [];
+  keys.forEach((k, i) => {
+    out.push(k);
+    const next = keys[i + 1];
+    if (k.click && next && next.t > k.t + RIPPLE_SECONDS) {
+      out.push({ x: k.x, y: k.y, t: k.t + RIPPLE_SECONDS });
+    }
+  });
+  return out;
+};
+
+/** Cursor hotspot (arrow tip) at time t, in the coordinates of its parent. */
+export const cursorPosAt = (rawKeys: CursorKey[], t: number) => {
+  const keys = withDwell(rawKeys);
   let x = keys[0].x;
   let y = keys[0].y;
   for (let i = 0; i < keys.length - 1; i++) {
@@ -27,31 +42,64 @@ export const Cursor: React.FC<{ keys: CursorKey[]; opacity?: number }> = ({
       const len = Math.hypot(dx, dy) || 1;
       const cx = mx + (-dy / len) * len * 0.12;
       const cy = my + (dx / len) * len * 0.12;
-      x = (1 - p) * (1 - p) * a.x + 2 * (1 - p) * p * cx + p * p * b.x;
-      y = (1 - p) * (1 - p) * a.y + 2 * (1 - p) * p * cy + p * p * b.y;
+      return {
+        x: (1 - p) * (1 - p) * a.x + 2 * (1 - p) * p * cx + p * p * b.x,
+        y: (1 - p) * (1 - p) * a.y + 2 * (1 - p) * p * cy + p * p * b.y,
+      };
     } else if (t > b.t) {
       x = b.x;
       y = b.y;
     }
   }
+  return { x, y };
+};
+
+/**
+ * Check used by scripts/check-timing.ts: at every frame of every click's
+ * ripple, the distance between the ripple centre and the cursor hotspot.
+ */
+export const cursorClickReport = (keys: CursorKey[], fps = 60) =>
+  keys
+    .filter((k) => k.click)
+    .map((k) => {
+      let worst = 0;
+      for (let f = 0; f <= Math.round(RIPPLE_SECONDS * fps); f++) {
+        const p = cursorPosAt(keys, k.t + f / fps);
+        worst = Math.max(worst, Math.hypot(p.x - k.x, p.y - k.y));
+      }
+      return { t: k.t, x: k.x, y: k.y, worst };
+    });
+
+/** Arrow tip inside the SVG, in SVG pixels (viewBox 24x30 drawn at 36x44, tip at 2,1). */
+const TIP = { x: 3, y: 1.5 };
+
+/** Standard arrow cursor moving on eased, gently curved paths, with a soft neutral click ripple centred on the hotspot. */
+export const Cursor: React.FC<{ keys: CursorKey[]; opacity?: number }> = ({ keys, opacity = 1 }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const t = frame / fps;
+  const { x, y } = cursorPosAt(keys, t);
   const ripples = keys
-    .filter((k) => k.click && t >= k.t && t <= k.t + 0.6)
+    .filter((k) => k.click && t >= k.t && t <= k.t + RIPPLE_SECONDS)
     .map((k, i) => {
-      const p = interpolate(t, [k.t, k.t + 0.6], [0, 1]);
+      const p = interpolate(t, [k.t, k.t + RIPPLE_SECONDS], [0, 1]);
+      const size = 56;
       return (
         <div
           key={i}
+          data-guard="ripple"
           style={{
             position: "absolute",
-            left: k.x - 30,
-            top: k.y - 30,
-            width: 60,
-            height: 60,
+            left: k.x - size / 2,
+            top: k.y - size / 2,
+            width: size,
+            height: size,
             borderRadius: "50%",
-            border: "2px solid rgba(59,111,224,0.6)",
-            background: "rgba(140,200,255,0.18)",
-            transform: `scale(${0.3 + EASE(p) * 0.9})`,
-            opacity: 1 - p,
+            border: "2px solid rgba(255,255,255,0.85)",
+            background: "rgba(255,255,255,0.22)",
+            boxShadow: "0 0 0 1px rgba(13,18,36,0.18)",
+            transform: `scale(${0.25 + EASE(p) * 0.85})`,
+            opacity: (1 - p) * opacity,
           }}
         />
       );
@@ -61,16 +109,17 @@ export const Cursor: React.FC<{ keys: CursorKey[]; opacity?: number }> = ({
     <>
       {ripples}
       <svg
+        data-guard="cursor"
         width={36}
         height={44}
         viewBox="0 0 24 30"
         style={{
           position: "absolute",
-          left: x - 3,
-          top: y - 2,
+          left: x - TIP.x,
+          top: y - TIP.y,
           opacity,
           transform: `scale(${pressed ? 0.9 : 1})`,
-          transformOrigin: "3px 2px",
+          transformOrigin: `${TIP.x}px ${TIP.y}px`,
           filter: "drop-shadow(0 3px 6px rgba(13,18,36,0.3))",
         }}
       >

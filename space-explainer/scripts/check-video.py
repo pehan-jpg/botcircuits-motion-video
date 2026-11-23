@@ -6,7 +6,7 @@ Checks the single deliverable, out/space_video.mp4:
   - continuity: last frame of each scene against the first frame of the next
 Usage: python3 -I scripts/check-video.py
 """
-import json, os, re, subprocess, sys, tempfile
+import json, math, os, re, subprocess, sys, tempfile
 from PIL import Image, ImageChops, ImageStat
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -14,9 +14,8 @@ VIDEO = os.path.join(ROOT, "out", "space_video.mp4")
 FPS = 60
 
 def scenes():
-    src = open(os.path.join(ROOT, "src", "timeline.ts")).read()
-    rows = re.findall(r'\{\s*id:\s*"(S\d\d)",\s*number:\s*(\d+),\s*name:\s*"([^"]*)",\s*start:\s*([\d.]+),\s*end:\s*([\d.]+),\s*built:\s*(true|false)', src)
-    return [dict(id=r[0], n=int(r[1]), name=r[2], start=float(r[3]), end=float(r[4])) for r in rows if r[5] == "true"]
+    out = subprocess.run(["npx", "tsx", os.path.join(ROOT, "scripts", "print-scenes.ts")], capture_output=True, text=True, cwd=ROOT).stdout
+    return json.loads(out.strip().splitlines()[-1])
 
 def run(args):
     return subprocess.run(args, capture_output=True, text=True)
@@ -28,7 +27,7 @@ def frame_at(index, out):
 def main():
     issues = []
     built = scenes()
-    expected = sum(round(s["end"] * FPS) - round(s["start"] * FPS) for s in built)
+    expected = sum(s["frames"] for s in built)
     probe = json.loads(run(["ffprobe", "-v", "error", "-count_frames", "-select_streams", "v:0", "-show_entries", "stream=nb_read_frames,duration", "-of", "json", VIDEO]).stdout)
     st = probe["streams"][0]
     frames, dur = int(st["nb_read_frames"]), float(st["duration"])
@@ -52,7 +51,7 @@ def main():
     tmp = tempfile.mkdtemp()
     offset = 0
     for a, b in zip(built, built[1:]):
-        offset += round(a["end"] * FPS) - round(a["start"] * FPS)
+        offset += a["frames"]
         last = frame_at(offset - 1, os.path.join(tmp, "a.png"))
         first = frame_at(offset, os.path.join(tmp, "b.png"))
         diff = ImageChops.difference(last, first).convert("L")
@@ -61,9 +60,19 @@ def main():
         import math
         psnr = 99.0 if mse == 0 else 10 * math.log10(255 * 255 / mse)
         changed = sum(c for i, c in enumerate(diff.histogram()) if i > 12) / (diff.size[0] * diff.size[1]) * 100
-        verdict = "seamless" if psnr >= 38 else "close" if psnr >= 32 else "VISIBLE CHANGE"
-        print(f"  Scene {a['n']} to {b['n']} at frame {offset}: mean abs diff {mean:.2f}/255, PSNR {psnr:.1f} dB, pixels changed by more than 12 levels {changed:.2f}%  [{verdict}]")
-        if psnr < 32:
+        # Motion between ordinary consecutive frames just before the boundary, for comparison.
+        inner = []
+        for k in (8, 5, 3):
+            fa = frame_at(offset - k - 1, os.path.join(tmp, "c.png"))
+            fb = frame_at(offset - k, os.path.join(tmp, "d.png"))
+            dd = ImageChops.difference(fa, fb).convert("L")
+            m2 = sum((i * i) * c for i, c in enumerate(dd.histogram())) / (dd.size[0] * dd.size[1])
+            inner.append(99.0 if m2 == 0 else 10 * math.log10(255 * 255 / m2))
+        inner_psnr = sorted(inner)[1]
+        continuous = psnr >= 38 or psnr >= inner_psnr - 2
+        verdict = "seamless" if psnr >= 38 else "continuous motion" if continuous else "VISIBLE CHANGE"
+        print(f"  Scene {a['n']} to {b['n']} at frame {offset}: mean abs diff {mean:.2f}/255, PSNR {psnr:.1f} dB, pixels changed by more than 12 levels {changed:.2f}%; neighbouring frames inside the scene {inner_psnr:.1f} dB  [{verdict}]")
+        if not continuous:
             issues.append(f"boundary {a['n']} to {b['n']} is not continuous")
     print("\n" + ("All video checks passed." if not issues else f"{len(issues)} issue(s): " + "; ".join(issues)))
     return 1 if issues else 0

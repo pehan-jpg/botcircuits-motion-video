@@ -165,3 +165,65 @@ export const PROBLEM_BACKDROP = {
   ],
   maxDrift: 0.03,
 } as const;
+
+/**
+ * Product frame at real product proportions. Screens are authored at the
+ * reference screenshots' native size (1875 x 895) and scaled so 15px native
+ * text reads at 14px on screen.
+ */
+export const PRODUCT = {
+  nativeW: 1875,
+  nativeH: 895,
+  scale: 1728 / 1875,
+  x: 96,
+  y: 128,
+  w: 1728,
+  h: 895 * (1728 / 1875),
+} as const;
+
+/** UI type scale in on-screen px at 1x camera. No UI text above 22px at 1x; nothing under 14px. */
+export const UI_TYPE_PX = {
+  chatInput: 18,
+  userBubble: 17,
+  answer: 18,
+  citation: 14, // the brief lists 13px; raised to the 14px UI minimum
+  sourceTitle: 20,
+  sourceBody: 16,
+  sidebar: 14,
+  tabs: 14,
+  button: 14,
+  helper: 14, // the brief lists 13px; raised to the 14px UI minimum
+  pageTitle: 22,
+  max: 22,
+  min: 14,
+  /** Text meant to be read must reach this after camera zoom. */
+  readable: 20,
+} as const;
+/** The same scale in native px (what the components set). */
+export const UIN = Object.fromEntries(
+  Object.entries(UI_TYPE_PX).map(([k, v]) => [k, Math.round((v / PRODUCT.scale) * 100) / 100]),
+) as Record<keyof typeof UI_TYPE_PX, number>;
+
+type OrbStops = [string, number][];
+const orbStops = (deep: string, a: string, streak: string, b: string, deep2: string, c: string): OrbStops => [
+  [deep, 0],
+  [a, 70],
+  [streak, 120],
+  [b, 170],
+  [deep2, 240],
+  [c, 300],
+  [deep, 360],
+];
+/**
+ * Agent avatar orbs: same conic structure as the lead orb, hue changed per
+ * agent. Exception to the single orb colour rule, for avatars only.
+ * No grey, green, blue or amber.
+ */
+export const ORB_PALETTES = {
+  iris: ORB_PALETTE.stops as OrbStops,
+  nora: orbStops("#3E0B22", "#A82457", "#FFB8D0", "#D6457A", "#520F2D", "#BF356A"),
+  theo: orbStops("#052A29", "#0F7471", "#A6F2EE", "#1FA3A0", "#083A39", "#168C89"),
+  owen: orbStops("#3F1208", "#B23A1A", "#FFC2AE", "#E4572E", "#55180B", "#CC4824"),
+  plum: orbStops("#2A0B3A", "#7A2696", "#E7B8FF", "#9E45C2", "#3A1050", "#8A33AE"),
+} as const;
+export type OrbPaletteKey = keyof typeof ORB_PALETTES;

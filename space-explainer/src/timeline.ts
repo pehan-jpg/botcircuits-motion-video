@@ -13,45 +13,45 @@ export type SceneId =
   | "S10"
   | "S11";
 
+/**
+ * Scene list. Only durations are authored: start and end are computed, so a
+ * scene that grows pushes every later scene along automatically.
+ */
+const SCENE_LIST: { id: SceneId; name: string; duration: number; built: boolean }[] = [
+  { id: "S01", name: "Problem", duration: 15, built: true },
+  { id: "S02", name: "Intro", duration: 5, built: true },
+  { id: "S03", name: "Chat", duration: 14.5, built: true },
+  { id: "S04", name: "Agents and Control Room", duration: 28, built: true },
+  { id: "S05", name: "Scene 5", duration: 10, built: false },
+  { id: "S06", name: "Scene 6", duration: 15, built: false },
+  { id: "S07", name: "Scene 7", duration: 9, built: false },
+  { id: "S08", name: "Scene 8", duration: 16, built: false },
+  { id: "S09", name: "Scene 9", duration: 12, built: false },
+  { id: "S10", name: "Scene 10", duration: 6, built: false },
+  { id: "S11", name: "Scene 11", duration: 8, built: false },
+];
+
 export type SceneDef = {
   id: SceneId;
   number: number;
   name: string;
-  start: number; // seconds, in the final 2:02 cut
-  end: number; // seconds
+  start: number; // seconds, computed
+  end: number; // seconds, computed
+  duration: number;
   /** Built scenes play in SpaceVideo, back to back. Unbuilt scenes are absent. */
   built: boolean;
 };
 
-export const SCENES: SceneDef[] = [
-  { id: "S01", number: 1, name: "Problem", start: 0, end: 15, built: true },
-  { id: "S02", number: 2, name: "Intro", start: 15, end: 20, built: true },
-  { id: "S03", number: 3, name: "Chat", start: 20, end: 32, built: true },
-  { id: "S04", number: 4, name: "Agents", start: 32, end: 46, built: true },
-  { id: "S05", number: 5, name: "Scene 5", start: 46, end: 56, built: false },
-  { id: "S06", number: 6, name: "Scene 6", start: 56, end: 71, built: false },
-  { id: "S07", number: 7, name: "Scene 7", start: 71, end: 80, built: false },
-  { id: "S08", number: 8, name: "Scene 8", start: 80, end: 96, built: false },
-  { id: "S09", number: 9, name: "Scene 9", start: 96, end: 108, built: false },
-  {
-    id: "S10",
-    number: 10,
-    name: "Scene 10",
-    start: 108,
-    end: 114,
-    built: false,
-  },
-  {
-    id: "S11",
-    number: 11,
-    name: "Scene 11",
-    start: 114,
-    end: 122,
-    built: false,
-  },
-];
+export const SCENES: SceneDef[] = (() => {
+  let t = 0;
+  return SCENE_LIST.map((s, i) => {
+    const def = { ...s, number: i + 1, start: t, end: t + s.duration };
+    t += s.duration;
+    return def;
+  });
+})();
 
-export const TOTAL_SECONDS = 122;
+export const TOTAL_SECONDS = SCENES[SCENES.length - 1].end;
 
 export const sceneById = (id: SceneId) => {
   const s = SCENES.find((x) => x.id === id);
@@ -66,86 +66,60 @@ export const sceneFrames = (id: SceneId) => {
 };
 
 export const BUILT_SCENES = SCENES.filter((s) => s.built);
-export const BUILT_FRAMES = BUILT_SCENES.reduce(
-  (a, s) => a + sceneFrames(s.id),
-  0,
-);
+export const BUILT_FRAMES = BUILT_SCENES.reduce((a, s) => a + sceneFrames(s.id), 0);
+
+/** Event at a time relative to its scene's start, stored in absolute seconds. */
+const at = (scene: SceneId, t: number) => sceneById(scene).start + t;
 
 /**
- * Named events in absolute seconds (video time). Scene code reads these
- * through `local(event, sceneId)` so timing lives in one place.
+ * Named events. Authored relative to their scene, so they move with it.
+ * Scene code reads them through `local(event, sceneId)`.
  */
 export const EVENTS = {
   // Scene 1, Problem
-  headline_work_moves: 0.1,
-  claim_lands: 0.35,
-  hop_sheet: 1.3,
-  hop_chat: 2.1,
-  hop_pdf: 2.9,
-  chip_who_has_it: 3.0,
-  chip_who_approved: 3.6,
-  chip_which_version: 4.2,
-  card_to_orb: 5.0,
-  headline_who_checks: 6.0,
-  stamp_sent: 7.0,
-  stamp_paid: 7.6,
-  empty_slot: 8.2,
-  strays_fade: 10.0,
-  line_no_record: 10.4,
-  line_no_one: 11.7,
-  orb_to_centre: 13.2,
+  headline_work_moves: at("S01", 0.1),
+  claim_lands: at("S01", 0.35),
+  hop_sheet: at("S01", 1.3),
+  hop_chat: at("S01", 2.1),
+  hop_pdf: at("S01", 2.9),
+  chip_who_has_it: at("S01", 3.0),
+  chip_who_approved: at("S01", 3.6),
+  chip_which_version: at("S01", 4.2),
+  card_to_orb: at("S01", 5.0),
+  headline_who_checks: at("S01", 6.0),
+  stamp_sent: at("S01", 7.0),
+  stamp_paid: at("S01", 7.6),
+  empty_slot: at("S01", 8.2),
+  strays_fade: at("S01", 10.0),
+  line_no_record: at("S01", 10.4),
+  line_no_one: at("S01", 11.7),
+  orb_to_centre: at("S01", 13.2),
   // Scene 2, Intro
-  colour_returns: 15.0,
-  orb_dissolve: 15.0,
-  intro_typed: 16.0,
-  // Scene 3, Chat
-  s3_morph: 20.0,
-  s3_intro_out: 20.2,
-  s3_frame_rise: 20.2,
-  s3_hero: 20.5,
-  s3_textbeat: 20.9,
-  s3_chips: 20.7,
-  s3_focus: 21.6,
-  s3_type: 21.8,
-  s3_send: 24.5,
-  pill_reading: 24.8,
-  pill_policy: 25.4,
-  pill_evidence: 26.0,
-  answer: 26.8,
-  cite_click: 29.45,
-  source_open: 29.5,
-  // Scene 4, Agents and Control Room
-  s4_card_close: 32.0,
-  s4_textbeat: 32.6,
-  s4_click_agents: 32.95,
-  s4_agents_page: 33.0,
-  s4_zoom_cards: 33.2,
-  s4_new_nora: 33.6,
-  s4_new_theo: 34.15,
-  s4_new_owen: 34.7,
-  s4_zoom_out_cards: 36.1,
-  s4_click_control: 36.8,
-  s4_control_page: 36.85,
-  s4_claim_to_iris: 37.5,
-  s4_iris_message: 37.8,
-  s4_pop_nora: 38.2,
-  s4_pop_theo: 38.8,
-  s4_pop_owen: 39.4,
-  s4_zoom_desks: 39.8,
-  s4_path_nora: 40.0,
-  s4_path_theo: 40.8,
-  s4_path_owen: 41.6,
-  s4_zoom_out_room: 44.0,
+  colour_returns: at("S02", 0),
+  orb_dissolve: at("S02", 0),
+  intro_typed: at("S02", 1.0),
+  // Scene 3, Chat: FeatureTitle, then the earlier beats shifted by 2.5s
+  s3_intro_out: at("S03", 0.2),
+  s3_title: at("S03", 0.45),
+  s3_hero: at("S03", 3.0),
+  s3_chips: at("S03", 3.2),
+  s3_focus: at("S03", 4.1),
+  s3_type: at("S03", 4.3),
+  s3_send: at("S03", 7.0),
+  pill_reading: at("S03", 7.3),
+  pill_policy: at("S03", 7.9),
+  pill_evidence: at("S03", 8.5),
+  answer: at("S03", 9.3),
+  cite_click: at("S03", 11.95),
+  source_open: at("S03", 12.0),
 } as const;
 
 export type EventName = keyof typeof EVENTS;
 
 /** Event time in seconds, relative to a scene's start. */
-export const local = (event: EventName, scene: SceneId) =>
-  EVENTS[event] - sceneById(scene).start;
+export const local = (event: EventName, scene: SceneId) => EVENTS[event] - sceneById(scene).start;
 /** Event time in frames, relative to a scene's start. */
-export const localF = (event: EventName, scene: SceneId) =>
-  f(local(event, scene));
+export const localF = (event: EventName, scene: SceneId) => f(local(event, scene));
 
 /** Plate mapping for the whole video. */
 export const PLATES = {

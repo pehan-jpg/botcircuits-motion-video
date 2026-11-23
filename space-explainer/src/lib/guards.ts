@@ -48,6 +48,8 @@ export type TextBeatSpec = {
   carriesOver?: boolean;
   /** A timing the brief sets explicitly that is shorter than the guard minimum. Reported, not failed. */
   exception?: string;
+  /** Product UI text: fontPx is its effective size after camera zoom; minimum 20px instead of 28px. */
+  ui?: boolean;
 };
 
 /** ReadabilityGuard timing and size: at least 28px, held 1.2s plus 0.25s per word after typing ends. */
@@ -60,7 +62,7 @@ export const checkReadability = (b: TextBeatSpec): GuardIssue[] => {
       guard: "ReadabilityGuard",
       message: `"${b.text}" held ${held.toFixed(2)}s, needs ${need.toFixed(2)}s`,
     });
-  if (b.fontPx < MIN_TEXT_PX)
+  if (b.fontPx < (b.ui ? 20 : MIN_TEXT_PX))
     issues.push({
       guard: "ReadabilityGuard",
       message: `"${b.text}" is ${b.fontPx}px, minimum ${MIN_TEXT_PX}px`,

@@ -7,8 +7,9 @@ import { checkReadability, type GuardIssue, type TextBeatSpec } from "../src/lib
 import { readHoldSeconds } from "../src/theme";
 import { SCENE01_TEXT } from "../src/scenes/Scene01Problem";
 import { SCENE02_TEXT, SCENE02_SETTLED } from "../src/scenes/Scene02Intro";
-import { SCENE03_TEXT } from "../src/scenes/Scene03Chat";
-import { SCENE04_TEXT } from "../src/scenes/Scene04Agents";
+import { SCENE03_TEXT, S3_CURSOR } from "../src/scenes/Scene03Chat";
+import { SCENE04_TEXT, S4_CURSOR } from "../src/scenes/Scene04Agents";
+import { cursorClickReport } from "../src/components/Cursor";
 
 const issues: GuardIssue[] = [];
 const notes: string[] = [];
@@ -39,6 +40,16 @@ for (let i = 1; i < SCENES.length; i++) {
     issues.push({ guard: "timeline", message: `${SCENES[i].id} starts at ${SCENES[i].start}, previous ends at ${SCENES[i - 1].end}` });
 }
 if (SCENES[SCENES.length - 1].end !== TOTAL_SECONDS) issues.push({ guard: "timeline", message: "total length mismatch" });
+console.log("\nScene start times:");
+for (const sc of SCENES) console.log(`  Scene ${String(sc.number).padStart(2)} ${sc.built ? "built  " : "pending"} ${sc.start.toFixed(1).padStart(6)}s to ${sc.end.toFixed(1).padStart(6)}s  (${sc.duration}s)  ${sc.name}`);
+
+console.log("\nCursor clicks (ripple centre against the cursor hotspot, every frame of the ripple):");
+for (const [name, keys] of [["Scene 3", S3_CURSOR], ["Scene 4", S4_CURSOR]] as const) {
+  for (const c of cursorClickReport(keys)) {
+    console.log(`  ${name} click at ${c.t.toFixed(2)}s: worst offset ${c.worst.toFixed(2)}px`);
+    if (c.worst > 1) issues.push({ guard: "cursor", message: `${name} click at ${c.t.toFixed(2)}s drifts ${c.worst.toFixed(1)}px from its ripple` });
+  }
+}
 console.log(`Built scenes: ${BUILT_SCENES.map((s) => s.number).join(", ")}; SpaceVideo is ${BUILT_FRAMES} frames (${BUILT_FRAMES / 60}s)`);
 
 if (notes.length) console.log(`\nNotes:\n${notes.map((n) => `  ${n}`).join("\n")}`);

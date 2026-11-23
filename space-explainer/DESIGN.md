@@ -82,15 +82,37 @@ right, drifting at most 3 percent, 3 percent grain. Soft and cool, never flat. S
 pale `#F4F6F8`. Scene 11 pure white.
 
 **Product frame** (from Scene 3), `ProductWindow`: dark app window, 24px
-radius, soft shadow, 1500x716 at (210, 210). Product screens are authored at
-the screenshots' native size (1875x895) and scaled 0.8.
+radius, soft shadow, 1728x825 at (96, 128). Product screens are authored at
+the screenshots' native size (1875x895) and scaled 0.9216 (`PRODUCT` in
+`theme.ts`), which keeps real product proportions: 15px native reads as 14px.
 
-**Camera rule.** In UI scenes, focus zooms up to 1.8x are allowed, eased, with
-pans to the area being explained, so any text meant to be read is at least
-28px equivalent on screen. Zoom out again before each scene ends so scene
-boundaries still match. Never a hard cut inside a scene. While zoomed, the
-product window and its UI may cross the frame edge (the guard treats them as
-background); story text meant to be read stays inside the safe area.
+**UI type scale** (`UI_TYPE_PX`, on-screen px at 1x camera; `UIN` holds the
+native values components set): chat input 18, user message 17, assistant answer
+18, citation chips 14 (brief: 13, raised to the 14px minimum), source card title
+20, source card body 16, sidebar and tabs 14, buttons 14, helper text 14 (brief:
+13, raised to the minimum), page titles 22. **No UI text above 22px at 1x, none
+under 14px.** Never enlarge UI text to make it readable: use the camera.
+
+**Camera rule.** In UI scenes, focus zooms up to 1.6x are allowed, eased, with
+pans to the area being explained, so text meant to be read is at least 20px
+effective (current zooms: 1.25 on chat input, answer and source card; 1.18 on
+the thread; 1.3 on the creation panel; 1.35 on agent cards; 1.4 on desks; 1.5
+along the path). `camAt` with `lin` keys keeps slow drifts moving through holds.
+Never a hard cut inside a scene. While zoomed, the product window and the UI
+inside it may meet the frame edge (they act as background); overlays stay in
+the safe area.
+
+**FeatureTitle** (`FeatureTitle`, replaces TextBeat in UI scenes): the title
+appears alone on the plate, centred, Plus Jakarta Sans SemiBold 88px, ink,
+-0.03em, max width 1400px, no box. Soft radial light behind it (white 45
+percent, feathered). Words blur in (14px to 0, 18px rise, 0.7s, EASE, 90ms
+stagger). Hold at least 1.2s after the last word, and the whole title stays up
+long enough to read from its first word (1.2s plus 0.25s per word). Exit: words
+drift up 24px, blur and fade over 0.5s. The product frame then rises (scale
+0.94 to 1, translateY 40 to 0, opacity 0 to 1, 0.9s EASE), starting 0.3s before
+the title has left; its opacity eases in later than its move so the title never
+shows over UI. About 2.8s in all. Scene 1 keeps its typed top left headlines
+(it is not a UI scene).
 
 **Space orb** (`SpaceOrb`, palette `ORB_PALETTE` in `src/theme.ts`): a knob
 style violet sphere. Conic gradient from 210deg: #1B1048 0deg, #3F28B0 70deg,
@@ -106,6 +128,14 @@ percent from slow deterministic noise (3s), so it breathes. **No grey, blue or
 green orb anywhere.** The old ringed `AgentOrb` is removed. Use `timeOffset`
 when an orb crosses a scene boundary.
 
+**Agent avatars** (exception to the single orb colour): small `SpaceOrb`s with
+no ticks, `palette` from `ORB_PALETTES`, same conic structure with the hue
+changed: Iris violet (the lead palette), Nora rose (#D6457A family), Theo teal
+(#1FA3A0 family), Owen coral red (#E4572E family), plus a fifth "plum" swatch
+for the avatar picker. No grey, green, blue or amber. Used on agent cards, name
+plates, the creation panel, the chat panel and output cards; never letter
+circles.
+
 **Human glyph** (`HumanGlyph`): amber `#F2A43A` with halo `#FFE2B3`, head circle
 and rounded shoulders, 64px, always on a white glass disc. **Amber appears ONLY
 where a person decides.**
@@ -116,32 +146,40 @@ on full stops, 2px caret at 70 percent opacity blinking at 1.1 Hz, caret fades
 0.3 s after the last character. Lines are given explicitly and laid out in full
 (invisibly) before typing, so text never reflows.
 
-**TextBeat**: a short headline typed top left inside the safe area, 56px. Holds
-2.5 s, or longer when the ReadabilityGuard needs it, then blurs out.
+**TextBeat** (Scene 1 only): a short headline typed top left inside the safe
+area, 56px. Holds 2.5 s, or longer when the ReadabilityGuard needs it.
 
 **Status pill** (`StatusPill`): frosted glass pill, small spinner, 28px label.
 
-**Cursor** (`Cursor`): standard arrow with a soft click ripple, moving on eased,
-gently curved paths.
+**Cursor** (`Cursor`): standard arrow moving on eased, gently curved paths. The
+click ripple is neutral (white ring, soft fill), 0.45s, centred on the arrow's
+hotspot (the tip). After every click the cursor dwells on the hotspot until its
+ripple has finished, so the ripple never trails behind a moving cursor.
+`cursorClickReport` checks every frame of every ripple (scripts/check-timing.ts)
+and check.py measures ripple and cursor in the stills.
 
 **Guards**
-- SafeAreaGuard: nothing within 96px of the edge except backgrounds.
-- ReadabilityGuard: text at least 28px; held at least 1.2 s plus 0.25 s per word
-  after typing ends; contrast at least 4.5:1 against the sampled background.
-  Fix by adding or strengthening a glass panel, never by changing copy.
+- SafeAreaGuard: nothing within 96px of the edge except backgrounds (and the
+  zoomed product frame, which acts as background).
+- ReadabilityGuard: the 28px minimum applies to FeatureTitle, overlay pills and
+  other overlay text (`data-guard="text"`). Product UI text must be at least 14px
+  and at most 22px at 1x, and text meant to be read (`data-guard="uitext"`
+  with `data-guard-read="1"`) must reach at least 20px effective after camera
+  zoom. Reading time: 1.2s plus 0.25s per word once readable; timings the brief
+  fixes shorter are reported as exceptions. Contrast at least 4.5:1 against the
+  sampled background. Fix contrast with a glass panel or light, never by
+  changing copy.
 - assertGaps: no stretch over 0.4 s without motion.
-- LogoGuard: logos on white, at least 28px high.
+- LogoGuard: logos on white or sampled at 7:1 against the plate, at least 28px.
+- Cursor: ripple centred on the hotspot at every click.
 
 How they run: `GuardLayer` (in every scene) measures `data-guard` elements each
-frame; `scripts/stills.mjs` renders stills plus a text hidden background pass;
-`scripts/check.py` checks safe area, size, contrast, logo, copy rules, green
-orb pixels and stray amber; `scripts/check-timing.ts` checks reading time and
-timeline consistency; ffmpeg `freezedetect` checks motion gaps on the MP4s.
-Tag new text with `data-guard="text"` and new non-text elements with
-`data-guard="box"`. Product UI chrome (sidebar, chips, labels) is drawn at the
-screenshot's size and is not held to 28px; story text inside the product
-(prompt, messages, pills, answer, source card) is 35px native, 28px on screen.
-Font size is measured after scaling.
+frame (on-screen size, CSS size, visible text inside the product frame);
+`scripts/stills.mjs` renders a still every 1s plus a text hidden background
+pass; `scripts/check.py` checks safe area, sizes, contrast, logo, cursor, copy
+rules, green orb pixels and stray amber; `scripts/check-timing.ts` checks
+reading time, scene start times and cursor clicks; `scripts/check-video.py`
+checks duration, black frames, motion gaps and scene boundaries.
 
 ## 1A. Plate background system (`src/backgrounds`)
 
@@ -164,10 +202,11 @@ crossfades to 02. Scene 6 is not in the brief's mapping; the placeholder uses 03
 
 ## 2. Project structure
 
-- `src/timeline.ts`: scene starts and ends in seconds and named events. Read
-  events with `local()` / `localF()`. Scenes: 1 0 to 15, 2 15 to 20, 3 20 to 32,
-  4 32 to 46, 5 46 to 56, 6 56 to 71, 7 71 to 80, 8 80 to 96, 9 96 to 108,
-  10 108 to 114, 11 114 to 122.
+- `src/timeline.ts`: authored scene durations; starts and ends are computed,
+  so a scene that grows pushes the rest along. Events are written relative to
+  their scene. Durations: 15, 5, 14.5, 28, 10, 15, 9, 16, 12, 6, 8 seconds.
+  Current starts: Scene 1 0s, 2 15s, 3 20s, 4 34.5s, 5 62.5s, 6 72.5s,
+  7 87.5s, 8 96.5s, 9 112.5s, 10 124.5s, 11 130.5s (total 138.5s).
 - `src/scenes/SceneNN*.tsx`, one per built scene.
 - `SpaceVideo` plays the built scenes; `Scene01`, `Scene02`... render one built scene alone.
 
@@ -200,31 +239,43 @@ Medium 84px, ink, -0.02em. Types at HEADLINE_CPS from 1.0s; the logo's dots
 assemble over 0.9s while the wordmark blurs in. A very soft radial light behind
 the line (white 45 percent, feathered). Holds about 1.8s.
 
-### Scene 3, Chat (0:20 to 0:32), built
-The line blurs out over 0.4s; the dark product frame rises from the centre
-(scale 0.92 to 1, opacity 0 to 1) over 0.8s; plate 01 crossfades to 02 over
-1.5s. Hero, subtitle, input and chips are in by 21.2s; typing starts at 21.8s.
-Send at 24.5s (the send button becomes a small SpaceOrb), pills at 24.8, 25.4
-and 26.0s, the answer from 26.8s, click on [S1] at 29.45s, the source card open
-from 29.5s and held about 2.5s. Workspace name "Northfield". Slow 3.5 percent
-push. The state function `chatStateAt` lets Scene 4 open on the same frame.
+### Scene 3, Chat (0:20 to 0:34.5), built
+The Scene 2 line blurs out over 0.4s while plate 01 crossfades to plate 02
+(1.5s). FeatureTitle "Ask in plain language", then the frame rises with the
+chat page. Hero, input and chips settle; the camera zooms 1.25x on the input,
+which focuses (lime) and types the prompt at CHAT_CPS. Send at 7.0s: the send
+button becomes a small SpaceOrb, the thread starts with the user message
+(1.18x overview), pills at 7.3, 7.9 and 8.5s, the answer types at REPLAY_CPS
+from 9.3s at 1.25x, the cursor clicks [S1] at 11.95s and the camera pans as the
+source card opens beside the answer (12.0s), held about 2.5s. All at the UI
+type scale. `chatStateAt` lets Scene 4 open on the same frame.
 
-### Scene 4, Agents and Control Room (0:32 to 0:46), built
-TextBeat "Give every agent a job" (on glass). Opens on Scene 3's last frame;
-the source card closes in 0.5s. The cursor clicks Agents; the Agents page
-(rebuilt from 04-agents.png) shows Iris (Personal assistant, Default). The
-camera zooms 1.7x and three agents are created through the "+ New agent" card:
-Nora (Intake), Theo (Policy), Owen (Evidence), each "Works with Emily's access".
-Zoom out, click Control Room, blur through. The office (SVG rebuild of
-02-control-room-office.png, see `src/components/office/Office.tsx`): Iris gets
-the claim at the front desk, Nora, Theo and Owen pop in, counters tick to
-Agents 4 and Active tasks 1, Iris says "Claim CL-7305 is with the team." in
-the chat panel. A dashed path with a travelling dot runs Iris, Nora, Theo,
-Owen; each agent links to Gmail, Google Drive and Google Sheets in turn and the
-pedestal pulses; status lines change to "Reading claim", "Checking policy",
-"Matching evidence". Camera zooms 1.8x on the desks (plates 28.8px), pans along
-the path, and is back to the full room before 46s. The last frame is Scene 5's
-first frame. The Dashboard cutaway was not used.
+### Scene 4, Agents and Control Room (0:34.5 to 1:02.5), built
+4A (0 to 10s). The Scene 3 frame sinks and fades as FeatureTitle "Give every
+agent a job" arrives; the frame rises again on the chat page. The cursor clicks
+Agents (3.75s): the Agents page with Iris only (violet orb, Personal assistant,
+Idle, Default) and the dashed "+ New agent" tile. Click the tile (4.35s): the
+New agent panel (560px, dim backdrop, 1.3x zoom) types Name "Nora" (@nora
+appears), Role "Intake", picks the rose swatch, types the task, keeps "Works
+with Emily's access" and clicks Create agent (7.85s). Nora's card pops beside
+Iris, then Theo (8.6s, teal) and Owen (9.2s, coral); the tile moves along; the
+set holds at 1.35x.
+4B (10 to 28s). Click Control Room (10.6s, blur through): the empty room,
+counters Agents 0, Resources 4, Active tasks 0, Live; pill "Meet your team".
+Iris drops in at the front desk and waves (11.5s), camera 1.4x; Nora, Theo and
+Owen arrive at 13.5, 15.0 and 16.5s, each waving, plates "Idle", the counter
+ticking to 4, the camera panning desk to desk and back out by 18s. The claim
+tag drops at Iris's desk (18s), pill "A new claim arrives", Active tasks 1,
+Iris "Reading claim", Iris's chat line. The dashed path runs Iris, Nora, Theo,
+Owen from 19.3s (0.8s a step) at 1.5x; statuses change to "Reading claim",
+"Checking policy", "Matching evidence"; Gmail, Google Drive and Google Sheets
+pulse in turn; pill "The team works in tandem". The room minimises (23.6s) to a
+"Control Room, Live" card; output cards from Nora, Theo and Owen appear at
+24.6, 25.2 and 25.8s (Owen's flag as a neutral chip); pill "Prepared for
+Emily's review" at 26.4s, then a still hold to 28s. That frame is Scene 5's
+first frame. The office is an SVG rebuild (`Office.tsx`) with animatable
+figures (wave: arm raise with 20 degrees of oscillation at 3Hz for 1.2s and a
+slight head turn).
 
 ## Commands
 
