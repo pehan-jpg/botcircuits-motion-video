@@ -65,13 +65,13 @@ export const S9_CAM_KEYS: CamKey[] = [
   { t: 0, c: S8_END_CAM },
   { t: 1.6, c: { ...FRAME_CENTRE, z: 1 } },
   { t: S9.records + 0.3, c: { ...FRAME_CENTRE, z: 1 } },
-  { t: S9.replay + 0.1, c: { ...timelineFocus, z: 1.3 } },
-  { t: REPLAY_END, c: { x: timelineFocus.x + 6, y: timelineFocus.y + 40, z: 1.3 }, lin: true },
+  { t: S9.replay + 0.1, c: { ...timelineFocus, z: 1.36 } },
+  { t: REPLAY_END, c: { x: timelineFocus.x + 6, y: timelineFocus.y + 40, z: 1.36 }, lin: true },
   { t: S9.pages, c: { ...FRAME_CENTRE, z: 1 } },
   { t: S9.type + 0.1, c: { ...promptFocus, z: 1.3 } },
   { t: S9_BUILD_CLICK, c: { x: promptFocus.x + 14, y: promptFocus.y, z: 1.3 }, lin: true },
-  { t: S9.build + 0.7, c: { ...outFocus, z: 1.12 } },
-  { t: 13, c: { x: outFocus.x + 8, y: outFocus.y + 2, z: 1.125 }, lin: true },
+  { t: S9.build + 0.7, c: { ...outFocus, z: 1.2 } },
+  { t: 13, c: { x: outFocus.x + 8, y: outFocus.y + 2, z: 1.205 }, lin: true },
 ];
 export const S9_END_CAM: Cam = S9_CAM_KEYS[S9_CAM_KEYS.length - 1].c;
 

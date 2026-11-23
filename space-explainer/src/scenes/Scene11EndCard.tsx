@@ -62,7 +62,7 @@ export const Scene11EndCard: React.FC = () => {
               {i === 1 ? (
                 <>
                   {/* Amber underline: the line about people deciding. */}
-                  <div style={{ position: "absolute", left: 0, bottom: -14, height: 8, borderRadius: 4, width: `${under * 100}%`, background: COLOR.amber, transform: `translateY(${-FEATURE_TITLE.exitRise * exitP}px)` }} />
+                  <div data-guard="decision" style={{ position: "absolute", left: 0, bottom: -14, height: 8, borderRadius: 4, width: `${under * 100}%`, background: COLOR.amber, transform: `translateY(${-FEATURE_TITLE.exitRise * exitP}px)` }} />
                   <div style={{ position: "absolute", left: "100%", top: "50%", marginLeft: 26, opacity: glyph, transform: `translateY(calc(-50% - ${FEATURE_TITLE.exitRise * exitP}px)) scale(${0.85 + 0.15 * glyph})` }}>
                     <HumanGlyph size={46} />
                   </div>

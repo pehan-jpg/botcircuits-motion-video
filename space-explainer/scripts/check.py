@@ -83,7 +83,7 @@ def main(paths):
             where = f'{entry["scene"]} t={entry["second"]}s'
             g = entry.get("guard") or {"items": []}
             still = Image.open(os.path.join(ROOT, entry["still"]))
-            brand = [(it["rect"]["x"] - 4, it["rect"]["y"] - 4, it["rect"]["x"] + it["rect"]["w"] + 4, it["rect"]["y"] + it["rect"]["h"] + 4) for it in g["items"] if it["kind"] == "brand"]
+            brand = [(it["rect"]["x"] - 4, it["rect"]["y"] - 4, it["rect"]["x"] + it["rect"]["w"] + 4, it["rect"]["y"] + it["rect"]["h"] + 4) for it in g["items"] if it["kind"] in ("brand", "decision")]
             problems += [f"{where}: {m}" for m in colour_checks(still, entry["scene"], brand)]
             bg = Image.open(os.path.join(ROOT, entry["bg"])).convert("RGB") if entry.get("bg") else None
             # Click ripple centred on the cursor hotspot (arrow tip at 3/36, 1.5/44 of the cursor box).
@@ -189,7 +189,11 @@ def main(paths):
         print(f"Cursor ripples in stills: {len(ripple_worst)} measured, worst offset {max(ripple_worst)[0]:.1f}px")
     if ui_max:
         print("UI text meant to be read, largest effective size after camera zoom:")
+        print("  (labels also shown in the previous scene are carried over; that scene owns them)")
         for (sc, label), px in sorted(ui_max.items()):
+            prev = f"Scene{int(sc[5:]) - 1:02d}"
+            if (prev, label) in ui_max:
+                continue
             ok = px >= UI_READ - 0.15
             print(f"  {sc} {label}: {px:.1f}px{'' if ok else '  BELOW 20px'}")
             if not ok:

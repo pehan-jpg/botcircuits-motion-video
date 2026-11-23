@@ -91,9 +91,9 @@ export const Scene10Concierge: React.FC = () => {
               <div
                 data-guard="text"
                 data-guard-label="Claim tag"
-                style={{ display: "flex", alignItems: "center", gap: 10, height: 48, padding: "0 18px", borderRadius: 12, background: "#FFFFFF", border: "2px solid #6B4FE0", boxShadow: "0 8px 18px rgba(13,18,36,0.12)", fontSize: 22, fontWeight: 700, color: COLOR.ink, whiteSpace: "nowrap", opacity: tagIn * (1 - ramp(t, S10.slide[1] - 0.15, S10.slide[1])), transform: `translateX(${slide * 1100}px)` }}
+                style={{ display: "flex", alignItems: "center", gap: 10, height: 56, padding: "0 20px", borderRadius: 12, background: "#FFFFFF", border: "2px solid #6B4FE0", boxShadow: "0 8px 18px rgba(13,18,36,0.12)", fontSize: 28, fontWeight: 700, color: COLOR.ink, whiteSpace: "nowrap", opacity: tagIn * (1 - ramp(t, S10.slide[1] - 0.15, S10.slide[1])), transform: `translateX(${slide * 1100}px)` }}
               >
-                <FileText size={20} color="#6B4FE0" />
+                <FileText size={24} color="#6B4FE0" />
                 {`Claim ${P.claimId}`}
               </div>
             ) : null}

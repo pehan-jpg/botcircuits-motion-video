@@ -133,7 +133,7 @@ export const ReviewsPage: React.FC<{ s: ReviewsState }> = ({ s }) => {
             {s.noteFocus > 0 ? (
               <Typewriter lines={[P.review.note]} cps={CHAT_CPS} startFrame={s.noteStart} seed="review-note" caretColor={UI.text} style={{ fontFamily: FONT.sans, fontSize: READ + 1, color: UI.text }} />
             ) : (
-              <span style={{ fontFamily: FONT.sans, fontSize: UIN.helper, color: "#8a8a8a" }}>Add a note for the record</span>
+              <span style={{ fontFamily: FONT.sans, fontSize: UIN.helper, color: "#9a9a9a" }}>Add a note for the record</span>
             )}
           </div>
           <div style={{ position: "absolute", left: REVIEWS.decline.x, top: REVIEWS.decline.y, width: REVIEWS.decline.w, height: REVIEWS.decline.h, borderRadius: 10, border: `1px solid ${UI.chipBorder}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT.sans, fontSize: UIN.button, color: "#d0d0d0" }}>Decline</div>
@@ -163,7 +163,7 @@ export const ReviewsPage: React.FC<{ s: ReviewsState }> = ({ s }) => {
           </div>
           {/* The playbook continues: REVIEW approved, IF, SEND, NOTIFY */}
           {s.strip > 0 ? (
-            <div data-guard="uitext" data-guard-read="1" data-guard-label="Playbook strip" style={{ position: "absolute", left: REVIEWS.strip.x, top: REVIEWS.strip.y, width: REVIEWS.strip.w, opacity: s.strip, transform: `translateY(${(1 - s.strip) * 14}px)` }}>
+            <div data-guard="uitext" data-guard-read="1" data-guard-label="Playbook strip" style={{ color: UI.text, position: "absolute", left: REVIEWS.strip.x, top: REVIEWS.strip.y, width: REVIEWS.strip.w, opacity: s.strip, transform: `translateY(${(1 - s.strip) * 14}px)` }}>
               <div style={{ fontFamily: FONT.sans, fontSize: UIN.helper, color: "#a8a8a8", marginBottom: 10 }}>{P.playbook.name}</div>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <StripStep badge="REVIEW" label="Approved by Emily" lit={s.stripSteps[0]} tone="amber" />

@@ -116,7 +116,7 @@ export const TopBar: React.FC<{ page: string; actions?: boolean; bellBadge?: num
       <div style={{ position: "absolute", left: BELL.x - 10, top: BELL.y - 10, transform: `scale(${1 + 0.15 * bellPulse})` }}>
         <Bell size={20} color="#d0d0d0" />
         {bellBadge > 0 ? (
-          <div style={{ position: "absolute", left: 11, top: -7, minWidth: 18, height: 18, borderRadius: 9, background: "#E5484D", color: "#fff", fontFamily: FONT.sans, fontSize: 12.5, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ position: "absolute", left: 11, top: -7, minWidth: 20, height: 20, borderRadius: 10, background: "#E5484D", color: "#fff", fontFamily: FONT.sans, fontSize: 14, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>
             {bellBadge}
           </div>
         ) : null}

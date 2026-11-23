@@ -64,6 +64,8 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
           };
           el.querySelectorAll<HTMLElement>("*").forEach((c) => {
             if (
+              // Text inside an SVG pictogram (for example the PDF icon mark) is part of the icon.
+              !c.closest("svg") &&
               c.childNodes.length &&
               Array.from(c.childNodes).some(
                 (n) => n.nodeType === 3 && n.textContent?.trim(),
@@ -195,7 +197,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
   return (
     <AbsoluteFill ref={ref} style={{ pointerEvents: "none" }}>
       {props.hideText ? (
-        <style>{`[data-guard="text"], [data-guard="text"] *, [data-guard="uitext"], [data-guard="uitext"] * { color: transparent !important; text-shadow: none !important; } [data-guard-caret] { opacity: 0 !important; } [data-guard="logo"] img { opacity: 0 !important; } [data-guard="uitext"] [data-orb] { visibility: hidden !important; }`}</style>
+        <style>{`[data-guard="text"], [data-guard="text"] *, [data-guard="uitext"], [data-guard="uitext"] * { color: transparent !important; text-shadow: none !important; } [data-guard-caret] { opacity: 0 !important; } [data-guard="logo"] img { opacity: 0 !important; } [data-guard="uitext"] [data-orb], [data-guard="text"] [data-orb], [data-guard="text"] img, [data-guard="decision"] { visibility: hidden !important; }`}</style>
       ) : null}
       {props.showSafeArea ? (
         <div

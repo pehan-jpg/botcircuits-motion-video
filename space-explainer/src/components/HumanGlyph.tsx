@@ -12,6 +12,7 @@ export const HumanGlyph: React.FC<{
   const disc = size * 1.62;
   return (
     <div
+      data-guard="decision"
       style={{
         width: disc,
         height: disc,
