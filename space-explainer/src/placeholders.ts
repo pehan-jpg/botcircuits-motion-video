@@ -37,7 +37,7 @@ export const PLACEHOLDERS = {
   scene1Stamps: ["Sent", "Paid"],
 
   // Scene 3, chat screen (rebuilt from reference/ui/01-chat.png)
-  workspace: "Northfield Insurance",
+  workspace: "Northfield",
   user: { name: "Emily Carter", role: "Claims Officer", initial: "E" },
   recents: ["Claim CL-7211 summary", "Weekly claims by status"],
   chatPrompt:
@@ -60,4 +60,29 @@ export const PLACEHOLDERS = {
     "4.2 We cover sudden and accidental escape of water from a fixed pipe or appliance in your home.",
     "We do not cover damage caused by gradual leaks, wear and tear, or poor maintenance.",
   ],
+
+  // Scene 4, Agents page and Control Room
+  agentAccessLine: "Works with Emily's access",
+  agentsPage: {
+    iris: {
+      name: "Iris",
+      handle: "@iris",
+      role: "Personal assistant",
+      state: "Idle",
+      badge: "Default",
+    },
+    team: [
+      { name: "Nora", handle: "@nora", role: "Intake" },
+      { name: "Theo", handle: "@theo", role: "Policy" },
+      { name: "Owen", handle: "@owen", role: "Evidence" },
+    ],
+  },
+  controlRoom: {
+    irisStatusIdle: "Listening for requests",
+    irisStatusBusy: "Routing claim",
+    statuses: ["Reading claim", "Checking policy", "Matching evidence"],
+    irisMessage: "Claim CL-7305 is with the team.",
+    resources: 4,
+    pedestals: ["Gmail", "Google Drive", "Google Sheets", "Slack"],
+  },
 } as const;

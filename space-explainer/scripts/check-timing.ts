@@ -8,6 +8,7 @@ import { readHoldSeconds } from "../src/theme";
 import { SCENE01_TEXT } from "../src/scenes/Scene01Problem";
 import { SCENE02_TEXT, SCENE02_SETTLED } from "../src/scenes/Scene02Intro";
 import { SCENE03_TEXT } from "../src/scenes/Scene03Chat";
+import { SCENE04_TEXT } from "../src/scenes/Scene04Agents";
 
 const issues: GuardIssue[] = [];
 const notes: string[] = [];
@@ -26,11 +27,12 @@ const report = (scene: string, beats: TextBeatSpec[]) => {
 report("Scene 1", SCENE01_TEXT);
 report("Scene 2", SCENE02_TEXT);
 report("Scene 3", SCENE03_TEXT);
+report("Scene 4", SCENE04_TEXT);
 
 const s2Len = 5;
 const hold = s2Len - SCENE02_SETTLED;
-console.log(`\nScene 2 settles at ${SCENE02_SETTLED.toFixed(2)}s, hold at end ${hold.toFixed(2)}s (needs at least 1.2s)`);
-if (hold < 1.2) issues.push({ guard: "timeline", message: "Scene 2 end hold is under 1.2s" });
+console.log(`\nScene 2 line complete at ${SCENE02_SETTLED.toFixed(2)}s, hold at end ${hold.toFixed(2)}s (needs at least 1.5s)`);
+if (hold < 1.5) issues.push({ guard: "timeline", message: "Scene 2 end hold is under 1.5s" });
 
 for (let i = 1; i < SCENES.length; i++) {
   if (SCENES[i].start !== SCENES[i - 1].end)

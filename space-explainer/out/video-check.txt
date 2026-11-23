@@ -1,0 +1,10 @@
+Duration: 46.000s, 2760 frames. Built scenes [1, 2, 3, 4] sum to 2760 frames (46.000s).
+Black frames: none
+Motion gaps over 0.4s: none
+
+Scene boundaries (last frame of scene, first frame of next):
+  Scene 1 to 2 at frame 900: mean abs diff 0.09/255, PSNR 56.6 dB, pixels changed by more than 12 levels 0.00%  [seamless]
+  Scene 2 to 3 at frame 1200: mean abs diff 0.25/255, PSNR 47.9 dB, pixels changed by more than 12 levels 0.05%  [seamless]
+  Scene 3 to 4 at frame 1920: mean abs diff 0.29/255, PSNR 43.2 dB, pixels changed by more than 12 levels 0.33%  [seamless]
+
+All video checks passed.

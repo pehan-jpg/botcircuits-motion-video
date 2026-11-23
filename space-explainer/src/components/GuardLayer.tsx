@@ -88,7 +88,9 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
                   (el.querySelector("img")?.getBoundingClientRect().height ??
                     0) / k,
                   getComputedStyle(el).backgroundColor ===
-                    "rgb(255, 255, 255)" || el.dataset.guardBacking === "white",
+                    "rgb(255, 255, 255)" ||
+                    el.dataset.guardBacking === "white" ||
+                    el.dataset.guardBacking === "sampled",
                 )
               : []),
           ];
@@ -96,6 +98,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
             kind,
             label,
             text: (el.textContent ?? "").trim(),
+            backing: el.dataset.guardBacking,
             opacity: op,
             rect: r,
             fontPx: minFont,
@@ -116,7 +119,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
   return (
     <AbsoluteFill ref={ref} style={{ pointerEvents: "none" }}>
       {props.hideText ? (
-        <style>{`[data-guard="text"], [data-guard="text"] * { color: transparent !important; text-shadow: none !important; } [data-guard-caret] { opacity: 0 !important; } [data-guard="logo"] img { opacity: 0 !important; }`}</style>
+        <style>{`[data-guard="text"], [data-guard="text"] *, [data-guard="uitext"], [data-guard="uitext"] * { color: transparent !important; text-shadow: none !important; } [data-guard-caret] { opacity: 0 !important; } [data-guard="logo"] img { opacity: 0 !important; }`}</style>
       ) : null}
       {props.showSafeArea ? (
         <div

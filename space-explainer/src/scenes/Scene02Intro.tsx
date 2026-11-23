@@ -5,15 +5,15 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { BLUR_IN, COLOR, EASE, EASE_SETTLE } from "../theme";
+import { EASE } from "../theme";
 import { local, localF, sceneById } from "../timeline";
-import { PLACEHOLDERS as P } from "../placeholders";
 import { PlateBackground } from "../backgrounds/PlateBackground";
-import { AgentOrb, orbOuterRadius } from "../components/AgentOrb";
+import { ProblemBackdrop } from "../backgrounds/ProblemBackdrop";
+import { SpaceOrb, spaceOrbOuterRadius } from "../components/SpaceOrb";
 import { GuardLayer } from "../components/GuardLayer";
 import { lockupTiming } from "../components/SpaceByLockup";
 import type { TextBeatSpec } from "../lib/guards";
-import { CARD_BG, CARD_SHADOW, INTRO, IntroText } from "./shared/intro";
+import { INTRO, IntroGlow, IntroLine } from "./shared/intro";
 
 const S = "S02" as const;
 const ev = (n: Parameters<typeof localF>[0]) => localF(n, S);
@@ -31,115 +31,91 @@ export const S2_PLATE = {
   dots: 8,
 } as const;
 
-/**
- * Text timing. The group stays on screen through the boundary and blurs out
- * in Scene 3 at `s3_intro_out`, so that is when it leaves.
- */
-const LEAVE = local("s3_intro_out", "S03") + DUR;
-const lock = lockupTiming("s2-title");
+const lock = lockupTiming(INTRO.line.prefix, "s2-line", "assemble");
+/** The line stays through the boundary and blurs out in Scene 3 at s3_intro_out. */
+const LEAVE = DUR + local("s3_intro_out", "S03");
 export const SCENE02_TEXT: TextBeatSpec[] = [
   {
-    id: "introducing",
-    text: "Introducing",
-    readyAt: local("introducing", S) + BLUR_IN.seconds,
+    id: "line",
+    text: `${INTRO.line.prefix}Space by [logo]`,
+    readyAt: local("intro_typed", S) + lock.ready,
     leaveAt: LEAVE,
-    fontPx: 28,
-  },
-  {
-    id: "title",
-    text: `${P.productBy} [logo]`,
-    readyAt: local("title_typed", S) + lock.ready,
-    leaveAt: LEAVE,
-    fontPx: INTRO.titleSize,
-  },
-  {
-    id: "tagline",
-    text: P.tagline,
-    readyAt: local("tagline", S) + BLUR_IN.seconds,
-    leaveAt: LEAVE,
-    fontPx: INTRO.taglineSize,
+    fontPx: INTRO.line.size,
   },
 ];
 /** Everything has settled by this time (seconds into the scene); the rest is hold. */
-export const SCENE02_SETTLED = Math.max(
-  ...SCENE02_TEXT.map((b) => b.readyAt),
-  local("title_typed", S) + lock.caretGone,
-);
+export const SCENE02_SETTLED = local("intro_typed", S) + lock.caretGone;
 
 export const Scene02Intro: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const sec = (s: number) => Math.round(s * fps);
 
-  // Colour returns: flat grey dissolves into the dawn plate over 1s.
+  // The Scene 1 backdrop dissolves into plate 01 over 1s.
   const dissolve = EASE(
     ramp(frame, ev("colour_returns"), ev("colour_returns") + sec(1)),
   );
-
-  // The orb from Scene 1 becomes the lead Space orb and eases up above the title.
-  const form = ev("space_orb_forms");
-  const ring = EASE_SETTLE(ramp(frame, form + sec(0.1), form + sec(0.9)));
-  const rise = EASE(ramp(frame, form + sec(0.05), form + sec(0.85)));
-  const from = INTRO.handoffOrb;
-  const to = INTRO.leadOrb;
-  const x = from.x + (to.x - from.x) * rise;
-  const y = from.y + (to.y - from.y) * rise;
-  const size = from.size + (to.size - from.size) * rise;
-  const r = orbOuterRadius(size, true);
-
-  // The card waits at its final place and fades in once the orb has settled.
-  const cardIn = EASE(ramp(frame, ev("card_in"), ev("card_in") + sec(0.5)));
+  // The orb dissolves: scale 1 to 0.7, opacity to 0, with a soft bloom of light.
+  const o = ev("orb_dissolve");
+  const orbP = EASE(ramp(frame, o, o + sec(1)));
+  const bloom = ramp(frame, o, o + sec(1));
+  const bloomO = Math.sin(Math.PI * bloom) * 0.75;
+  const orb = INTRO.handoffOrb;
+  const orbR = spaceOrbOuterRadius(orb.size, true);
+  const glowIn = EASE(ramp(frame, o + sec(0.4), o + sec(1.2)));
 
   return (
     <AbsoluteFill style={{ width: 1920, height: 1080 }}>
       <PlateBackground plate="01" duration={sec(DUR)} {...S2_PLATE} />
-      <AbsoluteFill
-        style={{ background: COLOR.problemGrey, opacity: 1 - dissolve }}
-      />
+      <AbsoluteFill style={{ opacity: 1 - dissolve }}>
+        <ProblemBackdrop timeOffset={sceneById(S).start} />
+      </AbsoluteFill>
 
-      <div
-        data-guard="box"
-        style={{
-          position: "absolute",
-          left: x - r,
-          top: y - r,
-          width: r * 2,
-          height: r * 2,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <AgentOrb
-          size={size}
-          leadRing={ring}
-          timeOffset={sceneById(S).start}
-          style={{ position: "absolute" }}
+      <IntroGlow opacity={glowIn} />
+
+      {/* Bloom of light as the orb dissolves */}
+      {bloomO > 0.001 ? (
+        <div
+          style={{
+            position: "absolute",
+            left: orb.x - 420,
+            top: orb.y - 420,
+            width: 840,
+            height: 840,
+            borderRadius: "50%",
+            background:
+              "radial-gradient(closest-side, rgba(255,255,255,0.95), rgba(236,232,255,0.5) 40%, rgba(255,255,255,0) 100%)",
+            transform: `scale(${0.5 + 0.9 * bloom})`,
+            opacity: bloomO,
+          }}
         />
-      </div>
+      ) : null}
+      {orbP < 1 ? (
+        <div
+          style={{
+            position: "absolute",
+            left: orb.x - orbR,
+            top: orb.y - orbR,
+            width: orbR * 2,
+            height: orbR * 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: 1 - orbP,
+            transform: `scale(${1 - 0.3 * orbP})`,
+            filter: orbP > 0.02 ? `blur(${orbP * 6}px)` : undefined,
+          }}
+        >
+          <SpaceOrb
+            size={orb.size}
+            ticks
+            pulse
+            timeOffset={sceneById(S).start}
+          />
+        </div>
+      ) : null}
 
-      <div
-        data-glass
-        style={{
-          position: "absolute",
-          left: INTRO.card.x,
-          top: INTRO.card.y,
-          width: INTRO.card.w,
-          height: INTRO.card.h,
-          borderRadius: INTRO.card.radius,
-          background: CARD_BG,
-          backdropFilter: "blur(24px)",
-          border: "1px solid rgba(255,255,255,0.95)",
-          boxShadow: CARD_SHADOW,
-          opacity: cardIn,
-        }}
-      />
-
-      <IntroText
-        introIn={ev("introducing")}
-        titleStart={ev("title_typed")}
-        taglineIn={ev("tagline")}
-      />
+      <IntroLine startFrame={ev("intro_typed")} />
 
       <GuardLayer scene={S} />
     </AbsoluteFill>

@@ -1,129 +1,79 @@
 import React from "react";
-import { COLOR, FONT } from "../../theme";
-import { PLACEHOLDERS as P } from "../../placeholders";
+import { COLOR } from "../../theme";
 import { BlurText } from "../../components/BlurText";
 import { SpaceByLockup } from "../../components/SpaceByLockup";
 
 /**
- * Layout shared by the end of Scene 1, Scene 2 and the opening of Scene 3.
- * Changing a value here moves it on both sides of a scene boundary.
+ * Layout shared across scene boundaries: the end of Scene 1, Scene 2 and the
+ * opening of Scene 3. Changing a value here moves it on both sides.
  */
 export const INTRO = {
-  /** Orb at the Scene 1 to Scene 2 boundary: centre of frame, core 187.5px (150 x 1.25). */
+  /** Space orb at the Scene 1 to Scene 2 boundary: centre of frame, 187.5px. */
   handoffOrb: { x: 960, y: 540, size: 187.5 },
-  /** Lead Space orb at rest in Scene 2 (core 150px, shown 1.3x with the double ring). */
-  leadOrb: { x: 960, y: 338, size: 150 },
-  card: { x: 300, y: 520, w: 1320, h: 300, radius: 36 },
-  introTop: 548,
-  titleTop: 590,
-  taglineTop: 742,
-  titleSize: 104,
-  taglineSize: 40,
+  /** The single intro line: "Introducing Space by" plus the logo. */
+  line: {
+    top: 488,
+    size: 84,
+    weight: 500,
+    tracking: "-0.02em",
+    prefix: "Introducing ",
+  },
+  /** Very soft light behind the line: white at 45 percent, feathered to zero. */
+  glow: { cx: 960, cy: 540, w: 1700, h: 640, alpha: 0.45 },
 } as const;
 
-/** White title card at 92 percent, rounded and soft, so the logo sits on white. */
-export const CARD_BG = "rgba(255,255,255,0.92)";
-export const CARD_SHADOW =
-  "0 30px 80px rgba(13,18,36,0.14), 0 8px 24px rgba(13,18,36,0.08)";
-
-type TextProps = {
-  /** Frames (in the parent sequence). Undefined means already fully in. */
-  introIn?: number;
-  titleStart?: number;
-  taglineIn?: number;
-  /** Frame at which the whole group blurs out. */
-  outFrame?: number;
-  outSeconds?: number;
+/** Soft radial light behind the intro line, so it reads on the plate without a box. */
+export const IntroGlow: React.FC<{ opacity?: number }> = ({ opacity = 1 }) => {
+  const g = INTRO.glow;
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: g.cx - g.w / 2,
+        top: g.cy - g.h / 2,
+        width: g.w,
+        height: g.h,
+        borderRadius: "50%",
+        background: `radial-gradient(closest-side, rgba(255,255,255,${g.alpha}) 0%, rgba(255,255,255,${g.alpha * 0.75}) 35%, rgba(255,255,255,${g.alpha * 0.3}) 70%, rgba(255,255,255,0) 100%)`,
+        opacity,
+      }}
+    />
+  );
 };
 
-const ALWAYS = -100000;
-
-/** "Introducing", the Space by lockup and the tagline. */
-export const IntroText: React.FC<TextProps> = ({
-  introIn,
-  titleStart,
-  taglineIn,
-  outFrame,
-  outSeconds = 0.5,
-}) => (
-  <>
-    <div
-      style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        top: INTRO.introTop,
-        display: "flex",
-        justifyContent: "center",
-      }}
+/** The intro line. Animated in Scene 2 (startFrame), static in Scene 3 (blurs out at outFrame). */
+export const IntroLine: React.FC<{
+  startFrame?: number;
+  outFrame?: number;
+  outSeconds?: number;
+}> = ({ startFrame, outFrame, outSeconds = 0.4 }) => (
+  <div
+    style={{
+      position: "absolute",
+      left: 0,
+      right: 0,
+      top: INTRO.line.top,
+      display: "flex",
+      justifyContent: "center",
+    }}
+  >
+    <BlurText
+      inFrame={-100000}
+      outFrame={outFrame}
+      outSeconds={outSeconds}
+      asText={false}
     >
-      <BlurText
-        inFrame={introIn ?? ALWAYS}
-        outFrame={outFrame}
-        outSeconds={outSeconds}
-        guardLabel="Introducing"
-        style={{
-          fontFamily: FONT.mono,
-          fontWeight: 500,
-          fontSize: 28,
-          letterSpacing: "0.24em",
-          textTransform: "uppercase",
-          color: COLOR.ink,
-        }}
-      >
-        Introducing
-      </BlurText>
-    </div>
-    <div
-      style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        top: INTRO.titleTop,
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
-      <BlurText
-        inFrame={ALWAYS}
-        outFrame={outFrame}
-        outSeconds={outSeconds}
-        asText={false}
-      >
-        <SpaceByLockup
-          fontSize={INTRO.titleSize}
-          startFrame={titleStart}
-          seed="s2-title"
-          onWhite
-        />
-      </BlurText>
-    </div>
-    <div
-      style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        top: INTRO.taglineTop,
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
-      <BlurText
-        inFrame={taglineIn ?? ALWAYS}
-        outFrame={outFrame}
-        outSeconds={outSeconds}
-        guardLabel="Tagline"
-        style={{
-          fontFamily: FONT.sans,
-          fontWeight: 600,
-          fontSize: INTRO.taglineSize,
-          letterSpacing: "-0.01em",
-          color: COLOR.ink,
-          whiteSpace: "nowrap",
-        }}
-      >
-        {P.tagline}
-      </BlurText>
-    </div>
-  </>
+      <SpaceByLockup
+        prefix={INTRO.line.prefix}
+        fontSize={INTRO.line.size}
+        weight={INTRO.line.weight}
+        tracking={INTRO.line.tracking}
+        startFrame={startFrame}
+        seed="s2-line"
+        logoMode="assemble"
+        color={COLOR.ink}
+        backing="sampled"
+      />
+    </BlurText>
+  </div>
 );

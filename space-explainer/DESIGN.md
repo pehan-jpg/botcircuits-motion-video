@@ -12,10 +12,21 @@ agent workspace where agents prepare and people decide.
 - Logo: `public/logo.png` (supplied PNG, black on transparent; briefs may call
   it `logo.svg`). Use exactly as supplied. Never redraw or recolour it. If it
   is missing, stop and ask.
-- Product name: always the `SpaceByLockup` component ("Space by" in Plus
-  Jakarta Sans semibold, then the logo at cap height plus descender, baseline
-  aligned, 0.25em gap). Never type "BotCircuits" or "by BotCircuits" as text.
-  Use the lockup wherever the product name appears, including the Scene 11 end card.
+- Product name: always the `SpaceByLockup` component ("Space by", optional
+  prefix such as "Introducing ", then the logo at cap height plus descender,
+  baseline aligned, 0.25em gap; weight and tracking are props). Never type
+  "BotCircuits" or "by BotCircuits" as text. Use the lockup wherever the
+  product name appears, including the Scene 11 end card. `logoMode="assemble"`
+  flies the logo's dots in: `public/logo-parts/` holds pixel exact crops of
+  `logo.png` (recomposition verified to 0 differing pixels) and the finished
+  frame shows the untouched `logo.png`.
+- Third party logos: `public/logos/` (Gmail, Google Drive, Google Sheets,
+  Slack), unmodified, sources in `public/logos/SOURCES.md`. They are third party
+  copies (Wikimedia Commons) pending verification against official media kits.
+  Never redraw a real logo. Tag them `data-guard="brand"`; the PDF icon is an
+  original drawing (`PdfIcon`).
+- UI references in `reference/ui/`: 01-chat (still to be added as a file),
+  02-control-room-office, 03-control-room-dashboard, 04-agents, 09-integrations.
 - Chat UI reference: `reference/ui/01-chat.png` (1875x895). Scene 3 rebuilds it
   as `src/components/chat/ChatScreen.tsx` at native size, scaled 0.8 into the frame.
 - Plates: `public/backgrounds/01-dawn-meadow.jpg`, `02-morning-field.jpg`,
@@ -64,25 +75,36 @@ agent workspace where agents prepare and people decide.
 | EASE | `cubic-bezier(0.22, 1, 0.36, 1)`; `EASE_SETTLE` overshoots at most 4 percent |
 | Typing | `HEADLINE_CPS` 20, `CHAT_CPS` 32, `REPLAY_CPS` 70 |
 
-Backgrounds by scene: Scene 1 flat pale grey `#EEF0F3`, no plate (the problem
-is colourless on purpose). Scenes 2 to 9 photographic plates. Scene 10 neutral
+Backgrounds by scene: Scene 1 `ProblemBackdrop`: base #F2F3F8 with large
+blurred blobs (blur 160px): lilac #DAD6F3 at 55 percent bottom left, cool blue
+grey #D6E2F0 at 55 percent top right, faint peach #F6E3D9 at 40 percent bottom
+right, drifting at most 3 percent, 3 percent grain. Soft and cool, never flat. Scenes 2 to 9 photographic plates. Scene 10 neutral
 pale `#F4F6F8`. Scene 11 pure white.
 
-**Product frame** (from Scene 3), `ProductFrame` and `Camera`: dark app window,
-24px radius, soft shadow, about 1500px wide, floating on the background. Camera
-moves are slow, at most 6 percent scale (clamped in `Camera`), never a hard cut
-inside a scene.
+**Product frame** (from Scene 3), `ProductWindow`: dark app window, 24px
+radius, soft shadow, 1500x716 at (210, 210). Product screens are authored at
+the screenshots' native size (1875x895) and scaled 0.8.
 
-**Agent orbs** (`AgentOrb`): must not look like the Concierge video and must
-never be green. Ringed orb, core radial gradient `#8CC8FF`, `#3B6FE0`,
-`#1B2A6B`. A 2px halo ring at 60 percent opacity with soft glow, and one 10px
-satellite dot orbiting every 6 s. The lead "Space" orb is 1.3x with a double
-ring. Specialist orbs use the same form with a hue shift of at most 25 degrees
-(clamped, kept away from green). Scenes 1 to 3 show only the lead orb.
-SVG, deterministic by frame. There is no grey or metallic orb anywhere: the
-problem scene uses the same blue Space orb. `nightGlow` adds a soft outer glow on the night
-grade. `timeOffset` keeps the satellite continuous when an orb is carried across
-a scene boundary.
+**Camera rule.** In UI scenes, focus zooms up to 1.8x are allowed, eased, with
+pans to the area being explained, so any text meant to be read is at least
+28px equivalent on screen. Zoom out again before each scene ends so scene
+boundaries still match. Never a hard cut inside a scene. While zoomed, the
+product window and its UI may cross the frame edge (the guard treats them as
+background); story text meant to be read stays inside the safe area.
+
+**Space orb** (`SpaceOrb`, palette `ORB_PALETTE` in `src/theme.ts`): a knob
+style violet sphere. Conic gradient from 210deg: #1B1048 0deg, #3F28B0 70deg,
+#A89BFF 120deg (bright streak), #5B3FD6 170deg, #22136A 240deg, #4A32C4 300deg,
+#1B1048 360deg, with a brushed metal sheen that turns once per 14s. Layers: a
+radial highlight at 35% 30% (white 28 percent to transparent by 45 percent),
+edge darkening, a blurred white ellipse highlight upper left (28 percent of the
+diameter, 35 percent opacity), a 1px inner rim (white 18 percent) and a drop
+shadow 0 24px 48px rgba(60,40,140,0.28). Props: `size`, `ticks`, `pulse`,
+`timeOffset`. Tick ring: 56 radial ticks, 2px, round caps, #9AA1B5 at 70
+percent, starting 12 percent of the diameter outside the edge, length 5 to 12
+percent from slow deterministic noise (3s), so it breathes. **No grey, blue or
+green orb anywhere.** The old ringed `AgentOrb` is removed. Use `timeOffset`
+when an orb crosses a scene boundary.
 
 **Human glyph** (`HumanGlyph`): amber `#F2A43A` with halo `#FFE2B3`, head circle
 and rounded shoulders, 64px, always on a white glass disc. **Amber appears ONLY
@@ -161,34 +183,48 @@ date does not match the reported date of loss, so a person should check it.
 State it as a flag, never as an accusation.
 
 ### Scene 1, Problem (0:00 to 0:15), built
-Claim card lands in the Inbox, hops to Sheet, Chat and PDF, leaving a dashed
-stray copy (v1, v2, v2 final, v3) at each hop. Headline "Work moves between
-people, tools and inboxes." Chips one at a time: "Who has it now?", "Who
-approved it?", "Which version is right?". The document row and orb group are
-scaled 1.25x and centred below the headline. The card morphs into the blue
-Space orb; "Sent" and "Paid" stamp themselves; a dashed empty slot shows where a
-person would be (grey, no amber). Headline "AI can do the work. But who checks
-it?". Strays and slot fade; "No record of who decided." then "No one deciding."
-The orb ends at the centre, core 187.5px: exactly Scene 2's first frame.
+ProblemBackdrop. Claim card lands in the Inbox, hops to Sheet, Chat and PDF,
+leaving a dashed stray copy (v1, v2, v2 final, v3) at each hop. Tab icons at
+35px: Gmail, Google Sheets, Slack logos and an original PDF icon. Headline "Work
+moves between people, tools and inboxes." Chips one at a time. Row and orb group
+scaled 1.25x, centred. The card morphs into the SpaceOrb (ticks, pulse); "Sent"
+and "Paid" stamp themselves; a dashed empty slot shows where a person would be
+(grey, no amber). Headline "AI can do the work. But who checks it?". "No record
+of who decided." then "No one deciding." The orb ends centred at 187.5px.
 
 ### Scene 2, Intro (0:15 to 0:20), built
-First frame equals Scene 1's last (orb on pale grey). Grey dissolves into plate
-01 over 1s; the orb becomes the lead Space orb (double ring) and eases up. Only
-the lead orb. The white title card (92 percent) fades in at its final place
-after the orb settles, then "Introducing", the SpaceByLockup typed ("Space by",
-then the logo blurs in at the caret), and the tagline. About 2.8s of hold.
+First frame equals Scene 1's last. Over the first 1s the orb dissolves (scale
+1 to 0.7, opacity to 0, soft bloom) while the backdrop dissolves into plate 01.
+One line only, centred: "Introducing Space by" plus the logo, Plus Jakarta Sans
+Medium 84px, ink, -0.02em. Types at HEADLINE_CPS from 1.0s; the logo's dots
+assemble over 0.9s while the wordmark blurs in. A very soft radial light behind
+the line (white 45 percent, feathered). Holds about 1.8s.
 
 ### Scene 3, Chat (0:20 to 0:32), built
-TextBeat "Ask in plain language". 0 to 1.2s: the title card grows into the dark
-product frame (1500x716, top 210), title group blurs out, the orb shrinks into
-the hero product mark, plate 01 crossfades to 02. Hero and input settle, chips
-fade in ("Run playbook"). The input focuses (lime) and the prompt types at
-CHAT_CPS. At 5.0s the send button becomes a status orb, the hero and chips fade,
-the user message appears. Three status pills, 0.6s each. The answer types at
-REPLAY_CPS with [S1] and [S2] chips. The cursor clicks [S1]; the source card
-"Home Policy Wording 2026, p. 12" opens with the Section 4.2 sentence
-highlighted. The scene ends on that frame. Scene 4 must open on it and keep the
-answer and card on screen long enough to finish the reading hold.
+The line blurs out over 0.4s; the dark product frame rises from the centre
+(scale 0.92 to 1, opacity 0 to 1) over 0.8s; plate 01 crossfades to 02 over
+1.5s. Hero, subtitle, input and chips are in by 21.2s; typing starts at 21.8s.
+Send at 24.5s (the send button becomes a small SpaceOrb), pills at 24.8, 25.4
+and 26.0s, the answer from 26.8s, click on [S1] at 29.45s, the source card open
+from 29.5s and held about 2.5s. Workspace name "Northfield". Slow 3.5 percent
+push. The state function `chatStateAt` lets Scene 4 open on the same frame.
+
+### Scene 4, Agents and Control Room (0:32 to 0:46), built
+TextBeat "Give every agent a job" (on glass). Opens on Scene 3's last frame;
+the source card closes in 0.5s. The cursor clicks Agents; the Agents page
+(rebuilt from 04-agents.png) shows Iris (Personal assistant, Default). The
+camera zooms 1.7x and three agents are created through the "+ New agent" card:
+Nora (Intake), Theo (Policy), Owen (Evidence), each "Works with Emily's access".
+Zoom out, click Control Room, blur through. The office (SVG rebuild of
+02-control-room-office.png, see `src/components/office/Office.tsx`): Iris gets
+the claim at the front desk, Nora, Theo and Owen pop in, counters tick to
+Agents 4 and Active tasks 1, Iris says "Claim CL-7305 is with the team." in
+the chat panel. A dashed path with a travelling dot runs Iris, Nora, Theo,
+Owen; each agent links to Gmail, Google Drive and Google Sheets in turn and the
+pedestal pulses; status lines change to "Reading claim", "Checking policy",
+"Matching evidence". Camera zooms 1.8x on the desks (plates 28.8px), pans along
+the path, and is back to the full room before 46s. The last frame is Scene 5's
+first frame. The Dashboard cutaway was not used.
 
 ## Commands
 

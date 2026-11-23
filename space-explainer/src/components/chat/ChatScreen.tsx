@@ -27,7 +27,7 @@ import {
 import { BLUR_IN, CHAT_CPS, FONT, REPLAY_CPS } from "../../theme";
 import { PLACEHOLDERS as P } from "../../placeholders";
 import { Typewriter } from "../Typewriter";
-import { AgentOrb } from "../AgentOrb";
+import { SpaceOrb } from "../SpaceOrb";
 
 /** Native size of reference/ui/01-chat.png. The screen is authored at this size and scaled into the product frame. */
 export const CHAT_NATIVE = { w: 1875, h: 895 };
@@ -115,9 +115,6 @@ const CHIPS = [
   ],
 ];
 
-/** Half the SVG box of an 18px AgentOrb (ring, satellite and glow margin), to centre it. */
-const ORB18 = 18 + 10 + 18;
-
 const ui: React.CSSProperties = {
   fontFamily: FONT.sans,
   color: UI.text,
@@ -143,6 +140,8 @@ export type ChatState = {
   answerOpacity: number;
   citeActive: number;
   cardOpen: number;
+  /** Seconds added to orb clocks, for continuity across scenes. */
+  clock: number;
 };
 
 export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
@@ -559,9 +558,10 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
               transform: `scale(${0.5 + 0.5 * s.statusOrb})`,
             }}
           >
-            <AgentOrb
-              size={18}
-              style={{ position: "absolute", left: -ORB18, top: -ORB18 }}
+            <SpaceOrb
+              timeOffset={s.clock}
+              size={22}
+              style={{ position: "absolute", left: -11, top: -11 }}
             />
           </div>
         ) : null}
@@ -682,13 +682,10 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
             }}
           >
             <div style={{ width: 34, height: 34, position: "relative" }}>
-              <AgentOrb
-                size={18}
-                style={{
-                  position: "absolute",
-                  left: 17 - ORB18,
-                  top: 17 - ORB18,
-                }}
+              <SpaceOrb
+                timeOffset={s.clock}
+                size={30}
+                style={{ position: "absolute", left: 2, top: 2 }}
               />
             </div>
             {p.label}

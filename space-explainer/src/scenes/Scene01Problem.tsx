@@ -5,12 +5,15 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { BLUR_IN, COLOR, EASE, EASE_SETTLE, FONT } from "../theme";
+import { BLUR_IN, COLOR, EASE, EASE_SETTLE, FONT, ORB_PALETTE } from "../theme";
 import { localF, local } from "../timeline";
 import { PLACEHOLDERS as P } from "../placeholders";
 import { TextBeat, textBeatTiming } from "../components/TextBeat";
 import { BlurText } from "../components/BlurText";
-import { AgentOrb, orbOuterRadius } from "../components/AgentOrb";
+import { Img, staticFile } from "remotion";
+import { SpaceOrb, spaceOrbOuterRadius } from "../components/SpaceOrb";
+import { PdfIcon } from "../components/PdfIcon";
+import { ProblemBackdrop } from "../backgrounds/ProblemBackdrop";
 import { GuardLayer } from "../components/GuardLayer";
 import type { TextBeatSpec } from "../lib/guards";
 import { INTRO } from "./shared/intro";
@@ -116,6 +119,29 @@ export const SCENE01_TEXT: TextBeatSpec[] = (() => {
 // ---------- Pieces ----------
 type Variant = 0 | 1 | 2 | 3;
 
+/** Tab icons, 28px in group units (35px on screen). Real logos are used unmodified; see public/logos/SOURCES.md. */
+const TAB_ICON = 28;
+const TAB_LOGOS = [
+  "logos/gmail.svg",
+  "logos/google-sheets.svg",
+  "logos/slack.svg",
+];
+const TabIcon: React.FC<{ i: Variant }> = ({ i }) =>
+  i === 3 ? (
+    <PdfIcon size={TAB_ICON} style={{ display: "block" }} />
+  ) : (
+    <Img
+      data-guard="brand"
+      src={staticFile(TAB_LOGOS[i])}
+      style={{
+        height: TAB_ICON,
+        width: TAB_ICON,
+        objectFit: "contain",
+        display: "block",
+      }}
+    />
+  );
+
 const Tile: React.FC<{ i: Variant; appear: number; version: number }> = ({
   i,
   appear,
@@ -151,8 +177,11 @@ const Tile: React.FC<{ i: Variant; appear: number; version: number }> = ({
         color: COLOR.inkMuted,
       }}
     >
-      <span data-guard="text" data-guard-label={`Tile ${P.scene1Places[i]}`}>
-        {P.scene1Places[i]}
+      <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <TabIcon i={i} />
+        <span data-guard="text" data-guard-label={`Tile ${P.scene1Places[i]}`}>
+          {P.scene1Places[i]}
+        </span>
       </span>
       <span
         data-guard="text"
@@ -476,7 +505,7 @@ export const Scene01Problem: React.FC = () => {
     gy +
     (end.y - gy) * toCentre +
     Math.cos((tSec / 2.9) * Math.PI * 2) * 10 * float;
-  const orbR = orbOuterRadius(ORB_SCREEN_SIZE);
+  const orbR = spaceOrbOuterRadius(ORB_SCREEN_SIZE);
 
   // Stamps, slot and connectors.
   const groupOut = EASE(ramp(frame, sec(12.9), sec(13.5)));
@@ -486,16 +515,15 @@ export const Scene01Problem: React.FC = () => {
   const slotOut = EASE(
     ramp(frame, ev("strays_fade") + sec(0.2), ev("strays_fade") + sec(1.0)),
   );
-  const orbGroupR = orbOuterRadius(ORB_GROUP_SIZE);
+  const orbGroupR = spaceOrbOuterRadius(ORB_GROUP_SIZE);
 
   const morphW = CARD.w + (ORB_GROUP_SIZE - CARD.w) * shape;
   const morphH = CARD.h + (ORB_GROUP_SIZE - CARD.h) * shape;
   const morphRadius = 14 + (ORB_GROUP_SIZE / 2 - 14) * shape;
 
   return (
-    <AbsoluteFill
-      style={{ width: 1920, height: 1080, background: COLOR.problemGrey }}
-    >
+    <AbsoluteFill style={{ width: 1920, height: 1080 }}>
+      <ProblemBackdrop />
       <AbsoluteFill
         style={{ transform: `scale(${cam})`, transformOrigin: "960px 540px" }}
       >
@@ -571,7 +599,7 @@ export const Scene01Problem: React.FC = () => {
                     height: morphH,
                     borderRadius: morphRadius,
                     // The card takes on the Space orb's own colours as it becomes the orb.
-                    background: `radial-gradient(circle at 38% 32%, ${COLOR.orbLight} 0%, ${COLOR.orbMid} 52%, ${COLOR.orbDeep} 100%)`,
+                    background: `conic-gradient(from ${ORB_PALETTE.conicFrom}deg at 50% 50%, ${ORB_PALETTE.stops.map(([c, a]) => `${c} ${a}deg`).join(", ")})`,
                     boxShadow: "0 10px 28px rgba(13,18,36,0.12)",
                   }}
                 >
@@ -669,7 +697,7 @@ export const Scene01Problem: React.FC = () => {
               transform: `scale(${0.92 + 0.08 * orbIn})`,
             }}
           >
-            <AgentOrb size={ORB_SCREEN_SIZE} style={{ position: "absolute" }} />
+            <SpaceOrb size={ORB_SCREEN_SIZE} ticks pulse />
           </div>
         ) : null}
 

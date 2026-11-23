@@ -122,3 +122,46 @@ export const ORB = {
 } as const;
 
 export const HUMAN = { size: 64 } as const;
+
+/**
+ * Space orb: a knob style violet sphere. Conic gradient with a bright streak,
+ * brushed metal sheen, highlights and a breathing tick ring. No grey, blue or
+ * green orb anywhere in the video.
+ */
+export const ORB_PALETTE = {
+  conicFrom: 210, // degrees
+  stops: [
+    ["#1B1048", 0],
+    ["#3F28B0", 70],
+    ["#A89BFF", 120], // bright streak
+    ["#5B3FD6", 170],
+    ["#22136A", 240],
+    ["#4A32C4", 300],
+    ["#1B1048", 360],
+  ] as [string, number][],
+  highlight: "rgba(255,255,255,0.28)",
+  rim: "rgba(255,255,255,0.18)",
+  shadow: "0 24px 48px rgba(60,40,140,0.28)",
+  sheenTurnSeconds: 14,
+  tick: {
+    count: 56,
+    width: 2,
+    color: "rgba(154,161,181,0.7)",
+    gap: 0.12,
+    minLen: 0.05,
+    maxLen: 0.12,
+    noiseSeconds: 3,
+  },
+} as const;
+
+/** Scene 1 backdrop: soft and cool, never flat. */
+export const PROBLEM_BACKDROP = {
+  base: "#F2F3F8",
+  blur: 160,
+  blobs: [
+    { color: "rgba(218,214,243,0.55)", x: 180, y: 980, r: 760 }, // lilac, bottom left
+    { color: "rgba(214,226,240,0.55)", x: 1780, y: 80, r: 720 }, // cool blue grey, top right
+    { color: "rgba(246,227,217,0.40)", x: 1760, y: 1060, r: 620 }, // faint peach, bottom right
+  ],
+  maxDrift: 0.03,
+} as const;

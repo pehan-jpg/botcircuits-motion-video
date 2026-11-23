@@ -9,7 +9,6 @@ import { CHAT_CPS, EASE, PRODUCT_FRAME, REPLAY_CPS } from "../theme";
 import { local, localF, sceneById } from "../timeline";
 import { PLACEHOLDERS as P } from "../placeholders";
 import { PlateBackground } from "../backgrounds/PlateBackground";
-import { AgentOrb, orbOuterRadius } from "../components/AgentOrb";
 import { TextBeat, textBeatTiming } from "../components/TextBeat";
 import { Cursor } from "../components/Cursor";
 import { GuardLayer } from "../components/GuardLayer";
@@ -20,7 +19,8 @@ import {
 } from "../components/chat/ChatScreen";
 import { typeDuration } from "../lib/typewriter";
 import type { TextBeatSpec } from "../lib/guards";
-import { CARD_BG, INTRO, IntroText } from "./shared/intro";
+import { IntroGlow, IntroLine } from "./shared/intro";
+import { ProductWindow } from "../components/chat/ProductWindow";
 import { S2_PLATE } from "./Scene02Intro";
 
 const S = "S03" as const;
@@ -42,12 +42,6 @@ export const FRAME = {
   h: CHAT_NATIVE.h * SCALE,
   radius: PRODUCT_FRAME.radius,
 };
-const toScreen = (nx: number, ny: number) => ({
-  x: FRAME.x + nx * SCALE,
-  y: FRAME.y + ny * SCALE,
-});
-/** Hero product mark centre, in screen pixels. */
-const MARK = { ...toScreen(1069, 290), size: 56 * SCALE };
 
 const BEAT = "Ask in plain language";
 const PILL_SECONDS = 0.6;
@@ -104,39 +98,19 @@ export const SCENE03_TEXT: TextBeatSpec[] = (() => {
 })();
 
 /** Screen position of the [S1] chip, measured from a guard report of this layout. */
-const S1_CHIP = { x: 1062, y: 430 };
+export const S1_CHIP = { x: 1062, y: 430 };
 
-export const Scene03Chat: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+/**
+ * Chat screen state at a Scene 3 frame. Scene 4 calls this with Scene 3's last
+ * frame (and a negative startShift) so it opens on exactly the same screen.
+ */
+export const chatStateAt = (
+  frame: number,
+  fps: number,
+  startShift = 0,
+): ChatState => {
   const sec = (s: number) => Math.round(s * fps);
-
-  // ---- Opening, 0 to 1.2s: the white title card grows into the dark product frame.
-  const geo = EASE(ramp(frame, sec(0.1), sec(1.1)));
-  const tone = EASE(ramp(frame, sec(0.35), sec(1.0)));
-  const card = INTRO.card;
-  const fx = lerp(card.x, FRAME.x, geo);
-  const fy = lerp(card.y, FRAME.y, geo);
-  const fw = lerp(card.w, FRAME.w, geo);
-  const fh = lerp(card.h, FRAME.h, geo);
-  const fr = lerp(card.radius, FRAME.radius, geo);
-  const ch = Math.round(lerp(255, 33, tone));
-  const frameBg =
-    tone === 0 ? CARD_BG : `rgba(${ch},${ch},${ch},${lerp(0.92, 1, tone)})`;
-  const shadow = `0 ${lerp(30, 40, geo)}px ${lerp(80, 120, geo)}px rgba(13,18,36,${lerp(0.14, 0.28, geo)}), 0 ${lerp(8, 12, geo)}px ${lerp(24, 32, geo)}px rgba(13,18,36,${lerp(0.08, 0.18, geo)})`;
-  const borderA = lerp(0.95, 0.08, tone);
-
-  // The lead orb shrinks into the product mark in the hero.
-  const lead = INTRO.leadOrb;
-  const orbMove = EASE(ramp(frame, sec(0.15), sec(1.0)));
-  const orbToMark = EASE(ramp(frame, sec(0.8), sec(1.15)));
-  const leadR = orbOuterRadius(lead.size, true);
-  const orbScale = lerp(1, (MARK.size * 0.9) / (lead.size * 1.3), orbMove);
-  const ox = lerp(lead.x, MARK.x, orbMove);
-  const oy = lerp(lead.y, MARK.y, orbMove);
-
-  // ---- Chat screen state.
-  const chromeIn = EASE(ramp(frame, sec(0.6), sec(1.2)));
+  const chromeIn = 1;
   const heroIn = EASE(ramp(frame, ev("s3_hero"), ev("s3_hero") + sec(0.8)));
   const chipsIn = EASE(ramp(frame, ev("s3_chips"), ev("s3_chips") + sec(0.6)));
   const focus = EASE(ramp(frame, ev("s3_focus"), ev("s3_focus") + sec(0.35)));
@@ -169,25 +143,40 @@ export const Scene03Chat: React.FC = () => {
 
   const state: ChatState = {
     chromeIn,
-    markOpacity: orbToMark,
+    markOpacity: heroIn,
     heroIn,
     heroOut,
     chipsIn,
     chipsOut,
     focus,
-    typeStart: ev("s3_type"),
+    typeStart: ev("s3_type") + startShift,
     sent,
     statusOrb,
     bubbleIn,
     pills,
-    answerStart: ev("answer"),
+    answerStart: ev("answer") + startShift,
     answerOpacity,
     citeActive,
     cardOpen,
+    clock: sceneById(S).start,
   };
+  return state;
+};
 
-  // Clip the screen to the morphing frame, in native units.
-  const clip = `inset(${(fy - FRAME.y) / SCALE}px ${(FRAME.x + FRAME.w - (fx + fw)) / SCALE}px ${(FRAME.y + FRAME.h - (fy + fh)) / SCALE}px ${(fx - FRAME.x) / SCALE}px round ${fr / SCALE}px)`;
+export const Scene03Chat: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const sec = (s: number) => Math.round(s * fps);
+
+  // ---- Opening: the intro line blurs out over 0.4s while the dark product
+  // frame rises from the centre (scale 0.92 to 1, opacity 0 to 1) over 0.8s.
+  const rise = EASE(
+    ramp(frame, ev("s3_frame_rise"), ev("s3_frame_rise") + sec(0.8)),
+  );
+  const frameScale = lerp(0.92, 1, rise);
+
+  const state = chatStateAt(frame, fps);
+  const click = ev("cite_click");
 
   const cursorKeys = [
     { x: 1500, y: 860, t: local("cite_click", S) - 0.75 },
@@ -217,69 +206,36 @@ export const Scene03Chat: React.FC = () => {
       <AbsoluteFill
         style={{ transform: `scale(${push})`, transformOrigin: camOrigin }}
       >
-        {/* The card that becomes the product frame */}
-        <div
-          data-guard="box"
-          style={{
-            position: "absolute",
-            left: fx,
-            top: fy,
-            width: fw,
-            height: fh,
-            borderRadius: fr,
-            background: frameBg,
-            backdropFilter: "blur(24px)",
-            border: `1px solid rgba(255,255,255,${borderA})`,
-            boxShadow: shadow,
-            boxSizing: "border-box",
-          }}
-        />
+        {/* The product frame rises from the centre */}
         <div
           style={{
             position: "absolute",
             left: FRAME.x,
             top: FRAME.y,
-            width: CHAT_NATIVE.w,
-            height: CHAT_NATIVE.h,
-            transform: `scale(${SCALE})`,
-            transformOrigin: "0 0",
-            clipPath: clip,
+            width: FRAME.w,
+            height: FRAME.h,
+            opacity: rise,
+            transform: `scale(${frameScale})`,
+            transformOrigin: "50% 50%",
           }}
         >
-          <ChatScreen s={state} />
+          <ProductWindow>
+            <ChatScreen s={state} />
+          </ProductWindow>
         </div>
         {frame >= click - sec(0.75) ? (
           <Cursor keys={cursorKeys} opacity={cursorO} />
         ) : null}
       </AbsoluteFill>
 
-      {/* Scene 2 title group, blurring out */}
-      <IntroText outFrame={ev("s3_intro_out")} outSeconds={0.5} />
-
-      {/* The lead orb shrinks into the product mark */}
-      {orbToMark < 1 ? (
-        <div
-          style={{
-            position: "absolute",
-            left: ox - leadR,
-            top: oy - leadR,
-            width: leadR * 2,
-            height: leadR * 2,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            transform: `scale(${orbScale})`,
-            opacity: 1 - orbToMark,
-          }}
-        >
-          <AgentOrb
-            size={lead.size}
-            leadRing={1}
-            timeOffset={sceneById(S).start}
-            style={{ position: "absolute" }}
-          />
-        </div>
-      ) : null}
+      {/* The Scene 2 line and its glow blur out */}
+      <IntroGlow
+        opacity={
+          1 -
+          EASE(ramp(frame, ev("s3_intro_out"), ev("s3_intro_out") + sec(0.4)))
+        }
+      />
+      <IntroLine outFrame={ev("s3_intro_out")} outSeconds={0.4} />
 
       <TextBeat text={BEAT} startFrame={ev("s3_textbeat")} seed="s3-beat" />
 

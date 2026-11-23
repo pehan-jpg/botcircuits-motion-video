@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill } from "remotion";
 import { PlateBackground } from "./backgrounds/PlateBackground";
 import { DEFAULT_TEXT_ZONES } from "./backgrounds/NightGrade";
-import { AgentOrb } from "./components/AgentOrb";
+import { SpaceOrb } from "./components/SpaceOrb";
 import { FONT } from "./theme";
 
 /** Test bench for NightGrade (Scene 7). Text zones are outlined so stars can be checked against them. */
@@ -13,7 +13,7 @@ export const NightGradeTest: React.FC<{
   <AbsoluteFill>
     <PlateBackground plate="04" night={grade} duration={600} />
     <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
-      <AgentOrb size={150} lead nightGlow={grade > 0.3} />
+      <SpaceOrb size={150} ticks pulse />
     </AbsoluteFill>
     {showZones
       ? DEFAULT_TEXT_ZONES.map((z, i) => (

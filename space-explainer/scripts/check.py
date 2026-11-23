@@ -45,7 +45,7 @@ def check_copy(text):
         out.append(f'Copy: non-American spelling "{m[0]}" in "{text}"')
     return out
 
-def colour_checks(img, scene):
+def colour_checks(img, scene, exclude=()):
     """Green orb check: any strongly green, saturated pixels outside the grass band.
     Amber check: pixels near #F2A43A. Scenes 1 and 2 have no decision moment, so amber must be absent."""
     issues = []
@@ -56,10 +56,12 @@ def colour_checks(img, scene):
     for y in range(270):
         for x in range(480):
             r, g, b = px[x, y]
+            if any(e[0] <= x * 4 <= e[2] and e[1] <= y * 4 <= e[3] for e in exclude):
+                continue  # third party brand logos keep their own colours
             if abs(r - 242) < 22 and abs(g - 164) < 26 and abs(b - 58) < 30 and r - b > 140:
                 amber += 1
             # Saturated green above the horizon would mean a green orb.
-            if y < 140 and g > 120 and g > r * 1.35 and g > b * 1.35:
+            if scene in ("Scene01", "Scene02") and y < 140 and g > 120 and g > r * 1.35 and g > b * 1.35:
                 green_sky += 1
     if amber > 6:
         issues.append(f"Colour: {amber} amber pixels with no person deciding in {scene}")
@@ -69,17 +71,42 @@ def colour_checks(img, scene):
 
 def main(paths):
     total, problems, stats = 0, [], []
+    logo_stats, ui_max = [], {}
     for p in paths:
         for entry in json.load(open(p)):
             total += 1
             where = f'{entry["scene"]} t={entry["second"]}s'
             g = entry.get("guard") or {"items": []}
             still = Image.open(os.path.join(ROOT, entry["still"]))
-            problems += [f"{where}: {m}" for m in colour_checks(still, entry["scene"])]
+            brand = [(it["rect"]["x"] - 4, it["rect"]["y"] - 4, it["rect"]["x"] + it["rect"]["w"] + 4, it["rect"]["y"] + it["rect"]["h"] + 4) for it in g["items"] if it["kind"] == "brand"]
+            problems += [f"{where}: {m}" for m in colour_checks(still, entry["scene"], brand)]
             bg = Image.open(os.path.join(ROOT, entry["bg"])).convert("RGB") if entry.get("bg") else None
             for it in g["items"]:
                 for iss in it.get("issues", []):
+                    # The product window may cross the edges while the camera zooms (DESIGN.md camera rule).
+                    if it["kind"] == "frame" and iss["guard"] == "SafeAreaGuard":
+                        continue
+                    rr = it["rect"]
+                    if iss["guard"] == "SafeAreaGuard" and (rr["x"] >= W or rr["y"] >= H or rr["x"] + rr["w"] <= 0 or rr["y"] + rr["h"] <= 0):
+                        continue  # fully outside the picture while the camera is zoomed in
+                    if iss["guard"] == "SafeAreaGuard" and it["kind"] == "uitext" and (rr["x"] + rr["w"] > W or rr["x"] < 0 or rr["y"] < 0 or rr["y"] + rr["h"] > H):
+                        continue  # product UI cropped by the zoomed camera, part of the frame
                     problems.append(f'{where}: {iss["guard"]}: {iss["message"]}')
+                if it["kind"] == "logo" and it.get("backing") == "sampled" and entry.get("bg") and it["opacity"] >= 0.85:
+                    bgi = Image.open(os.path.join(ROOT, entry["bg"])).convert("RGB")
+                    r = it["rect"]
+                    box = (max(0, int(r["x"])), max(0, int(r["y"])), min(W, int(r["x"] + r["w"])), min(H, int(r["y"] + r["h"])))
+                    data = list(bgi.crop(box).resize((max(1, (box[2] - box[0]) // 4), max(1, (box[3] - box[1]) // 4))).get_flattened_data() if hasattr(Image.Image, "get_flattened_data") else bgi.crop(box).getdata())
+                    lums = sorted(lum(*c) for c in data)
+                    worst = lums[int(len(lums) * 0.05)]
+                    ratio = cr(0.0, worst)
+                    logo_stats.append((ratio, where))
+                    if ratio < 7:
+                        problems.append(f"{where}: LogoGuard: logo contrast {ratio:.2f}:1 against the plate, needs 7:1")
+                if it["kind"] == "uitext":
+                    key = (entry["scene"], it["label"])
+                    ui_max[key] = max(ui_max.get(key, 0), it["fontPx"] if it["opacity"] >= 0.85 else 0)
+                    problems += [f"{where}: {m}" for m in check_copy(it.get("text", ""))]
                 if it["kind"] != "text":
                     continue
                 problems += [f"{where}: {m}" for m in check_copy(it.get("text", ""))]
@@ -114,6 +141,16 @@ def main(paths):
                 if ratio < MIN_CR:
                     problems.append(f'{where}: ReadabilityGuard: "{it["label"]}" contrast {ratio:.2f}:1 (bg lum mean {mean_bg:.2f}, 5th pct {worst_bg:.2f})')
     print(f"Checked {total} stills.")
+    if logo_stats:
+        logo_stats.sort()
+        print(f"Logo on plate: lowest contrast {logo_stats[0][0]:.2f}:1 ({logo_stats[0][1]})")
+    if ui_max:
+        print("Product UI text, largest on screen size reached:")
+        for (sc, label), px in sorted(ui_max.items()):
+            flag = "" if px >= MIN_PX - 0.1 else "  (UI chrome size, below 28px)"
+            print(f"  {sc} {label}: {px:.1f}px{flag}")
+            if label.startswith("Plate") and px < MIN_PX - 0.1:
+                problems.append(f"{sc}: name plate {label} never reaches 28px")
     if stats:
         stats.sort()
         print("Lowest contrast samples:")

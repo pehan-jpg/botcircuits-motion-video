@@ -1,1239 +1,5 @@
 [
  {
-  "scene": "Scene02",
-  "second": 0,
-  "frame": 0,
-  "still": "out/stills/scene-02/scene-02-t00s.png",
-  "bg": "out/guards/bg/scene-02/t00s.png",
-  "guard": {
-   "scene": "S02",
-   "frame": 0,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 778.9375,
-      "y": 358.9375,
-      "w": 362.125,
-      "h": 362.125
-     },
-     "fontPx": 16.005524861878452,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Lockup: Space by",
-     "text": "Space by",
-     "opacity": 1,
-     "rect": {
-      "x": 479.796875,
-      "y": 590,
-      "w": 960.390625,
-      "h": 125.078125
-     },
-     "fontPx": 104.04231770833334,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene02",
-  "second": 1,
-  "frame": 60,
-  "still": "out/stills/scene-02/scene-02-t01s.png",
-  "bg": "out/guards/bg/scene-02/t01s.png",
-  "guard": {
-   "scene": "S02",
-   "frame": 60,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 813.546875,
-      "y": 191.546875,
-      "w": 292.890625,
-      "h": 292.890625
-     },
-     "fontPx": 15.994027303754267,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Introducing",
-     "text": "Introducing",
-     "opacity": 0.88726,
-     "rect": {
-      "x": 830.625,
-      "y": 550.2548217773438,
-      "w": 258.734375,
-      "h": 37
-     },
-     "fontPx": 27.971283783783786,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Lockup: Space by",
-     "text": "Space by",
-     "opacity": 1,
-     "rect": {
-      "x": 479.796875,
-      "y": 590,
-      "w": 960.390625,
-      "h": 125.078125
-     },
-     "fontPx": 104.04231770833334,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene02",
-  "second": 2,
-  "frame": 120,
-  "still": "out/stills/scene-02/scene-02-t02s.png",
-  "bg": "out/guards/bg/scene-02/t02s.png",
-  "guard": {
-   "scene": "S02",
-   "frame": 120,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 813.546875,
-      "y": 191.546875,
-      "w": 292.890625,
-      "h": 292.890625
-     },
-     "fontPx": 15.994027303754267,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Introducing",
-     "text": "Introducing",
-     "opacity": 1,
-     "rect": {
-      "x": 830.625,
-      "y": 548,
-      "w": 258.734375,
-      "h": 37
-     },
-     "fontPx": 27.971283783783786,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Lockup: Space by",
-     "text": "Space by",
-     "opacity": 1,
-     "rect": {
-      "x": 479.796875,
-      "y": 590,
-      "w": 960.390625,
-      "h": 125.078125
-     },
-     "fontPx": 104.04231770833334,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "logo",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 950.765625,
-      "y": 614.515625,
-      "w": 489.421875,
-      "h": 100.5625
-     },
-     "fontPx": 104.08972392638037,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Tagline",
-     "text": "An agent workspace where agents prepare and people decide.",
-     "opacity": 1,
-     "rect": {
-      "x": 367.015625,
-      "y": 742,
-      "w": 1185.96875,
-      "h": 51
-     },
-     "fontPx": 39.99894603709949,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene02",
-  "second": 3,
-  "frame": 180,
-  "still": "out/stills/scene-02/scene-02-t03s.png",
-  "bg": "out/guards/bg/scene-02/t03s.png",
-  "guard": {
-   "scene": "S02",
-   "frame": 180,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 813.546875,
-      "y": 191.546875,
-      "w": 292.890625,
-      "h": 292.890625
-     },
-     "fontPx": 15.994027303754267,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Introducing",
-     "text": "Introducing",
-     "opacity": 1,
-     "rect": {
-      "x": 830.625,
-      "y": 548,
-      "w": 258.734375,
-      "h": 37
-     },
-     "fontPx": 27.971283783783786,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Lockup: Space by",
-     "text": "Space by",
-     "opacity": 1,
-     "rect": {
-      "x": 479.796875,
-      "y": 590,
-      "w": 960.390625,
-      "h": 125.078125
-     },
-     "fontPx": 104.04231770833334,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "logo",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 950.765625,
-      "y": 614.515625,
-      "w": 489.421875,
-      "h": 100.5625
-     },
-     "fontPx": 104.08972392638037,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Tagline",
-     "text": "An agent workspace where agents prepare and people decide.",
-     "opacity": 1,
-     "rect": {
-      "x": 367.015625,
-      "y": 742,
-      "w": 1185.96875,
-      "h": 51
-     },
-     "fontPx": 39.99894603709949,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene02",
-  "second": 4,
-  "frame": 240,
-  "still": "out/stills/scene-02/scene-02-t04s.png",
-  "bg": "out/guards/bg/scene-02/t04s.png",
-  "guard": {
-   "scene": "S02",
-   "frame": 240,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 813.546875,
-      "y": 191.546875,
-      "w": 292.890625,
-      "h": 292.890625
-     },
-     "fontPx": 15.994027303754267,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Introducing",
-     "text": "Introducing",
-     "opacity": 1,
-     "rect": {
-      "x": 830.625,
-      "y": 548,
-      "w": 258.734375,
-      "h": 37
-     },
-     "fontPx": 27.971283783783786,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Lockup: Space by",
-     "text": "Space by",
-     "opacity": 1,
-     "rect": {
-      "x": 479.796875,
-      "y": 590,
-      "w": 960.390625,
-      "h": 125.078125
-     },
-     "fontPx": 104.04231770833334,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "logo",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 950.765625,
-      "y": 614.515625,
-      "w": 489.421875,
-      "h": 100.5625
-     },
-     "fontPx": 104.08972392638037,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Tagline",
-     "text": "An agent workspace where agents prepare and people decide.",
-     "opacity": 1,
-     "rect": {
-      "x": 367.015625,
-      "y": 742,
-      "w": 1185.96875,
-      "h": 51
-     },
-     "fontPx": 39.99894603709949,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 0,
-  "frame": 0,
-  "still": "out/stills/scene-03/scene-03-t00s.png",
-  "bg": "out/guards/bg/scene-03/t00s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 0,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 300,
-      "y": 520,
-      "w": 1320,
-      "h": 300
-     },
-     "fontPx": 16,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Introducing",
-     "text": "Introducing",
-     "opacity": 1,
-     "rect": {
-      "x": 830.625,
-      "y": 548,
-      "w": 258.734375,
-      "h": 37
-     },
-     "fontPx": 27.971283783783786,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Lockup: Space by",
-     "text": "Space by",
-     "opacity": 1,
-     "rect": {
-      "x": 479.828125,
-      "y": 590,
-      "w": 960.34375,
-      "h": 125.078125
-     },
-     "fontPx": 104.03723958333332,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "logo",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 950.75,
-      "y": 614.515625,
-      "w": 489.421875,
-      "h": 100.5625
-     },
-     "fontPx": 104.08972392638037,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Tagline",
-     "text": "An agent workspace where agents prepare and people decide.",
-     "opacity": 1,
-     "rect": {
-      "x": 367.015625,
-      "y": 742,
-      "w": 1185.96875,
-      "h": 51
-     },
-     "fontPx": 39.99894603709949,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 1,
-  "frame": 60,
-  "still": "out/stills/scene-03/scene-03-t01s.png",
-  "bg": "out/guards/bg/scene-03/t01s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 60,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 210,
-      "y": 210.046875,
-      "w": 1499.96875,
-      "h": 715.921875
-     },
-     "fontPx": 15.999666666666666,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 2,
-  "frame": 120,
-  "still": "out/stills/scene-03/scene-03-t02s.png",
-  "bg": "out/guards/bg/scene-03/t02s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 120,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 208.0555419921875,
-      "y": 209.07183837890625,
-      "w": 1503.8887939453125,
-      "h": 717.8562622070312
-     },
-     "fontPx": 16.04148046875,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "TextBeat: Ask in plain language",
-     "text": "Ask in plain language",
-     "opacity": 1,
-     "rect": {
-      "x": 96,
-      "y": 96,
-      "w": 539.203125,
-      "h": 64.390625
-     },
-     "fontPx": 56.021103896103895,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 3,
-  "frame": 180,
-  "still": "out/stills/scene-03/scene-03-t03s.png",
-  "bg": "out/guards/bg/scene-03/t03s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 180,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 205.62496948242188,
-      "y": 207.91165161132812,
-      "w": 1508.75,
-      "h": 720.1767578125
-     },
-     "fontPx": 16.093333333333334,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Chat prompt",
-     "text": "Prepare claim CL-7305 for review.Check the policy and the evidence.",
-     "opacity": 1,
-     "rect": {
-      "x": 802.6876831054688,
-      "y": 579.6676635742188,
-      "w": 466.44268798828125,
-      "h": 73.2247314453125
-     },
-     "fontPx": 28.14740358549973,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "TextBeat: Ask in plain language",
-     "text": "Ask in plain language",
-     "opacity": 1,
-     "rect": {
-      "x": 96,
-      "y": 96,
-      "w": 539.203125,
-      "h": 64.390625
-     },
-     "fontPx": 56.021103896103895,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 4,
-  "frame": 240,
-  "still": "out/stills/scene-03/scene-03-t04s.png",
-  "bg": "out/guards/bg/scene-03/t04s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 240,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 203.19444274902344,
-      "y": 206.75144958496094,
-      "w": 1513.6112060546875,
-      "h": 722.4970092773438
-     },
-     "fontPx": 16.145186197916665,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Chat prompt",
-     "text": "Prepare claim CL-7305 for review.Check the policy and the evidence.",
-     "opacity": 1,
-     "rect": {
-      "x": 802.1808471679688,
-      "y": 579.7052001953125,
-      "w": 467.94537353515625,
-      "h": 73.46063232421875
-     },
-     "fontPx": 28.238082885742188,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "TextBeat: Ask in plain language",
-     "text": "Ask in plain language",
-     "opacity": 1,
-     "rect": {
-      "x": 96,
-      "y": 96,
-      "w": 539.203125,
-      "h": 64.390625
-     },
-     "fontPx": 56.021103896103895,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 5,
-  "frame": 300,
-  "still": "out/stills/scene-03/scene-03-t05s.png",
-  "bg": "out/guards/bg/scene-03/t05s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 300,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 200.76390075683594,
-      "y": 205.59129333496094,
-      "w": 1518.47216796875,
-      "h": 724.8173828125
-     },
-     "fontPx": 16.197036458333333,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Chat prompt",
-     "text": "Prepare claim CL-7305 for review.Check the policy and the evidence.",
-     "opacity": 1,
-     "rect": {
-      "x": 801.6740112304688,
-      "y": 579.7427978515625,
-      "w": 469.44830322265625,
-      "h": 73.69659423828125
-     },
-     "fontPx": 28.328776918608565,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "TextBeat: Ask in plain language",
-     "text": "Ask in plain language",
-     "opacity": 0.210358,
-     "rect": {
-      "x": 96,
-      "y": 103.89642333984375,
-      "w": 539.203125,
-      "h": 64.390625
-     },
-     "fontPx": 56.021103896103895,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 6,
-  "frame": 360,
-  "still": "out/stills/scene-03/scene-03-t06s.png",
-  "bg": "out/guards/bg/scene-03/t06s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 360,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 198.3333740234375,
-      "y": 204.43115234375,
-      "w": 1523.3331298828125,
-      "h": 727.1377563476562
-     },
-     "fontPx": 16.24888671875,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "User message",
-     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
-     "opacity": 1,
-     "rect": {
-      "x": 1141.25146484375,
-      "y": 261.30224609375,
-      "w": 519.48193359375,
-      "h": 103.18045043945312
-     },
-     "fontPx": 28.453627035651408,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Status: Checking policy",
-     "text": "Checking policy",
-     "opacity": 0.991587,
-     "rect": {
-      "x": 442.0666809082031,
-      "y": 407.605712890625,
-      "w": 301.2264709472656,
-      "h": 56.871124267578125
-     },
-     "fontPx": 28.417591598798644,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 7,
-  "frame": 420,
-  "still": "out/stills/scene-03/scene-03-t07s.png",
-  "bg": "out/guards/bg/scene-03/t07s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 420,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 195.90274047851562,
-      "y": 203.27090454101562,
-      "w": 1528.1944580078125,
-      "h": 729.4581298828125
-     },
-     "fontPx": 16.300740885416666,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "User message",
-     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
-     "opacity": 1,
-     "rect": {
-      "x": 1141.829833984375,
-      "y": 260.323486328125,
-      "w": 521.1396484375,
-      "h": 103.50970458984375
-     },
-     "fontPx": 28.54442518828247,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Status: Matching evidence",
-     "text": "Matching evidence",
-     "opacity": 1,
-     "rect": {
-      "x": 440.4138488769531,
-      "y": 407.0301513671875,
-      "w": 340.7237243652344,
-      "h": 57.0526123046875
-     },
-     "fontPx": 28.52949845163446,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 8,
-  "frame": 480,
-  "still": "out/stills/scene-03/scene-03-t08s.png",
-  "bg": "out/guards/bg/scene-03/t08s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 480,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 193.47225952148438,
-      "y": 202.11074829101562,
-      "w": 1533.0555419921875,
-      "h": 731.778564453125
-     },
-     "fontPx": 16.352592447916667,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "User message",
-     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
-     "opacity": 1,
-     "rect": {
-      "x": 1142.408203125,
-      "y": 259.3448181152344,
-      "w": 522.79736328125,
-      "h": 103.83895874023438
-     },
-     "fontPx": 28.635223340913534,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Answer",
-     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
-     "opacity": 1,
-     "rect": {
-      "x": 438.7611389160156,
-      "y": 404.8829040527344,
-      "w": 666.35546875,
-      "h": 162.50387573242188
-     },
-     "fontPx": 28.616492523006134,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "box",
-     "label": "Source S1",
-     "text": "S1",
-     "opacity": 1,
-     "rect": {
-      "x": 1039.6806640625,
-      "y": 408.65167236328125,
-      "w": 55.611572265625,
-      "h": 33.113983154296875
-     },
-     "fontPx": 28.623603372012866,
-     "color": "rgb(223, 230, 255)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 9,
-  "frame": 540,
-  "still": "out/stills/scene-03/scene-03-t09s.png",
-  "bg": "out/guards/bg/scene-03/t09s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 540,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 191.04171752929688,
-      "y": 200.95059204101562,
-      "w": 1537.9166259765625,
-      "h": 734.098876953125
-     },
-     "fontPx": 16.404444010416668,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "User message",
-     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
-     "opacity": 1,
-     "rect": {
-      "x": 1142.986572265625,
-      "y": 258.36614990234375,
-      "w": 524.455078125,
-      "h": 104.168212890625
-     },
-     "fontPx": 28.726021493544604,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Answer",
-     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
-     "opacity": 1,
-     "rect": {
-      "x": 437.1083679199219,
-      "y": 404.36572265625,
-      "w": 668.46826171875,
-      "h": 163.0191650390625
-     },
-     "fontPx": 28.7072259633819,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "box",
-     "label": "Source S1",
-     "text": "S1",
-     "opacity": 1,
-     "rect": {
-      "x": 1039.9332275390625,
-      "y": 408.14642333984375,
-      "w": 55.7879638671875,
-      "h": 33.218963623046875
-     },
-     "fontPx": 28.71439316693474,
-     "color": "rgb(223, 230, 255)",
-     "issues": []
-    },
-    {
-     "kind": "box",
-     "label": "Source S2",
-     "text": "S2",
-     "opacity": 1,
-     "rect": {
-      "x": 746.626953125,
-      "y": 448.9012145996094,
-      "w": 55.787841796875,
-      "h": 33.218994140625
-     },
-     "fontPx": 28.714330336626837,
-     "color": "rgb(223, 230, 255)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 10,
-  "frame": 600,
-  "still": "out/stills/scene-03/scene-03-t10s.png",
-  "bg": "out/guards/bg/scene-03/t10s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 600,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 188.611083984375,
-      "y": 199.79034423828125,
-      "w": 1542.77783203125,
-      "h": 736.4193115234375
-     },
-     "fontPx": 16.456296875,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "User message",
-     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
-     "opacity": 1,
-     "rect": {
-      "x": 1143.56494140625,
-      "y": 257.38739013671875,
-      "w": 526.1129150390625,
-      "h": 104.49749755859375
-     },
-     "fontPx": 28.816826332343016,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Answer",
-     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
-     "opacity": 1,
-     "rect": {
-      "x": 435.4555358886719,
-      "y": 403.84844970703125,
-      "w": 670.581298828125,
-      "h": 163.53448486328125
-     },
-     "fontPx": 28.79796988832439,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "box",
-     "label": "Source S1",
-     "text": "S1",
-     "opacity": 1,
-     "rect": {
-      "x": 1040.1859130859375,
-      "y": 407.64111328125,
-      "w": 55.9642333984375,
-      "h": 33.323974609375
-     },
-     "fontPx": 28.805120131548712,
-     "color": "rgb(223, 230, 255)",
-     "issues": []
-    },
-    {
-     "kind": "box",
-     "label": "Source S2",
-     "text": "S2",
-     "opacity": 1,
-     "rect": {
-      "x": 745.9524536132812,
-      "y": 448.52471923828125,
-      "w": 55.9642333984375,
-      "h": 33.324005126953125
-     },
-     "fontPx": 28.805120131548712,
-     "color": "rgb(223, 230, 255)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
-  "scene": "Scene03",
-  "second": 11,
-  "frame": 660,
-  "still": "out/stills/scene-03/scene-03-t11s.png",
-  "bg": "out/guards/bg/scene-03/t11s.png",
-  "guard": {
-   "scene": "S03",
-   "frame": 660,
-   "base": {
-    "w": 1920,
-    "h": 1080
-   },
-   "items": [
-    {
-     "kind": "box",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 186.18055725097656,
-      "y": 198.6302032470703,
-      "w": 1547.638916015625,
-      "h": 738.7396240234375
-     },
-     "fontPx": 16.5081484375,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "User message",
-     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
-     "opacity": 1,
-     "rect": {
-      "x": 1144.143310546875,
-      "y": 256.4087219238281,
-      "w": 527.7706298828125,
-      "h": 104.82675170898438
-     },
-     "fontPx": 28.90762448497408,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Answer",
-     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
-     "opacity": 1,
-     "rect": {
-      "x": 433.8027648925781,
-      "y": 403.3312683105469,
-      "w": 672.6942138671875,
-      "h": 164.04971313476562
-     },
-     "fontPx": 28.88870857098351,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    },
-    {
-     "kind": "box",
-     "label": "Source S1",
-     "text": "S1",
-     "opacity": 1,
-     "rect": {
-      "x": 1040.4385986328125,
-      "y": 407.1358642578125,
-      "w": 56.1405029296875,
-      "h": 33.428985595703125
-     },
-     "fontPx": 28.895847096162687,
-     "color": "rgb(223, 230, 255)",
-     "issues": []
-    },
-    {
-     "kind": "box",
-     "label": "Source S2",
-     "text": "S2",
-     "opacity": 1,
-     "rect": {
-      "x": 745.2780151367188,
-      "y": 448.1483154296875,
-      "w": 56.14056396484375,
-      "h": 33.428985595703125
-     },
-     "fontPx": 28.895878511316635,
-     "color": "rgb(223, 230, 255)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Source card",
-     "text": "Home Policy Wording 2026, p. 124.2 We cover sudden and accidental escape of water from a fixed pipe or appliance in your home. We do not cover damage caused by gradual leaks, wear and tear, or poor maintenance.",
-     "opacity": 1,
-     "rect": {
-      "x": 1232.797119140625,
-      "y": 385.1722717285156,
-      "w": 455.6248779296875,
-      "h": 415.8506164550781
-     },
-     "fontPx": 28.88925856438236,
-     "color": "rgb(236, 236, 236)",
-     "issues": []
-    }
-   ]
-  }
- },
- {
   "scene": "Scene01",
   "second": 0,
   "frame": 0,
@@ -1270,11 +36,26 @@
      "opacity": 1,
      "rect": {
       "x": 120.89820861816406,
-      "y": 341.875,
+      "y": 341.8962707519531,
       "w": 391.1602783203125,
-      "h": 315.5
+      "h": 315.4518127441406
      },
      "fontPx": 35.33060578377017,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 144.87254333496094,
+      "y": 360.1924743652344,
+      "w": 35.33061218261719,
+      "h": 35.33062744140625
+     },
+     "fontPx": 35.33061218261719,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1284,12 +65,12 @@
      "text": "Inbox",
      "opacity": 1,
      "rect": {
-      "x": 144.87254333496094,
-      "y": 354.5,
-      "w": 106.01152038574219,
-      "h": 46.6875
+      "x": 190.297607421875,
+      "y": 354.51434326171875,
+      "w": 106.01153564453125,
+      "h": 46.6868896484375
      },
-     "fontPx": 35.33717346191406,
+     "fontPx": 35.33717854817708,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1300,9 +81,9 @@
      "opacity": 1,
      "rect": {
       "x": 445.6755676269531,
-      "y": 354.5,
+      "y": 354.51434326171875,
       "w": 42.408538818359375,
-      "h": 46.6875
+      "h": 46.6868896484375
      },
      "fontPx": 34.92467902688419,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1315,11 +96,26 @@
      "opacity": 1,
      "rect": {
       "x": 549.9126586914062,
-      "y": 341.875,
+      "y": 341.8962707519531,
       "w": 391.1602783203125,
-      "h": 315.5
+      "h": 315.4518127441406
      },
      "fontPx": 35.33060578377017,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 573.8870239257812,
+      "y": 360.1924743652344,
+      "w": 35.33056640625,
+      "h": 35.33062744140625
+     },
+     "fontPx": 35.33056640625,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1329,10 +125,10 @@
      "text": "Sheet",
      "opacity": 1,
      "rect": {
-      "x": 573.8870239257812,
-      "y": 354.5,
+      "x": 619.3120727539062,
+      "y": 354.51434326171875,
       "w": 106.01153564453125,
-      "h": 46.6875
+      "h": 46.6868896484375
      },
      "fontPx": 35.33717854817708,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1345,11 +141,26 @@
      "opacity": 1,
      "rect": {
       "x": 978.9271240234375,
-      "y": 341.875,
+      "y": 341.8962707519531,
       "w": 391.1602783203125,
-      "h": 315.5
+      "h": 315.4518127441406
      },
      "fontPx": 35.33060578377017,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1002.9014892578125,
+      "y": 360.1924743652344,
+      "w": 35.3306884765625,
+      "h": 35.33062744140625
+     },
+     "fontPx": 35.3306884765625,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1359,27 +170,27 @@
      "text": "Chat",
      "opacity": 1,
      "rect": {
-      "x": 1002.9014892578125,
-      "y": 354.5,
-      "w": 84.7974853515625,
-      "h": 46.6875
+      "x": 1048.326416015625,
+      "y": 354.51434326171875,
+      "w": 84.797607421875,
+      "h": 46.6868896484375
      },
-     "fontPx": 35.43775507229478,
+     "fontPx": 35.43780608675373,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
     {
      "kind": "box",
-     "label": "PDFv3",
-     "text": "PDFv3",
+     "label": "PDFPDFv3",
+     "text": "PDFPDFv3",
      "opacity": 1,
      "rect": {
       "x": 1407.941650390625,
-      "y": 341.875,
+      "y": 341.8962707519531,
       "w": 391.16015625,
-      "h": 315.5
+      "h": 315.4518127441406
      },
-     "fontPx": 35.330594758064514,
+     "fontPx": 11.98716607862903,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1389,12 +200,12 @@
      "text": "PDF",
      "opacity": 1,
      "rect": {
-      "x": 1431.916015625,
-      "y": 354.5,
-      "w": 63.602783203125,
-      "h": 46.6875
+      "x": 1470.262939453125,
+      "y": 354.51434326171875,
+      "w": 63.60302734375,
+      "h": 46.6868896484375
      },
-     "fontPx": 35.617558593750005,
+     "fontPx": 35.6176953125,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1405,9 +216,9 @@
      "opacity": 1,
      "rect": {
       "x": 171.37049865722656,
-      "y": 490.1875,
+      "y": 490.15863037109375,
       "w": 296.52471923828125,
-      "h": 89.5625
+      "h": 89.58831787109375
      },
      "fontPx": 35.33060484541223,
      "color": "rgb(13, 18, 36)",
@@ -1422,7 +233,7 @@
       "x": 96,
       "y": 96,
       "w": 1273.640625,
-      "h": 64.375
+      "h": 64.390625
      },
      "fontPx": 55.9842032967033,
      "color": "rgb(13, 18, 36)",
@@ -1452,11 +263,26 @@
      "opacity": 1,
      "rect": {
       "x": 114.83193969726562,
-      "y": 340.4375,
+      "y": 340.4640808105469,
       "w": 393.9881286621094,
-      "h": 317.75
+      "h": 317.7323913574219
      },
      "fontPx": 35.586024524319555,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 138.97959899902344,
+      "y": 358.892578125,
+      "w": 35.586029052734375,
+      "h": 35.58599853515625
+     },
+     "fontPx": 35.586029052734375,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1466,12 +292,12 @@
      "text": "Inbox",
      "opacity": 1,
      "rect": {
-      "x": 138.97959899902344,
-      "y": 353.1875,
-      "w": 106.77793884277344,
-      "h": 47
+      "x": 184.73306274414062,
+      "y": 353.1733703613281,
+      "w": 106.77792358398438,
+      "h": 47.0244140625
      },
-     "fontPx": 35.59264628092448,
+     "fontPx": 35.59264119466146,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1482,9 +308,9 @@
      "opacity": 1,
      "rect": {
       "x": 441.9572448730469,
-      "y": 353.1875,
+      "y": 353.1733703613281,
       "w": 42.71514892578125,
-      "h": 47
+      "h": 47.0244140625
      },
      "fontPx": 35.17718146829044,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1497,11 +323,26 @@
      "opacity": 1,
      "rect": {
       "x": 546.9479370117188,
-      "y": 340.4375,
+      "y": 340.4640808105469,
       "w": 393.9881591796875,
-      "h": 317.75
+      "h": 317.7323913574219
      },
      "fontPx": 35.58602728074597,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 571.0955810546875,
+      "y": 358.892578125,
+      "w": 35.5860595703125,
+      "h": 35.58599853515625
+     },
+     "fontPx": 35.5860595703125,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1511,10 +352,10 @@
      "text": "Sheet",
      "opacity": 1,
      "rect": {
-      "x": 571.0955810546875,
-      "y": 353.1875,
+      "x": 616.8490600585938,
+      "y": 353.1733703613281,
       "w": 106.7779541015625,
-      "h": 47
+      "h": 47.0244140625
      },
      "fontPx": 35.5926513671875,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1527,9 +368,9 @@
      "opacity": 1,
      "rect": {
       "x": 874.0732421875,
-      "y": 353.1875,
+      "y": 353.1733703613281,
       "w": 42.71514892578125,
-      "h": 47
+      "h": 47.0244140625
      },
      "fontPx": 35.17718146829044,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1542,11 +383,26 @@
      "opacity": 1,
      "rect": {
       "x": 979.06396484375,
-      "y": 340.4375,
+      "y": 340.4640808105469,
       "w": 393.988037109375,
-      "h": 317.75
+      "h": 317.7323913574219
      },
      "fontPx": 35.58601625504032,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1003.2116088867188,
+      "y": 358.892578125,
+      "w": 35.58599853515625,
+      "h": 35.58599853515625
+     },
+     "fontPx": 35.58599853515625,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1556,27 +412,27 @@
      "text": "Chat",
      "opacity": 1,
      "rect": {
-      "x": 1003.2116088867188,
-      "y": 353.1875,
-      "w": 85.41046142578125,
-      "h": 47
+      "x": 1048.965087890625,
+      "y": 353.1733703613281,
+      "w": 85.410400390625,
+      "h": 47.0244140625
      },
-     "fontPx": 35.693924177938435,
+     "fontPx": 35.693898670708954,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
     {
      "kind": "box",
-     "label": "PDFv3",
-     "text": "PDFv3",
+     "label": "PDFPDFv3",
+     "text": "PDFPDFv3",
      "opacity": 1,
      "rect": {
       "x": 1411.179931640625,
-      "y": 340.4375,
+      "y": 340.4640808105469,
       "w": 393.988037109375,
-      "h": 317.75
+      "h": 317.7323913574219
      },
-     "fontPx": 35.58601625504032,
+     "fontPx": 12.073826943674394,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1586,10 +442,10 @@
      "text": "PDF",
      "opacity": 1,
      "rect": {
-      "x": 1435.32763671875,
-      "y": 353.1875,
+      "x": 1473.951904296875,
+      "y": 353.1733703613281,
       "w": 64.062744140625,
-      "h": 47
+      "h": 47.0244140625
      },
      "fontPx": 35.87513671875,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1602,9 +458,9 @@
      "opacity": 0.72,
      "rect": {
       "x": 156.21466064453125,
-      "y": 490.8125,
+      "y": 490.8143005371094,
       "w": 302.3201599121094,
-      "h": 103.1875
+      "h": 103.17788696289062
      },
      "fontPx": 36.02112543633643,
      "color": "rgb(13, 18, 36)",
@@ -1617,9 +473,9 @@
      "opacity": 1,
      "rect": {
       "x": 591.4304809570312,
-      "y": 489.8125,
+      "y": 489.7983093261719,
       "w": 305.0230712890625,
-      "h": 90.25
+      "h": 90.23599243164062
      },
      "fontPx": 35.58602498372396,
      "color": "rgb(13, 18, 36)",
@@ -1634,7 +490,7 @@
       "x": 96,
       "y": 96,
       "w": 1273.640625,
-      "h": 64.375
+      "h": 64.390625
      },
      "fontPx": 55.9842032967033,
      "color": "rgb(13, 18, 36)",
@@ -1664,11 +520,26 @@
      "opacity": 1,
      "rect": {
       "x": 110.62496948242188,
-      "y": 339.5,
+      "y": 339.4708557128906,
       "w": 395.9492492675781,
-      "h": 319.3125
+      "h": 319.3139343261719
      },
      "fontPx": 35.76315799836189,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 134.892822265625,
+      "y": 357.9910583496094,
+      "w": 35.76316833496094,
+      "h": 35.763153076171875
+     },
+     "fontPx": 35.76316833496094,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1678,10 +549,10 @@
      "text": "Inbox",
      "opacity": 1,
      "rect": {
-      "x": 134.892822265625,
-      "y": 352.25,
+      "x": 180.8740234375,
+      "y": 352.243408203125,
       "w": 107.3094482421875,
-      "h": 47.25
+      "h": 47.258453369140625
      },
      "fontPx": 35.76981608072917,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1694,9 +565,9 @@
      "opacity": 1,
      "rect": {
       "x": 439.37860107421875,
-      "y": 352.25,
+      "y": 352.243408203125,
       "w": 42.927764892578125,
-      "h": 47.25
+      "h": 47.258453369140625
      },
      "fontPx": 35.35227697035845,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1709,11 +580,26 @@
      "opacity": 1,
      "rect": {
       "x": 544.8919067382812,
-      "y": 339.5,
+      "y": 339.4708557128906,
       "w": 395.94927978515625,
-      "h": 319.3125
+      "h": 319.3139343261719
      },
      "fontPx": 35.7631607547883,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 569.1597900390625,
+      "y": 357.9910583496094,
+      "w": 35.76312255859375,
+      "h": 35.763153076171875
+     },
+     "fontPx": 35.76312255859375,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1723,12 +609,12 @@
      "text": "Sheet",
      "opacity": 1,
      "rect": {
-      "x": 569.1597900390625,
-      "y": 352.25,
-      "w": 107.30938720703125,
-      "h": 47.25
+      "x": 615.1409912109375,
+      "y": 352.243408203125,
+      "w": 107.3094482421875,
+      "h": 47.258453369140625
      },
-     "fontPx": 35.769795735677086,
+     "fontPx": 35.76981608072917,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1739,9 +625,9 @@
      "opacity": 1,
      "rect": {
       "x": 873.6455688476562,
-      "y": 352.25,
+      "y": 352.243408203125,
       "w": 42.927734375,
-      "h": 47.25
+      "h": 47.258453369140625
      },
      "fontPx": 35.3522518382353,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1754,11 +640,26 @@
      "opacity": 1,
      "rect": {
       "x": 979.1588745117188,
-      "y": 339.5,
+      "y": 339.4708557128906,
       "w": 395.94927978515625,
-      "h": 319.3125
+      "h": 319.3139343261719
      },
      "fontPx": 35.7631607547883,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1003.4267578125,
+      "y": 357.9910583496094,
+      "w": 35.7630615234375,
+      "h": 35.763153076171875
+     },
+     "fontPx": 35.7630615234375,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1768,10 +669,10 @@
      "text": "Chat",
      "opacity": 1,
      "rect": {
-      "x": 1003.4267578125,
-      "y": 352.25,
+      "x": 1049.407958984375,
+      "y": 352.243408203125,
       "w": 85.8355712890625,
-      "h": 47.25
+      "h": 47.258453369140625
      },
      "fontPx": 35.87158203125,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1784,9 +685,9 @@
      "opacity": 1,
      "rect": {
       "x": 1179.1690673828125,
-      "y": 352.25,
+      "y": 352.243408203125,
       "w": 171.671142578125,
-      "h": 47.25
+      "h": 47.258453369140625
      },
      "fontPx": 35.87158203125,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1794,16 +695,16 @@
     },
     {
      "kind": "box",
-     "label": "PDFv3",
-     "text": "PDFv3",
+     "label": "PDFPDFv3",
+     "text": "PDFPDFv3",
      "opacity": 1,
      "rect": {
       "x": 1413.42578125,
-      "y": 339.5,
+      "y": 339.4708557128906,
       "w": 395.9493408203125,
-      "h": 319.3125
+      "h": 319.3139343261719
      },
-     "fontPx": 35.76316626764113,
+     "fontPx": 12.133931412235384,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -1813,10 +714,10 @@
      "text": "PDF",
      "opacity": 1,
      "rect": {
-      "x": 1437.693603515625,
-      "y": 352.25,
+      "x": 1476.51025390625,
+      "y": 352.243408203125,
       "w": 64.3817138671875,
-      "h": 47.25
+      "h": 47.258453369140625
      },
      "fontPx": 36.053759765624996,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -1829,9 +730,9 @@
      "opacity": 0.72,
      "rect": {
       "x": 152.2136688232422,
-      "y": 490.5625,
+      "y": 490.5694580078125,
       "w": 303.82501220703125,
-      "h": 103.6875
+      "h": 103.69146728515625
      },
      "fontPx": 36.200426986369685,
      "color": "rgb(13, 18, 36)",
@@ -1844,9 +745,9 @@
      "opacity": 0.72,
      "rect": {
       "x": 580.4432983398438,
-      "y": 491.875,
+      "y": 491.8904724121094,
       "w": 309.51947021484375,
-      "h": 101.3125
+      "h": 101.32803344726562
      },
      "fontPx": 36.11060485839844,
      "color": "rgb(13, 18, 36)",
@@ -1859,9 +760,9 @@
      "opacity": 0.811286,
      "rect": {
       "x": 1017.9178466796875,
-      "y": 492,
+      "y": 492.00006103515625,
       "w": 308.093505859375,
-      "h": 96.0625
+      "h": 96.0797119140625
      },
      "fontPx": 35.94424235026042,
      "color": "rgb(13, 18, 36)",
@@ -1874,9 +775,9 @@
      "opacity": 1,
      "rect": {
       "x": 1270.3157958984375,
-      "y": 445.375,
+      "y": 445.36669921875,
       "w": 322.70166015625,
-      "h": 110.125
+      "h": 110.11663818359375
      },
      "fontPx": 37.64852701822917,
      "color": "rgb(13, 18, 36)",
@@ -1891,7 +792,7 @@
       "x": 96,
       "y": 96,
       "w": 1273.640625,
-      "h": 64.375
+      "h": 64.390625
      },
      "fontPx": 55.9842032967033,
      "color": "rgb(13, 18, 36)",
@@ -1930,12 +831,27 @@
      "issues": []
     },
     {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 132.256591796875,
+      "y": 357.4095153808594,
+      "w": 35.87742614746094,
+      "h": 35.877410888671875
+     },
+     "fontPx": 35.87742614746094,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
      "kind": "text",
      "label": "Tile Inbox",
      "text": "Inbox",
      "opacity": 1,
      "rect": {
-      "x": 132.256591796875,
+      "x": 178.38470458984375,
       "y": 351.64349365234375,
       "w": 107.65228271484375,
       "h": 47.409454345703125
@@ -1975,12 +891,27 @@
      "issues": []
     },
     {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 567.9110107421875,
+      "y": 357.4095153808594,
+      "w": 35.87744140625,
+      "h": 35.877410888671875
+     },
+     "fontPx": 35.87744140625,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
      "kind": "text",
      "label": "Tile Sheet",
      "text": "Sheet",
      "opacity": 1,
      "rect": {
-      "x": 567.9110107421875,
+      "x": 614.0391235351562,
       "y": 351.64349365234375,
       "w": 107.65228271484375,
       "h": 47.409454345703125
@@ -2020,17 +951,32 @@
      "issues": []
     },
     {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1003.5654907226562,
+      "y": 357.4095153808594,
+      "w": 35.87738037109375,
+      "h": 35.877410888671875
+     },
+     "fontPx": 35.87738037109375,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
      "kind": "text",
      "label": "Tile Chat",
      "text": "Chat",
      "opacity": 1,
      "rect": {
-      "x": 1003.5654907226562,
+      "x": 1049.693603515625,
       "y": 351.64349365234375,
-      "w": 86.10980224609375,
+      "w": 86.10986328125,
       "h": 47.409454345703125
      },
-     "fontPx": 35.98618601329291,
+     "fontPx": 35.98621152052239,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2051,8 +997,8 @@
     },
     {
      "kind": "box",
-     "label": "PDFv3",
-     "text": "PDFv3",
+     "label": "PDFPDFv3",
+     "text": "PDFPDFv3",
      "opacity": 1,
      "rect": {
       "x": 1414.87451171875,
@@ -2060,7 +1006,7 @@
       "w": 397.21435546875,
       "h": 320.3341064453125
      },
-     "fontPx": 35.877425655241936,
+     "fontPx": 12.17269799017137,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2070,12 +1016,12 @@
      "text": "PDF",
      "opacity": 1,
      "rect": {
-      "x": 1439.219970703125,
+      "x": 1478.160400390625,
       "y": 351.64349365234375,
-      "w": 64.587158203125,
+      "w": 64.58740234375,
       "h": 47.409454345703125
      },
-     "fontPx": 36.16880859375,
+     "fontPx": 36.1689453125,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2223,11 +1169,26 @@
      "opacity": 1,
      "rect": {
       "x": 106.22164916992188,
-      "y": 338.4375,
+      "y": 338.4312744140625,
       "w": 398.0019226074219,
-      "h": 320.9375
+      "h": 320.96929931640625
      },
      "fontPx": 35.948560751638105,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 130.6153106689453,
+      "y": 357.0474853515625,
+      "w": 35.94856262207031,
+      "h": 35.948577880859375
+     },
+     "fontPx": 35.94856262207031,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2237,12 +1198,12 @@
      "text": "Inbox",
      "opacity": 1,
      "rect": {
-      "x": 130.6153106689453,
-      "y": 351.25,
-      "w": 107.86573791503906,
-      "h": 47.5
+      "x": 176.83489990234375,
+      "y": 351.2700500488281,
+      "w": 107.86575317382812,
+      "h": 47.503448486328125
      },
-     "fontPx": 35.95524597167969,
+     "fontPx": 35.955251057942704,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2253,9 +1214,9 @@
      "opacity": 1,
      "rect": {
       "x": 436.6795959472656,
-      "y": 351.25,
+      "y": 351.2700500488281,
       "w": 43.15032958984375,
-      "h": 47.5
+      "h": 47.503448486328125
      },
      "fontPx": 35.5355655445772,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -2268,11 +1229,26 @@
      "opacity": 1,
      "rect": {
       "x": 542.7398681640625,
-      "y": 338.4375,
+      "y": 338.4312744140625,
       "w": 398.001953125,
-      "h": 320.9375
+      "h": 320.96929931640625
      },
      "fontPx": 35.94856350806452,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 567.133544921875,
+      "y": 357.0474853515625,
+      "w": 35.9486083984375,
+      "h": 35.948577880859375
+     },
+     "fontPx": 35.9486083984375,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2282,12 +1258,12 @@
      "text": "Sheet",
      "opacity": 1,
      "rect": {
-      "x": 567.133544921875,
-      "y": 351.25,
-      "w": 107.86578369140625,
-      "h": 47.5
+      "x": 613.3531494140625,
+      "y": 351.2700500488281,
+      "w": 107.86572265625,
+      "h": 47.503448486328125
      },
-     "fontPx": 35.95526123046875,
+     "fontPx": 35.95524088541667,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2298,9 +1274,9 @@
      "opacity": 1,
      "rect": {
       "x": 873.1978759765625,
-      "y": 351.25,
+      "y": 351.2700500488281,
       "w": 43.1502685546875,
-      "h": 47.5
+      "h": 47.503448486328125
      },
      "fontPx": 35.535515280330884,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -2313,11 +1289,26 @@
      "opacity": 1,
      "rect": {
       "x": 979.2581176757812,
-      "y": 338.4375,
+      "y": 338.4312744140625,
       "w": 398.00201416015625,
-      "h": 320.9375
+      "h": 320.96929931640625
      },
      "fontPx": 35.94856902091733,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1003.65185546875,
+      "y": 357.0474853515625,
+      "w": 35.948486328125,
+      "h": 35.948577880859375
+     },
+     "fontPx": 35.948486328125,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2327,12 +1318,12 @@
      "text": "Chat",
      "opacity": 1,
      "rect": {
-      "x": 1003.65185546875,
-      "y": 351.25,
-      "w": 86.280517578125,
-      "h": 47.5
+      "x": 1049.871337890625,
+      "y": 351.2700500488281,
+      "w": 86.2806396484375,
+      "h": 47.503448486328125
      },
-     "fontPx": 36.05752973414179,
+     "fontPx": 36.05758074860074,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2343,9 +1334,9 @@
      "opacity": 1,
      "rect": {
       "x": 1180.3052978515625,
-      "y": 351.25,
+      "y": 351.2700500488281,
       "w": 172.5611572265625,
-      "h": 47.5
+      "h": 47.503448486328125
      },
      "fontPx": 36.05755524137127,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -2353,16 +1344,16 @@
     },
     {
      "kind": "box",
-     "label": "PDFv3",
-     "text": "PDFv3",
+     "label": "PDFPDFv3",
+     "text": "PDFPDFv3",
      "opacity": 1,
      "rect": {
       "x": 1415.7763671875,
-      "y": 338.4375,
+      "y": 338.4312744140625,
       "w": 398.001953125,
-      "h": 320.9375
+      "h": 320.96929931640625
      },
-     "fontPx": 35.94856350806452,
+     "fontPx": 12.196834047379033,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2372,10 +1363,10 @@
      "text": "PDF",
      "opacity": 1,
      "rect": {
-      "x": 1440.1700439453125,
-      "y": 351.25,
+      "x": 1479.1878662109375,
+      "y": 351.2700500488281,
       "w": 64.7154541015625,
-      "h": 47.5
+      "h": 47.503448486328125
      },
      "fontPx": 36.240654296875,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -2388,9 +1379,9 @@
      "opacity": 1,
      "rect": {
       "x": 1746.234375,
-      "y": 351.25,
+      "y": 351.2700500488281,
       "w": 43.1502685546875,
-      "h": 47.5
+      "h": 47.503448486328125
      },
      "fontPx": 35.535515280330884,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -2403,9 +1394,9 @@
      "opacity": 0.72,
      "rect": {
       "x": 148.0259552001953,
-      "y": 490.3125,
+      "y": 490.3132019042969,
       "w": 305.40008544921875,
-      "h": 104.25
+      "h": 104.22903442382812
      },
      "fontPx": 36.388095287566486,
      "color": "rgb(13, 18, 36)",
@@ -2418,9 +1409,9 @@
      "opacity": 0.72,
      "rect": {
       "x": 578.4755859375,
-      "y": 491.625,
+      "y": 491.6410827636719,
       "w": 311.1240234375,
-      "h": 101.875
+      "h": 101.85336303710938
      },
      "fontPx": 36.297802734375004,
      "color": "rgb(13, 18, 36)",
@@ -2433,9 +1424,9 @@
      "opacity": 0.72,
      "rect": {
       "x": 1015.3502197265625,
-      "y": 493,
+      "y": 492.97271728515625,
       "w": 310.4112548828125,
-      "h": 99.1875
+      "h": 99.1900634765625
      },
      "fontPx": 36.21464640299479,
      "color": "rgb(13, 18, 36)",
@@ -2448,9 +1439,9 @@
      "opacity": 1,
      "rect": {
       "x": 1459.42822265625,
-      "y": 489.3125,
+      "y": 489.2868347167969,
       "w": 310.6982421875,
-      "h": 91.125
+      "h": 91.15530395507812
      },
      "fontPx": 35.948556947314046,
      "color": "rgb(13, 18, 36)",
@@ -2463,9 +1454,9 @@
      "opacity": 1,
      "rect": {
       "x": 431.26727294921875,
-      "y": 718.6875,
+      "y": 718.7156982421875,
       "w": 297.98785400390625,
-      "h": 69.875
+      "h": 69.8428955078125
      },
      "fontPx": 30.826329724542024,
      "color": "rgb(13, 18, 36)",
@@ -2478,9 +1469,9 @@
      "opacity": 1,
      "rect": {
       "x": 753.9055786132812,
-      "y": 718.6875,
+      "y": 718.7156982421875,
       "w": 322.97540283203125,
-      "h": 69.875
+      "h": 69.8428955078125
      },
      "fontPx": 30.857522563569862,
      "color": "rgb(13, 18, 36)",
@@ -2493,9 +1484,9 @@
      "opacity": 1,
      "rect": {
       "x": 1101.5313720703125,
-      "y": 718.6875,
+      "y": 718.7156982421875,
       "w": 387.185302734375,
-      "h": 69.875
+      "h": 69.8428955078125
      },
      "fontPx": 30.81050154384947,
      "color": "rgb(13, 18, 36)",
@@ -2510,7 +1501,7 @@
       "x": 96,
       "y": 96,
       "w": 1273.640625,
-      "h": 64.375
+      "h": 64.390625
      },
      "fontPx": 55.9842032967033,
      "color": "rgb(13, 18, 36)",
@@ -2549,12 +1540,27 @@
      "issues": []
     },
     {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 129.61065673828125,
+      "y": 359.8252258300781,
+      "w": 35.99211120605469,
+      "h": 35.992095947265625
+     },
+     "fontPx": 35.99211120605469,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
      "kind": "text",
      "label": "Tile Inbox",
      "text": "Inbox",
      "opacity": 0.20118,
      "rect": {
-      "x": 129.61065673828125,
+      "x": 175.88623046875,
       "y": 354.040771484375,
       "w": 107.99639892578125,
       "h": 47.561004638671875
@@ -2594,17 +1600,32 @@
      "issues": []
     },
     {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 566.65771484375,
+      "y": 359.8252258300781,
+      "w": 35.9920654296875,
+      "h": 35.992095947265625
+     },
+     "fontPx": 35.9920654296875,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
      "kind": "text",
      "label": "Tile Sheet",
      "text": "Sheet",
      "opacity": 0.20118,
      "rect": {
-      "x": 566.65771484375,
+      "x": 612.9332275390625,
       "y": 354.040771484375,
-      "w": 107.99639892578125,
+      "w": 107.9964599609375,
       "h": 47.561004638671875
      },
-     "fontPx": 35.998799641927086,
+     "fontPx": 35.99881998697917,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2639,17 +1660,32 @@
      "issues": []
     },
     {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.20118,
+     "rect": {
+      "x": 1003.7046508789062,
+      "y": 359.8252258300781,
+      "w": 35.99212646484375,
+      "h": 35.992095947265625
+     },
+     "fontPx": 35.99212646484375,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
      "kind": "text",
      "label": "Tile Chat",
      "text": "Chat",
      "opacity": 0.20118,
      "rect": {
-      "x": 1003.7046508789062,
+      "x": 1049.980224609375,
       "y": 354.040771484375,
-      "w": 86.38519287109375,
+      "w": 86.385009765625,
       "h": 47.561004638671875
      },
-     "fontPx": 36.1012746326959,
+     "fontPx": 36.10119811100746,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2670,8 +1706,8 @@
     },
     {
      "kind": "box",
-     "label": "PDFv3",
-     "text": "PDFv3",
+     "label": "PDFPDFv3",
+     "text": "PDFPDFv3",
      "opacity": 0.20118,
      "rect": {
       "x": 1416.32861328125,
@@ -2679,7 +1715,7 @@
       "w": 398.48388671875,
       "h": 321.3580322265625
      },
-     "fontPx": 35.992092993951616,
+     "fontPx": 12.211602980090726,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2689,12 +1725,12 @@
      "text": "PDF",
      "opacity": 0.20118,
      "rect": {
-      "x": 1440.751708984375,
+      "x": 1479.81689453125,
       "y": 354.040771484375,
-      "w": 64.7939453125,
+      "w": 64.793701171875,
       "h": 47.561004638671875
      },
-     "fontPx": 36.284609375,
+     "fontPx": 36.284472656249996,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2764,12 +1800,12 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1306.85791015625,
-      "y": 366.6112060546875,
-      "w": 247.831298828125,
-      "h": 247.83135986328125
+      "x": 1288.090576171875,
+      "y": 347.8439025878906,
+      "w": 285.365966796875,
+      "h": 285.3659973144531
      },
-     "fontPx": 16.4535302126556,
+     "fontPx": 16.423940535071942,
      "color": "rgb(0, 0, 0)",
      "issues": []
     },
@@ -2857,11 +1893,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 104.56391906738281,
-      "y": 344.0625,
+      "y": 344.0429382324219,
       "w": 398.77471923828125,
-      "h": 321.5625
+      "h": 321.5925598144531
      },
      "fontPx": 36.01836173765121,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 129.00494384765625,
+      "y": 362.6953125,
+      "w": 36.01837158203125,
+      "h": 36.018341064453125
+     },
+     "fontPx": 36.01837158203125,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2871,10 +1922,10 @@
      "text": "Inbox",
      "opacity": 0.2,
      "rect": {
-      "x": 129.00494384765625,
-      "y": 356.9375,
+      "x": 175.31427001953125,
+      "y": 356.9066467285156,
       "w": 108.0751953125,
-      "h": 47.5625
+      "h": 47.595672607421875
      },
      "fontPx": 36.025065104166664,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -2887,9 +1938,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 435.66351318359375,
-      "y": 356.9375,
+      "y": 356.9066467285156,
       "w": 43.23406982421875,
-      "h": 47.5625
+      "h": 47.595672607421875
      },
      "fontPx": 35.60452809053309,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -2902,11 +1953,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 541.9297485351562,
-      "y": 344.0625,
+      "y": 344.0429382324219,
       "w": 398.774658203125,
-      "h": 321.5625
+      "h": 321.5925598144531
      },
      "fontPx": 36.01835622479838,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 566.3707275390625,
+      "y": 362.6953125,
+      "w": 36.01837158203125,
+      "h": 36.018341064453125
+     },
+     "fontPx": 36.01837158203125,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2916,10 +1982,10 @@
      "text": "Sheet",
      "opacity": 0.2,
      "rect": {
-      "x": 566.3707275390625,
-      "y": 356.9375,
+      "x": 612.6800537109375,
+      "y": 356.9066467285156,
       "w": 108.0751953125,
-      "h": 47.5625
+      "h": 47.595672607421875
      },
      "fontPx": 36.025065104166664,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -2932,9 +1998,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 873.029296875,
-      "y": 356.9375,
+      "y": 356.9066467285156,
       "w": 43.23406982421875,
-      "h": 47.5625
+      "h": 47.595672607421875
      },
      "fontPx": 35.60452809053309,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -2947,11 +2013,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 979.2955322265625,
-      "y": 344.0625,
+      "y": 344.0429382324219,
       "w": 398.7747802734375,
-      "h": 321.5625
+      "h": 321.5925598144531
      },
      "fontPx": 36.018367250504035,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1003.7365112304688,
+      "y": 362.6953125,
+      "w": 36.01837158203125,
+      "h": 36.018341064453125
+     },
+     "fontPx": 36.01837158203125,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2961,12 +2042,12 @@
      "text": "Chat",
      "opacity": 0.2,
      "rect": {
-      "x": 1003.7365112304688,
-      "y": 356.9375,
-      "w": 86.44805908203125,
-      "h": 47.5625
+      "x": 1050.0458984375,
+      "y": 356.9066467285156,
+      "w": 86.447998046875,
+      "h": 47.595672607421875
      },
-     "fontPx": 36.127547079057834,
+     "fontPx": 36.12752157182836,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -2977,9 +2058,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 1180.73291015625,
-      "y": 356.9375,
+      "y": 356.9066467285156,
       "w": 172.896240234375,
-      "h": 47.5625
+      "h": 47.595672607421875
      },
      "fontPx": 36.127572586287314,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -2987,16 +2068,16 @@
     },
     {
      "kind": "box",
-     "label": "PDFv3",
-     "text": "PDFv3",
+     "label": "PDFPDFv3",
+     "text": "PDFPDFv3",
      "opacity": 0.2,
      "rect": {
       "x": 1416.661376953125,
-      "y": 344.0625,
+      "y": 344.0429382324219,
       "w": 398.774658203125,
-      "h": 321.5625
+      "h": 321.5925598144531
      },
-     "fontPx": 36.01835622479838,
+     "fontPx": 12.220513719128023,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3006,10 +2087,10 @@
      "text": "PDF",
      "opacity": 0.2,
      "rect": {
-      "x": 1441.102294921875,
-      "y": 356.9375,
+      "x": 1480.196044921875,
+      "y": 356.9066467285156,
       "w": 64.841064453125,
-      "h": 47.5625
+      "h": 47.595672607421875
      },
      "fontPx": 36.31099609375,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3022,9 +2103,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 1747.760986328125,
-      "y": 356.9375,
+      "y": 356.9066467285156,
       "w": 43.234130859375,
-      "h": 47.5625
+      "h": 47.595672607421875
      },
      "fontPx": 35.60457835477941,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3037,9 +2118,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 146.44940185546875,
-      "y": 496.25,
+      "y": 496.2198181152344,
       "w": 305.9930725097656,
-      "h": 104.375
+      "h": 104.43136596679688
      },
      "fontPx": 36.458749064993356,
      "color": "rgb(13, 18, 36)",
@@ -3052,9 +2133,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 577.7348022460938,
-      "y": 497.5625,
+      "y": 497.55029296875,
       "w": 311.7281494140625,
-      "h": 102.0625
+      "h": 102.05108642578125
      },
      "fontPx": 36.36828409830729,
      "color": "rgb(13, 18, 36)",
@@ -3067,9 +2148,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 1015.4577026367188,
-      "y": 498.875,
+      "y": 498.884521484375,
       "w": 311.01397705078125,
-      "h": 99.375
+      "h": 99.38262939453125
      },
      "fontPx": 36.28496398925781,
      "color": "rgb(13, 18, 36)",
@@ -3081,12 +2162,12 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 622.2313842773438,
-      "y": 366,
-      "w": 248.01214599609375,
-      "h": 248
+      "x": 603.4503784179688,
+      "y": 347.22137451171875,
+      "w": 285.57415771484375,
+      "h": 285.57415771484375
      },
-     "fontPx": 16.46553666364108,
+     "fontPx": 16.435922746178058,
      "color": "rgb(0, 0, 0)",
      "issues": []
     },
@@ -3097,9 +2178,9 @@
      "opacity": 1,
      "rect": {
       "x": 430.24066162109375,
-      "y": 719.0625,
+      "y": 719.0626831054688,
       "w": 298.56646728515625,
-      "h": 70
+      "h": 69.978515625
      },
      "fontPx": 30.88618627087823,
      "color": "rgb(13, 18, 36)",
@@ -3112,9 +2193,9 @@
      "opacity": 1,
      "rect": {
       "x": 753.5054321289062,
-      "y": 719.0625,
+      "y": 719.0626831054688,
       "w": 323.60247802734375,
-      "h": 70
+      "h": 69.978515625
      },
      "fontPx": 30.917434206434113,
      "color": "rgb(13, 18, 36)",
@@ -3127,9 +2208,9 @@
      "opacity": 1,
      "rect": {
       "x": 1101.80615234375,
-      "y": 719.0625,
+      "y": 719.0626831054688,
       "w": 387.93701171875,
-      "h": 70
+      "h": 69.978515625
      },
      "fontPx": 30.870319234913794,
      "color": "rgb(13, 18, 36)",
@@ -3144,7 +2225,7 @@
       "x": 96,
       "y": 96,
       "w": 997.984375,
-      "h": 64.375
+      "h": 64.390625
      },
      "fontPx": 55.999123246492985,
      "color": "rgb(13, 18, 36)",
@@ -3174,11 +2255,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 104.19720458984375,
-      "y": 346.9375,
+      "y": 346.9617919921875,
       "w": 398.9456787109375,
-      "h": 321.75
+      "h": 321.7303466796875
      },
      "fontPx": 36.03380323840726,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 128.64871215820312,
+      "y": 365.6221618652344,
+      "w": 36.03379821777344,
+      "h": 36.033782958984375
+     },
+     "fontPx": 36.03379821777344,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3188,12 +2284,12 @@
      "text": "Inbox",
      "opacity": 0.2,
      "rect": {
-      "x": 128.64871215820312,
-      "y": 359.8125,
-      "w": 108.12152099609375,
-      "h": 47.625
+      "x": 174.97789001464844,
+      "y": 359.83099365234375,
+      "w": 108.12150573730469,
+      "h": 47.616119384765625
      },
-     "fontPx": 36.040506998697914,
+     "fontPx": 36.0405019124349,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3204,9 +2300,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 435.438720703125,
-      "y": 359.8125,
+      "y": 359.83099365234375,
       "w": 43.25262451171875,
-      "h": 47.625
+      "h": 47.616119384765625
      },
      "fontPx": 35.61980842141544,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3219,11 +2315,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 541.75048828125,
-      "y": 346.9375,
+      "y": 346.9617919921875,
       "w": 398.9456787109375,
-      "h": 321.75
+      "h": 321.7303466796875
      },
      "fontPx": 36.03380323840726,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 566.2020263671875,
+      "y": 365.6221618652344,
+      "w": 36.0338134765625,
+      "h": 36.033782958984375
+     },
+     "fontPx": 36.0338134765625,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3233,10 +2344,10 @@
      "text": "Sheet",
      "opacity": 0.2,
      "rect": {
-      "x": 566.2020263671875,
-      "y": 359.8125,
+      "x": 612.5311889648438,
+      "y": 359.83099365234375,
       "w": 108.12152099609375,
-      "h": 47.625
+      "h": 47.616119384765625
      },
      "fontPx": 36.040506998697914,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3249,9 +2360,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 872.9920654296875,
-      "y": 359.8125,
+      "y": 359.83099365234375,
       "w": 43.25262451171875,
-      "h": 47.625
+      "h": 47.616119384765625
      },
      "fontPx": 35.61980842141544,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3264,11 +2375,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 979.3038330078125,
-      "y": 346.9375,
+      "y": 346.9617919921875,
       "w": 398.9456787109375,
-      "h": 321.75
+      "h": 321.7303466796875
      },
      "fontPx": 36.03380323840726,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1003.75537109375,
+      "y": 365.6221618652344,
+      "w": 36.0338134765625,
+      "h": 36.033782958984375
+     },
+     "fontPx": 36.0338134765625,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3278,12 +2404,12 @@
      "text": "Chat",
      "opacity": 0.2,
      "rect": {
-      "x": 1003.75537109375,
-      "y": 359.8125,
-      "w": 86.485107421875,
-      "h": 47.625
+      "x": 1050.08447265625,
+      "y": 359.83099365234375,
+      "w": 86.4852294921875,
+      "h": 47.616119384765625
      },
-     "fontPx": 36.14302996735074,
+     "fontPx": 36.1430809818097,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3294,9 +2420,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 1180.82763671875,
-      "y": 359.8125,
+      "y": 359.83099365234375,
       "w": 172.9703369140625,
-      "h": 47.625
+      "h": 47.616119384765625
      },
      "fontPx": 36.14305547458022,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3304,16 +2430,16 @@
     },
     {
      "kind": "box",
-     "label": "PDFv3",
-     "text": "PDFv3",
+     "label": "PDFPDFv3",
+     "text": "PDFPDFv3",
      "opacity": 0.2,
      "rect": {
       "x": 1416.857177734375,
-      "y": 346.9375,
+      "y": 346.9617919921875,
       "w": 398.9456787109375,
-      "h": 321.75
+      "h": 321.7303466796875
      },
-     "fontPx": 36.03380323840726,
+     "fontPx": 12.225754670173892,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3323,10 +2449,10 @@
      "text": "PDF",
      "opacity": 0.2,
      "rect": {
-      "x": 1441.30859375,
-      "y": 359.8125,
+      "x": 1480.4189453125,
+      "y": 359.83099365234375,
       "w": 64.868896484375,
-      "h": 47.625
+      "h": 47.616119384765625
      },
      "fontPx": 36.326582031250005,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3339,9 +2465,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 1748.0986328125,
-      "y": 359.8125,
+      "y": 359.83099365234375,
       "w": 43.252685546875,
-      "h": 47.625
+      "h": 47.616119384765625
      },
      "fontPx": 35.61985868566176,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3354,9 +2480,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 146.1006317138672,
-      "y": 499.1875,
+      "y": 499.203857421875,
       "w": 306.124267578125,
-      "h": 104.5
+      "h": 104.47613525390625
      },
      "fontPx": 36.47438081781915,
      "color": "rgb(13, 18, 36)",
@@ -3369,9 +2495,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 577.5709228515625,
-      "y": 500.5625,
+      "y": 500.534912109375,
       "w": 311.86181640625,
-      "h": 102.0625
+      "h": 102.0948486328125
      },
      "fontPx": 36.38387858072917,
      "color": "rgb(13, 18, 36)",
@@ -3384,9 +2510,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 1015.4815673828125,
-      "y": 501.875,
+      "y": 501.86968994140625,
       "w": 311.147216796875,
-      "h": 99.4375
+      "h": 99.42523193359375
      },
      "fontPx": 36.30050862630208,
      "color": "rgb(13, 18, 36)",
@@ -3399,9 +2525,9 @@
      "opacity": 1,
      "rect": {
       "x": 1024.0960693359375,
-      "y": 383.875,
+      "y": 383.88311767578125,
       "w": 180.6690673828125,
-      "h": 90.125
+      "h": 90.11920166015625
      },
      "fontPx": 40.148681640625,
      "color": "rgb(13, 18, 36)",
@@ -3414,9 +2540,9 @@
      "opacity": 1,
      "rect": {
       "x": 1024.9857177734375,
-      "y": 536.3125,
+      "y": 536.33203125,
       "w": 178.8896484375,
-      "h": 84.375
+      "h": 84.35015869140625
      },
      "fontPx": 39.75325520833333,
      "color": "rgb(13, 18, 36)",
@@ -3428,12 +2554,12 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 627.5399169921875,
-      "y": 375.3125,
-      "w": 248.11846923828125,
-      "h": 248.125
+      "x": 608.7508544921875,
+      "y": 356.5171813964844,
+      "w": 285.69659423828125,
+      "h": 285.6965637207031
      },
-     "fontPx": 16.47259546810166,
+     "fontPx": 16.44296945256295,
      "color": "rgb(0, 0, 0)",
      "issues": []
     },
@@ -3446,7 +2572,7 @@
       "x": 96,
       "y": 96,
       "w": 997.984375,
-      "h": 64.375
+      "h": 64.390625
      },
      "fontPx": 55.999123246492985,
      "color": "rgb(13, 18, 36)",
@@ -3476,11 +2602,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 103.99040222167969,
-      "y": 349.9375,
+      "y": 349.918701171875,
       "w": 399.04205322265625,
-      "h": 321.8125
+      "h": 321.80804443359375
      },
      "fontPx": 36.042508033014116,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 128.44781494140625,
+      "y": 368.5835876464844,
+      "w": 36.042510986328125,
+      "h": 36.042510986328125
+     },
+     "fontPx": 36.042510986328125,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3490,12 +2631,12 @@
      "text": "Inbox",
      "opacity": 0.2,
      "rect": {
-      "x": 128.44781494140625,
-      "y": 362.8125,
-      "w": 108.14764404296875,
-      "h": 47.625
+      "x": 174.78819274902344,
+      "y": 362.7910461425781,
+      "w": 108.14762878417969,
+      "h": 47.627593994140625
      },
-     "fontPx": 36.049214680989586,
+     "fontPx": 36.04920959472656,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3506,9 +2647,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 435.3119812011719,
-      "y": 362.8125,
+      "y": 362.7910461425781,
       "w": 43.2630615234375,
-      "h": 47.625
+      "h": 47.627593994140625
      },
      "fontPx": 35.62840360753676,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3521,11 +2662,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 541.6494750976562,
-      "y": 349.9375,
+      "y": 349.918701171875,
       "w": 399.04205322265625,
-      "h": 321.8125
+      "h": 321.80804443359375
      },
      "fontPx": 36.042508033014116,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 566.1068725585938,
+      "y": 368.5835876464844,
+      "w": 36.04248046875,
+      "h": 36.042510986328125
+     },
+     "fontPx": 36.04248046875,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3535,12 +2691,12 @@
      "text": "Sheet",
      "opacity": 0.2,
      "rect": {
-      "x": 566.1068725585938,
-      "y": 362.8125,
-      "w": 108.14764404296875,
-      "h": 47.625
+      "x": 612.447265625,
+      "y": 362.7910461425781,
+      "w": 108.1475830078125,
+      "h": 47.627593994140625
      },
-     "fontPx": 36.049214680989586,
+     "fontPx": 36.0491943359375,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3551,9 +2707,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 872.9710083007812,
-      "y": 362.8125,
+      "y": 362.7910461425781,
       "w": 43.26312255859375,
-      "h": 47.625
+      "h": 47.627593994140625
      },
      "fontPx": 35.62845387178309,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3566,11 +2722,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 979.3084716796875,
-      "y": 349.9375,
+      "y": 349.918701171875,
       "w": 399.0421142578125,
-      "h": 321.8125
+      "h": 321.80804443359375
      },
      "fontPx": 36.04251354586694,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1003.7659301757812,
+      "y": 368.5835876464844,
+      "w": 36.04241943359375,
+      "h": 36.042510986328125
+     },
+     "fontPx": 36.04241943359375,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3580,12 +2751,12 @@
      "text": "Chat",
      "opacity": 0.2,
      "rect": {
-      "x": 1003.7659301757812,
-      "y": 362.8125,
-      "w": 86.50604248046875,
-      "h": 47.625
+      "x": 1050.106201171875,
+      "y": 362.7910461425781,
+      "w": 86.506103515625,
+      "h": 47.627593994140625
      },
-     "fontPx": 36.151778947061565,
+     "fontPx": 36.151804454291046,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3596,9 +2767,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 1180.881103515625,
-      "y": 362.8125,
+      "y": 362.7910461425781,
       "w": 173.011962890625,
-      "h": 47.625
+      "h": 47.627593994140625
      },
      "fontPx": 36.15175343983209,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3606,16 +2777,16 @@
     },
     {
      "kind": "box",
-     "label": "PDFv3",
-     "text": "PDFv3",
+     "label": "PDFPDFv3",
+     "text": "PDFPDFv3",
      "opacity": 0.2,
      "rect": {
       "x": 1416.967529296875,
-      "y": 349.9375,
+      "y": 349.918701171875,
       "w": 399.0419921875,
-      "h": 321.8125
+      "h": 321.80804443359375
      },
-     "fontPx": 36.04250252016129,
+     "fontPx": 12.228706212197581,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3625,10 +2796,10 @@
      "text": "PDF",
      "opacity": 0.2,
      "rect": {
-      "x": 1441.425048828125,
-      "y": 362.8125,
+      "x": 1480.544677734375,
+      "y": 362.7910461425781,
       "w": 64.884521484375,
-      "h": 47.625
+      "h": 47.627593994140625
      },
      "fontPx": 36.335332031250005,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3641,9 +2812,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 1748.2890625,
-      "y": 362.8125,
+      "y": 362.7910461425781,
       "w": 43.26318359375,
-      "h": 47.625
+      "h": 47.627593994140625
      },
      "fontPx": 35.62850413602941,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3656,9 +2827,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 145.90396118164062,
-      "y": 502.1875,
+      "y": 502.19757080078125,
       "w": 306.1982421875,
-      "h": 104.5
+      "h": 104.5013427734375
      },
      "fontPx": 36.48319481382979,
      "color": "rgb(13, 18, 36)",
@@ -3671,9 +2842,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 577.478515625,
-      "y": 503.5,
+      "y": 503.52886962890625,
       "w": 311.9371337890625,
-      "h": 102.125
+      "h": 102.1195068359375
      },
      "fontPx": 36.39266560872396,
      "color": "rgb(13, 18, 36)",
@@ -3686,9 +2857,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 1015.4949340820312,
-      "y": 504.875,
+      "y": 504.86395263671875,
       "w": 311.22235107421875,
-      "h": 99.4375
+      "h": 99.44927978515625
      },
      "fontPx": 36.30927429199219,
      "color": "rgb(13, 18, 36)",
@@ -3701,9 +2872,9 @@
      "opacity": 1,
      "rect": {
       "x": 1024.111572265625,
-      "y": 375.6875,
+      "y": 375.6996154785156,
       "w": 180.712646484375,
-      "h": 90.125
+      "h": 90.1409912109375
      },
      "fontPx": 40.158365885416664,
      "color": "rgb(13, 18, 36)",
@@ -3716,9 +2887,9 @@
      "opacity": 1,
      "rect": {
       "x": 1025.00146484375,
-      "y": 530.5625,
+      "y": 530.5386352539062,
       "w": 178.932861328125,
-      "h": 84.375
+      "h": 84.37054443359375
      },
      "fontPx": 39.762858072916664,
      "color": "rgb(13, 18, 36)",
@@ -3731,9 +2902,9 @@
      "opacity": 1,
      "rect": {
       "x": 1379.6376953125,
-      "y": 390.6875,
+      "y": 390.6810607910156,
       "w": 216.255126953125,
-      "h": 216.25
+      "h": 216.25503540039062
      },
      "fontPx": 20.595726376488095,
      "color": "rgb(0, 0, 0)",
@@ -3745,12 +2916,12 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 637.6930541992188,
-      "y": 382.9375,
-      "w": 248.178466796875,
-      "h": 248.125
+      "x": 618.8994750976562,
+      "y": 364.11578369140625,
+      "w": 285.765625,
+      "h": 285.765625
      },
-     "fontPx": 16.476578708506224,
+     "fontPx": 16.446942446043167,
      "color": "rgb(0, 0, 0)",
      "issues": []
     },
@@ -3763,7 +2934,7 @@
       "x": 96,
       "y": 96,
       "w": 997.984375,
-      "h": 64.375
+      "h": 64.390625
      },
      "fontPx": 55.999123246492985,
      "color": "rgb(13, 18, 36)",
@@ -3793,11 +2964,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 103.88226318359375,
-      "y": 352.875,
+      "y": 352.8985595703125,
       "w": 399.09246826171875,
-      "h": 321.875
+      "h": 321.84881591796875
      },
      "fontPx": 36.04706164944557,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 128.3427734375,
+      "y": 371.5657958984375,
+      "w": 36.04705810546875,
+      "h": 36.04705810546875
+     },
+     "fontPx": 36.04705810546875,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3807,10 +2993,10 @@
      "text": "Inbox",
      "opacity": 0.2,
      "rect": {
-      "x": 128.3427734375,
-      "y": 365.75,
+      "x": 174.68899536132812,
+      "y": 365.77252197265625,
       "w": 108.16131591796875,
-      "h": 47.625
+      "h": 47.63360595703125
      },
      "fontPx": 36.05377197265625,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3823,9 +3009,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 435.2456970214844,
-      "y": 365.75,
+      "y": 365.77252197265625,
       "w": 43.268524169921875,
-      "h": 47.625
+      "h": 47.63360595703125
      },
      "fontPx": 35.63290225758272,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3838,11 +3024,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 541.5966186523438,
-      "y": 352.875,
+      "y": 352.8985595703125,
       "w": 399.09246826171875,
-      "h": 321.875
+      "h": 321.84881591796875
      },
      "fontPx": 36.04706164944557,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 566.0570678710938,
+      "y": 371.5657958984375,
+      "w": 36.047119140625,
+      "h": 36.04705810546875
+     },
+     "fontPx": 36.047119140625,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3852,10 +3053,10 @@
      "text": "Sheet",
      "opacity": 0.2,
      "rect": {
-      "x": 566.0570678710938,
-      "y": 365.75,
+      "x": 612.4033203125,
+      "y": 365.77252197265625,
       "w": 108.16131591796875,
-      "h": 47.625
+      "h": 47.63360595703125
      },
      "fontPx": 36.05377197265625,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3868,9 +3069,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 872.9600219726562,
-      "y": 365.75,
+      "y": 365.77252197265625,
       "w": 43.2685546875,
-      "h": 47.625
+      "h": 47.63360595703125
      },
      "fontPx": 35.632927389705884,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3883,11 +3084,26 @@
      "opacity": 0.2,
      "rect": {
       "x": 979.3109130859375,
-      "y": 352.875,
+      "y": 352.8985595703125,
       "w": 399.0924072265625,
-      "h": 321.875
+      "h": 321.84881591796875
      },
      "fontPx": 36.04705613659274,
+     "color": "rgba(13, 18, 36, 0.6)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.2,
+     "rect": {
+      "x": 1003.7714233398438,
+      "y": 371.5657958984375,
+      "w": 36.04693603515625,
+      "h": 36.04705810546875
+     },
+     "fontPx": 36.04693603515625,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3897,12 +3113,12 @@
      "text": "Chat",
      "opacity": 0.2,
      "rect": {
-      "x": 1003.7714233398438,
-      "y": 365.75,
-      "w": 86.51690673828125,
-      "h": 47.625
+      "x": 1050.11767578125,
+      "y": 365.77252197265625,
+      "w": 86.516845703125,
+      "h": 47.63360595703125
      },
-     "fontPx": 36.156319233908576,
+     "fontPx": 36.1562937266791,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3913,9 +3129,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 1180.908935546875,
-      "y": 365.75,
+      "y": 365.77252197265625,
       "w": 173.033935546875,
-      "h": 47.625
+      "h": 47.63360595703125
      },
      "fontPx": 36.15634474113806,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3923,16 +3139,16 @@
     },
     {
      "kind": "box",
-     "label": "PDFv3",
-     "text": "PDFv3",
+     "label": "PDFPDFv3",
+     "text": "PDFPDFv3",
      "opacity": 0.2,
      "rect": {
       "x": 1417.025146484375,
-      "y": 352.875,
+      "y": 352.8985595703125,
       "w": 399.092529296875,
-      "h": 321.875
+      "h": 321.84881591796875
      },
-     "fontPx": 36.04706716229839,
+     "fontPx": 12.230254930065525,
      "color": "rgba(13, 18, 36, 0.6)",
      "issues": []
     },
@@ -3942,10 +3158,10 @@
      "text": "PDF",
      "opacity": 0.2,
      "rect": {
-      "x": 1441.48583984375,
-      "y": 365.75,
+      "x": 1480.610595703125,
+      "y": 365.77252197265625,
       "w": 64.892578125,
-      "h": 47.625
+      "h": 47.63360595703125
      },
      "fontPx": 36.33984375,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3958,9 +3174,9 @@
      "opacity": 0.2,
      "rect": {
       "x": 1748.388671875,
-      "y": 365.75,
+      "y": 365.77252197265625,
       "w": 43.2685546875,
-      "h": 47.625
+      "h": 47.63360595703125
      },
      "fontPx": 35.632927389705884,
      "color": "rgba(13, 18, 36, 0.6)",
@@ -3973,9 +3189,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 145.80111694335938,
-      "y": 505.1875,
+      "y": 505.19671630859375,
       "w": 306.2369079589844,
-      "h": 104.5
+      "h": 104.51458740234375
      },
      "fontPx": 36.487801799368356,
      "color": "rgb(13, 18, 36)",
@@ -3988,9 +3204,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 577.43017578125,
-      "y": 506.5,
+      "y": 506.52825927734375,
       "w": 311.9765625,
-      "h": 102.1875
+      "h": 102.13238525390625
      },
      "fontPx": 36.397265624999996,
      "color": "rgb(13, 18, 36)",
@@ -4003,9 +3219,9 @@
      "opacity": 0.144,
      "rect": {
       "x": 1015.5018920898438,
-      "y": 507.875,
+      "y": 507.863525390625,
       "w": 311.26177978515625,
-      "h": 99.4375
+      "h": 99.46185302734375
      },
      "fontPx": 36.313874308268225,
      "color": "rgb(13, 18, 36)",
@@ -4018,9 +3234,9 @@
      "opacity": 1,
      "rect": {
       "x": 1024.11962890625,
-      "y": 376.4375,
+      "y": 376.46337890625,
       "w": 180.735595703125,
-      "h": 90.1875
+      "h": 90.15234375
      },
      "fontPx": 40.16346571180555,
      "color": "rgb(13, 18, 36)",
@@ -4033,9 +3249,9 @@
      "opacity": 1,
      "rect": {
       "x": 1025.009765625,
-      "y": 526.6875,
+      "y": 526.6953125,
       "w": 178.955322265625,
-      "h": 84.375
+      "h": 84.3812255859375
      },
      "fontPx": 39.76784939236111,
      "color": "rgb(13, 18, 36)",
@@ -4048,9 +3264,9 @@
      "opacity": 1,
      "rect": {
       "x": 1379.690673828125,
-      "y": 390.6875,
+      "y": 390.66217041015625,
       "w": 216.282470703125,
-      "h": 216.25
+      "h": 216.2823486328125
      },
      "fontPx": 20.598330543154763,
      "color": "rgb(0, 0, 0)",
@@ -4062,12 +3278,12 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 632.9855346679688,
-      "y": 364.9375,
-      "w": 248.20977783203125,
-      "h": 248.1875
+      "x": 614.1895751953125,
+      "y": 346.1343994140625,
+      "w": 285.80169677734375,
+      "h": 285.80169677734375
      },
-     "fontPx": 16.47865744942946,
+     "fontPx": 16.449018519559353,
      "color": "rgb(0, 0, 0)",
      "issues": []
     },
@@ -4080,7 +3296,7 @@
       "x": 96,
       "y": 96,
       "w": 997.984375,
-      "h": 64.375
+      "h": 64.390625
      },
      "fontPx": 55.999123246492985,
      "color": "rgb(13, 18, 36)",
@@ -4110,9 +3326,9 @@
      "opacity": 1,
      "rect": {
       "x": 1024.1234130859375,
-      "y": 384.125,
+      "y": 384.0982971191406,
       "w": 180.7459716796875,
-      "h": 90.125
+      "h": 90.15756225585938
      },
      "fontPx": 40.165771484375,
      "color": "rgb(13, 18, 36)",
@@ -4125,9 +3341,9 @@
      "opacity": 1,
      "rect": {
       "x": 1025.013427734375,
-      "y": 535,
+      "y": 535.0028076171875,
       "w": 178.9658203125,
-      "h": 84.375
+      "h": 84.38604736328125
      },
      "fontPx": 39.770182291666664,
      "color": "rgb(13, 18, 36)",
@@ -4139,12 +3355,12 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 622.3611450195312,
-      "y": 377.4375,
-      "w": 248.22412109375,
-      "h": 248.25
+      "x": 603.5640869140625,
+      "y": 358.64385986328125,
+      "w": 285.8182373046875,
+      "h": 285.8182373046875
      },
-     "fontPx": 16.479609699170126,
+     "fontPx": 16.449970492356115,
      "color": "rgb(0, 0, 0)",
      "issues": []
     },
@@ -4155,9 +3371,9 @@
      "opacity": 0.999504,
      "rect": {
       "x": 623.9382934570312,
-      "y": 733.8125,
+      "y": 733.8387451171875,
       "w": 672.1234741210938,
-      "h": 68
+      "h": 67.9783935546875
      },
      "fontPx": 53.52284939402278,
      "color": "rgb(13, 18, 36)",
@@ -4172,7 +3388,7 @@
       "x": 96,
       "y": 96,
       "w": 997.984375,
-      "h": 64.375
+      "h": 64.390625
      },
      "fontPx": 55.999123246492985,
      "color": "rgb(13, 18, 36)",
@@ -4202,9 +3418,9 @@
      "opacity": 1,
      "rect": {
       "x": 1024.124755859375,
-      "y": 378.3125,
+      "y": 378.3215026855469,
       "w": 180.7496337890625,
-      "h": 90.1875
+      "h": 90.15936279296875
      },
      "fontPx": 40.16658528645833,
      "color": "rgb(13, 18, 36)",
@@ -4217,9 +3433,9 @@
      "opacity": 1,
      "rect": {
       "x": 1025.0147705078125,
-      "y": 533.375,
+      "y": 533.393310546875,
       "w": 178.969482421875,
-      "h": 84.375
+      "h": 84.38775634765625
      },
      "fontPx": 39.77099609375,
      "color": "rgb(13, 18, 36)",
@@ -4231,12 +3447,12 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 626.216796875,
-      "y": 381.375,
-      "w": 248.22918701171875,
-      "h": 248.1875
+      "x": 607.4193725585938,
+      "y": 362.5509338378906,
+      "w": 285.82403564453125,
+      "h": 285.8240051269531
      },
-     "fontPx": 16.479946025674273,
+     "fontPx": 16.450304209757196,
      "color": "rgb(0, 0, 0)",
      "issues": []
     },
@@ -4247,9 +3463,9 @@
      "opacity": 1,
      "rect": {
       "x": 623.9315185546875,
-      "y": 730.75,
+      "y": 730.742431640625,
       "w": 672.136962890625,
-      "h": 68
+      "h": 67.97979736328125
      },
      "fontPx": 53.5239235379977,
      "color": "rgb(13, 18, 36)",
@@ -4262,9 +3478,9 @@
      "opacity": 0.932903,
      "rect": {
       "x": 746.372314453125,
-      "y": 816.0625,
+      "y": 816.0371704101562,
       "w": 427.25537109375,
-      "h": 67.9375
+      "h": 67.979736328125
      },
      "fontPx": 53.53561276355421,
      "color": "rgb(13, 18, 36)",
@@ -4294,9 +3510,9 @@
      "opacity": 0.402472,
      "rect": {
       "x": 1024.125,
-      "y": 374.4375,
+      "y": 374.4584045410156,
       "w": 180.750244140625,
-      "h": 90.1875
+      "h": 90.15969848632812
      },
      "fontPx": 40.16672092013889,
      "color": "rgb(13, 18, 36)",
@@ -4309,9 +3525,9 @@
      "opacity": 0.402472,
      "rect": {
       "x": 1025.014892578125,
-      "y": 526.125,
+      "y": 526.1510620117188,
       "w": 178.97021484375,
-      "h": 84.4375
+      "h": 84.3880615234375
      },
      "fontPx": 39.771158854166664,
      "color": "rgb(13, 18, 36)",
@@ -4323,12 +3539,12 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 637.111083984375,
-      "y": 364.4375,
-      "w": 248.22998046875,
-      "h": 248.25
+      "x": 618.3135986328125,
+      "y": 345.6357727050781,
+      "w": 285.824951171875,
+      "h": 285.8249816894531
      },
-     "fontPx": 16.479998703319502,
+     "fontPx": 16.450356901978417,
      "color": "rgb(0, 0, 0)",
      "issues": []
     },
@@ -4339,9 +3555,9 @@
      "opacity": 1,
      "rect": {
       "x": 623.9302978515625,
-      "y": 727.625,
+      "y": 727.653076171875,
       "w": 672.1392822265625,
-      "h": 68
+      "h": 67.98004150390625
      },
      "fontPx": 53.524108232436824,
      "color": "rgb(13, 18, 36)",
@@ -4354,9 +3570,9 @@
      "opacity": 1,
      "rect": {
       "x": 746.37158203125,
-      "y": 810.0625,
+      "y": 810.0852661132812,
       "w": 427.2568359375,
-      "h": 68
+      "h": 67.97998046875
      },
      "fontPx": 53.53579631024097,
      "color": "rgb(13, 18, 36)",
@@ -4385,12 +3601,12 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 831.7734985351562,
-      "y": 418,
-      "w": 241.27923583984375,
-      "h": 241.25
+      "x": 813.5023803710938,
+      "y": 399.71270751953125,
+      "w": 277.82135009765625,
+      "h": 277.82147216796875
      },
-     "fontPx": 16.018538478993776,
+     "fontPx": 15.989717991232014,
      "color": "rgb(0, 0, 0)",
      "issues": []
     },
@@ -4401,9 +3617,9 @@
      "opacity": 1,
      "rect": {
       "x": 633.3407592773438,
-      "y": 719.375,
+      "y": 719.3951416015625,
       "w": 653.3184204101562,
-      "h": 66.125
+      "h": 66.076416015625
      },
      "fontPx": 52.02535660234016,
      "color": "rgb(13, 18, 36)",
@@ -4416,12 +3632,3041 @@
      "opacity": 1,
      "rect": {
       "x": 752.353515625,
-      "y": 798.0625,
+      "y": 798.0642700195312,
       "w": 415.29296875,
-      "h": 66.0625
+      "h": 66.07647705078125
      },
      "fontPx": 52.0367093373494,
      "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 0,
+  "frame": 0,
+  "still": "out/stills/scene-03/scene-03-t00s.png",
+  "bg": "out/guards/bg/scene-03/t00s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 0,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "text",
+     "label": "Lockup: Introducing Space by",
+     "text": "Introducing Space by",
+     "opacity": 1,
+     "rect": {
+      "x": 338.6875,
+      "y": 488,
+      "w": 1242.609375,
+      "h": 100.640625
+     },
+     "fontPx": 83.97360217216412,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "logo",
+     "label": "",
+     "text": "",
+     "backing": "sampled",
+     "opacity": 1,
+     "rect": {
+      "x": 1186,
+      "y": 507.421875,
+      "w": 395.296875,
+      "h": 81.21875
+     },
+     "fontPx": 84.0631329113924,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 1,
+  "frame": 60,
+  "still": "out/stills/scene-03/scene-03-t01s.png",
+  "bg": "out/guards/bg/scene-03/t01s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 60,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoCompany brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the web",
+     "opacity": 1,
+     "rect": {
+      "x": 210,
+      "y": 210,
+      "w": 1500,
+      "h": 716
+     },
+     "fontPx": 12,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Ask in plain language",
+     "text": "Ask in plain language",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 539.203125,
+      "h": 64.390625
+     },
+     "fontPx": 56.021103896103895,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 2,
+  "frame": 120,
+  "still": "out/stills/scene-03/scene-03-t02s.png",
+  "bg": "out/guards/bg/scene-03/t02s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 120,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the web",
+     "opacity": 1,
+     "rect": {
+      "x": 208.0555419921875,
+      "y": 209.07183837890625,
+      "w": 1503.8887939453125,
+      "h": 717.8562622070312
+     },
+     "fontPx": 12.0311103515625,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chat prompt",
+     "text": "Prepare claim CL-7305 for review.Check the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 804.1971435546875,
+      "y": 580.6326293945312,
+      "w": 464.939697265625,
+      "h": 72.98876953125
+     },
+     "fontPx": 28.05670586947737,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Ask in plain language",
+     "text": "Ask in plain language",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 539.203125,
+      "h": 64.390625
+     },
+     "fontPx": 56.021103896103895,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 3,
+  "frame": 180,
+  "still": "out/stills/scene-03/scene-03-t03s.png",
+  "bg": "out/guards/bg/scene-03/t03s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 180,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the web",
+     "opacity": 1,
+     "rect": {
+      "x": 205.62496948242188,
+      "y": 207.91165161132812,
+      "w": 1508.75,
+      "h": 720.1767578125
+     },
+     "fontPx": 12.07,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chat prompt",
+     "text": "Prepare claim CL-7305 for review.Check the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 803.6935424804688,
+      "y": 580.6734619140625,
+      "w": 466.44268798828125,
+      "h": 73.2247314453125
+     },
+     "fontPx": 28.14740358549973,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Ask in plain language",
+     "text": "Ask in plain language",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 539.203125,
+      "h": 64.390625
+     },
+     "fontPx": 56.021103896103895,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 4,
+  "frame": 240,
+  "still": "out/stills/scene-03/scene-03-t04s.png",
+  "bg": "out/guards/bg/scene-03/t04s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 240,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the web",
+     "opacity": 1,
+     "rect": {
+      "x": 203.19444274902344,
+      "y": 206.75144958496094,
+      "w": 1513.6112060546875,
+      "h": 722.4970092773438
+     },
+     "fontPx": 12.108889648437499,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Chat prompt",
+     "text": "Prepare claim CL-7305 for review.Check the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 803.18994140625,
+      "y": 580.7142944335938,
+      "w": 467.945556640625,
+      "h": 73.46063232421875
+     },
+     "fontPx": 28.23809393521013,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Ask in plain language",
+     "text": "Ask in plain language",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 539.203125,
+      "h": 64.390625
+     },
+     "fontPx": 56.021103896103895,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 5,
+  "frame": 300,
+  "still": "out/stills/scene-03/scene-03-t05s.png",
+  "bg": "out/guards/bg/scene-03/t05s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 300,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the webPrepare claim CL-7305 for review.\nCheck the policy and the evidence.Reading claim",
+     "opacity": 1,
+     "rect": {
+      "x": 200.76390075683594,
+      "y": 205.59129333496094,
+      "w": 1518.47216796875,
+      "h": 724.8173828125
+     },
+     "fontPx": 12.14777734375,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 0.999676,
+     "rect": {
+      "x": 1141.685302734375,
+      "y": 263.2995300292969,
+      "w": 517.82421875,
+      "h": 102.8511962890625
+     },
+     "fontPx": 28.362828883020345,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Status: Reading claim",
+     "text": "Reading claim",
+     "opacity": 1,
+     "rect": {
+      "x": 444.7317810058594,
+      "y": 409.0665588378906,
+      "w": 270.4145812988281,
+      "h": 56.68963623046875
+     },
+     "fontPx": 28.336857321733486,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 6,
+  "frame": 360,
+  "still": "out/stills/scene-03/scene-03-t06s.png",
+  "bg": "out/guards/bg/scene-03/t06s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 360,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the webPrepare claim CL-7305 for review.\nCheck the policy and the evidence.Checking policy",
+     "opacity": 1,
+     "rect": {
+      "x": 198.3333740234375,
+      "y": 204.43115234375,
+      "w": 1523.3331298828125,
+      "h": 727.1377563476562
+     },
+     "fontPx": 12.1866650390625,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1142.266845703125,
+      "y": 262.31781005859375,
+      "w": 519.48193359375,
+      "h": 103.18045043945312
+     },
+     "fontPx": 28.453627035651408,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Status: Checking policy",
+     "text": "Checking policy",
+     "opacity": 0.282351,
+     "rect": {
+      "x": 443.0822448730469,
+      "y": 408.55780029296875,
+      "w": 301.2264709472656,
+      "h": 56.87109375
+     },
+     "fontPx": 28.417591598798644,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 7,
+  "frame": 420,
+  "still": "out/stills/scene-03/scene-03-t07s.png",
+  "bg": "out/guards/bg/scene-03/t07s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 420,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the webPrepare claim CL-7305 for review.\nCheck the policy and the evidence.Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 195.90274047851562,
+      "y": 203.27090454101562,
+      "w": 1528.1944580078125,
+      "h": 729.4581298828125
+     },
+     "fontPx": 12.2255556640625,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1142.8486328125,
+      "y": 261.34228515625,
+      "w": 521.1396484375,
+      "h": 103.50970458984375
+     },
+     "fontPx": 28.54442518828247,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Answer",
+     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 441.4326477050781,
+      "y": 406.4189147949219,
+      "w": 664.242431640625,
+      "h": 161.98861694335938
+     },
+     "fontPx": 28.52574859806365,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 8,
+  "frame": 480,
+  "still": "out/stills/scene-03/scene-03-t08s.png",
+  "bg": "out/guards/bg/scene-03/t08s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 480,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the webPrepare claim CL-7305 for review.\nCheck the policy and the evidence.Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 193.47225952148438,
+      "y": 202.11074829101562,
+      "w": 1533.0555419921875,
+      "h": 731.778564453125
+     },
+     "fontPx": 12.264444335937501,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1143.43017578125,
+      "y": 260.3668518066406,
+      "w": 522.7974853515625,
+      "h": 103.8389892578125
+     },
+     "fontPx": 28.635230027080887,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Answer",
+     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 439.7831726074219,
+      "y": 405.90496826171875,
+      "w": 666.3553466796875,
+      "h": 162.50384521484375
+     },
+     "fontPx": 28.616487280722776,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S1",
+     "text": "S1",
+     "opacity": 1,
+     "rect": {
+      "x": 1040.70263671875,
+      "y": 409.6737060546875,
+      "w": 55.611572265625,
+      "h": 33.113983154296875
+     },
+     "fontPx": 28.623603372012866,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 9,
+  "frame": 540,
+  "still": "out/stills/scene-03/scene-03-t09s.png",
+  "bg": "out/guards/bg/scene-03/t09s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 540,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the webPrepare claim CL-7305 for review.\nCheck the policy and the evidence.Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 191.04171752929688,
+      "y": 200.95059204101562,
+      "w": 1537.9166259765625,
+      "h": 734.098876953125
+     },
+     "fontPx": 12.303333007812501,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1144.0118408203125,
+      "y": 259.39141845703125,
+      "w": 524.455078125,
+      "h": 104.16824340820312
+     },
+     "fontPx": 28.726021493544604,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Answer",
+     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 438.1336669921875,
+      "y": 405.3909912109375,
+      "w": 668.46826171875,
+      "h": 163.0191650390625
+     },
+     "fontPx": 28.7072259633819,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S1",
+     "text": "S1",
+     "opacity": 1,
+     "rect": {
+      "x": 1040.95849609375,
+      "y": 409.1717224121094,
+      "w": 55.7879638671875,
+      "h": 33.218963623046875
+     },
+     "fontPx": 28.71439316693474,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S2",
+     "text": "S2",
+     "opacity": 1,
+     "rect": {
+      "x": 747.6522216796875,
+      "y": 449.926513671875,
+      "w": 55.78790283203125,
+      "h": 33.218994140625
+     },
+     "fontPx": 28.71436175178079,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 10,
+  "frame": 600,
+  "still": "out/stills/scene-03/scene-03-t10s.png",
+  "bg": "out/guards/bg/scene-03/t10s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 600,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the webPrepare claim CL-7305 for review.\nCheck the policy and the evidence.Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.Home Policy Wording 2026, p. 124.2 We cover sudden and accidental escape of water from a fixed pipe or appliance in your home. We do not cover damage caused by gradual leaks, wear and tear, or poor maintenance.",
+     "opacity": 1,
+     "rect": {
+      "x": 188.611083984375,
+      "y": 199.79034423828125,
+      "w": 1542.77783203125,
+      "h": 736.4193115234375
+     },
+     "fontPx": 12.34222265625,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1144.593505859375,
+      "y": 258.4158935546875,
+      "w": 526.11279296875,
+      "h": 104.49749755859375
+     },
+     "fontPx": 28.816819646175666,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Answer",
+     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 436.48406982421875,
+      "y": 404.8769836425781,
+      "w": 670.5812377929688,
+      "h": 163.53445434570312
+     },
+     "fontPx": 28.797967267182706,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S1",
+     "text": "S1",
+     "opacity": 1,
+     "rect": {
+      "x": 1041.2144775390625,
+      "y": 408.6696472167969,
+      "w": 55.9642333984375,
+      "h": 33.323944091796875
+     },
+     "fontPx": 28.805120131548712,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S2",
+     "text": "S2",
+     "opacity": 1,
+     "rect": {
+      "x": 746.98095703125,
+      "y": 449.5532531738281,
+      "w": 55.9642333984375,
+      "h": 33.324005126953125
+     },
+     "fontPx": 28.805120131548712,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Source card",
+     "text": "Home Policy Wording 2026, p. 124.2 We cover sudden and accidental escape of water from a fixed pipe or appliance in your home. We do not cover damage caused by gradual leaks, wear and tear, or poor maintenance.",
+     "opacity": 1,
+     "rect": {
+      "x": 1232.9688720703125,
+      "y": 386.7750244140625,
+      "w": 454.1937255859375,
+      "h": 414.54443359375
+     },
+     "fontPx": 28.79851520925328,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene03",
+  "second": 11,
+  "frame": 660,
+  "still": "out/stills/scene-03/scene-03-t11s.png",
+  "bg": "out/guards/bg/scene-03/t11s.png",
+  "guard": {
+   "scene": "S03",
+   "frame": 660,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the webPrepare claim CL-7305 for review.\nCheck the policy and the evidence.Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.Home Policy Wording 2026, p. 124.2 We cover sudden and accidental escape of water from a fixed pipe or appliance in your home. We do not cover damage caused by gradual leaks, wear and tear, or poor maintenance.",
+     "opacity": 1,
+     "rect": {
+      "x": 186.18055725097656,
+      "y": 198.6302032470703,
+      "w": 1547.638916015625,
+      "h": 738.7396240234375
+     },
+     "fontPx": 12.381111328125002,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1145.175048828125,
+      "y": 257.44049072265625,
+      "w": 527.7706298828125,
+      "h": 104.82672119140625
+     },
+     "fontPx": 28.90762448497408,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Answer",
+     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 434.83453369140625,
+      "y": 404.3630065917969,
+      "w": 672.6941528320312,
+      "h": 164.04971313476562
+     },
+     "fontPx": 28.88870594984183,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S1",
+     "text": "S1",
+     "opacity": 1,
+     "rect": {
+      "x": 1041.4703369140625,
+      "y": 408.1676330566406,
+      "w": 56.1405029296875,
+      "h": 33.428955078125
+     },
+     "fontPx": 28.895847096162687,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S2",
+     "text": "S2",
+     "opacity": 1,
+     "rect": {
+      "x": 746.3097534179688,
+      "y": 449.1800537109375,
+      "w": 56.140625,
+      "h": 33.42901611328125
+     },
+     "fontPx": 28.895909926470587,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Source card",
+     "text": "Home Policy Wording 2026, p. 124.2 We cover sudden and accidental escape of water from a fixed pipe or appliance in your home. We do not cover damage caused by gradual leaks, wear and tear, or poor maintenance.",
+     "opacity": 1,
+     "rect": {
+      "x": 1233.8289794921875,
+      "y": 386.2040100097656,
+      "w": 455.6248779296875,
+      "h": 415.8506164550781
+     },
+     "fontPx": 28.88925856438236,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene02",
+  "second": 0,
+  "frame": 0,
+  "still": "out/stills/scene-02/scene-02-t00s.png",
+  "bg": "out/guards/bg/scene-02/t00s.png",
+  "guard": {
+   "scene": "S02",
+   "frame": 0,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": []
+  }
+ },
+ {
+  "scene": "Scene02",
+  "second": 1,
+  "frame": 60,
+  "still": "out/stills/scene-02/scene-02-t01s.png",
+  "bg": "out/guards/bg/scene-02/t01s.png",
+  "guard": {
+   "scene": "S02",
+   "frame": 60,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "text",
+     "label": "Lockup: Introducing Space by",
+     "text": "Introducing Space by",
+     "opacity": 1,
+     "rect": {
+      "x": 338.59375,
+      "y": 488,
+      "w": 1242.796875,
+      "h": 100.640625
+     },
+     "fontPx": 83.98627312952534,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene02",
+  "second": 2,
+  "frame": 120,
+  "still": "out/stills/scene-02/scene-02-t02s.png",
+  "bg": "out/guards/bg/scene-02/t02s.png",
+  "guard": {
+   "scene": "S02",
+   "frame": 120,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "text",
+     "label": "Lockup: Introducing Space by",
+     "text": "Introducing Space by",
+     "opacity": 1,
+     "rect": {
+      "x": 338.59375,
+      "y": 488,
+      "w": 1242.796875,
+      "h": 100.640625
+     },
+     "fontPx": 83.98627312952534,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene02",
+  "second": 3,
+  "frame": 180,
+  "still": "out/stills/scene-02/scene-02-t03s.png",
+  "bg": "out/guards/bg/scene-02/t03s.png",
+  "guard": {
+   "scene": "S02",
+   "frame": 180,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "text",
+     "label": "Lockup: Introducing Space by",
+     "text": "Introducing Space by",
+     "opacity": 1,
+     "rect": {
+      "x": 338.59375,
+      "y": 488,
+      "w": 1242.796875,
+      "h": 100.640625
+     },
+     "fontPx": 83.98627312952534,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "logo",
+     "label": "",
+     "text": "",
+     "backing": "sampled",
+     "opacity": 1,
+     "rect": {
+      "x": 1186.09375,
+      "y": 507.421875,
+      "w": 395.296875,
+      "h": 81.21875
+     },
+     "fontPx": 84.0631329113924,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene02",
+  "second": 4,
+  "frame": 240,
+  "still": "out/stills/scene-02/scene-02-t04s.png",
+  "bg": "out/guards/bg/scene-02/t04s.png",
+  "guard": {
+   "scene": "S02",
+   "frame": 240,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "text",
+     "label": "Lockup: Introducing Space by",
+     "text": "Introducing Space by",
+     "opacity": 1,
+     "rect": {
+      "x": 338.59375,
+      "y": 488,
+      "w": 1242.796875,
+      "h": 100.640625
+     },
+     "fontPx": 83.98627312952534,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "logo",
+     "label": "",
+     "text": "",
+     "backing": "sampled",
+     "opacity": 1,
+     "rect": {
+      "x": 1186.09375,
+      "y": 507.421875,
+      "w": 395.296875,
+      "h": 81.21875
+     },
+     "fontPx": 84.0631329113924,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 0,
+  "frame": 0,
+  "still": "out/stills/scene-04/scene-04-t00s.png",
+  "bg": "out/guards/bg/scene-04/t00s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 0,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the webPrepare claim CL-7305 for review.\nCheck the policy and the evidence.Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.Home Policy Wording 2026, p. 124.2 We cover sudden and accidental escape of water from a fixed pipe or appliance in your home. We do not cover damage caused by gradual leaks, wear and tear, or poor maintenance.",
+     "opacity": 1,
+     "rect": {
+      "x": 183.75001525878906,
+      "y": 197.46998596191406,
+      "w": 1552.5,
+      "h": 741.0599975585938
+     },
+     "fontPx": 12.419999999999998,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1145.7567138671875,
+      "y": 256.4649963378906,
+      "w": 529.42822265625,
+      "h": 105.156005859375
+     },
+     "fontPx": 28.998415951437792,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Answer",
+     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 433.18499755859375,
+      "y": 403.8489990234375,
+      "w": 674.8070678710938,
+      "h": 164.56500244140625
+     },
+     "fontPx": 28.97944463250096,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S1",
+     "text": "S1",
+     "opacity": 1,
+     "rect": {
+      "x": 1041.7261962890625,
+      "y": 407.6655578613281,
+      "w": 56.31689453125,
+      "h": 33.533966064453125
+     },
+     "fontPx": 28.98663689108456,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S2",
+     "text": "S2",
+     "opacity": 1,
+     "rect": {
+      "x": 745.6385498046875,
+      "y": 448.80682373046875,
+      "w": 56.31695556640625,
+      "h": 33.53399658203125
+     },
+     "fontPx": 28.98666830623851,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Source card",
+     "text": "Home Policy Wording 2026, p. 124.2 We cover sudden and accidental escape of water from a fixed pipe or appliance in your home. We do not cover damage caused by gradual leaks, wear and tear, or poor maintenance.",
+     "opacity": 1,
+     "rect": {
+      "x": 1234.68896484375,
+      "y": 385.6329650878906,
+      "w": 457.0560302734375,
+      "h": 417.1567687988281
+     },
+     "fontPx": 28.980001919511434,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 1,
+  "frame": 60,
+  "still": "out/stills/scene-04/scene-04-t01s.png",
+  "bg": "out/guards/bg/scene-04/t01s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 60,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlayb",
+     "text": "NorthfieldSearch chats\u2318KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspaceChatDocsDescribe the work. Get your agent team.Find answers, turn ideas into action, and make room for your best work.Your agents work across your tools.Connect your appsAsk anything, or @ to mention an agent, a colleague or a resourceAutoPrepare claim CL-7305 for review.Check the policy and the evidence.Company brainDeep researchVisualize dataRun playbookBuild dashboardsSchedule a taskAsk your agentsBrowse the webPrepare claim CL-7305 for review.\nCheck the policy and the evidence.Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 210,
+      "y": 210,
+      "w": 1500,
+      "h": 716
+     },
+     "fontPx": 12,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "User message",
+     "text": "Prepare claim CL-7305 for review.\nCheck the policy and the evidence.",
+     "opacity": 1,
+     "rect": {
+      "x": 1139.47509765625,
+      "y": 267,
+      "w": 511.52490234375,
+      "h": 101.60000610351562
+     },
+     "fontPx": 28.0177959030223,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Answer",
+     "text": "Claim CL-7305 is covered under Section 4.2 S1.A $250 excess applies S2.One item needs a person: the invoice datedoes not match the date of loss.",
+     "opacity": 1,
+     "rect": {
+      "x": 451,
+      "y": 409.4000244140625,
+      "w": 651.987548828125,
+      "h": 159
+     },
+     "fontPx": 27.999465287097394,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S1",
+     "text": "S1",
+     "opacity": 1,
+     "rect": {
+      "x": 1038.9625244140625,
+      "y": 413.0875244140625,
+      "w": 54.4124755859375,
+      "h": 32.39996337890625
+     },
+     "fontPx": 28.006421257467828,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "box",
+     "label": "Source S2",
+     "text": "S2",
+     "opacity": 1,
+     "rect": {
+      "x": 752.8875122070312,
+      "y": 452.8375244140625,
+      "w": 54.4124755859375,
+      "h": 32.399993896484375
+     },
+     "fontPx": 28.006421257467828,
+     "color": "rgb(223, 230, 255)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Give every agent a job",
+     "text": "Give every agent a job",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 627.421875,
+      "h": 94.390625
+     },
+     "fontPx": 56.037679425837325,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 2,
+  "frame": 120,
+  "still": "out/stills/scene-04/scene-04-t02s.png",
+  "bg": "out/guards/bg/scene-04/t02s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 120,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceAgentsDocsAgentsNamed agents that work on tasks in ",
+     "text": "WorkspaceAgentsDocsAgentsNamed agents that work on tasks in the background. Give them tasks from the chat with @name, now, later or on a schedule; you get a notification when they finish or need you.New agentMy agentsTeam agentsLinksActivityIIris @irisPersonal assistantIdleDefaultNNora @noraIntakeWorks with Emily's accessNew agentCreate an agent for a job you hand off often, then give it tasks from the chat.",
+     "opacity": 1,
+     "rect": {
+      "x": -474.2923278808594,
+      "y": -3.770782470703125,
+      "w": 2554.28564453125,
+      "h": 1219.24560546875
+     },
+     "fontPx": 25.542856445312502,
+     "color": "rgb(163, 163, 163)",
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "WorkspaceAgentsDocsAgentsNamed agents that work on tasks in  at {\"x\":-474,\"y\":-4,\"w\":2554,\"h\":1219} enters the 96px margin"
+      }
+     ]
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Iris",
+     "text": "IIris @irisPersonal assistantIdleDefault",
+     "opacity": 1,
+     "rect": {
+      "x": 179.94537353515625,
+      "y": 360.300048828125,
+      "w": 525.8423461914062,
+      "h": 207.0675048828125
+     },
+     "fontPx": 28.60800329020604,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Nora",
+     "text": "NNora @noraIntakeWorks with Emily's access",
+     "opacity": 1,
+     "rect": {
+      "x": 723.4974365234375,
+      "y": 360.300048828125,
+      "w": 525.8421630859375,
+      "h": 207.0675048828125
+     },
+     "fontPx": 28.60799332850955,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Give every agent a job",
+     "text": "Give every agent a job",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 627.421875,
+      "h": 94.390625
+     },
+     "fontPx": 56.037679425837325,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 3,
+  "frame": 180,
+  "still": "out/stills/scene-04/scene-04-t03s.png",
+  "bg": "out/guards/bg/scene-04/t03s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 180,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceAgentsDocsAgentsNamed agents that work on tasks in ",
+     "text": "WorkspaceAgentsDocsAgentsNamed agents that work on tasks in the background. Give them tasks from the chat with @name, now, later or on a schedule; you get a notification when they finish or need you.New agentMy agentsTeam agentsLinksActivityIIris @irisPersonal assistantIdleDefaultNNora @noraIntakeWorks with Emily's accessTTheo @theoPolicyWorks with Emily's accessOOwen @owenEvidenceWorks with Emily's accessNew agentCreate an agent for a job you hand off often, then give it tasks from the chat.",
+     "opacity": 1,
+     "rect": {
+      "x": -511.89654541015625,
+      "y": -13.2161865234375,
+      "w": 2566.5302734375,
+      "h": 1225.0904541015625
+     },
+     "fontPx": 25.665302734375,
+     "color": "rgb(163, 163, 163)",
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "WorkspaceAgentsDocsAgentsNamed agents that work on tasks in  at {\"x\":-512,\"y\":-13,\"w\":2567,\"h\":1225} enters the 96px margin"
+      }
+     ]
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Iris",
+     "text": "IIris @irisPersonal assistantIdleDefault",
+     "opacity": 1,
+     "rect": {
+      "x": 145.47747802734375,
+      "y": 352.5999755859375,
+      "w": 528.3630981445312,
+      "h": 208.06011962890625
+     },
+     "fontPx": 28.745142645168798,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Nora",
+     "text": "NNora @noraIntakeWorks with Emily's access",
+     "opacity": 1,
+     "rect": {
+      "x": 691.63525390625,
+      "y": 352.5999755859375,
+      "w": 528.3629150390625,
+      "h": 208.06011962890625
+     },
+     "fontPx": 28.745132683472313,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Theo",
+     "text": "TTheo @theoPolicyWorks with Emily's access",
+     "opacity": 1,
+     "rect": {
+      "x": 1237.7930908203125,
+      "y": 352.5999755859375,
+      "w": 528.36279296875,
+      "h": 208.06011962890625
+     },
+     "fontPx": 28.745126042341322,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Owen",
+     "text": "OOwen @owenEvidenceWorks with Emily's access",
+     "opacity": 0.995098,
+     "rect": {
+      "x": 145.516357421875,
+      "y": 579.8388061523438,
+      "w": 528.285400390625,
+      "h": 208.0294189453125
+     },
+     "fontPx": 28.74091556529307,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Give every agent a job",
+     "text": "Give every agent a job",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 627.421875,
+      "h": 94.390625
+     },
+     "fontPx": 56.037679425837325,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 4,
+  "frame": 240,
+  "still": "out/stills/scene-04/scene-04-t04s.png",
+  "bg": "out/guards/bg/scene-04/t04s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 240,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceAgentsDocsAgentsNamed agents that work on tasks in ",
+     "text": "WorkspaceAgentsDocsAgentsNamed agents that work on tasks in the background. Give them tasks from the chat with @name, now, later or on a schedule; you get a notification when they finish or need you.New agentMy agentsTeam agentsLinksActivityIIris @irisPersonal assistantIdleDefaultNNora @noraIntakeWorks with Emily's accessTTheo @theoPolicyWorks with Emily's accessOOwen @owenEvidenceWorks with Emily's accessNew agentCreate an agent for a job you hand off often, then give it tasks from the chat.",
+     "opacity": 1,
+     "rect": {
+      "x": -549.794189453125,
+      "y": -22.72552490234375,
+      "w": 2578.775634765625,
+      "h": 1230.935546875
+     },
+     "fontPx": 25.78775634765625,
+     "color": "rgb(163, 163, 163)",
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "WorkspaceAgentsDocsAgentsNamed agents that work on tasks in  at {\"x\":-550,\"y\":-23,\"w\":2579,\"h\":1231} enters the 96px margin"
+      }
+     ]
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Iris",
+     "text": "IIris @irisPersonal assistantIdleDefault",
+     "opacity": 1,
+     "rect": {
+      "x": 110.7161865234375,
+      "y": 344.8359375,
+      "w": 530.8839111328125,
+      "h": 209.05279541015625
+     },
+     "fontPx": 28.88228532069705,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Nora",
+     "text": "NNora @noraIntakeWorks with Emily's access",
+     "opacity": 1,
+     "rect": {
+      "x": 659.4796142578125,
+      "y": 344.8359375,
+      "w": 530.8839111328125,
+      "h": 209.05279541015625
+     },
+     "fontPx": 28.88228532069705,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Theo",
+     "text": "TTheo @theoPolicyWorks with Emily's access",
+     "opacity": 1,
+     "rect": {
+      "x": 1208.2431640625,
+      "y": 344.8359375,
+      "w": 530.8837890625,
+      "h": 209.05279541015625
+     },
+     "fontPx": 28.882278679566063,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Owen",
+     "text": "OOwen @owenEvidenceWorks with Emily's access",
+     "opacity": 1,
+     "rect": {
+      "x": 110.7161865234375,
+      "y": 573.1434936523438,
+      "w": 530.8839111328125,
+      "h": 209.0528564453125
+     },
+     "fontPx": 28.88228532069705,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "TextBeat: Give every agent a job",
+     "text": "Give every agent a job",
+     "opacity": 1,
+     "rect": {
+      "x": 96,
+      "y": 96,
+      "w": 627.421875,
+      "h": 94.390625
+     },
+     "fontPx": 56.037679425837325,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 5,
+  "frame": 300,
+  "still": "out/stills/scene-04/scene-04-t05s.png",
+  "bg": "out/guards/bg/scene-04/t05s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 300,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceAgentsDocsAgentsNamed agents that work on tasks in ",
+     "text": "WorkspaceAgentsDocsAgentsNamed agents that work on tasks in the background. Give them tasks from the chat with @name, now, later or on a schedule; you get a notification when they finish or need you.New agentMy agentsTeam agentsLinksActivityIIris @irisPersonal assistantIdleDefaultNNora @noraIntakeWorks with Emily's accessTTheo @theoPolicyWorks with Emily's accessOOwen @owenEvidenceWorks with Emily's accessNew agentCreate an agent for a job you hand off often, then give it tasks from the chat.WorkspaceControl RoomControl RoomA live view of your workspaceHide chatFullscreenDashboardAgentsRecordsAgents 1Resources 4Active tasks 0LiveTEAM STUDIORESOURCESGmailIntegrationGoogle DriveIntegrationGoogle SheetsIntegrationSlackIntegrationIrisFront DeskListening for requests100%Reset viewFind an agent or resource\u2026Floor 1 / 2ChatNew conversationMessage or @mention an agent\u2026Auto",
+     "opacity": 1,
+     "rect": {
+      "x": 210,
+      "y": 210,
+      "w": 1500,
+      "h": 716
+     },
+     "fontPx": 9,
+     "color": "rgb(163, 163, 163)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Iris",
+     "text": "IIris @irisPersonal assistantIdleDefault",
+     "opacity": 0.235135,
+     "rect": {
+      "x": 594.2000122070312,
+      "y": 423.79998779296875,
+      "w": 308.79998779296875,
+      "h": 121.60003662109375
+     },
+     "fontPx": 16.799999335886902,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Nora",
+     "text": "NNora @noraIntakeWorks with Emily's access",
+     "opacity": 0.235135,
+     "rect": {
+      "x": 913.4000244140625,
+      "y": 423.79998779296875,
+      "w": 308.7999267578125,
+      "h": 121.60003662109375
+     },
+     "fontPx": 16.799996015321405,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Theo",
+     "text": "TTheo @theoPolicyWorks with Emily's access",
+     "opacity": 0.235135,
+     "rect": {
+      "x": 1232.60009765625,
+      "y": 423.79998779296875,
+      "w": 308.7999267578125,
+      "h": 121.60003662109375
+     },
+     "fontPx": 16.799996015321405,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "text",
+     "label": "Agent card Owen",
+     "text": "OOwen @owenEvidenceWorks with Emily's access",
+     "opacity": 0.235135,
+     "rect": {
+      "x": 594.2000122070312,
+      "y": 556.5999755859375,
+      "w": 308.79998779296875,
+      "h": 121.60003662109375
+     },
+     "fontPx": 16.799999335886902,
+     "color": "rgb(230, 230, 230)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.764865,
+     "rect": {
+      "x": 1079.2750244140625,
+      "y": 572.425048828125,
+      "w": 24,
+      "h": 24
+     },
+     "fontPx": 12.8,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.764865,
+     "rect": {
+      "x": 1155.2750244140625,
+      "y": 583.300048828125,
+      "w": 24,
+      "h": 24
+     },
+     "fontPx": 12.8,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.764865,
+     "rect": {
+      "x": 1037.574951171875,
+      "y": 720.4375,
+      "w": 24,
+      "h": 24
+     },
+     "fontPx": 12.8,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 0.764865,
+     "rect": {
+      "x": 1109.574951171875,
+      "y": 730.7250366210938,
+      "w": 24,
+      "h": 24
+     },
+     "fontPx": 12.8,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Iris",
+     "text": "IrisFront DeskListening for requests",
+     "opacity": 0.764865,
+     "rect": {
+      "x": 670.1624755859375,
+      "y": 589.300048828125,
+      "w": 168.00006103515625,
+      "h": 93.5999755859375
+     },
+     "fontPx": 16.000005812872026,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 6,
+  "frame": 360,
+  "still": "out/stills/scene-04/scene-04-t06s.png",
+  "bg": "out/guards/bg/scene-04/t06s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 360,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceControl RoomControl RoomA live view of your workspa",
+     "text": "WorkspaceControl RoomControl RoomA live view of your workspaceHide chatFullscreenDashboardAgentsRecordsAgents 1Resources 4Active tasks 1LiveTEAM STUDIORESOURCESGmailIntegrationGoogle DriveIntegrationGoogle SheetsIntegrationSlackIntegrationClaim CL-7305IrisFront DeskRouting claim100%Reset viewFind an agent or resource\u2026Floor 1 / 2ChatNew conversationIIrisClaim CL-7305 is with the team.Message or @mention an agent\u2026Auto",
+     "opacity": 1,
+     "rect": {
+      "x": 202.78297424316406,
+      "y": 206.55506896972656,
+      "w": 1514.43408203125,
+      "h": 722.8898315429688
+     },
+     "fontPx": 9.086604492187499,
+     "color": "rgb(163, 163, 163)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1080.4227294921875,
+      "y": 572.4676513671875,
+      "w": 24.23095703125,
+      "h": 24.23089599609375
+     },
+     "fontPx": 12.923177083333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1157.154052734375,
+      "y": 583.447265625,
+      "w": 24.23095703125,
+      "h": 24.23095703125
+     },
+     "fontPx": 12.923177083333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1038.3214111328125,
+      "y": 721.9043579101562,
+      "w": 24.23095703125,
+      "h": 24.23095703125
+     },
+     "fontPx": 12.923177083333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1111.0142822265625,
+      "y": 732.2908935546875,
+      "w": 24.23095703125,
+      "h": 24.23095703125
+     },
+     "fontPx": 12.923177083333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Iris",
+     "text": "IrisFront DeskRouting claim",
+     "opacity": 1,
+     "rect": {
+      "x": 667.3734741210938,
+      "y": 589.5050048828125,
+      "w": 169.61663818359375,
+      "h": 74.3082275390625
+     },
+     "fontPx": 16.153965541294642,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Iris message",
+     "text": "Claim CL-7305 is with the team.",
+     "opacity": 0.961383,
+     "rect": {
+      "x": 1438.76318359375,
+      "y": 634.4660034179688,
+      "w": 269.7711181640625,
+      "h": 37.9617919921875
+     },
+     "fontPx": 16.15395917150075,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 7,
+  "frame": 420,
+  "still": "out/stills/scene-04/scene-04-t07s.png",
+  "bg": "out/guards/bg/scene-04/t07s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 420,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceControl RoomControl RoomA live view of your workspa",
+     "text": "WorkspaceControl RoomControl RoomA live view of your workspaceHide chatFullscreenDashboardAgentsRecordsAgents 3Resources 4Active tasks 1LiveTEAM STUDIORESOURCESGmailIntegrationGoogle DriveIntegrationGoogle SheetsIntegrationSlackIntegrationIrisFront DeskRouting claimNoraIntakeReadyTheoPolicyReady100%Reset viewFind an agent or resource\u2026Floor 1 / 2ChatNew conversationIIrisClaim CL-7305 is with the team.Message or @mention an agent\u2026Auto",
+     "opacity": 1,
+     "rect": {
+      "x": 194.29246520996094,
+      "y": 202.5022430419922,
+      "w": 1531.4150390625,
+      "h": 730.9954833984375
+     },
+     "fontPx": 9.188490234375,
+     "color": "rgb(163, 163, 163)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1081.77294921875,
+      "y": 572.5177001953125,
+      "w": 24.502685546875,
+      "h": 24.50262451171875
+     },
+     "fontPx": 13.068098958333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1159.36474609375,
+      "y": 583.6204833984375,
+      "w": 24.502685546875,
+      "h": 24.50262451171875
+     },
+     "fontPx": 13.068098958333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1039.19970703125,
+      "y": 723.6300659179688,
+      "w": 24.502685546875,
+      "h": 24.50262451171875
+     },
+     "fontPx": 13.068098958333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1112.70751953125,
+      "y": 734.133056640625,
+      "w": 24.502685546875,
+      "h": 24.50262451171875
+     },
+     "fontPx": 13.068098958333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Iris",
+     "text": "IrisFront DeskRouting claim",
+     "opacity": 1,
+     "rect": {
+      "x": 664.09228515625,
+      "y": 589.74609375,
+      "w": 171.5185546875,
+      "h": 75.14141845703125
+     },
+     "fontPx": 16.335100446428573,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Nora",
+     "text": "NoraIntakeReady",
+     "opacity": 1,
+     "rect": {
+      "x": 868.2810668945312,
+      "y": 618.945068359375,
+      "w": 171.51849365234375,
+      "h": 75.14141845703125
+     },
+     "fontPx": 16.335094633556547,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Theo",
+     "text": "TheoPolicyReady",
+     "opacity": 0.534236,
+     "rect": {
+      "x": 621.9146118164062,
+      "y": 770.1400146484375,
+      "w": 171.5185546875,
+      "h": 75.1414794921875
+     },
+     "fontPx": 16.335100446428573,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Iris message",
+     "text": "Claim CL-7305 is with the team.",
+     "opacity": 1,
+     "rect": {
+      "x": 1444.13134765625,
+      "y": 634.7697143554688,
+      "w": 272.796142578125,
+      "h": 38.387451171875
+     },
+     "fontPx": 16.335098357971557,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 8,
+  "frame": 480,
+  "still": "out/stills/scene-04/scene-04-t08s.png",
+  "bg": "out/guards/bg/scene-04/t08s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 480,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceControl RoomControl RoomA live view of your workspa",
+     "text": "WorkspaceControl RoomControl RoomA live view of your workspaceHide chatFullscreenDashboardAgentsRecordsAgents 4Resources 4Active tasks 1LiveTEAM STUDIORESOURCESGmailIntegrationGoogle DriveIntegrationGoogle SheetsIntegrationSlackIntegrationIrisFront DeskRouting claimNoraIntakeReadyTheoPolicyReadyOwenEvidenceReady100%Reset viewFind an agent or resource\u2026Floor 1 / 2ChatNew conversationIIrisClaim CL-7305 is with the team.Message or @mention an agent\u2026Auto",
+     "opacity": 1,
+     "rect": {
+      "x": -153.55780029296875,
+      "y": -215.60858154296875,
+      "w": 2546.060302734375,
+      "h": 1215.3193359375
+     },
+     "fontPx": 15.27636181640625,
+     "color": "rgb(163, 163, 163)",
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "WorkspaceControl RoomControl RoomA live view of your workspa at {\"x\":-154,\"y\":-216,\"w\":2546,\"h\":1215} enters the 96px margin"
+      }
+     ]
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1321.926513671875,
+      "y": 399.56201171875,
+      "w": 40.7369384765625,
+      "h": 40.73699951171875
+     },
+     "fontPx": 21.7263671875,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1450.9268798828125,
+      "y": 418.02099609375,
+      "w": 40.7369384765625,
+      "h": 40.7369384765625
+     },
+     "fontPx": 21.7263671875,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1251.1458740234375,
+      "y": 650.79443359375,
+      "w": 40.7369384765625,
+      "h": 40.7369384765625
+     },
+     "fontPx": 21.7263671875,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1373.3568115234375,
+      "y": 668.2562255859375,
+      "w": 40.7369384765625,
+      "h": 40.7369384765625
+     },
+     "fontPx": 21.7263671875,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Iris",
+     "text": "IrisFront DeskRouting claim",
+     "opacity": 1,
+     "rect": {
+      "x": 627.509765625,
+      "y": 428.2052001953125,
+      "w": 285.1588134765625,
+      "h": 124.9266357421875
+     },
+     "fontPx": 27.157982235863095,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Nora",
+     "text": "NoraIntakeReady",
+     "opacity": 1,
+     "rect": {
+      "x": 966.9844970703125,
+      "y": 476.75,
+      "w": 285.1588134765625,
+      "h": 124.9266357421875
+     },
+     "fontPx": 27.157982235863095,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Theo",
+     "text": "TheoPolicyReady",
+     "opacity": 1,
+     "rect": {
+      "x": 557.386962890625,
+      "y": 723.0601806640625,
+      "w": 285.1588134765625,
+      "h": 124.9266357421875
+     },
+     "fontPx": 27.157982235863095,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Owen",
+     "text": "OwenEvidenceReady",
+     "opacity": 1,
+     "rect": {
+      "x": 883.2828369140625,
+      "y": 769.67431640625,
+      "w": 285.15869140625,
+      "h": 124.9266357421875
+     },
+     "fontPx": 27.157970610119047,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Iris message",
+     "text": "Claim CL-7305 is with the team.",
+     "opacity": 1,
+     "rect": {
+      "x": 1924.3668212890625,
+      "y": 503.059326171875,
+      "w": 453.5379638671875,
+      "h": 63.8211669921875
+     },
+     "fontPx": 27.15796190821482,
+     "color": "rgb(236, 236, 236)",
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "Iris message at {\"x\":1924,\"y\":503,\"w\":454,\"h\":64} enters the 96px margin"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 9,
+  "frame": 540,
+  "still": "out/stills/scene-04/scene-04-t09s.png",
+  "bg": "out/guards/bg/scene-04/t09s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 540,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceControl RoomControl RoomA live view of your workspa",
+     "text": "WorkspaceControl RoomControl RoomA live view of your workspaceHide chatFullscreenDashboardAgentsRecordsAgents 4Resources 4Active tasks 1LiveTEAM STUDIORESOURCESGmailIntegrationGoogle DriveIntegrationGoogle SheetsIntegrationSlackIntegrationIrisFront DeskRouting claimNoraIntakeReading claimTheoPolicyReadyOwenEvidenceReady100%Reset viewFind an agent or resource\u2026Floor 1 / 2ChatNew conversationIIrisClaim CL-7305 is with the team.Message or @mention an agent\u2026Auto",
+     "opacity": 1,
+     "rect": {
+      "x": -252.301025390625,
+      "y": -356.27880859375,
+      "w": 2700,
+      "h": 1288.7999267578125
+     },
+     "fontPx": 16.2,
+     "color": "rgb(163, 163, 163)",
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "WorkspaceControl RoomControl RoomA live view of your workspa at {\"x\":-252,\"y\":-356,\"w\":2700,\"h\":1289} enters the 96px margin"
+      }
+     ]
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1312.3939208984375,
+      "y": 296.0863037109375,
+      "w": 43.2000732421875,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.0400390625,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1449.19384765625,
+      "y": 315.6612548828125,
+      "w": 43.2001953125,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.040104166666666,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1237.3338623046875,
+      "y": 562.5086669921875,
+      "w": 43.199951171875,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.039973958333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1366.933837890625,
+      "y": 581.0262451171875,
+      "w": 43.199951171875,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.039973958333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Iris",
+     "text": "IrisFront DeskRouting claim",
+     "opacity": 1,
+     "rect": {
+      "x": 575.991455078125,
+      "y": 326.4613037109375,
+      "w": 302.4000244140625,
+      "h": 132.4798583984375
+     },
+     "fontPx": 28.80000232514881,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Nora",
+     "text": "NoraIntakeReading claim",
+     "opacity": 1,
+     "rect": {
+      "x": 935.991455078125,
+      "y": 377.941162109375,
+      "w": 302.400146484375,
+      "h": 132.47998046875
+     },
+     "fontPx": 28.800013950892858,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Theo",
+     "text": "TheoPolicyReady",
+     "opacity": 1,
+     "rect": {
+      "x": 501.62890625,
+      "y": 639.1436767578125,
+      "w": 302.400146484375,
+      "h": 132.47998046875
+     },
+     "fontPx": 28.800013950892858,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Owen",
+     "text": "OwenEvidenceReady",
+     "opacity": 1,
+     "rect": {
+      "x": 847.22900390625,
+      "y": 688.576171875,
+      "w": 302.4000244140625,
+      "h": 132.47998046875
+     },
+     "fontPx": 28.80000232514881,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Iris message",
+     "text": "Claim CL-7305 is with the team.",
+     "opacity": 1,
+     "rect": {
+      "x": 1951.259033203125,
+      "y": 405.8411865234375,
+      "w": 480.9599609375,
+      "h": 67.679931640625
+     },
+     "fontPx": 28.799997660928142,
+     "color": "rgb(236, 236, 236)",
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "Iris message at {\"x\":1951,\"y\":406,\"w\":481,\"h\":68} enters the 96px margin"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 10,
+  "frame": 600,
+  "still": "out/stills/scene-04/scene-04-t10s.png",
+  "bg": "out/guards/bg/scene-04/t10s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 600,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceControl RoomControl RoomA live view of your workspa",
+     "text": "WorkspaceControl RoomControl RoomA live view of your workspaceHide chatFullscreenDashboardAgentsRecordsAgents 4Resources 4Active tasks 1LiveTEAM STUDIORESOURCESGmailIntegrationGoogle DriveIntegrationGoogle SheetsIntegrationSlackIntegrationIrisFront DeskRouting claimNoraIntakeReading claimTheoPolicyChecking policyOwenEvidenceReady100%Reset viewFind an agent or resource\u2026Floor 1 / 2ChatNew conversationIIrisClaim CL-7305 is with the team.Message or @mention an agent\u2026Auto",
+     "opacity": 1,
+     "rect": {
+      "x": -366.053466796875,
+      "y": -356.47998046875,
+      "w": 2700,
+      "h": 1288.7999267578125
+     },
+     "fontPx": 16.2,
+     "color": "rgb(163, 163, 163)",
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "WorkspaceControl RoomControl RoomA live view of your workspa at {\"x\":-366,\"y\":-356,\"w\":2700,\"h\":1289} enters the 96px margin"
+      }
+     ]
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1198.6414794921875,
+      "y": 295.8851318359375,
+      "w": 43.2000732421875,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.0400390625,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1335.44140625,
+      "y": 315.4600830078125,
+      "w": 43.2001953125,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.040104166666666,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1123.5814208984375,
+      "y": 562.3074951171875,
+      "w": 43.199951171875,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.039973958333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1253.181396484375,
+      "y": 580.8250732421875,
+      "w": 43.199951171875,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.039973958333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Iris",
+     "text": "IrisFront DeskRouting claim",
+     "opacity": 1,
+     "rect": {
+      "x": 462.239013671875,
+      "y": 326.2601318359375,
+      "w": 302.4000244140625,
+      "h": 132.4798583984375
+     },
+     "fontPx": 28.80000232514881,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Nora",
+     "text": "NoraIntakeReading claim",
+     "opacity": 1,
+     "rect": {
+      "x": 822.239013671875,
+      "y": 377.739990234375,
+      "w": 302.400146484375,
+      "h": 132.47998046875
+     },
+     "fontPx": 28.800013950892858,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Theo",
+     "text": "TheoPolicyChecking policy",
+     "opacity": 1,
+     "rect": {
+      "x": 387.87646484375,
+      "y": 638.9425048828125,
+      "w": 302.400146484375,
+      "h": 132.47998046875
+     },
+     "fontPx": 28.800013950892858,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Owen",
+     "text": "OwenEvidenceReady",
+     "opacity": 1,
+     "rect": {
+      "x": 733.4765625,
+      "y": 688.375,
+      "w": 302.4000244140625,
+      "h": 132.47998046875
+     },
+     "fontPx": 28.80000232514881,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Iris message",
+     "text": "Claim CL-7305 is with the team.",
+     "opacity": 1,
+     "rect": {
+      "x": 1837.506591796875,
+      "y": 405.6400146484375,
+      "w": 480.9599609375,
+      "h": 67.679931640625
+     },
+     "fontPx": 28.799997660928142,
+     "color": "rgb(236, 236, 236)",
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "Iris message at {\"x\":1838,\"y\":406,\"w\":481,\"h\":68} enters the 96px margin"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 11,
+  "frame": 660,
+  "still": "out/stills/scene-04/scene-04-t11s.png",
+  "bg": "out/guards/bg/scene-04/t11s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 660,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceControl RoomControl RoomA live view of your workspa",
+     "text": "WorkspaceControl RoomControl RoomA live view of your workspaceHide chatFullscreenDashboardAgentsRecordsAgents 4Resources 4Active tasks 1LiveTEAM STUDIORESOURCESGmailIntegrationGoogle DriveIntegrationGoogle SheetsIntegrationSlackIntegrationIrisFront DeskRouting claimNoraIntakeReading claimTheoPolicyChecking policyOwenEvidenceMatching evidence100%Reset viewFind an agent or resource\u2026Floor 1 / 2ChatNew conversationIIrisClaim CL-7305 is with the team.Message or @mention an agent\u2026Auto",
+     "opacity": 1,
+     "rect": {
+      "x": -399.6800537109375,
+      "y": -364.47998046875,
+      "w": 2700,
+      "h": 1288.7999267578125
+     },
+     "fontPx": 16.2,
+     "color": "rgb(163, 163, 163)",
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "WorkspaceControl RoomControl RoomA live view of your workspa at {\"x\":-400,\"y\":-364,\"w\":2700,\"h\":1289} enters the 96px margin"
+      }
+     ]
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1165.014892578125,
+      "y": 287.8851318359375,
+      "w": 43.2000732421875,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.0400390625,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1301.8148193359375,
+      "y": 307.4600830078125,
+      "w": 43.2001953125,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.040104166666666,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1089.954833984375,
+      "y": 554.3074951171875,
+      "w": 43.199951171875,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.039973958333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1219.5548095703125,
+      "y": 572.8250732421875,
+      "w": 43.199951171875,
+      "h": 43.199951171875
+     },
+     "fontPx": 23.039973958333334,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Iris",
+     "text": "IrisFront DeskRouting claim",
+     "opacity": 1,
+     "rect": {
+      "x": 428.6124267578125,
+      "y": 318.2601318359375,
+      "w": 302.4000244140625,
+      "h": 132.4798583984375
+     },
+     "fontPx": 28.80000232514881,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Nora",
+     "text": "NoraIntakeReading claim",
+     "opacity": 1,
+     "rect": {
+      "x": 788.6124267578125,
+      "y": 369.739990234375,
+      "w": 302.400146484375,
+      "h": 132.47998046875
+     },
+     "fontPx": 28.800013950892858,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Theo",
+     "text": "TheoPolicyChecking policy",
+     "opacity": 1,
+     "rect": {
+      "x": 354.2498779296875,
+      "y": 630.9425048828125,
+      "w": 302.400146484375,
+      "h": 132.47998046875
+     },
+     "fontPx": 28.800013950892858,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Owen",
+     "text": "OwenEvidenceMatching evidence",
+     "opacity": 1,
+     "rect": {
+      "x": 699.8499755859375,
+      "y": 680.375,
+      "w": 302.4000244140625,
+      "h": 132.47998046875
+     },
+     "fontPx": 28.80000232514881,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Iris message",
+     "text": "Claim CL-7305 is with the team.",
+     "opacity": 1,
+     "rect": {
+      "x": 1803.8800048828125,
+      "y": 397.6400146484375,
+      "w": 480.9598388671875,
+      "h": 67.679931640625
+     },
+     "fontPx": 28.799990351328596,
+     "color": "rgb(236, 236, 236)",
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "Iris message at {\"x\":1804,\"y\":398,\"w\":481,\"h\":68} enters the 96px margin"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 12,
+  "frame": 720,
+  "still": "out/stills/scene-04/scene-04-t12s.png",
+  "bg": "out/guards/bg/scene-04/t12s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 720,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceControl RoomControl RoomA live view of your workspa",
+     "text": "WorkspaceControl RoomControl RoomA live view of your workspaceHide chatFullscreenDashboardAgentsRecordsAgents 4Resources 4Active tasks 1LiveTEAM STUDIORESOURCESGmailIntegrationGoogle DriveIntegrationGoogle SheetsIntegrationSlackIntegrationIrisFront DeskRouting claimNoraIntakeReading claimTheoPolicyChecking policyOwenEvidenceMatching evidence100%Reset viewFind an agent or resource\u2026Floor 1 / 2ChatNew conversationIIrisClaim CL-7305 is with the team.Message or @mention an agent\u2026Auto",
+     "opacity": 1,
+     "rect": {
+      "x": 105.58467102050781,
+      "y": 130.80091857910156,
+      "w": 1701.3695068359375,
+      "h": 812.1204223632812
+     },
+     "fontPx": 10.208217041015624,
+     "color": "rgb(163, 163, 163)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1091.556640625,
+      "y": 541.8801879882812,
+      "w": 27.221923828125,
+      "h": 27.221923828125
+     },
+     "fontPx": 14.518359375,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1177.7593994140625,
+      "y": 554.2151489257812,
+      "w": 27.221923828125,
+      "h": 27.221923828125
+     },
+     "fontPx": 14.518359375,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1044.258544921875,
+      "y": 709.7628173828125,
+      "w": 27.221923828125,
+      "h": 27.22186279296875
+     },
+     "fontPx": 14.518359375,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1125.92431640625,
+      "y": 721.431396484375,
+      "w": 27.221923828125,
+      "h": 27.221923828125
+     },
+     "fontPx": 14.518359375,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Iris",
+     "text": "IrisFront DeskRouting claim",
+     "opacity": 1,
+     "rect": {
+      "x": 627.5222778320312,
+      "y": 561.0206298828125,
+      "w": 190.553466796875,
+      "h": 83.48046875
+     },
+     "fontPx": 18.14794921875,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Nora",
+     "text": "NoraIntakeReading claim",
+     "opacity": 1,
+     "rect": {
+      "x": 854.3716430664062,
+      "y": 593.4600219726562,
+      "w": 190.55340576171875,
+      "h": 83.48052978515625
+     },
+     "fontPx": 18.147943405877974,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Theo",
+     "text": "TheoPolicyChecking policy",
+     "opacity": 1,
+     "rect": {
+      "x": 580.6637573242188,
+      "y": 758.0533447265625,
+      "w": 190.55340576171875,
+      "h": 83.48052978515625
+     },
+     "fontPx": 18.147943405877974,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Owen",
+     "text": "OwenEvidenceMatching evidence",
+     "opacity": 1,
+     "rect": {
+      "x": 798.4390869140625,
+      "y": 789.20263671875,
+      "w": 190.5533447265625,
+      "h": 83.48046875
+     },
+     "fontPx": 18.147937593005953,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Iris message",
+     "text": "Claim CL-7305 is with the team.",
+     "opacity": 1,
+     "rect": {
+      "x": 1494.129150390625,
+      "y": 611.0408325195312,
+      "w": 303.070556640625,
+      "h": 42.64764404296875
+     },
+     "fontPx": 18.147937523390716,
+     "color": "rgb(236, 236, 236)",
+     "issues": []
+    }
+   ]
+  }
+ },
+ {
+  "scene": "Scene04",
+  "second": 13,
+  "frame": 780,
+  "still": "out/stills/scene-04/scene-04-t13s.png",
+  "bg": "out/guards/bg/scene-04/t13s.png",
+  "guard": {
+   "scene": "S04",
+   "frame": 780,
+   "base": {
+    "w": 1920,
+    "h": 1080
+   },
+   "items": [
+    {
+     "kind": "frame",
+     "label": "WorkspaceControl RoomControl RoomA live view of your workspa",
+     "text": "WorkspaceControl RoomControl RoomA live view of your workspaceHide chatFullscreenDashboardAgentsRecordsAgents 4Resources 4Active tasks 1LiveTEAM STUDIORESOURCESGmailIntegrationGoogle DriveIntegrationGoogle SheetsIntegrationSlackIntegrationIrisFront DeskRouting claimNoraIntakeReading claimTheoPolicyChecking policyOwenEvidenceMatching evidence100%Reset viewFind an agent or resource\u2026Floor 1 / 2ChatNew conversationIIrisClaim CL-7305 is with the team.Message or @mention an agent\u2026Auto",
+     "opacity": 1,
+     "rect": {
+      "x": 209.08570861816406,
+      "y": 209.33570861816406,
+      "w": 1501.770751953125,
+      "h": 716.84521484375
+     },
+     "fontPx": 9.010624511718751,
+     "color": "rgb(163, 163, 163)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1079.386962890625,
+      "y": 572.1885986328125,
+      "w": 24.0283203125,
+      "h": 24.0283203125
+     },
+     "fontPx": 12.815104166666666,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1155.4765625,
+      "y": 583.076416015625,
+      "w": 24.0283203125,
+      "h": 24.0283203125
+     },
+     "fontPx": 12.815104166666666,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1037.637451171875,
+      "y": 720.375732421875,
+      "w": 24.0283203125,
+      "h": 24.0283203125
+     },
+     "fontPx": 12.815104166666666,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "brand",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1109.72265625,
+      "y": 730.6754150390625,
+      "w": 24.0283203125,
+      "h": 24.0283203125
+     },
+     "fontPx": 12.815104166666666,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Iris",
+     "text": "IrisFront DeskRouting claim",
+     "opacity": 1,
+     "rect": {
+      "x": 669.7913818359375,
+      "y": 589.08349609375,
+      "w": 168.1983642578125,
+      "h": 73.68682861328125
+     },
+     "fontPx": 16.01889183407738,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Nora",
+     "text": "NoraIntakeReading claim",
+     "opacity": 1,
+     "rect": {
+      "x": 870.0275268554688,
+      "y": 617.7172241210938,
+      "w": 168.19830322265625,
+      "h": 73.6868896484375
+     },
+     "fontPx": 16.018886021205358,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Theo",
+     "text": "TheoPolicyChecking policy",
+     "opacity": 1,
+     "rect": {
+      "x": 628.4301147460938,
+      "y": 763.0010375976562,
+      "w": 168.1983642578125,
+      "h": 73.68682861328125
+     },
+     "fontPx": 16.01889183407738,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Plate Owen",
+     "text": "OwenEvidenceMatching evidence",
+     "opacity": 1,
+     "rect": {
+      "x": 820.6567993164062,
+      "y": 790.4959716796875,
+      "w": 168.19830322265625,
+      "h": 73.68682861328125
+     },
+     "fontPx": 16.018886021205358,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Iris message",
+     "text": "Claim CL-7305 is with the team.",
+     "opacity": 1,
+     "rect": {
+      "x": 1434.73095703125,
+      "y": 633.2355346679688,
+      "w": 267.51513671875,
+      "h": 37.64434814453125
+     },
+     "fontPx": 16.0188704622006,
+     "color": "rgb(236, 236, 236)",
      "issues": []
     }
    ]
