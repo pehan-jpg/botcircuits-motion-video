@@ -35,7 +35,10 @@
     "render:space-brain": "./scripts/render.sh SpaceBrain 612 space/space-brain-v2",
     "stills:space-build": "STILLS_DIR=out/space/stills/space-build ./scripts/stills.sh SpaceBuild 0 18 60 100 150 200 252 300 330 372 414 450 480 510 560 599",
     "preview:space-build": "PREVIEW_DIR=out/space/preview ./scripts/preview.sh SpaceBuild",
-    "render:space-build": "./scripts/render.sh SpaceBuild 510 space/space-build-v1"
+    "render:space-build": "./scripts/render.sh SpaceBuild 510 space/space-build-v1",
+    "stills:space-automate": "STILLS_DIR=out/space/stills/space-automate ./scripts/stills.sh SpaceAutomate 0 18 60 100 126 160 200 240 290 330 360 400 440 480 540 599",
+    "preview:space-automate": "PREVIEW_DIR=out/space/preview ./scripts/preview.sh SpaceAutomate",
+    "render:space-automate": "./scripts/render.sh SpaceAutomate 480 space/space-automate-v1"
   },
   "dependencies": {
     "@remotion/cli": "4.0.545",

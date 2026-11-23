@@ -18,6 +18,8 @@ import {SpaceBrain} from './space/brain/SpaceBrain';
 import {SPACE_BRAIN_DURATION_SECONDS} from './space/brain/timeline';
 import {SpaceBuild} from './space/build/SpaceBuild';
 import {SPACE_BUILD_DURATION_SECONDS} from './space/build/timeline';
+import {SpaceAutomate} from './space/automate/SpaceAutomate';
+import {SPACE_AUTOMATE_DURATION_SECONDS} from './space/automate/timeline';
 
 ensureInter();
 
@@ -48,6 +50,8 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="SpaceBrain" component={SpaceBrain} durationInFrames={SPACE_BRAIN_DURATION_SECONDS * FPS} {...canvas} />
       {/* SpaceBuild runs 10 seconds. */}
       <Composition id="SpaceBuild" component={SpaceBuild} durationInFrames={SPACE_BUILD_DURATION_SECONDS * FPS} {...canvas} />
+      {/* SpaceAutomate runs 10 seconds. */}
+      <Composition id="SpaceAutomate" component={SpaceAutomate} durationInFrames={SPACE_AUTOMATE_DURATION_SECONDS * FPS} {...canvas} />
     </Folder>
   </>
 );

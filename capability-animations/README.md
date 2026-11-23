@@ -25,11 +25,14 @@ src/
                          AnswerBlock, CitationChip, PreviewCard (Document,
                          Table and Image previews), HighlightReveal,
                          PermissionChip, PlaybookCard, VariableRow, TypeChip,
-                         ChecksCard (with CheckRow), RunHighlight, PausedChip
+                         ChecksCard (with CheckRow), RunHighlight, PausedChip,
+                         TriggerRow, EventChip, AmberChip, RunList, RunRow,
+                         NoticeRow, ElapsedCounter, RunStatus
     chat/                SpaceChat: timeline.ts, content.ts, SpaceChat.tsx
     agents/              SpaceAgents (10 s): timeline.ts, content.ts, SpaceAgents.tsx
     brain/               SpaceBrain (12 s): timeline.ts, content.ts, SpaceBrain.tsx
     build/               SpaceBuild (10 s): timeline.ts, content.ts, SpaceBuild.tsx
+    automate/            SpaceAutomate (10 s): timeline.ts, content.ts, SpaceAutomate.tsx
   config.ts              width, height, fps, duration
   tokens.ts              colours, shadow, radii, easing (shared by all six)
   fonts.ts               local Inter loader
@@ -143,6 +146,9 @@ npm run render:space-brain   # out/space/space-brain-v2.mp4, .webm and -poster.p
 npm run stills:space-build
 npm run preview:space-build
 npm run render:space-build   # out/space/space-build-v1.mp4, .webm and -poster.png
+npm run stills:space-automate
+npm run preview:space-automate
+npm run render:space-automate  # out/space/space-automate-v1.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -176,6 +182,7 @@ browser instead of Remotion's download.
 | SpaceAgents v1 | `out/space/space-agents-v1.*` | First cut |
 | SpaceBrain v2 | `out/space/space-brain-v2.*` | First cut (named v2 as requested) |
 | SpaceBuild v1 | `out/space/space-build-v1.*` | First cut |
+| SpaceAutomate v1 | `out/space/space-automate-v1.*` | First cut |
 | Publish v3 | `out/publish-v3.*` | Brand logos for WhatsApp, Instagram and Messenger; customer renamed to Emily Carter |
 
 ## Integrate notes
@@ -260,3 +267,9 @@ browser instead of Remotion's download.
   colours), Agent and Review; tagColours gains agent (6.09 to 1) and review
   (5.66 to 1). The test run is one RunHighlight rectangle that moves between
   rows, blending to the review amber only on row 4.1.
+* SpaceAutomate: run rows are StepRow with a time column (any content, so the
+  review time can crossfade) and a lead slot for the status icon; Build's
+  defaults are unchanged. `RunList` reserves a slot for every row and for
+  the notice from the start; only the notice slot grows, so rows above it
+  never move. The elapsed time uses the shared rolling Counter formatted as
+  hours and minutes.

@@ -66,7 +66,7 @@ export const StepTag: React.FC<{kind: StepKind; width?: number}> = ({kind, width
 };
 
 export type StepRowProps = {
-  number?: string;
+  number?: React.ReactNode;
   kind: StepKind;
   text: string;
   /** Nesting level; each level indents 32px. */
@@ -92,6 +92,9 @@ export type StepRowProps = {
   prefix?: React.ReactNode;
   /** Element in a status slot at the row's right edge. */
   statusSlot?: React.ReactNode;
+  /** Element in a fixed slot between the number column and the tag. */
+  lead?: React.ReactNode;
+  leadWidth?: number;
 };
 
 export const StepRow: React.FC<StepRowProps> = ({
@@ -111,6 +114,8 @@ export const StepRow: React.FC<StepRowProps> = ({
   indentSize = STEP_ROW.indent,
   prefix,
   statusSlot,
+  lead,
+  leadWidth = 24,
 }) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -140,6 +145,9 @@ export const StepRow: React.FC<StepRowProps> = ({
       >
         {number ?? ''}
       </div>
+      {lead !== undefined && (
+        <div style={{width: leadWidth, height: leadWidth, flexShrink: 0, position: 'relative'}}>{lead}</div>
+      )}
       <div style={{marginLeft: STEP_ROW.numberToTag, flexShrink: 0}}>
         <StepTag kind={kind} />
       </div>
