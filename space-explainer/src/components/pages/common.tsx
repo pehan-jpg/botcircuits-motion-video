@@ -20,7 +20,7 @@ export const Tabs: React.FC<{ x: number; y: number; tabs: { label: string; badge
       {tabs.map((tab, i) => (
         <div key={tab.label} style={{ position: "relative", paddingBottom: 9, borderBottom: `2px solid ${i === active ? UI.text : "transparent"}`, display: "flex", alignItems: "center", gap: 8, fontFamily: FONT.sans, fontSize: UIN.tabs, fontWeight: i === active ? 700 : 400, color: i === active ? UI.text : "#bdbdbd", whiteSpace: "nowrap" }}>
           {tab.label}
-          {tab.badge ? <span style={{ minWidth: 20, height: 20, borderRadius: 10, background: "#E5484D", color: "#fff", fontSize: 12.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{tab.badge}</span> : null}
+          {tab.badge ? <span style={{ minWidth: 22, height: 22, borderRadius: 11, background: "#E5484D", color: "#fff", fontSize: 15.2, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{tab.badge}</span> : null}
         </div>
       ))}
     </div>
