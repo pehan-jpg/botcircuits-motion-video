@@ -2,7 +2,7 @@ import React from 'react';
 import {colors, fontFamily, fontWeights, radii} from '../tokens';
 
 export type ChipProps = {
-  label: string;
+  label: React.ReactNode;
   icon?: React.ReactNode;
   fontSize?: number;
   height?: number;

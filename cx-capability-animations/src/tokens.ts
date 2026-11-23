@@ -7,6 +7,10 @@ import {Easing} from 'remotion';
  * the typing highlight (limeTint), the finished send button, the
  * "Agent ready" pill and its tick, and the agent orb gradient. The Veil
  * dissolve also uses limeTint as a pale wash. Nothing else is green.
+ *
+ * Integrate: lime appears only in the Connected pills (limeTint), the
+ * travelling pulse dot (lime) and the result highlight (limeTint), plus the
+ * shared agent orb.
  */
 export const colors = {
   background: '#ffffff',
@@ -17,12 +21,16 @@ export const colors = {
   greyPill: '#f1f1ec',
   lime: '#c4e639',
   limeTint: '#eef5c8',
+  /** Connection lines between the agent and its systems. */
+  line: '#d9d9d3',
   /** Near black used for the idle send button and the typing caret. */
   charcoal: '#1a1a1a',
 } as const;
 
 export const shadows = {
   card: '0 12px 40px rgba(0,0,0,0.06)',
+  /** Soft glow around the travelling pulse dot. */
+  pulse: '0 0 14px rgba(196,230,57,0.6)',
 } as const;
 
 export const radii = {

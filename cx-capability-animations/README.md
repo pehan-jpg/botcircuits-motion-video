@@ -1,7 +1,7 @@
 # cx-capability-animations
 
 Six looping micro animations for the capability section of the BotCircuits CX
-product page, built with Remotion. Only **Build** exists so far.
+product page, built with Remotion. Built so far: **Build** and **Integrate**.
 
 | Setting | Value |
 | --- | --- |
@@ -25,11 +25,20 @@ src/
     TypedText.tsx        typing with the newest word on a lime tint highlight
     StepRow.tsx          numbered procedure row with coloured 96px tag, indent and typing
     Orb.tsx              counter rotating gradient orb, one turn per loop
+    SystemTile.tsx       connected system tile with icon, name, detail and status
+    StatusPill.tsx       Connect, spinner and Connected states, crossfaded
+    Spinner.tsx          quarter arc loading ring, frame driven
+    ConnectionLine.tsx   curved fan line drawn by dashoffset, with arc length helpers
+    Pulse.tsx            lime dot that travels along a ConnectionLine
     Veil.tsx             the soft dissolve used for every state change
   compositions/build/
     timeline.ts          every scene time, in seconds (retime here)
     content.ts           on screen copy
     Build.tsx            the scene
+  compositions/integrate/
+    timeline.ts          every scene time, in seconds
+    content.ts           systems, counter text and actions
+    Integrate.tsx        the scene (all tile state derived from the frame)
 ```
 
 To add the next animation, create `src/compositions/<name>/` with its own
@@ -43,6 +52,9 @@ npm run studio          # interactive preview
 npm run stills:build    # review stills into out/stills/build
 npm run preview:build   # half resolution motion check into out/preview
 npm run render:build    # out/build-v2.mp4, out/build-v2.webm, out/build-v2-poster.png
+npm run stills:integrate
+npm run preview:integrate
+npm run render:integrate   # out/integrate-v1.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -67,3 +79,10 @@ browser instead of Remotion's download.
 | --- | --- | --- |
 | v1 | `out/build.*` | First cut |
 | v2 | `out/build-v2.*` | Coloured 96px tags, aligned row text, animated orb avatar |
+| Integrate v1 | `out/integrate-v1.*` | First cut |
+
+## Integrate notes
+
+* The shared orb carries lime in its gradient, so on Integrate lime appears
+  in the orb as well as the Connected pills, the pulse dot and the result
+  highlight.

@@ -8,7 +8,10 @@
     "typecheck": "tsc --noEmit",
     "stills:build": "./scripts/stills.sh Build 0 24 90 138 156 216 282 312 342 366 390 432 479",
     "preview:build": "./scripts/preview.sh Build",
-    "render:build": "./scripts/render.sh Build 414 build-v2"
+    "render:build": "./scripts/render.sh Build 414 build-v2",
+    "stills:integrate": "./scripts/stills.sh Integrate 0 24 84 120 156 186 216 252 294 342 396 432 479",
+    "preview:integrate": "./scripts/preview.sh Integrate",
+    "render:integrate": "./scripts/render.sh Integrate 414 integrate-v1"
   },
   "dependencies": {
     "@remotion/cli": "4.0.545",
