@@ -10,7 +10,15 @@ export type ChannelKind =
   | 'sms'
   | 'email'
   | 'messenger'
-  | 'more';
+  | 'more'
+  // Source glyphs (Space Brain).
+  | 'file'
+  | 'table'
+  | 'image'
+  | 'folder'
+  | 'book'
+  | 'eye'
+  | 'lock';
 
 /**
  * Generic channel glyphs: simple line drawings, no real logos or brand
@@ -67,6 +75,55 @@ const PATHS: Record<ChannelKind, React.ReactNode> = {
     <>
       <path d="M12 3.5c4.8 0 8.5 3.5 8.5 8s-3.7 8-8.5 8c-.9 0-1.7-.1-2.5-.3L6 20.5v-3.2C4.4 15.8 3.5 13.8 3.5 11.5c0-4.5 3.7-8 8.5-8z" />
       <path d="M7.5 13.5l3-3 2.5 2 3.5-3" />
+    </>
+  ),
+  // Page with a folded corner and text lines.
+  file: (
+    <>
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5" />
+      <path d="M9 13h6" />
+      <path d="M9 17h6" />
+    </>
+  ),
+  // Grid.
+  table: (
+    <>
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2" />
+      <path d="M3.5 9.5h17" />
+      <path d="M3.5 14.5h17" />
+      <path d="M10 9.5v10" />
+    </>
+  ),
+  // Picture frame with a hill and sun.
+  image: (
+    <>
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2" />
+      <circle cx="9" cy="10" r="1.5" />
+      <path d="M20.5 16l-5-5L5 19.5" />
+    </>
+  ),
+  // Folder.
+  folder: <path d="M3.5 7a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z" />,
+  // Open book.
+  book: (
+    <>
+      <path d="M12 6.5c-1.6-1.3-4-2-7.5-2v13c3.5 0 5.9.7 7.5 2 1.6-1.3 4-2 7.5-2v-13c-3.5 0-5.9.7-7.5 2z" />
+      <path d="M12 6.5v13" />
+    </>
+  ),
+  // Eye.
+  eye: (
+    <>
+      <path d="M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12z" />
+      <circle cx="12" cy="12" r="2.8" />
+    </>
+  ),
+  // Padlock.
+  lock: (
+    <>
+      <rect x="5" y="10.5" width="14" height="10" rx="2" />
+      <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" />
     </>
   ),
   // Plus.

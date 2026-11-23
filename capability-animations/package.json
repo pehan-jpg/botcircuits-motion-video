@@ -29,7 +29,10 @@
     "render:space-chat": "./scripts/render.sh SpaceChat 420 space/space-chat-v1",
     "stills:space-agents": "STILLS_DIR=out/space/stills/space-agents ./scripts/stills.sh SpaceAgents 0 18 60 100 150 198 252 300 360 410 450 500 560 599",
     "preview:space-agents": "PREVIEW_DIR=out/space/preview ./scripts/preview.sh SpaceAgents",
-    "render:space-agents": "./scripts/render.sh SpaceAgents 500 space/space-agents-v1"
+    "render:space-agents": "./scripts/render.sh SpaceAgents 500 space/space-agents-v1",
+    "stills:space-brain": "STILLS_DIR=out/space/stills/space-brain-v2 ./scripts/stills.sh SpaceBrain 0 18 60 132 180 228 276 360 432 474 522 570 612 660 719",
+    "preview:space-brain": "PREVIEW_DIR=out/space/preview ./scripts/preview.sh SpaceBrain",
+    "render:space-brain": "./scripts/render.sh SpaceBrain 612 space/space-brain-v2"
   },
   "dependencies": {
     "@remotion/cli": "4.0.545",

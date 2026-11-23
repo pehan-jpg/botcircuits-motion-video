@@ -21,9 +21,13 @@ src/
                          PlanGraph (with AgentNode), ResultCard, FindingRow,
                          SourceChip
                          AgentCard, StartNode, ApprovalNode, DetailCard,
-                         FlowDot, SettledPill
+                         FlowDot, SettledPill, SourceRow, QuestionPill,
+                         AnswerBlock, CitationChip, PreviewCard (Document,
+                         Table and Image previews), HighlightReveal,
+                         PermissionChip
     chat/                SpaceChat: timeline.ts, content.ts, SpaceChat.tsx
     agents/              SpaceAgents (10 s): timeline.ts, content.ts, SpaceAgents.tsx
+    brain/               SpaceBrain (12 s): timeline.ts, content.ts, SpaceBrain.tsx
   config.ts              width, height, fps, duration
   tokens.ts              colours, shadow, radii, easing (shared by all six)
   fonts.ts               local Inter loader
@@ -131,6 +135,9 @@ npm run render:space-chat  # out/space/space-chat-v1.mp4, .webm and -poster.png
 npm run stills:space-agents
 npm run preview:space-agents
 npm run render:space-agents  # out/space/space-agents-v1.mp4, .webm and -poster.png
+npm run stills:space-brain
+npm run preview:space-brain
+npm run render:space-brain   # out/space/space-brain-v2.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -162,6 +169,7 @@ browser instead of Remotion's download.
 | Optimize v1 | `out/optimize-v1.*` | First cut |
 | SpaceChat v1 | `out/space/space-chat-v1.*` | First cut |
 | SpaceAgents v1 | `out/space/space-agents-v1.*` | First cut |
+| SpaceBrain v2 | `out/space/space-brain-v2.*` | First cut (named v2 as requested) |
 | Publish v3 | `out/publish-v3.*` | Brand logos for WhatsApp, Instagram and Messenger; customer renamed to Emily Carter |
 
 ## Integrate notes
@@ -234,3 +242,9 @@ browser instead of Remotion's download.
   from centred (centre at x 800) to x 60. Flow dots ride the line curves by
   arc length (`pointAlong`). The payout agent has no line from the detail
   card, as specified.
+* SpaceBrain: the answer paragraph, including its three citation chips, is
+  laid out from the first frame (untyped text is transparent, chips are
+  faded), and three lines of height are reserved, so wrapping never moves
+  the preview row. The question pill's width follows the typed text via
+  `measureText`. Highlights are `HighlightReveal` boxes sized to exactly
+  what they wrap and drawn left to right with a clip.

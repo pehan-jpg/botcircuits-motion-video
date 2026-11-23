@@ -20,6 +20,13 @@ export type CounterProps = {
   /** Content placed beside the number (for example a chip). */
   adornment?: React.ReactNode;
   labelGap?: number;
+  /** Optional number formatting (for example thousands separators). */
+  format?: (n: number) => string;
+  /** Hide the label row entirely. Defaults to shown. */
+  showLabel?: boolean;
+  numberWeight?: number;
+  numberColor?: string;
+  numberLetterSpacing?: string;
 };
 
 /** Right aligned label above a large number with tabular figures. */
@@ -36,9 +43,14 @@ export const Counter: React.FC<CounterProps> = ({
   numberWidth,
   adornment,
   labelGap = 2,
+  format = (n: number) => String(n),
+  showLabel = true,
+  numberWeight = fontWeights.semibold,
+  numberColor = colors.text,
+  numberLetterSpacing = '-0.02em',
 }) => (
   <div style={{display: 'flex', flexDirection: 'column', alignItems: align === 'right' ? 'flex-end' : 'flex-start', fontFamily}}>
-    <div
+    {showLabel && (<div
       style={{
         position: 'relative',
         height: Math.round(labelSize * 1.43),
@@ -54,8 +66,8 @@ export const Counter: React.FC<CounterProps> = ({
       {altLabel && labelMix > 0 && (
         <span style={{position: 'absolute', [align]: 0, top: 0, opacity: labelMix}}>{altLabel}</span>
       )}
-    </div>
-    <div style={{position: 'relative', marginTop: labelGap, display: 'flex', alignItems: 'center', gap: 16}}>
+    </div>)}
+    <div style={{position: 'relative', marginTop: showLabel ? labelGap : 0, display: 'flex', alignItems: 'center', gap: 16}}>
       {highlight > 0 && (
         <div
           style={{
@@ -75,15 +87,15 @@ export const Counter: React.FC<CounterProps> = ({
           position: 'relative',
           width: numberWidth,
           fontSize: numberSize,
-          fontWeight: fontWeights.semibold,
+          fontWeight: numberWeight,
           lineHeight: `${Math.round(numberSize * 1.2)}px`,
-          letterSpacing: '-0.02em',
-          color: colors.text,
+          letterSpacing: numberLetterSpacing,
+          color: numberColor,
           fontVariantNumeric: 'tabular-nums',
           whiteSpace: 'nowrap',
         }}
       >
-        {Math.round(value)}
+        {format(Math.round(value))}
         {suffix}
       </div>
       {adornment}
