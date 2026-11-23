@@ -3,7 +3,7 @@
 # Usage: ./scripts/stills.sh Build 0 24 90 ...
 set -euo pipefail
 COMP="$1"; shift
-OUTDIR="out/stills/$(echo "$COMP" | tr '[:upper:]' '[:lower:]')"
+OUTDIR="${STILLS_DIR:-out/stills/$(echo "$COMP" | tr "[:upper:]" "[:lower:]")}"
 mkdir -p "$OUTDIR"
 npx remotion bundle --out-dir build >/dev/null
 for F in "$@"; do

@@ -1,7 +1,8 @@
-# cx-capability-animations
+# capability-animations
 
-Six looping micro animations for the capability section of the BotCircuits CX
-product page, built with Remotion. All six are built: **Build**, **Integrate**, **Simulate**, **Publish**, **Monitor** and **Optimize**.
+Looping micro animations for the BotCircuits CX and BotCircuits Space product
+pages, built with Remotion. Both sets share one config, tokens and component
+library. In Remotion Studio they sit in two folders, **CX** and **Space**. All six are built: **Build**, **Integrate**, **Simulate**, **Publish**, **Monitor** and **Optimize**.
 
 | Setting | Value |
 | --- | --- |
@@ -14,6 +15,8 @@ product page, built with Remotion. All six are built: **Build**, **Integrate**, 
 
 ```
 src/
+  cx/                    the six CX compositions (see below)
+  space/                 the Space compositions
   config.ts              width, height, fps, duration
   tokens.ts              colours, shadow, radii, easing (shared by all six)
   fonts.ts               local Inter loader
@@ -61,34 +64,36 @@ src/
     VariantPanel.tsx     A/B panel with rolling percentage and bar
     RolledOutPill.tsx    lime tint confirmation pill
     Veil.tsx             the soft dissolve used for every state change
-  compositions/build/
+  cx/build/
     timeline.ts          every scene time, in seconds (retime here)
     content.ts           on screen copy
     Build.tsx            the scene
-  compositions/integrate/
+  cx/integrate/
     timeline.ts          every scene time, in seconds
     content.ts           systems, counter text and actions
     Integrate.tsx        the scene (all tile state derived from the frame)
-  compositions/simulate/
+  cx/simulate/
     timeline.ts          every scene time, in seconds
     content.ts           test scenarios, failure reason and fix step
     Simulate.tsx         the scene (all row state derived from the frame)
-  compositions/publish/
+  cx/publish/
     timeline.ts          every scene time in seconds, plus the 12 s length
     content.ts           channels, customer and the three conversations
     Publish.tsx          the scene
-  compositions/monitor/
+  cx/monitor/
     timeline.ts          every scene time in seconds, plus the 10 s length
     content.ts           conversations and transcript copy
     Monitor.tsx          the scene (transcript heights computed, never measured)
-  compositions/optimize/
+  cx/optimize/
     timeline.ts          every scene time in seconds, plus the 10 s length
     content.ts           topics, alert copy, procedure steps and test results
     Optimize.tsx         the scene
 ```
 
-To add the next animation, create `src/compositions/<name>/` with its own
-`timeline.ts`, `content.ts` and scene, then register it in `src/Root.tsx`.
+To add an animation, create `src/cx/<name>/` or `src/space/<name>/` with its own
+`timeline.ts`, `content.ts` and scene, then register it in the matching Folder in `src/Root.tsx`.
+
+CX renders go to `out/`; Space renders go to `out/space/`.
 
 ## Commands
 

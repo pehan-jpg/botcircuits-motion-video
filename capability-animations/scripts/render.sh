@@ -7,12 +7,13 @@
 # be forced on the first and last frames. That keeps both blank white loop
 # frames bit identical after decoding.
 # Usage: ./scripts/render.sh Build 414 [output-name]
+# The output name may include a folder, e.g. space/space-chat-v1.
 set -euo pipefail
 COMP="$1"; POSTER_FRAME="$2"
 NAME="${3:-$(echo "$COMP" | tr "[:upper:]" "[:lower:]")}"
 SEQ="$(mktemp -d "${TMPDIR:-/tmp}/frames_XXXXXX")"
 trap 'rm -rf "$SEQ"' EXIT
-mkdir -p out
+mkdir -p "$(dirname "out/$NAME")"
 npx remotion bundle --out-dir build >/dev/null
 npx remotion render build "$COMP" "$SEQ" --sequence --image-format=png --log=error
 FPS=$(node -e "console.log(require('fs').readFileSync('src/config.ts','utf8').match(/FPS = (\d+)/)[1])")
