@@ -17,7 +17,7 @@
     "render:simulate": "./scripts/render.sh Simulate 408 simulate-v1",
     "stills:publish": "./scripts/stills.sh Publish 0 18 60 90 150 216 264 294 360 420 492 648 708 719",
     "preview:publish": "./scripts/preview.sh Publish",
-    "render:publish": "./scripts/render.sh Publish 648 publish-v2"
+    "render:publish": "./scripts/render.sh Publish 648 publish-v3"
   },
   "dependencies": {
     "@remotion/cli": "4.0.545",

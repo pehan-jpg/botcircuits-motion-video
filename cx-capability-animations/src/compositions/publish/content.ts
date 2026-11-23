@@ -20,7 +20,7 @@ export const CHANNELS: Channel[] = [
 /** Rows that become the three mockup cards, in card order. */
 export const MOCK_ROWS = [1, 2, 3] as const;
 
-export const CUSTOMER = {initials: 'NP', name: 'Nadia Perera', booking: 'Booking BK 4821'};
+export const CUSTOMER = {initials: 'EC', name: 'Emily Carter', booking: 'Booking BK 4821'};
 
 export const STORY = {
   whatsapp: {

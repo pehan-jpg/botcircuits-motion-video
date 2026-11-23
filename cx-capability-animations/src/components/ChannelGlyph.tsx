@@ -1,4 +1,5 @@
 import React from 'react';
+import {Img, staticFile} from 'remotion';
 import {colors} from '../tokens';
 
 export type ChannelKind =
@@ -98,8 +99,48 @@ export const ChannelGlyph: React.FC<{kind: ChannelKind; size?: number; color?: s
   </svg>
 );
 
-/** 44px grey icon box holding a channel glyph. */
-export const ChannelIconBox: React.FC<{kind: ChannelKind; size?: number}> = ({kind, size = 44}) => (
+/**
+ * Channels shown with their brand logo instead of a line glyph. The SVGs
+ * live in public/logos (see SOURCE.md there) and load locally.
+ */
+const LOGOS: Partial<Record<ChannelKind, string>> = {
+  whatsapp: 'logos/whatsapp.svg',
+  instagram: 'logos/instagram.svg',
+  messenger: 'logos/messenger.svg',
+};
+
+/**
+ * 44px icon box. Brand logo channels get a white tile with a 1px border and
+ * the logo centred at 26px, unaltered. Every other channel keeps its line
+ * glyph on the grey box.
+ */
+export const ChannelIconBox: React.FC<{kind: ChannelKind; size?: number}> = ({kind, size = 44}) => {
+  const logo = LOGOS[kind];
+  if (logo) {
+    const logoSize = Math.round((size * 26) / 44);
+    return (
+      <div
+        style={{
+          width: size,
+          height: size,
+          boxSizing: 'border-box',
+          borderRadius: 12,
+          background: colors.surface,
+          border: `1px solid ${colors.border}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <Img src={staticFile(logo)} width={logoSize} height={logoSize} style={{display: 'block'}} />
+      </div>
+    );
+  }
+  return <GlyphBox kind={kind} size={size} />;
+};
+
+const GlyphBox: React.FC<{kind: ChannelKind; size: number}> = ({kind, size}) => (
   <div
     style={{
       width: size,

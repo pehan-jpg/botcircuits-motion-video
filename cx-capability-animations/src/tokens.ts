@@ -15,6 +15,10 @@ import {Easing} from 'remotion';
  * Simulate: lime appears only in the pass state (tick circles, Passed pills,
  * progress fill), the typing highlight and the final counter highlight. Rose
  * appears only on the single failed test.
+ *
+ * Publish: lime appears only in the Published state, the Live pills, the orb
+ * and the context line pulse. Exception: the WhatsApp, Instagram and
+ * Messenger logos keep their own brand colours.
  */
 export const colors = {
   background: '#ffffff',

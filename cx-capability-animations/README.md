@@ -84,7 +84,7 @@ npm run preview:simulate
 npm run render:simulate    # out/simulate-v1.mp4, .webm and -poster.png
 npm run stills:publish
 npm run preview:publish
-npm run render:publish     # out/publish-v2.mp4, .webm and -poster.png
+npm run render:publish     # out/publish-v3.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -112,6 +112,7 @@ browser instead of Remotion's download.
 | Integrate v1 | `out/integrate-v1.*` | First cut |
 | Simulate v1 | `out/simulate-v1.*` | First cut |
 | Publish v2 | `out/publish-v2.*` | First cut (named v2 as requested) |
+| Publish v3 | `out/publish-v3.*` | Brand logos for WhatsApp, Instagram and Messenger; customer renamed to Emily Carter |
 
 ## Integrate notes
 
@@ -131,8 +132,11 @@ browser instead of Remotion's download.
 
 ## Publish notes
 
-* Channel names appear as text only. All glyphs are generic line drawings in
-  charcoal; no logos or brand colours.
+* WhatsApp, Instagram and Messenger use their brand logos from
+  `public/logos` (Simple Icons paths, brand fills; see `public/logos/SOURCE.md`)
+  on a white bordered tile. They are the only exception to the lime rule.
+  Web chat, Voice, SMS, Email and More channels keep their charcoal line
+  glyphs on the grey box.
 * The More channels row never goes live, so it has no connection line.
 * The veil spans the whole scene here, so its peak is 0.45 instead of
   Build's 0.8 (`transition.veilPeak`) to keep it a soft dissolve.
