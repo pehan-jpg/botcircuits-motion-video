@@ -1,11 +1,11 @@
 # cx-capability-animations
 
 Six looping micro animations for the capability section of the BotCircuits CX
-product page, built with Remotion. Built so far: **Build**, **Integrate** and **Simulate**.
+product page, built with Remotion. Built so far: **Build**, **Integrate**, **Simulate** and **Publish**.
 
 | Setting | Value |
 | --- | --- |
-| Canvas | 1600 x 1000, 60 fps, 8 s (480 frames), set in `src/config.ts` |
+| Canvas | 1600 x 1000, 60 fps, 8 s (480 frames), set in `src/config.ts`. Publish runs 12 s (720 frames), set in `publish/timeline.ts` |
 | Loop | Frame 0 and frame 479 are both blank white and decode bit identical |
 | Font | Inter 400, 500 and 600, loaded locally from `public/fonts` |
 | Easing | `Easing.bezier(0.22, 1, 0.36, 1)` everywhere (`tokens.ts`) |
@@ -36,6 +36,16 @@ src/
     ProgressBar.tsx      thin lime progress bar
     Counter.tsx          rolling number with label crossfade and highlight
     FixBlock.tsx         divider, label and one typed procedure step
+    ChannelRow.tsx       channel row that morphs into a mockup card (one rectangle)
+    ChannelGlyph.tsx     generic 1.75px channel glyphs and the grey icon box
+    PublishButton.tsx    Publish button that becomes the Published pill
+    ContextBar.tsx       customer and booking pill, plus initials avatar
+    ChatBubble.tsx       fixed size message bubble whose text types in
+    MockShared.tsx       exchange timing, time label and ticks for the mockups
+    WhatsAppMock.tsx     generic messaging chat mockup
+    InstagramMock.tsx    generic direct message mockup
+    VoiceMock.tsx        call screen with timer, waveform and captions
+    Waveform.tsx         frame driven voice waveform
     Veil.tsx             the soft dissolve used for every state change
   compositions/build/
     timeline.ts          every scene time, in seconds (retime here)
@@ -49,6 +59,10 @@ src/
     timeline.ts          every scene time, in seconds
     content.ts           test scenarios, failure reason and fix step
     Simulate.tsx         the scene (all row state derived from the frame)
+  compositions/publish/
+    timeline.ts          every scene time in seconds, plus the 12 s length
+    content.ts           channels, customer and the three conversations
+    Publish.tsx          the scene
 ```
 
 To add the next animation, create `src/compositions/<name>/` with its own
@@ -68,6 +82,9 @@ npm run render:integrate   # out/integrate-v1.mp4, .webm and -poster.png
 npm run stills:simulate
 npm run preview:simulate
 npm run render:simulate    # out/simulate-v1.mp4, .webm and -poster.png
+npm run stills:publish
+npm run preview:publish
+npm run render:publish     # out/publish-v2.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -94,6 +111,7 @@ browser instead of Remotion's download.
 | v2 | `out/build-v2.*` | Coloured 96px tags, aligned row text, animated orb avatar |
 | Integrate v1 | `out/integrate-v1.*` | First cut |
 | Simulate v1 | `out/simulate-v1.*` | First cut |
+| Publish v2 | `out/publish-v2.*` | First cut (named v2 as requested) |
 
 ## Integrate notes
 
@@ -110,3 +128,14 @@ browser instead of Remotion's download.
   between the steps.
 * Normal test rows have a white fill and the shared 1px border, which is
   what the failed row fades back to.
+
+## Publish notes
+
+* Channel names appear as text only. All glyphs are generic line drawings in
+  charcoal; no logos or brand colours.
+* The More channels row never goes live, so it has no connection line.
+* The veil spans the whole scene here, so its peak is 0.45 instead of
+  Build's 0.8 (`transition.veilPeak`) to keep it a soft dissolve.
+* Part 2 follows the brief's positions (bar centred at y 40, cards 90 to
+  730), which leaves 270px of white below the cards. Adjust `MOCK.top` and
+  `BAR.centreY` in `Publish.tsx` to rebalance.

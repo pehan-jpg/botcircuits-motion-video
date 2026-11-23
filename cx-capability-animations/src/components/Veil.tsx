@@ -51,6 +51,8 @@ export type VeilProps = VeilWindow & {
   from: Rect;
   /** Bounds of the incoming element. Defaults to `from`. */
   to?: Rect;
+  /** Peak wash opacity at the midpoint. Defaults to 0.8. */
+  peak?: number;
 };
 
 /**
@@ -59,13 +61,13 @@ export type VeilProps = VeilWindow & {
  * bounds, then reshapes to the incoming element's bounds as it falls away
  * and the incoming element fades in.
  */
-export const Veil: React.FC<VeilProps> = ({start, end, from, to = from}) => {
+export const Veil: React.FC<VeilProps> = ({start, end, from, to = from, peak = PEAK_OPACITY}) => {
   const frame = useCurrentFrame();
   if (frame < start || frame > end) return null;
   const mid = (start + end) / 2;
   const rise = progress(frame, start, mid);
   const fall = progress(frame, mid, end);
-  const opacity = PEAK_OPACITY * rise * (1 - fall);
+  const opacity = peak * rise * (1 - fall);
   // Hold the outgoing bounds while the wash rises, then reshape to the
   // incoming bounds while it falls away.
   const t = fall;

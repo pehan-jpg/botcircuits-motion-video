@@ -21,6 +21,11 @@ export type StatusPillProps = {
   spinner: number;
   connected: number;
   tick: number;
+  /** Optional labels and icon; defaults are the Integrate copy. */
+  connectLabel?: string;
+  connectedLabel?: string;
+  /** Replaces the drawn tick in the connected pill. */
+  connectedIcon?: React.ReactNode;
 };
 
 const layer = (opacity: number): React.CSSProperties => ({
@@ -33,12 +38,20 @@ const layer = (opacity: number): React.CSSProperties => ({
   opacity,
 });
 
-export const StatusPill: React.FC<StatusPillProps> = ({connect, spinner, connected, tick}) => (
+export const StatusPill: React.FC<StatusPillProps> = ({
+  connect,
+  spinner,
+  connected,
+  tick,
+  connectLabel = 'Connect',
+  connectedLabel = 'Connected',
+  connectedIcon,
+}) => (
   <div style={{position: 'relative', height: STATUS_PILL.height, width: 1}}>
     {connect > 0 && (
       <div style={layer(connect)}>
         <Chip
-          label="Connect"
+          label={connectLabel}
           fontSize={STATUS_PILL.fontSize}
           height={STATUS_PILL.height}
           paddingX={STATUS_PILL.paddingX}
@@ -54,8 +67,8 @@ export const StatusPill: React.FC<StatusPillProps> = ({connect, spinner, connect
     {connected > 0 && (
       <div style={layer(connected)}>
         <Chip
-          label="Connected"
-          icon={<TickIcon size={14} strokeWidth={1.75} color={colors.charcoal} draw={tick} />}
+          label={connectedLabel}
+          icon={connectedIcon ?? <TickIcon size={14} strokeWidth={1.75} color={colors.charcoal} draw={tick} />}
           fontSize={STATUS_PILL.fontSize}
           height={STATUS_PILL.height}
           paddingX={STATUS_PILL.paddingX}
