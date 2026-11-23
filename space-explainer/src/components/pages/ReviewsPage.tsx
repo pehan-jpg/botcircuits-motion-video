@@ -163,7 +163,8 @@ export const ReviewsPage: React.FC<{ s: ReviewsState }> = ({ s }) => {
           </div>
           {/* The playbook continues: REVIEW approved, IF, SEND, NOTIFY */}
           {s.strip > 0 ? (
-            <div data-guard="uitext" data-guard-read="1" data-guard-label="Playbook strip" style={{ color: UI.text, position: "absolute", left: REVIEWS.strip.x, top: REVIEWS.strip.y, width: REVIEWS.strip.w, opacity: s.strip, transform: `translateY(${(1 - s.strip) * 14}px)` }}>
+            <div style={{ position: "absolute", left: REVIEWS.strip.x, top: REVIEWS.strip.y, width: REVIEWS.strip.w, opacity: s.strip, transform: `translateY(${(1 - s.strip) * 14}px)` }}>
+              <div data-guard="uitext" data-guard-read="1" data-guard-label="Playbook strip">
               <div style={{ fontFamily: FONT.sans, fontSize: UIN.helper, color: "#a8a8a8", marginBottom: 10 }}>{P.playbook.name}</div>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <StripStep badge="REVIEW" label="Approved by Emily" lit={s.stripSteps[0]} tone="amber" />
@@ -173,6 +174,7 @@ export const ReviewsPage: React.FC<{ s: ReviewsState }> = ({ s }) => {
                 <StripStep badge="SEND" label="settlement via Gmail" lit={s.stripSteps[2]} tone="lime" />
                 <div style={{ width: 22, height: 2, background: s.stripSteps[3] > 0.5 ? "#8fd694" : "#555" }} />
                 <StripStep badge="NOTIFY" label="Slack" lit={s.stripSteps[3]} tone="grey" />
+              </div>
               </div>
               <div style={{ display: "flex", gap: 14, marginTop: 14 }}>
                 {s.email > 0 ? (

@@ -256,10 +256,10 @@ export const PLATE_TEXT = { name: 16.5, line: UIN.helper };
 export type PlateState = { role: string; status: string; pulse: number; opacity: number };
 
 /** Name plate: orb avatar, name, role, status; width fits the widest of all its strings plus 16px each side. */
-export const NamePlate: React.FC<{ name: string; p: PlateState; palette: OrbPaletteKey; clock: number; style?: React.CSSProperties }> = ({ name, p, palette, clock, style }) => (
+export const NamePlate: React.FC<{ name: string; p: PlateState; palette: OrbPaletteKey; clock: number; style?: React.CSSProperties; read?: boolean }> = ({ name, p, palette, clock, style, read = true }) => (
   <div
     data-guard="uitext"
-    data-guard-read="1"
+    data-guard-read={read ? "1" : undefined}
     data-guard-label={`Plate ${name}`}
     data-fit-box={`plate ${name}`}
     style={{
@@ -498,7 +498,8 @@ export type OfficeState = {
   clock: number;
 };
 
-export const Office: React.FC<{ s: OfficeState }> = ({ s }) => {
+/** readPlates: false when the room is shown minimised, where plates are not meant to be read. */
+export const Office: React.FC<{ s: OfficeState; readPlates?: boolean }> = ({ s, readPlates = true }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps + s.clock;
@@ -592,7 +593,7 @@ export const Office: React.FC<{ s: OfficeState }> = ({ s }) => {
         const a = s.agents[k];
         if (!a.plateVisible || a.plate.opacity <= 0) return null;
         const an = plateAnchor(k);
-        return <NamePlate key={k} name={s.names[k]} p={a.plate} palette={s.palettes[k]} clock={s.clock} style={{ left: an.x, top: an.y, transform: "translateX(-50%)" }} />;
+        return <NamePlate key={k} name={s.names[k]} p={a.plate} palette={s.palettes[k]} clock={s.clock} read={readPlates} style={{ left: an.x, top: an.y, transform: "translateX(-50%)" }} />;
       })}
       {AGENT_ORDER.map((k) => {
         const a = s.agents[k];

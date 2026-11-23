@@ -211,7 +211,7 @@ export const ControlRoomPage: React.FC<{ s: ControlRoomState }> = ({ s }) => {
           }}
         >
           <div style={{ position: "absolute", left: -CANVAS.x, top: -CANVAS.y }}>
-            <Office s={s.office} />
+            <Office s={s.office} readPlates={s.mini < 0.5} />
           </div>
           <div style={{ position: "absolute", left: 12, top: 565, display: "flex", alignItems: "center", gap: 18, height: 44, padding: "0 16px", borderRadius: 9, background: "#FFFFFF", boxShadow: "0 4px 12px rgba(0,0,0,0.12)", fontFamily: FONT.sans, fontSize: UIN.helper, color: "#333", whiteSpace: "nowrap", opacity: chromeO }}>
             <RotateCcw size={16} color="#333" />

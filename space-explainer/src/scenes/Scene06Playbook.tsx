@@ -18,7 +18,7 @@ import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./share
 const S = "S06" as const;
 export const S6_TITLE = "Define the process once";
 const TITLE_START = 0.15;
-const S6 = { clickPlaybook: 3.3, page: 3.35, addClick: 3.85, firstItem: 4.6, cadence: 1.05, zoomIn: 3.8, zoomOut: 11.9 };
+const S6 = { clickPlaybook: 3.3, page: 3.35, addClick: 3.85, firstItem: 4.6, cadence: 1.05, zoomIn: 3.8, zoomOut: 12.1 };
 export const itemClickAt = (i: number) => S6.firstItem + i * S6.cadence;
 /** Slow drift on plate 03: zoom eases back out within the 4 percent limit. */
 export const S6_KB_END = 1.15;
