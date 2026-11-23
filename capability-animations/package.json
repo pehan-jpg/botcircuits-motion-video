@@ -26,7 +26,10 @@
     "render:optimize": "./scripts/render.sh Optimize 528 optimize-v1",
     "stills:space-chat": "STILLS_DIR=out/space/stills/space-chat ./scripts/stills.sh SpaceChat 0 18 60 108 132 162 210 252 282 300 336 384 420 462 479",
     "preview:space-chat": "PREVIEW_DIR=out/space/preview ./scripts/preview.sh SpaceChat",
-    "render:space-chat": "./scripts/render.sh SpaceChat 420 space/space-chat-v1"
+    "render:space-chat": "./scripts/render.sh SpaceChat 420 space/space-chat-v1",
+    "stills:space-agents": "STILLS_DIR=out/space/stills/space-agents ./scripts/stills.sh SpaceAgents 0 18 60 100 150 198 252 300 360 410 450 500 560 599",
+    "preview:space-agents": "PREVIEW_DIR=out/space/preview ./scripts/preview.sh SpaceAgents",
+    "render:space-agents": "./scripts/render.sh SpaceAgents 500 space/space-agents-v1"
   },
   "dependencies": {
     "@remotion/cli": "4.0.545",

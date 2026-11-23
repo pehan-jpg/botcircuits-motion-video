@@ -12,6 +12,8 @@ import {MONITOR_DURATION_SECONDS} from './cx/monitor/timeline';
 import {Optimize} from './cx/optimize/Optimize';
 import {OPTIMIZE_DURATION_SECONDS} from './cx/optimize/timeline';
 import {SpaceChat} from './space/chat/SpaceChat';
+import {SpaceAgents} from './space/agents/SpaceAgents';
+import {SPACE_AGENTS_DURATION_SECONDS} from './space/agents/timeline';
 
 ensureInter();
 
@@ -36,6 +38,8 @@ export const RemotionRoot: React.FC = () => (
     </Folder>
     <Folder name="Space">
       <Composition id="SpaceChat" component={SpaceChat} durationInFrames={DURATION_IN_FRAMES} {...canvas} />
+      {/* SpaceAgents runs 10 seconds. */}
+      <Composition id="SpaceAgents" component={SpaceAgents} durationInFrames={SPACE_AGENTS_DURATION_SECONDS * FPS} {...canvas} />
     </Folder>
   </>
 );

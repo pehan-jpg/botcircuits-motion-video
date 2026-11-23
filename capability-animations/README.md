@@ -20,7 +20,10 @@ src/
     components/          Space only: Composer, UserBubble, ReplyRow,
                          PlanGraph (with AgentNode), ResultCard, FindingRow,
                          SourceChip
+                         AgentCard, StartNode, ApprovalNode, DetailCard,
+                         FlowDot, SettledPill
     chat/                SpaceChat: timeline.ts, content.ts, SpaceChat.tsx
+    agents/              SpaceAgents (10 s): timeline.ts, content.ts, SpaceAgents.tsx
   config.ts              width, height, fps, duration
   tokens.ts              colours, shadow, radii, easing (shared by all six)
   fonts.ts               local Inter loader
@@ -125,6 +128,9 @@ npm run render:optimize    # out/optimize-v1.mp4, .webm and -poster.png
 npm run stills:space-chat
 npm run preview:space-chat
 npm run render:space-chat  # out/space/space-chat-v1.mp4, .webm and -poster.png
+npm run stills:space-agents
+npm run preview:space-agents
+npm run render:space-agents  # out/space/space-agents-v1.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -155,6 +161,7 @@ browser instead of Remotion's download.
 | Monitor v1 | `out/monitor-v1.*` | First cut |
 | Optimize v1 | `out/optimize-v1.*` | First cut |
 | SpaceChat v1 | `out/space/space-chat-v1.*` | First cut |
+| SpaceAgents v1 | `out/space/space-agents-v1.*` | First cut |
 | Publish v3 | `out/publish-v3.*` | Brand logos for WhatsApp, Instagram and Messenger; customer renamed to Emily Carter |
 
 ## Integrate notes
@@ -223,3 +230,7 @@ browser instead of Remotion's download.
   loaded Inter, not from the DOM.
 * The thread's top is fixed so the thread at its tallest (result card) is
   centred above the bottom composer; the card grows downward only.
+* SpaceAgents: the whole graph is one group moved by a single translateX,
+  from centred (centre at x 800) to x 60. Flow dots ride the line curves by
+  arc length (`pointAlong`). The payout agent has no line from the detail
+  card, as specified.

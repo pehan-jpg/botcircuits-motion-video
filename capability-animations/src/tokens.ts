@@ -45,6 +45,8 @@ export const colors = {
   amber: '#fdecd8',
   amberText: '#a85a10',
   amberRowFill: '#fffaf2',
+  /** Amber border for a step waiting for approval (Space Agents). */
+  amberBorder: '#e6b98a',
   /** Trace row background in Monitor. */
   traceFill: '#f7f7f3',
   /** Near black used for the idle send button and the typing caret. */
