@@ -31,7 +31,7 @@ export const STEP_ROW = {
 } as const;
 
 /** Step tag: fixed width pill coloured per step type, content left aligned. */
-export const StepTag: React.FC<{kind: StepKind}> = ({kind}) => {
+export const StepTag: React.FC<{kind: StepKind; width?: number}> = ({kind, width = STEP_ROW.tagWidth}) => {
   const {label, Icon} = TAGS[kind];
   const {background, text} = tagColours[kind];
   return (
@@ -45,7 +45,7 @@ export const StepTag: React.FC<{kind: StepKind}> = ({kind}) => {
       radius={radii.tag}
       background={background}
       color={text}
-      style={{width: STEP_ROW.tagWidth, justifyContent: 'flex-start'}}
+      style={{width, justifyContent: 'flex-start'}}
     />
   );
 };

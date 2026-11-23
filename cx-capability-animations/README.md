@@ -1,11 +1,11 @@
 # cx-capability-animations
 
 Six looping micro animations for the capability section of the BotCircuits CX
-product page, built with Remotion. Built so far: **Build**, **Integrate**, **Simulate** and **Publish**.
+product page, built with Remotion. Built so far: **Build**, **Integrate**, **Simulate**, **Publish** and **Monitor**.
 
 | Setting | Value |
 | --- | --- |
-| Canvas | 1600 x 1000, 60 fps, 8 s (480 frames), set in `src/config.ts`. Publish runs 12 s (720 frames), set in `publish/timeline.ts` |
+| Canvas | 1600 x 1000, 60 fps, 8 s (480 frames), set in `src/config.ts`. Publish runs 12 s (720 frames) and Monitor 10 s (600 frames), each set in its own `timeline.ts` |
 | Loop | Frame 0 and frame 479 are both blank white and decode bit identical |
 | Font | Inter 400, 500 and 600, loaded locally from `public/fonts` |
 | Easing | `Easing.bezier(0.22, 1, 0.36, 1)` everywhere (`tokens.ts`) |
@@ -46,6 +46,14 @@ src/
     InstagramMock.tsx    generic direct message mockup
     VoiceMock.tsx        call screen with timer, waveform and captions
     Waveform.tsx         frame driven voice waveform
+    ConversationRow.tsx  live conversation row with ticking duration and badge
+    LiveCounter.tsx      "N live" with a vertical number roll
+    StatusBadge.tsx      Live, Needs attention and With Daniel badges, and BadgeSwap
+    TranscriptBubble.tsx wrapping message bubble that types without reflowing
+    TraceRow.tsx         one agent step with tag, text, duration and tick
+    NoticeRow.tsx        amber notice line
+    TakeOverButton.tsx   Take over button that becomes the Taken over pill
+    ContextCard.tsx      who took over plus the attached facts
     Veil.tsx             the soft dissolve used for every state change
   compositions/build/
     timeline.ts          every scene time, in seconds (retime here)
@@ -63,6 +71,10 @@ src/
     timeline.ts          every scene time in seconds, plus the 12 s length
     content.ts           channels, customer and the three conversations
     Publish.tsx          the scene
+  compositions/monitor/
+    timeline.ts          every scene time in seconds, plus the 10 s length
+    content.ts           conversations and transcript copy
+    Monitor.tsx          the scene (transcript heights computed, never measured)
 ```
 
 To add the next animation, create `src/compositions/<name>/` with its own
@@ -85,6 +97,9 @@ npm run render:simulate    # out/simulate-v1.mp4, .webm and -poster.png
 npm run stills:publish
 npm run preview:publish
 npm run render:publish     # out/publish-v3.mp4, .webm and -poster.png
+npm run stills:monitor
+npm run preview:monitor
+npm run render:monitor     # out/monitor-v1.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -112,6 +127,7 @@ browser instead of Remotion's download.
 | Integrate v1 | `out/integrate-v1.*` | First cut |
 | Simulate v1 | `out/simulate-v1.*` | First cut |
 | Publish v2 | `out/publish-v2.*` | First cut (named v2 as requested) |
+| Monitor v1 | `out/monitor-v1.*` | First cut |
 | Publish v3 | `out/publish-v3.*` | Brand logos for WhatsApp, Instagram and Messenger; customer renamed to Emily Carter |
 
 ## Integrate notes
@@ -143,3 +159,17 @@ browser instead of Remotion's download.
 * Part 2 follows the brief's positions (bar centred at y 40, cards 90 to
   730), which leaves 270px of white below the cards. Adjust `MOCK.top` and
   `BAR.centreY` in `Publish.tsx` to rebalance.
+
+## Monitor notes
+
+* The new status pill is `StatusBadge`, because `StatusPill` is already the
+  Integrate and Publish connection pill.
+* The full transcript (about 570px) is taller than the 492px body, even with
+  spacing tightened and no type below 15px. It fits until Daniel replies at
+  7.4s, then scrolls up 72px over 0.5s like a live transcript, with a soft
+  fade at the top edge. Heights are computed, not measured.
+* An eighth row (Noah Bennett) sits below the seven specified rows so the
+  drift reveals that the list continues. Remove it in `monitor/content.ts`.
+* "Needs attention" uses the amber pair from the brief (#a85a10 on #fdecd8),
+  which measures 4.39 to 1. `colors.amberText` in `tokens.ts` switches it to
+  the AA passing #a05510 used by the Tool tag.

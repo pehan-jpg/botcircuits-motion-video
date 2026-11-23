@@ -31,10 +31,20 @@ export const ContextBar: React.FC<{
 );
 
 /** Round avatar with initials. */
-export const Initials: React.FC<{initials: string; size?: number; background?: string}> = ({
+export const Initials: React.FC<{
+  initials: string;
+  size?: number;
+  background?: string;
+  fontSize?: number;
+  color?: string;
+  border?: boolean;
+}> = ({
   initials,
   size = 28,
   background = colors.surface,
+  fontSize = Math.round(size * 0.38),
+  color = colors.textSecondary,
+  border = true,
 }) => (
   <div
     style={{
@@ -42,15 +52,15 @@ export const Initials: React.FC<{initials: string; size?: number; background?: s
       height: size,
       borderRadius: '50%',
       background,
-      border: `1px solid ${colors.border}`,
+      border: border ? `1px solid ${colors.border}` : undefined,
       boxSizing: 'border-box',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       fontFamily,
-      fontSize: Math.round(size * 0.38),
+      fontSize,
       fontWeight: fontWeights.semibold,
-      color: colors.textSecondary,
+      color,
       flexShrink: 0,
     }}
   >

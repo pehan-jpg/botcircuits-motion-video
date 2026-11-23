@@ -19,6 +19,9 @@ import {Easing} from 'remotion';
  * Publish: lime appears only in the Published state, the Live pills, the orb
  * and the context line pulse. Exception: the WhatsApp, Instagram and
  * Messenger logos keep their own brand colours.
+ *
+ * Monitor: lime only in the live dots, the orb and the Live indicator. Amber
+ * marks "Needs attention". Trace tags use tagColours. No rose.
  */
 export const colors = {
   background: '#ffffff',
@@ -38,6 +41,12 @@ export const colors = {
   roseText: '#b0304f',
   roseRowFill: '#fff7f8',
   roseRowBorder: '#f3c9d2',
+  /** Amber: "Needs attention" in Monitor only. */
+  amber: '#fdecd8',
+  amberText: '#a85a10',
+  amberRowFill: '#fffaf2',
+  /** Trace row background in Monitor. */
+  traceFill: '#f7f7f3',
   /** Near black used for the idle send button and the typing caret. */
   charcoal: '#1a1a1a',
 } as const;
