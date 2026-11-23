@@ -154,3 +154,40 @@ export const TicketIcon: React.FC<IconProps> = (p) => (
     <path d="M14 17v2" />
   </Svg>
 );
+
+/** Collect: clipboard with lines. */
+export const ClipboardIcon: React.FC<IconProps> = (p) => (
+  <Svg {...p}>
+    <rect x="5" y="4.5" width="14" height="17" rx="2" />
+    <path d="M9 3.5h6v3H9z" />
+    <path d="M8.5 11h7" />
+    <path d="M8.5 15h5" />
+  </Svg>
+);
+
+/** Agent: small robot head. */
+export const BotIcon: React.FC<IconProps> = (p) => (
+  <Svg {...p}>
+    <rect x="4" y="8" width="16" height="12" rx="3" />
+    <path d="M12 4v4" />
+    <circle cx="9" cy="14" r="1" />
+    <circle cx="15" cy="14" r="1" />
+  </Svg>
+);
+
+/** Review: person with a tick. */
+export const UserCheckIcon: React.FC<IconProps> = (p) => (
+  <Svg {...p}>
+    <circle cx="9" cy="8" r="3.5" />
+    <path d="M3 20a6 6 0 0 1 12 0" />
+    <path d="M15.5 12l2 2 4-4" />
+  </Svg>
+);
+
+/** Pause: two bars. */
+export const PauseIcon: React.FC<IconProps> = (p) => (
+  <Svg {...p}>
+    <path d="M9 6v12" />
+    <path d="M15 6v12" />
+  </Svg>
+);

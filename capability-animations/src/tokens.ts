@@ -83,7 +83,8 @@ export const iconStroke = 1.5;
 /**
  * Step tag colours, one pair per step type. Every text colour meets a WCAG
  * contrast ratio of at least 4.5 to 1 on its background:
- *   ask 6.08, tool 4.78, if 6.24, elseIf 5.15, tell 5.19.
+ *   ask 6.08, tool 4.78, if 6.24, elseIf 5.15, tell 5.19, agent 6.09,
+ *   review 5.66.
  * Tool text was darkened from #a85a10 (4.39, failed) to #a05510.
  */
 export const tagColours = {
@@ -92,6 +93,9 @@ export const tagColours = {
   if: {background: '#ece6fc', text: '#5a3fb0'},
   elseIf: {background: '#fce4ea', text: '#b0304f'},
   tell: {background: '#dff3ef', text: '#1c6f64'},
+  /** Space Build: agent step (6.09 to 1) and review pause (5.66 to 1). */
+  agent: {background: '#ece9e1', text: '#5c5545'},
+  review: {background: '#fff1c2', text: '#7a5a00'},
 } as const;
 
 /** Agent orb: gradient stops, highlight, border and glow. */

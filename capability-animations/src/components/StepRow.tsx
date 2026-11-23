@@ -3,10 +3,10 @@ import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {mix, progress} from '../motion';
 import {colors, fontFamily, fontWeights, radii, tagColours} from '../tokens';
 import {Chip} from './Chip';
-import {BranchIcon, MessageIcon, SpeechArrowIcon, WrenchIcon} from './Icons';
+import {BotIcon, BranchIcon, ClipboardIcon, MessageIcon, SpeechArrowIcon, UserCheckIcon, WrenchIcon} from './Icons';
 import {TypedText} from './TypedText';
 
-export type StepKind = 'ask' | 'tool' | 'if' | 'elseIf' | 'tell';
+export type StepKind = 'ask' | 'tool' | 'if' | 'elseIf' | 'tell' | 'collect' | 'agent' | 'review';
 
 const TAGS: Record<StepKind, {label: string; Icon: React.FC<{size?: number}>}> = {
   ask: {label: 'Ask', Icon: MessageIcon},
@@ -14,6 +14,21 @@ const TAGS: Record<StepKind, {label: string; Icon: React.FC<{size?: number}>}> =
   if: {label: 'If', Icon: BranchIcon},
   elseIf: {label: 'Else if', Icon: BranchIcon},
   tell: {label: 'Tell', Icon: SpeechArrowIcon},
+  collect: {label: 'Collect', Icon: ClipboardIcon},
+  agent: {label: 'Agent', Icon: BotIcon},
+  review: {label: 'Review', Icon: UserCheckIcon},
+};
+
+/** Colour pair for each kind. Collect shares the Ask colours. */
+const TAG_COLOUR: Record<StepKind, keyof typeof tagColours> = {
+  ask: 'ask',
+  tool: 'tool',
+  if: 'if',
+  elseIf: 'elseIf',
+  tell: 'tell',
+  collect: 'ask',
+  agent: 'agent',
+  review: 'review',
 };
 
 /** Layout constants for procedure rows, shared by any animation that lists steps. */
@@ -33,7 +48,7 @@ export const STEP_ROW = {
 /** Step tag: fixed width pill coloured per step type, content left aligned. */
 export const StepTag: React.FC<{kind: StepKind; width?: number}> = ({kind, width = STEP_ROW.tagWidth}) => {
   const {label, Icon} = TAGS[kind];
-  const {background, text} = tagColours[kind];
+  const {background, text} = tagColours[TAG_COLOUR[kind]];
   return (
     <Chip
       label={label}
@@ -66,6 +81,17 @@ export type StepRowProps = {
   enter?: number;
   /** Typing highlight on the newest word. Defaults to on. */
   highlight?: boolean;
+  /** Optional layout overrides; defaults are the Build procedure rows. */
+  height?: number;
+  numberWidth?: number;
+  numberSize?: number;
+  textSize?: number;
+  /** Indent per nesting level. */
+  indentSize?: number;
+  /** Element shown before the step text (for example a small orb). */
+  prefix?: React.ReactNode;
+  /** Element in a status slot at the row's right edge. */
+  statusSlot?: React.ReactNode;
 };
 
 export const StepRow: React.FC<StepRowProps> = ({
@@ -78,6 +104,13 @@ export const StepRow: React.FC<StepRowProps> = ({
   typeDelay = 0.08,
   enter = 0.3,
   highlight = true,
+  height = STEP_ROW.height,
+  numberWidth = STEP_ROW.numberColumn,
+  numberSize = STEP_ROW.numberSize,
+  textSize = STEP_ROW.textSize,
+  indentSize = STEP_ROW.indent,
+  prefix,
+  statusSlot,
 }) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -87,8 +120,8 @@ export const StepRow: React.FC<StepRowProps> = ({
       style={{
         display: 'flex',
         alignItems: 'center',
-        height: STEP_ROW.height,
-        paddingLeft: level * STEP_ROW.indent,
+        height,
+        paddingLeft: level * indentSize,
         opacity: p,
         transform: `translateY(${mix(8, 0, p)}px)`,
         fontFamily,
@@ -96,9 +129,9 @@ export const StepRow: React.FC<StepRowProps> = ({
     >
       <div
         style={{
-          width: STEP_ROW.numberColumn,
+          width: numberWidth,
           flexShrink: 0,
-          fontSize: STEP_ROW.numberSize,
+          fontSize: numberSize,
           fontWeight: fontWeights.medium,
           color: colors.textSecondary,
           fontVariantNumeric: 'tabular-nums',
@@ -113,15 +146,24 @@ export const StepRow: React.FC<StepRowProps> = ({
       <div
         style={{
           marginLeft: STEP_ROW.tagToText,
-          fontSize: STEP_ROW.textSize,
+          display: prefix ? 'flex' : undefined,
+          alignItems: prefix ? 'center' : undefined,
+          gap: prefix ? 6 : undefined,
+          fontSize: textSize,
           fontWeight: fontWeights.regular,
           color: colors.text,
           lineHeight: 1.3,
           whiteSpace: 'nowrap',
         }}
       >
+        {prefix}
         <TypedText text={text} startFrame={startFrame + Math.round(typeDelay * fps)} cps={cps} highlight={highlight} />
       </div>
+      {statusSlot !== undefined && (
+        <div style={{marginLeft: 'auto', flexShrink: 0, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'flex-end'}}>
+          {statusSlot}
+        </div>
+      )}
     </div>
   );
 };

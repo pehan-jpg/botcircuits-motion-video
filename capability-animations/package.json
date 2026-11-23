@@ -32,7 +32,10 @@
     "render:space-agents": "./scripts/render.sh SpaceAgents 500 space/space-agents-v1",
     "stills:space-brain": "STILLS_DIR=out/space/stills/space-brain-v2 ./scripts/stills.sh SpaceBrain 0 18 60 132 180 228 276 360 432 474 522 570 612 660 719",
     "preview:space-brain": "PREVIEW_DIR=out/space/preview ./scripts/preview.sh SpaceBrain",
-    "render:space-brain": "./scripts/render.sh SpaceBrain 612 space/space-brain-v2"
+    "render:space-brain": "./scripts/render.sh SpaceBrain 612 space/space-brain-v2",
+    "stills:space-build": "STILLS_DIR=out/space/stills/space-build ./scripts/stills.sh SpaceBuild 0 18 60 100 150 200 252 300 330 372 414 450 480 510 560 599",
+    "preview:space-build": "PREVIEW_DIR=out/space/preview ./scripts/preview.sh SpaceBuild",
+    "render:space-build": "./scripts/render.sh SpaceBuild 510 space/space-build-v1"
   },
   "dependencies": {
     "@remotion/cli": "4.0.545",

@@ -24,10 +24,12 @@ src/
                          FlowDot, SettledPill, SourceRow, QuestionPill,
                          AnswerBlock, CitationChip, PreviewCard (Document,
                          Table and Image previews), HighlightReveal,
-                         PermissionChip
+                         PermissionChip, PlaybookCard, VariableRow, TypeChip,
+                         ChecksCard (with CheckRow), RunHighlight, PausedChip
     chat/                SpaceChat: timeline.ts, content.ts, SpaceChat.tsx
     agents/              SpaceAgents (10 s): timeline.ts, content.ts, SpaceAgents.tsx
     brain/               SpaceBrain (12 s): timeline.ts, content.ts, SpaceBrain.tsx
+    build/               SpaceBuild (10 s): timeline.ts, content.ts, SpaceBuild.tsx
   config.ts              width, height, fps, duration
   tokens.ts              colours, shadow, radii, easing (shared by all six)
   fonts.ts               local Inter loader
@@ -138,6 +140,9 @@ npm run render:space-agents  # out/space/space-agents-v1.mp4, .webm and -poster.
 npm run stills:space-brain
 npm run preview:space-brain
 npm run render:space-brain   # out/space/space-brain-v2.mp4, .webm and -poster.png
+npm run stills:space-build
+npm run preview:space-build
+npm run render:space-build   # out/space/space-build-v1.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -170,6 +175,7 @@ browser instead of Remotion's download.
 | SpaceChat v1 | `out/space/space-chat-v1.*` | First cut |
 | SpaceAgents v1 | `out/space/space-agents-v1.*` | First cut |
 | SpaceBrain v2 | `out/space/space-brain-v2.*` | First cut (named v2 as requested) |
+| SpaceBuild v1 | `out/space/space-build-v1.*` | First cut |
 | Publish v3 | `out/publish-v3.*` | Brand logos for WhatsApp, Instagram and Messenger; customer renamed to Emily Carter |
 
 ## Integrate notes
@@ -248,3 +254,9 @@ browser instead of Remotion's download.
   the preview row. The question pill's width follows the typed text via
   `measureText`. Highlights are `HighlightReveal` boxes sized to exactly
   what they wrap and drawn left to right with a clip.
+* SpaceBuild: steps use the shared StepRow, extended with optional height,
+  number column, text size, indent, a prefix (the agent orb) and a status
+  slot; Build's defaults are unchanged. New step kinds Collect (Ask
+  colours), Agent and Review; tagColours gains agent (6.09 to 1) and review
+  (5.66 to 1). The test run is one RunHighlight rectangle that moves between
+  rows, blending to the review amber only on row 4.1.
