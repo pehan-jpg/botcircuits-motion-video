@@ -243,8 +243,8 @@ export const S4_CAM_KEYS: CamKey[] = [
   { t: 10.45, c: { ...FRAME_CENTRE, z: 1 } },
   { t: 18.8, c: { x: FRAME_CENTRE.x + 6, y: FRAME_CENTRE.y + 2, z: 1.012 }, lin: true },
   { t: 27.3, c: { ...FRAME_CENTRE, z: 1 } },
-  { t: S4.outputs[0], c: { ...FRAME_CENTRE, z: 1 } },
-  { t: 31.3, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 3, z: 1.012 }, lin: true },
+  { t: S4.outputs[0], c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 1, z: 1.004 }, lin: true },
+  { t: 34, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 5, z: 1.02 }, lin: true },
 ];
 const FOLLOW = { in0: 18.8, in1: 19.35, out0: 26.75, out1: 27.3, z: 1.5 };
 const activeAt = (t: number): AgentKey => (t < 20.2 ? "iris" : t < 22.4 ? "nora" : t < 24.6 ? "theo" : "owen");

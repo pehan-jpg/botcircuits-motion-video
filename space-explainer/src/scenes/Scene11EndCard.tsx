@@ -56,8 +56,9 @@ export const Scene11EndCard: React.FC = () => {
   return (
     <AbsoluteFill style={{ width: 1920, height: 1080, background: "#FFFFFF" }}>
       <AbsoluteFill style={{ background: NEUTRAL, opacity: 1 - white }} />
-      {exitP < 1
-        ? LINES.map((l, i) => (
+      {exitP < 1 ? (
+        <AbsoluteFill style={{ transform: `scale(${1 + 0.025 * ramp(t, 0, S11.exit[1])})`, transformOrigin: "50% 50%" }}>
+        {LINES.map((l, i) => (
             <Line key={l} text={l} t={t} start={S11.lines[i]} exitP={exitP} y={LINE_Y[i]}>
               {i === 1 ? (
                 <>
@@ -69,8 +70,9 @@ export const Scene11EndCard: React.FC = () => {
                 </>
               ) : null}
             </Line>
-          ))
-        : null}
+          ))}
+        </AbsoluteFill>
+      ) : null}
       {t >= S11.lockup ? (
         <div style={{ position: "absolute", left: 0, right: 0, top: 540, display: "flex", justifyContent: "center", transform: "translateY(-50%)" }}>
           <SpaceByLockup fontSize={96} startFrame={F(S11.lockup)} seed="s11-lockup" logoMode="assemble" backing="white" color={COLOR.ink} />

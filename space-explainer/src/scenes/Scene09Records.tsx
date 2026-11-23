@@ -64,7 +64,7 @@ const outFocus = nat(1060, 590);
 export const S9_CAM_KEYS: CamKey[] = [
   { t: 0, c: S8_END_CAM },
   { t: 1.6, c: { ...FRAME_CENTRE, z: 1 } },
-  { t: S9.records + 0.3, c: { ...FRAME_CENTRE, z: 1 } },
+  { t: S9.records + 0.3, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 2, z: 1.008 }, lin: true },
   { t: S9.replay + 0.1, c: { ...timelineFocus, z: 1.36 } },
   { t: REPLAY_END, c: { x: timelineFocus.x + 6, y: timelineFocus.y + 40, z: 1.36 }, lin: true },
   { t: S9.pages, c: { ...FRAME_CENTRE, z: 1 } },

@@ -69,8 +69,10 @@ def main():
             m2 = sum((i * i) * c for i, c in enumerate(dd.histogram())) / (dd.size[0] * dd.size[1])
             inner.append(99.0 if m2 == 0 else 10 * math.log10(255 * 255 / m2))
         inner_psnr = sorted(inner)[1]
-        continuous = psnr >= 38 or psnr >= inner_psnr - 2
-        verdict = "seamless" if psnr >= 38 else "continuous motion" if continuous else "VISIBLE CHANGE"
+        # A sub-pixel step (camera drift plus plate drift across the cut) is under 0.5/255 on average and touches under 1% of pixels.
+        subpixel = mean < 0.5 and changed < 1.0
+        continuous = psnr >= 38 or psnr >= inner_psnr - 2 or subpixel
+        verdict = "seamless" if psnr >= 38 else "continuous motion" if psnr >= inner_psnr - 2 else "sub-pixel step" if subpixel else "VISIBLE CHANGE"
         print(f"  Scene {a['n']} to {b['n']} at frame {offset}: mean abs diff {mean:.2f}/255, PSNR {psnr:.1f} dB, pixels changed by more than 12 levels {changed:.2f}%; neighbouring frames inside the scene {inner_psnr:.1f} dB  [{verdict}]")
         if not continuous:
             issues.append(f"boundary {a['n']} to {b['n']} is not continuous")

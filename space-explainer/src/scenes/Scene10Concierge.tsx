@@ -58,7 +58,8 @@ export const Scene10Concierge: React.FC = () => {
             background: "#FFFFFF",
             boxShadow: "0 30px 80px rgba(13,18,36,0.12), 0 8px 20px rgba(13,18,36,0.06)",
             opacity: card * (1 - out),
-            transform: `translateY(${(1 - card) * 24 - out * 16}px) scale(${0.98 + 0.02 * card})`,
+            // A slow drift keeps the frame alive while the reply types.
+            transform: `translateY(${(1 - card) * 24 - out * 16 - 6 * ramp(t, 0, 6)}px) scale(${(0.98 + 0.02 * card) * (1 + 0.02 * ramp(t, 0, 6))})`,
             fontFamily: FONT.sans,
             color: COLOR.ink,
           }}

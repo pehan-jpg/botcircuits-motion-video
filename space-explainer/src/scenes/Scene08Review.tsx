@@ -13,7 +13,7 @@ import { cardX, REVIEWS, ReviewsPage, type ReviewsState } from "../components/pa
 import type { CursorKey } from "../components/Cursor";
 import { typeDuration } from "../lib/typewriter";
 import type { TextBeatSpec } from "../lib/guards";
-import { ClockWidget, s7PlaybookAt, S7_END_CAM, S7_PILL_LABEL } from "./Scene07Evening";
+import { ClockWidget, EmailCard, s7PlaybookAt, S7_END_CAM, S7_PILL_LABEL } from "./Scene07Evening";
 import { S2_PLATE } from "./Scene02Intro";
 import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./shared/stage";
 
@@ -47,7 +47,7 @@ const stripFocus = nat(1080, 800);
 export const S8_CAM_KEYS: CamKey[] = [
   { t: 0, c: S7_END_CAM },
   { t: 1.6, c: { ...FRAME_CENTRE, z: 1 } },
-  { t: S8.zoomFlag, c: { ...FRAME_CENTRE, z: 1 } },
+  { t: S8.zoomFlag, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 2, z: 1.008 }, lin: true },
   { t: S8.zoomFlag + 0.6, c: { ...flagFocus, z: 1.6 } },
   { t: 8.0, c: { x: flagFocus.x - 12, y: flagFocus.y + 4, z: 1.6 }, lin: true },
   { t: 8.6, c: { ...noteFocus, z: 1.4 } },
@@ -101,6 +101,8 @@ export const Scene08Review: React.FC = () => {
         {toReviews < 1 ? (
           <div style={{ position: "absolute", inset: 0, opacity: 1 - toReviews, filter: blur > 0.05 ? `blur(${blur}px)` : undefined }}>
             <PlaybookPage s={pb} />
+            {/* Carried over from Scene 7, then faded out. */}
+            <EmailCard opacity={1 - EASE(ramp(t, 0, 0.4))} />
           </div>
         ) : null}
         {toReviews > 0 ? (

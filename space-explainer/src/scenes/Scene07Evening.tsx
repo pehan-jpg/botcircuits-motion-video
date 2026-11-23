@@ -98,6 +98,21 @@ const TimeRibbon: React.FC<{ p: number; opacity: number }> = ({ p, opacity }) =>
   </div>
 );
 
+/** The new claim email, top right of the product window. Scene 8 carries it over and fades it out. */
+export const EmailCard: React.FC<{ opacity: number; slide?: number }> = ({ opacity, slide = 1 }) => (
+  <div
+    data-guard="uitext"
+    data-guard-label="Email card"
+    style={{ position: "absolute", left: 1450, top: 58, width: 400, boxSizing: "border-box", padding: "12px 16px", borderRadius: 12, background: "#f6f6f6", color: "#1d1d1d", boxShadow: "0 16px 40px rgba(0,0,0,0.45)", display: "flex", gap: 12, alignItems: "flex-start", opacity, transform: `translateX(${(1 - slide) * 60}px)` }}
+  >
+    <Img data-guard="brand" src={staticFile("logos/gmail.svg")} style={{ width: 26, height: 20, objectFit: "contain", marginTop: 3 }} />
+    <div style={{ fontFamily: FONT.sans, fontSize: UIN.helper, lineHeight: 1.4 }}>
+      <div style={{ fontWeight: 700 }}>Claims inbox</div>
+      {P.evening.email}
+    </div>
+  </div>
+);
+
 export const Scene07Evening: React.FC = () => {
   const { t, F, clock, dur, start } = useScene(S);
   const o = opening(t, S7_TITLE, TITLE_START, "compact");
@@ -125,19 +140,7 @@ export const Scene07Evening: React.FC = () => {
       >
         <PlaybookPage s={o.showPrev ? playbookStateAt(sceneById("S06").duration, clock) : s7PlaybookAt(t, clock)} />
         {/* Gmail style email card */}
-        {!o.showPrev && t >= S7.email ? (
-          <div
-            data-guard="uitext"
-            data-guard-label="Email card"
-            style={{ position: "absolute", left: 1450, top: 58, width: 400, boxSizing: "border-box", padding: "12px 16px", borderRadius: 12, background: "#f6f6f6", color: "#1d1d1d", boxShadow: "0 16px 40px rgba(0,0,0,0.45)", display: "flex", gap: 12, alignItems: "flex-start", opacity: EASE(ramp(t, S7.email, S7.email + 0.35)), transform: `translateX(${(1 - EASE(ramp(t, S7.email, S7.email + 0.45))) * 60}px)` }}
-          >
-            <Img data-guard="brand" src={staticFile("logos/gmail.svg")} style={{ width: 26, height: 20, objectFit: "contain", marginTop: 3 }} />
-            <div style={{ fontFamily: FONT.sans, fontSize: UIN.helper, lineHeight: 1.4 }}>
-              <div style={{ fontWeight: 700 }}>Claims inbox</div>
-              {P.evening.email}
-            </div>
-          </div>
-        ) : null}
+        {!o.showPrev && t >= S7.email ? <EmailCard opacity={EASE(ramp(t, S7.email, S7.email + 0.35))} slide={EASE(ramp(t, S7.email, S7.email + 0.45))} /> : null}
       </ProductStage>
       <ClockWidget label={clockAt(t)} opacity={EASE(ramp(t, 2.6, 3.0))} night={Math.min(1, grade * 1.5) * (1 - dawn)} />
       <TimeRibbon p={ribbonP} opacity={EASE(ramp(t, S7.ribbon[0] - 0.3, S7.ribbon[0])) * (1 - EASE(ramp(t, S7.ribbon[1] + 0.2, S7.ribbon[1] + 0.7)))} />
