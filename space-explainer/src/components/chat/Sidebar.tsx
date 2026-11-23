@@ -1,6 +1,6 @@
 import React from "react";
 import { Img, staticFile } from "remotion";
-import { Bot, Brain, Ellipsis, LayoutDashboard, LayoutGrid, PanelLeft, Search, SquarePen, Workflow } from "lucide-react";
+import { Bell, Bot, Brain, Ellipsis, LayoutDashboard, LayoutGrid, PanelLeft, Search, SquarePen, Workflow } from "lucide-react";
 import { FONT, UIN } from "../../theme";
 import { PLACEHOLDERS as P } from "../../placeholders";
 
@@ -103,11 +103,24 @@ export const Sidebar: React.FC<{ active: NavKey; activeOpacity?: number }> = ({ 
 );
 
 /** Breadcrumb bar at the top of the main area. */
-export const TopBar: React.FC<{ page: string; actions?: boolean }> = ({ page, actions = true }) => (
+/** Bell position in native px (centre), for cursor targets. */
+export const BELL = { x: 1845, y: 25 };
+
+export const TopBar: React.FC<{ page: string; actions?: boolean; bellBadge?: number; bellPulse?: number }> = ({ page, actions = true, bellBadge = 0, bellPulse = 0 }) => (
   <>
     <div style={{ ...t, left: 261, top: 12, fontSize: UIN.sidebar, color: UI.muted }}>Workspace</div>
     <div style={{ ...t, left: 352, top: 11, fontSize: UIN.sidebar, color: UI.muted }}>›</div>
     <div style={{ ...t, left: 375, top: 12, fontSize: UIN.sidebar, fontWeight: 500 }}>{page}</div>
-    {actions ? <div style={{ ...t, left: 1790, top: 12, fontSize: UIN.sidebar }}>Docs</div> : null}
+    {actions ? <div style={{ ...t, left: 1760, top: 12, fontSize: UIN.sidebar }}>Docs</div> : null}
+    {actions ? (
+      <div style={{ position: "absolute", left: BELL.x - 10, top: BELL.y - 10, transform: `scale(${1 + 0.15 * bellPulse})` }}>
+        <Bell size={20} color="#d0d0d0" />
+        {bellBadge > 0 ? (
+          <div style={{ position: "absolute", left: 11, top: -7, minWidth: 18, height: 18, borderRadius: 9, background: "#E5484D", color: "#fff", fontFamily: FONT.sans, fontSize: 12.5, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {bellBadge}
+          </div>
+        ) : null}
+      </div>
+    ) : null}
   </>
 );

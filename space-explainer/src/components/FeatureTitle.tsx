@@ -29,10 +29,13 @@ export const FEATURE_TITLE = {
  * word, because the title is read as it reveals; the hold after the last word
  * is never under 1.2s.
  */
-export const featureTitleTiming = (text: string) => {
+export type TitleVariant = "standard" | "compact";
+/** Compact: about 2.4s in all, 0.9s hold after the last word (Scenes 5 to 9). */
+export const COMPACT_HOLD = 0.9;
+export const featureTitleTiming = (text: string, variant: TitleVariant = "standard") => {
   const words = text.split(/\s+/).filter(Boolean);
   const lastIn = (words.length - 1) * FEATURE_TITLE.stagger + FEATURE_TITLE.wordIn;
-  const exitStart = Math.max(lastIn + FEATURE_TITLE.minHold, readHoldSeconds(text));
+  const exitStart = variant === "compact" ? lastIn + COMPACT_HOLD : Math.max(lastIn + FEATURE_TITLE.minHold, readHoldSeconds(text));
   const exitEnd = exitStart + FEATURE_TITLE.exit;
   const frameRiseStart = exitEnd - FEATURE_TITLE.frameLead;
   return { words, lastIn, exitStart, exitEnd, frameRiseStart, frameRiseEnd: frameRiseStart + FEATURE_TITLE.frameRise };
@@ -48,11 +51,18 @@ export const frameRiseStyle = (p: number): React.CSSProperties => ({
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
-export const FeatureTitle: React.FC<{ text: string; startFrame: number; centerY?: number }> = ({ text, startFrame, centerY = 540 }) => {
+export const FeatureTitle: React.FC<{
+  text: string;
+  startFrame: number;
+  centerY?: number;
+  variant?: TitleVariant;
+  /** Light text with a dark navy feathered glow, for night plates. */
+  onDark?: boolean;
+}> = ({ text, startFrame, centerY = 540, variant = "standard", onDark = false }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = (frame - startFrame) / fps;
-  const T = featureTitleTiming(text);
+  const T = featureTitleTiming(text, variant);
   if (t < 0 || t > T.exitEnd) return null;
   const exitP = EASE(interpolate(t, [T.exitStart, T.exitEnd], [0, 1], clamp));
   const glowIn = EASE(interpolate(t, [0, 0.6], [0, 1], clamp));
@@ -67,7 +77,9 @@ export const FeatureTitle: React.FC<{ text: string; startFrame: number; centerY?
           width: g.w,
           height: g.h,
           borderRadius: "50%",
-          background: `radial-gradient(closest-side, rgba(255,255,255,${g.alpha}) 0%, rgba(255,255,255,${g.alpha * 0.75}) 35%, rgba(255,255,255,${g.alpha * 0.3}) 70%, rgba(255,255,255,0) 100%)`,
+          background: onDark
+            ? "radial-gradient(closest-side, rgba(10,16,40,0.55) 0%, rgba(10,16,40,0.4) 35%, rgba(10,16,40,0.15) 70%, rgba(10,16,40,0) 100%)"
+            : `radial-gradient(closest-side, rgba(255,255,255,${g.alpha}) 0%, rgba(255,255,255,${g.alpha * 0.75}) 35%, rgba(255,255,255,${g.alpha * 0.3}) 70%, rgba(255,255,255,0) 100%)`,
           opacity: glowIn * (1 - exitP),
         }}
       />
@@ -96,7 +108,7 @@ export const FeatureTitle: React.FC<{ text: string; startFrame: number; centerY?
             fontSize: FEATURE_TITLE.size,
             letterSpacing: FEATURE_TITLE.tracking,
             lineHeight: 1.1,
-            color: COLOR.ink,
+            color: onDark ? "#F5F7FF" : COLOR.ink,
           }}
         >
           {T.words.map((w, i) => {

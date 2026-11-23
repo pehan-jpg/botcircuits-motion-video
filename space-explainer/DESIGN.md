@@ -204,9 +204,9 @@ crossfades to 02. Scene 6 is not in the brief's mapping; the placeholder uses 03
 
 - `src/timeline.ts`: authored scene durations; starts and ends are computed,
   so a scene that grows pushes the rest along. Events are written relative to
-  their scene. Durations: 15, 5, 14.5, 28, 10, 15, 9, 16, 12, 6, 8 seconds.
-  Current starts: Scene 1 0s, 2 15s, 3 20s, 4 34.5s, 5 62.5s, 6 72.5s,
-  7 87.5s, 8 96.5s, 9 112.5s, 10 124.5s, 11 130.5s (total 138.5s).
+  their scene. Durations: 15, 5, 14.5, 34, 11, 15, 10, 17, 13, 6, 7 seconds.
+  Starts: Scene 1 0s, 2 15s, 3 20s, 4 34.5s, 5 68.5s, 6 79.5s, 7 94.5s,
+  8 104.5s, 9 121.5s, 10 134.5s, 11 140.5s (total 147.5s, 8850 frames).
 - `src/scenes/SceneNN*.tsx`, one per built scene.
 - `SpaceVideo` plays the built scenes; `Scene01`, `Scene02`... render one built scene alone.
 
@@ -250,32 +250,90 @@ from 9.3s at 1.25x, the cursor clicks [S1] at 11.95s and the camera pans as the
 source card opens beside the answer (12.0s), held about 2.5s. All at the UI
 type scale. `chatStateAt` lets Scene 4 open on the same frame.
 
-### Scene 4, Agents and Control Room (0:34.5 to 1:02.5), built
-4A (0 to 10s). The Scene 3 frame sinks and fades as FeatureTitle "Give every
-agent a job" arrives; the frame rises again on the chat page. The cursor clicks
-Agents (3.75s): the Agents page with Iris only (violet orb, Personal assistant,
-Idle, Default) and the dashed "+ New agent" tile. Click the tile (4.35s): the
-New agent panel (560px, dim backdrop, 1.3x zoom) types Name "Nora" (@nora
-appears), Role "Intake", picks the rose swatch, types the task, keeps "Works
-with Emily's access" and clicks Create agent (7.85s). Nora's card pops beside
-Iris, then Theo (8.6s, teal) and Owen (9.2s, coral); the tile moves along; the
-set holds at 1.35x.
-4B (10 to 28s). Click Control Room (10.6s, blur through): the empty room,
-counters Agents 0, Resources 4, Active tasks 0, Live; pill "Meet your team".
-Iris drops in at the front desk and waves (11.5s), camera 1.4x; Nora, Theo and
-Owen arrive at 13.5, 15.0 and 16.5s, each waving, plates "Idle", the counter
-ticking to 4, the camera panning desk to desk and back out by 18s. The claim
-tag drops at Iris's desk (18s), pill "A new claim arrives", Active tasks 1,
-Iris "Reading claim", Iris's chat line. The dashed path runs Iris, Nora, Theo,
-Owen from 19.3s (0.8s a step) at 1.5x; statuses change to "Reading claim",
-"Checking policy", "Matching evidence"; Gmail, Google Drive and Google Sheets
-pulse in turn; pill "The team works in tandem". The room minimises (23.6s) to a
-"Control Room, Live" card; output cards from Nora, Theo and Owen appear at
-24.6, 25.2 and 25.8s (Owen's flag as a neutral chip); pill "Prepared for
-Emily's review" at 26.4s, then a still hold to 28s. That frame is Scene 5's
-first frame. The office is an SVG rebuild (`Office.tsx`) with animatable
-figures (wave: arm raise with 20 degrees of oscillation at 3Hz for 1.2s and a
-slight head turn).
+### Scene 4, Agents and Control Room (0:34.5 to 1:08.5), built
+4A (0 to 10s) as before: FeatureTitle "Give every agent a job", the Agents
+page, the New agent panel creating Nora, then Theo and Owen.
+4B (10 to 34s; times below are within 4B):
+- 0 to 1.2s: click Control Room, counters Agents 0, Resources 4, Active tasks
+  0, Live; pill "Meet your team".
+- 1.2 to 4.2s, hero: the room dims to 35 percent with a 6px blur; a large Iris
+  (about 620px) and her plate, scaled to match, rise in the centre, wave 1.6s,
+  then figure and plate morph as one element to her desk over 0.9s (EASE) as
+  the room un-dims. 4.2 to 7.5s: compact heroes for Nora, Theo and Owen (about
+  360px; appear 0.25s, wave 0.45s, morph 0.4s), plates "Idle".
+- 7.5 to 9.0s: the "Claim CL-7305" tag drops at Iris's desk, pill "A new claim
+  arrives", Iris picks it up (it becomes a folder), Active tasks 1, chat line.
+- 9.0 to 17.0s: agents walk axis-aligned isometric routes with a step cycle
+  and facing (front, mirrored front, back view); camera follows at 1.5x. Iris
+  hands the folder to Nora ("Passed to Nora"); Nora walks to Gmail, Theo to
+  Google Drive, Owen to Google Sheets. Thought bubbles with three ticking lines
+  (Owen's last with a neutral flag); every line holds at least 0.9s. Pill "The
+  team works in tandem". No dashed lines, no travelling dot.
+- 17 to 18s results fly to Iris, plates "Done"; 18 to 19.3s the room
+  minimises; 19.3 to 23s three output cards, pill "Prepared for Emily's
+  review"; hold to 24s.
+Plates are sized to content: the widest of name, role and every status
+(`PLATE_STATUSES`) plus 16px padding; status 14px; never truncated. Pedestal
+labels: Gmail and Google Sheets to the left, Google Drive and Slack to the
+right, 12px clearance. Both are enforced by the fit and collision tests
+(`data-fit-box`/`data-fit-text`, `data-collide`, at least 12px).
+
+### Scenes 5 to 9: compact FeatureTitle
+Scenes 5 to 9 use the compact FeatureTitle (about 2.4s, 0.9s hold); Scene 7
+uses the onDark variant (#F5F7FF with a navy feathered glow). Each opens with
+the previous frame sinking (0 to 0.6s) and rises on the new page; pages swap
+with a short blur-through; the last pill of a scene is carried into the next
+and fades in its first 0.35s.
+
+### Scene 5, Brain (1:08.5 to 1:19.5), built
+"Ground it in your files"; plate 02 to 03. Click Brain: two files index,
+counters Files 2, Passages 214, Drive chip "Claims shared drive, Synced",
+citations [S1] [S2] with "Answers cite these files"; zoom 1.4x; pill "Answers
+point back to your files".
+
+### Scene 6, Playbook (1:19.5 to 1:34.5), built
+"Define the process once". Playbook page "Home claim review": seven steps added
+through "+ Add step" (1.05s apart): TRIGGER email (Gmail logo), READ CLAIM
+Nora, CHECK POLICY Theo (Brain chip "Home Policy Wording 2026"), MATCH EVIDENCE
+Owen (Sheets logo), REVIEW "Waiting for Emily" with the amber glyph, IF
+approved SEND via Gmail, NOTIFY Slack. Connectors draw one after another;
+REVIEW glows amber; zoom 1.5x; pill "Steps, agents, tools and a review".
+
+### Scene 7, Evening trigger (1:34.5 to 1:44.5), built
+onDark "Let it run on its own"; plate 03 to 04 under the NightGrade (dusk 0.8
+to 0.35, moon, stars). Clock 6:42 PM; email card; steps 1 to 4 run and stop at
+REVIEW (amber pulse, "Waiting for Emily"); pill "Waiting for a person. Nothing
+moves until they decide."; time ribbon 6:42 PM to 9:05 AM; the last 1s goes to
+plate 01 at dawn.
+
+### Scene 8, Morning review (1:44.5 to 2:01.5), built
+"People approve what matters"; plate 01 to 02. The bell (badge 1) opens
+Reviews; the item "Claim CL-7305, James Whitfield, Home water damage"; findings
+with the flag, zoom 1.6x on the flag; the amber glyph beside Emily Carter; she
+types the note; Approve with an amber halo; the playbook strip runs REVIEW, IF,
+SEND with the settlement email ($1,590) and the Slack chip; pill "Approved by
+Emily Carter".
+
+### Scene 9, Records and Pages (2:01.5 to 2:14.5), built
+"Every step on record"; plate 02 to 03. Control Room, then the Records tab
+(composed: no Records screenshot was supplied). Replay clears the record and
+retypes the eight rows at REPLAY_CPS, 0.35s apart, with a highlight and a
+scrubber; the approved row (amber border, note, glyph) is held 1.2s; zoom 1.3x.
+Pages (4s): the prompt "Open claims by status, with who approved each" types,
+Build page, a table (Status, Count, Approved by) and violet bars; pill "Reports
+from the record". `Scene09EndFrame` renders the frozen last frame for Scene 10.
+
+### Scene 10, Concierge (2:14.5 to 2:20.5), built
+The Scene 9 frame fades into neutral #F4F6F8. A text-only "BotCircuits
+Concierge" card: the customer's message, the typed reply, a "Handed to Space"
+chip with the violet orb; the "Claim CL-7305" tag slides out right; the card
+fades and the scene ends on the neutral frame. Text at 28px.
+
+### Scene 11, End card (2:20.5 to 2:27.5), built
+Neutral to pure white. "Agents prepare." "People decide." "Every step on
+record." in FeatureTitle style (80px), an amber underline under "People
+decide." with the human glyph, a 1.0s hold, the lines exit; then "Space by"
+with the logo assembling from dots (no "Introducing"), held at least 1.5s.
 
 ## Commands
 

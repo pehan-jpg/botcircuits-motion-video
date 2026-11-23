@@ -1,6 +1,6 @@
 // Static checks that need no render:
 //  - ReadabilityGuard timing for every text beat in built scenes
-//  - timeline consistency (scenes contiguous, 122s total, built scenes have components)
+//  - timeline consistency (scenes contiguous, 147.5s total, built scenes have components)
 // Usage: npx tsx scripts/check-timing.ts
 import { BUILT_FRAMES, BUILT_SCENES, SCENES, TOTAL_SECONDS } from "../src/timeline";
 import { checkReadability, type GuardIssue, type TextBeatSpec } from "../src/lib/guards";
@@ -8,7 +8,14 @@ import { readHoldSeconds } from "../src/theme";
 import { SCENE01_TEXT } from "../src/scenes/Scene01Problem";
 import { SCENE02_TEXT, SCENE02_SETTLED } from "../src/scenes/Scene02Intro";
 import { SCENE03_TEXT, S3_CURSOR } from "../src/scenes/Scene03Chat";
-import { SCENE04_TEXT, S4_CURSOR } from "../src/scenes/Scene04Agents";
+import { BUBBLE_HOLDS, SCENE04_TEXT, S4_CURSOR } from "../src/scenes/Scene04Agents";
+import { SCENE05_TEXT, S5_CURSOR } from "../src/scenes/Scene05Brain";
+import { SCENE06_TEXT, S6_CURSOR } from "../src/scenes/Scene06Playbook";
+import { SCENE07_TEXT } from "../src/scenes/Scene07Evening";
+import { SCENE08_TEXT, S8_CURSOR } from "../src/scenes/Scene08Review";
+import { SCENE09_TEXT, S9_CURSOR } from "../src/scenes/Scene09Records";
+import { SCENE10_TEXT } from "../src/scenes/Scene10Concierge";
+import { SCENE11_TEXT, S11_LOCKUP_READY } from "../src/scenes/Scene11EndCard";
 import { cursorClickReport } from "../src/components/Cursor";
 
 const issues: GuardIssue[] = [];
@@ -29,6 +36,22 @@ report("Scene 1", SCENE01_TEXT);
 report("Scene 2", SCENE02_TEXT);
 report("Scene 3", SCENE03_TEXT);
 report("Scene 4", SCENE04_TEXT);
+report("Scene 5", SCENE05_TEXT);
+report("Scene 6", SCENE06_TEXT);
+report("Scene 7", SCENE07_TEXT);
+report("Scene 8", SCENE08_TEXT);
+report("Scene 9", SCENE09_TEXT);
+report("Scene 10", SCENE10_TEXT);
+report("Scene 11", SCENE11_TEXT);
+
+console.log("\nScene 4 thought bubble lines (each must hold at least 0.9s):");
+for (const b of BUBBLE_HOLDS) {
+  console.log(`  ${b.agent.padEnd(5)} ${b.hold.toFixed(2)}s  "${b.text}"`);
+  if (b.hold < 0.9 - 1e-6) issues.push({ guard: "bubble", message: `${b.agent} line "${b.text}" holds ${b.hold.toFixed(2)}s` });
+}
+const s11Hold = 7 - S11_LOCKUP_READY;
+console.log(`\nScene 11 lockup complete at ${S11_LOCKUP_READY.toFixed(2)}s, hold ${s11Hold.toFixed(2)}s (needs at least 1.5s)`);
+if (s11Hold < 1.5) issues.push({ guard: "timeline", message: "Scene 11 lockup hold is under 1.5s" });
 
 const s2Len = 5;
 const hold = s2Len - SCENE02_SETTLED;
@@ -44,7 +67,7 @@ console.log("\nScene start times:");
 for (const sc of SCENES) console.log(`  Scene ${String(sc.number).padStart(2)} ${sc.built ? "built  " : "pending"} ${sc.start.toFixed(1).padStart(6)}s to ${sc.end.toFixed(1).padStart(6)}s  (${sc.duration}s)  ${sc.name}`);
 
 console.log("\nCursor clicks (ripple centre against the cursor hotspot, every frame of the ripple):");
-for (const [name, keys] of [["Scene 3", S3_CURSOR], ["Scene 4", S4_CURSOR]] as const) {
+for (const [name, keys] of [["Scene 3", S3_CURSOR], ["Scene 4", S4_CURSOR], ["Scene 5", S5_CURSOR], ["Scene 6", S6_CURSOR], ["Scene 8", S8_CURSOR], ["Scene 9", S9_CURSOR]] as const) {
   for (const c of cursorClickReport(keys)) {
     console.log(`  ${name} click at ${c.t.toFixed(2)}s: worst offset ${c.worst.toFixed(2)}px`);
     if (c.worst > 1) issues.push({ guard: "cursor", message: `${name} click at ${c.t.toFixed(2)}s drifts ${c.worst.toFixed(1)}px from its ripple` });

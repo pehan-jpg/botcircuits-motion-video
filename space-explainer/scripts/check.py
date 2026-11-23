@@ -75,6 +75,7 @@ def main(paths):
     total, problems, stats = 0, [], []
     logo_stats, ui_max = [], {}
     ui_range = [99.0, 0.0]
+    fit = [0, 0, 0]
     ripple_worst = []
     for p in paths:
         for entry in json.load(open(p)):
@@ -97,6 +98,10 @@ def main(paths):
                 ripple_worst.append((dist, where))
                 if dist > 4:
                     problems.append(f"{where}: Cursor: ripple centre is {dist:.1f}px from the cursor hotspot")
+            for it in g["items"]:
+                if it["kind"] == "fitcheck":
+                    nums = [int(x) for x in re.findall(r"\d+", it["label"])]
+                    fit[0] += nums[0]; fit[1] += nums[1]; fit[2] += nums[2]
             zoomed = any(it["kind"] == "frame" and it["rect"]["w"] > W + 1 for it in g["items"])
             for it in g["items"]:
                 for iss in it.get("issues", []):
@@ -174,6 +179,7 @@ def main(paths):
                 if ratio < MIN_CR:
                     problems.append(f'{where}: ReadabilityGuard: "{it["label"]}" contrast {ratio:.2f}:1 (bg lum mean {mean_bg:.2f}, 5th pct {worst_bg:.2f})')
     print(f"Checked {total} stills.")
+    print(f"Overflow test: {fit[1]} text boxes in {fit[0]} plates or boxes checked; collision test: {fit[2]} label pairs checked")
     if logo_stats:
         logo_stats.sort()
         print(f"Logo on plate: lowest contrast {logo_stats[0][0]:.2f}:1 ({logo_stats[0][1]})")

@@ -27,7 +27,7 @@ import { FONT, UIN, type OrbPaletteKey } from "../../theme";
 import { PLACEHOLDERS as P } from "../../placeholders";
 import { Sidebar, TopBar, UI } from "../chat/Sidebar";
 import { SpaceOrb } from "../SpaceOrb";
-import { Office, type OfficeState } from "./Office";
+import { FIGURE_H, LOOKS, NamePlate, Office, Person, plateAnchor, proj, DESKS, type AgentKey, type OfficeState, type PlateState, type Pose } from "./Office";
 
 /** Screenshot 02-control-room-office.png is drawn at this offset inside the native screen. */
 export const CR_OFFSET = { x: 242, y: 52 };
@@ -49,8 +49,29 @@ const Counter: React.FC<{ icon: React.ReactNode; label: string; value: number }>
 
 export type OutputCard = { agent: string; role: string; palette: OrbPaletteKey; text: string; flag?: string; appear: number };
 
+/**
+ * Hero introduction: a large copy-free version of an agent (the same Person
+ * and NamePlate components) that morphs to its desk. morph 0 is the hero
+ * pose in the centre, 1 is exactly the agent's place in the room.
+ */
+export type Hero = {
+  k: AgentKey;
+  name: string;
+  palette: OrbPaletteKey;
+  pose: Pose;
+  plate: PlateState;
+  /** Figure height on screen at the start, px. */
+  heroPx: number;
+  plateScale: number;
+  appear: number;
+  morph: number;
+};
+
 export type ControlRoomState = {
   office: OfficeState;
+  /** 0 to 1: the room dims to 35 percent and blurs 6px behind a hero. */
+  dim: number;
+  hero?: Hero;
   agents: number;
   activeTasks: number;
   irisMessage: number;
@@ -186,6 +207,7 @@ export const ControlRoomPage: React.FC<{ s: ControlRoomState }> = ({ s }) => {
             background: "#EAE6DD",
             overflow: "hidden",
             borderRadius: 4 + 16 * m,
+            filter: s.dim > 0.001 ? `brightness(${1 - 0.65 * s.dim}) blur(${6 * s.dim}px)` : undefined,
           }}
         >
           <div style={{ position: "absolute", left: -CANVAS.x, top: -CANVAS.y }}>
@@ -200,6 +222,8 @@ export const ControlRoomPage: React.FC<{ s: ControlRoomState }> = ({ s }) => {
             <span>Reset view</span>
           </div>
         </div>
+
+        {s.hero ? <HeroLayer h={s.hero} clock={s.clock} /> : null}
 
         {/* Results the agents bring */}
         {s.outputs.map((c, i) => (c.appear > 0 ? <OutputCardView key={c.agent} c={c} y={ys[i]} clock={s.clock} /> : null))}
@@ -239,5 +263,39 @@ export const ControlRoomPage: React.FC<{ s: ControlRoomState }> = ({ s }) => {
         </div>
       </div>
     </div>
+  );
+};
+
+const lerp = (a: number, b: number, p: number) => a + (b - a) * p;
+
+/** The hero figure and plate, in page coordinates (identical to room coordinates while the canvas is full size). */
+const HeroLayer: React.FC<{ h: Hero; clock: number }> = ({ h, clock }) => {
+  // Product scale: 1728 / 1875 screen px per page unit.
+  const S = h.heroPx / (FIGURE_H * (1728 / 1875));
+  const big = h.heroPx > 500;
+  const start = { x: big ? 560 : 610, y: big ? 395 + (FIGURE_H * S) / 2 : 400 + (FIGURE_H * S) / 2 };
+  const end = proj(DESKS[h.k].feet[0], DESKS[h.k].feet[1]);
+  const p = h.morph;
+  const scale = Math.pow(S, 1 - p);
+  const fx = lerp(start.x, end.x, p);
+  const fy = lerp(start.y, end.y, p) + (1 - h.appear) * 40;
+  const plateStart = { x: start.x + (big ? 340 : 240), y: start.y - FIGURE_H * S * (big ? 0.62 : 0.6) };
+  const an = plateAnchor(h.k);
+  const ps = Math.pow(h.plateScale, 1 - p);
+  return (
+    <>
+      <svg width={1633} height={836} style={{ position: "absolute", left: 0, top: 0, overflow: "visible", opacity: h.appear }}>
+        <g transform={`translate(${fx} ${fy}) scale(${scale})`}>
+          <Person look={LOOKS[h.k]} pose={h.pose} />
+        </g>
+      </svg>
+      <NamePlate
+        name={h.name}
+        p={{ ...h.plate, opacity: h.appear }}
+        palette={h.palette}
+        clock={clock}
+        style={{ left: lerp(plateStart.x, an.x, p), top: lerp(plateStart.y, an.y, p), transform: `translateX(-50%) scale(${ps})`, transformOrigin: "50% 0" }}
+      />
+    </>
   );
 };

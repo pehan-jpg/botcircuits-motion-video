@@ -21,14 +21,14 @@ const SCENE_LIST: { id: SceneId; name: string; duration: number; built: boolean 
   { id: "S01", name: "Problem", duration: 15, built: true },
   { id: "S02", name: "Intro", duration: 5, built: true },
   { id: "S03", name: "Chat", duration: 14.5, built: true },
-  { id: "S04", name: "Agents and Control Room", duration: 28, built: true },
-  { id: "S05", name: "Scene 5", duration: 10, built: false },
-  { id: "S06", name: "Scene 6", duration: 15, built: false },
-  { id: "S07", name: "Scene 7", duration: 9, built: false },
-  { id: "S08", name: "Scene 8", duration: 16, built: false },
-  { id: "S09", name: "Scene 9", duration: 12, built: false },
-  { id: "S10", name: "Scene 10", duration: 6, built: false },
-  { id: "S11", name: "Scene 11", duration: 8, built: false },
+  { id: "S04", name: "Agents and Control Room", duration: 34, built: true },
+  { id: "S05", name: "Company Brain", duration: 11, built: true },
+  { id: "S06", name: "Playbook", duration: 15, built: true },
+  { id: "S07", name: "Evening trigger", duration: 10, built: true },
+  { id: "S08", name: "Morning review", duration: 17, built: true },
+  { id: "S09", name: "Records and Pages", duration: 13, built: true },
+  { id: "S10", name: "Concierge handoff", duration: 6, built: true },
+  { id: "S11", name: "End card", duration: 7, built: true },
 ];
 
 export type SceneDef = {
