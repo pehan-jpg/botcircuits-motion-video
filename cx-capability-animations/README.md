@@ -1,7 +1,7 @@
 # cx-capability-animations
 
 Six looping micro animations for the capability section of the BotCircuits CX
-product page, built with Remotion. Built so far: **Build** and **Integrate**.
+product page, built with Remotion. Built so far: **Build**, **Integrate** and **Simulate**.
 
 | Setting | Value |
 | --- | --- |
@@ -30,6 +30,12 @@ src/
     Spinner.tsx          quarter arc loading ring, frame driven
     ConnectionLine.tsx   curved fan line drawn by dashoffset, with arc length helpers
     Pulse.tsx            lime dot that travels along a ConnectionLine
+    TestRow.tsx          test scenario row that grows to show a reason and fix
+    StatusIcon.tsx       idle, running, passed and failed states, crossfaded
+    ResultPill.tsx       Passed or Failed pill
+    ProgressBar.tsx      thin lime progress bar
+    Counter.tsx          rolling number with label crossfade and highlight
+    FixBlock.tsx         divider, label and one typed procedure step
     Veil.tsx             the soft dissolve used for every state change
   compositions/build/
     timeline.ts          every scene time, in seconds (retime here)
@@ -39,6 +45,10 @@ src/
     timeline.ts          every scene time, in seconds
     content.ts           systems, counter text and actions
     Integrate.tsx        the scene (all tile state derived from the frame)
+  compositions/simulate/
+    timeline.ts          every scene time, in seconds
+    content.ts           test scenarios, failure reason and fix step
+    Simulate.tsx         the scene (all row state derived from the frame)
 ```
 
 To add the next animation, create `src/compositions/<name>/` with its own
@@ -55,6 +65,9 @@ npm run render:build    # out/build-v2.mp4, out/build-v2.webm, out/build-v2-post
 npm run stills:integrate
 npm run preview:integrate
 npm run render:integrate   # out/integrate-v1.mp4, .webm and -poster.png
+npm run stills:simulate
+npm run preview:simulate
+npm run render:simulate    # out/simulate-v1.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -80,9 +93,20 @@ browser instead of Remotion's download.
 | v1 | `out/build.*` | First cut |
 | v2 | `out/build-v2.*` | Coloured 96px tags, aligned row text, animated orb avatar |
 | Integrate v1 | `out/integrate-v1.*` | First cut |
+| Simulate v1 | `out/simulate-v1.*` | First cut |
 
 ## Integrate notes
 
 * The shared orb carries lime in its gradient, so on Integrate lime appears
   in the orb as well as the Connected pills, the pulse dot and the result
   highlight.
+
+## Simulate notes
+
+* The card's top edge is fixed at y 180, so the card at its tallest (fix
+  open, 640px) is centred. It only grows and shrinks downward.
+* The counter rolls 20 points over 0.4s starting the moment each test
+  passes (0.5s for the rerun), so frames caught mid roll show values
+  between the steps.
+* Normal test rows have a white fill and the shared 1px border, which is
+  what the failed row fades back to.

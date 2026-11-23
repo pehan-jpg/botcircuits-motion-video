@@ -11,6 +11,10 @@ import {Easing} from 'remotion';
  * Integrate: lime appears only in the Connected pills (limeTint), the
  * travelling pulse dot (lime) and the result highlight (limeTint), plus the
  * shared agent orb.
+ *
+ * Simulate: lime appears only in the pass state (tick circles, Passed pills,
+ * progress fill), the typing highlight and the final counter highlight. Rose
+ * appears only on the single failed test.
  */
 export const colors = {
   background: '#ffffff',
@@ -23,6 +27,13 @@ export const colors = {
   limeTint: '#eef5c8',
   /** Connection lines between the agent and its systems. */
   line: '#d9d9d3',
+  /** Idle status ring. */
+  idleRing: '#c9c9c2',
+  /** Rose: failed state only. */
+  rose: '#fce4ea',
+  roseText: '#b0304f',
+  roseRowFill: '#fff7f8',
+  roseRowBorder: '#f3c9d2',
   /** Near black used for the idle send button and the typing caret. */
   charcoal: '#1a1a1a',
 } as const;
