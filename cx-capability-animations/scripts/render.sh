@@ -6,11 +6,11 @@
 # Frames are rendered once as PNG, then encoded with ffmpeg so keyframes can
 # be forced on the first and last frames. That keeps both blank white loop
 # frames bit identical after decoding.
-# Usage: ./scripts/render.sh Build 414
+# Usage: ./scripts/render.sh Build 414 [output-name]
 set -euo pipefail
 COMP="$1"; POSTER_FRAME="$2"
-NAME="$(echo "$COMP" | tr '[:upper:]' '[:lower:]')"
-SEQ="$(mktemp -d)"
+NAME="${3:-$(echo "$COMP" | tr "[:upper:]" "[:lower:]")}"
+SEQ="$(mktemp -d "${TMPDIR:-/tmp}/frames_XXXXXX")"
 trap 'rm -rf "$SEQ"' EXIT
 mkdir -p out
 npx remotion bundle --out-dir build >/dev/null

@@ -8,7 +8,7 @@
     "typecheck": "tsc --noEmit",
     "stills:build": "./scripts/stills.sh Build 0 24 90 138 156 216 282 312 342 366 390 432 479",
     "preview:build": "./scripts/preview.sh Build",
-    "render:build": "./scripts/render.sh Build 414"
+    "render:build": "./scripts/render.sh Build 414 build-v2"
   },
   "dependencies": {
     "@remotion/cli": "4.0.545",

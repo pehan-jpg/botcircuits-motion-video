@@ -20,10 +20,11 @@ src/
   motion.ts              eased progress helper
   components/
     Card.tsx             white card with border and shadow
-    Chip.tsx             grey pill (also tags and the lime status pill)
+    Chip.tsx             pill used for labels, tags and the lime status pill
     Icons.tsx            14px line icons, 1.5px stroke, and the drawn tick
     TypedText.tsx        typing with the newest word on a lime tint highlight
-    StepRow.tsx          numbered procedure row with tag, indent and typing
+    StepRow.tsx          numbered procedure row with coloured 96px tag, indent and typing
+    Orb.tsx              counter rotating gradient orb, one turn per loop
     Veil.tsx             the soft dissolve used for every state change
   compositions/build/
     timeline.ts          every scene time, in seconds (retime here)
@@ -41,7 +42,7 @@ npm install
 npm run studio          # interactive preview
 npm run stills:build    # review stills into out/stills/build
 npm run preview:build   # half resolution motion check into out/preview
-npm run render:build    # out/build.mp4, out/build.webm, out/build-poster.png
+npm run render:build    # out/build-v2.mp4, out/build-v2.webm, out/build-v2-poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -54,7 +55,15 @@ browser instead of Remotion's download.
   text padding and the 44px send button. The type size was kept and the
   pill widened. Change `PILL.width` in `Build.tsx` if you prefer a smaller
   type size instead.
-* **Avatar.** `public/assets/logo.svg` is picked up automatically when it
-  exists. It is not in the repository yet, so a neutral grey circle is shown.
+* **Tool tag colour.** The requested `#a85a10` on `#fdecd8` measured 4.39 to 1,
+  so the text was darkened to `#a05510` (4.78 to 1). All tag pairs live in
+  `tagColours` in `tokens.ts` with their measured ratios.
 * **Veil bounds.** The wash sits on the outgoing element's bounds while it
   rises, then reshapes to the incoming element's bounds as it falls away.
+
+## Renders
+
+| Version | Files | Changes |
+| --- | --- | --- |
+| v1 | `out/build.*` | First cut |
+| v2 | `out/build-v2.*` | Coloured 96px tags, aligned row text, animated orb avatar |

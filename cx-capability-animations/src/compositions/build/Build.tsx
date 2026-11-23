@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-  AbsoluteFill,
-  Img,
-  getStaticFiles,
-  interpolateColors,
-  staticFile,
-  useCurrentFrame,
-  useVideoConfig,
-} from 'remotion';
+import {AbsoluteFill, interpolateColors, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Card} from '../../components/Card';
 import {Chip} from '../../components/Chip';
 import {ArrowUpIcon, ShieldIcon, TickIcon} from '../../components/Icons';
 import {StepRow, STEP_ROW} from '../../components/StepRow';
 import {TypedText} from '../../components/TypedText';
+import {Orb} from '../../components/Orb';
 import {Rect, Veil, veilState} from '../../components/Veil';
 import {HEIGHT, WIDTH} from '../../config';
 import {mix, progress} from '../../motion';
@@ -56,7 +49,7 @@ const PROC = {
 const AGENT = {
   width: 560,
   pad: 32,
-  avatar: 56,
+  avatar: 64,
   avatarGap: 20,
   pillGap: 20,
   pillHeight: 36,
@@ -87,8 +80,6 @@ const procedureRect = (cardHeight: number): Rect => {
     radius: radii.card,
   };
 };
-
-const hasLogo = getStaticFiles().some((f) => f.name === 'assets/logo.svg');
 
 /* ------------------------------------------------------------------ */
 /* Scene                                                               */
@@ -319,7 +310,7 @@ const AgentCard: React.FC<{style: React.CSSProperties}> = ({style}) => {
     >
       <Card width={AGENT.width} height={AGENT_HEIGHT} padding={AGENT.pad}>
         <div style={{display: 'flex', alignItems: 'center', gap: AGENT.avatarGap}}>
-          <Avatar />
+          <Orb size={AGENT.avatar} />
           <div style={{display: 'flex', flexDirection: 'column', gap: 4}}>
             <div
               style={{
@@ -367,23 +358,3 @@ const AgentCard: React.FC<{style: React.CSSProperties}> = ({style}) => {
     </div>
   );
 };
-
-const Avatar: React.FC = () =>
-  hasLogo ? (
-    <Img
-      src={staticFile('assets/logo.svg')}
-      style={{width: AGENT.avatar, height: AGENT.avatar, borderRadius: '50%', flexShrink: 0}}
-    />
-  ) : (
-    <div
-      style={{
-        width: AGENT.avatar,
-        height: AGENT.avatar,
-        borderRadius: '50%',
-        background: colors.greyPill,
-        border: `1px solid ${colors.border}`,
-        boxSizing: 'border-box',
-        flexShrink: 0,
-      }}
-    />
-  );

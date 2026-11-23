@@ -1,7 +1,7 @@
 import React from 'react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {mix, progress} from '../motion';
-import {colors, fontFamily, fontWeights, radii} from '../tokens';
+import {colors, fontFamily, fontWeights, radii, tagColours} from '../tokens';
 import {Chip} from './Chip';
 import {BranchIcon, MessageIcon, SpeechArrowIcon, WrenchIcon} from './Icons';
 import {TypedText} from './TypedText';
@@ -24,13 +24,16 @@ export const STEP_ROW = {
   numberColumn: 28,
   numberToTag: 10,
   tagToText: 14,
+  /** Fixed tag width so every row's text starts at the same x. */
+  tagWidth: 96,
   textSize: 22,
   numberSize: 16,
 } as const;
 
-/** Neutral grey step tag: icon plus label, no colour coding. */
+/** Step tag: fixed width pill coloured per step type, content left aligned. */
 export const StepTag: React.FC<{kind: StepKind}> = ({kind}) => {
   const {label, Icon} = TAGS[kind];
+  const {background, text} = tagColours[kind];
   return (
     <Chip
       label={label}
@@ -40,6 +43,9 @@ export const StepTag: React.FC<{kind: StepKind}> = ({kind}) => {
       paddingX={10}
       gap={6}
       radius={radii.tag}
+      background={background}
+      color={text}
+      style={{width: STEP_ROW.tagWidth, justifyContent: 'flex-start'}}
     />
   );
 };
