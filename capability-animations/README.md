@@ -17,6 +17,10 @@ library. In Remotion Studio they sit in two folders, **CX** and **Space**. All s
 src/
   cx/                    the six CX compositions (see below)
   space/                 the Space compositions
+    components/          Space only: Composer, UserBubble, ReplyRow,
+                         PlanGraph (with AgentNode), ResultCard, FindingRow,
+                         SourceChip
+    chat/                SpaceChat: timeline.ts, content.ts, SpaceChat.tsx
   config.ts              width, height, fps, duration
   tokens.ts              colours, shadow, radii, easing (shared by all six)
   fonts.ts               local Inter loader
@@ -118,6 +122,9 @@ npm run render:monitor     # out/monitor-v1.mp4, .webm and -poster.png
 npm run stills:optimize
 npm run preview:optimize
 npm run render:optimize    # out/optimize-v1.mp4, .webm and -poster.png
+npm run stills:space-chat
+npm run preview:space-chat
+npm run render:space-chat  # out/space/space-chat-v1.mp4, .webm and -poster.png
 ```
 
 Set `REMOTION_BROWSER` to a Chrome headless shell path to use a preinstalled
@@ -147,6 +154,7 @@ browser instead of Remotion's download.
 | Publish v2 | `out/publish-v2.*` | First cut (named v2 as requested) |
 | Monitor v1 | `out/monitor-v1.*` | First cut |
 | Optimize v1 | `out/optimize-v1.*` | First cut |
+| SpaceChat v1 | `out/space/space-chat-v1.*` | First cut |
 | Publish v3 | `out/publish-v3.*` | Brand logos for WhatsApp, Instagram and Messenger; customer renamed to Emily Carter |
 
 ## Integrate notes
@@ -204,3 +212,14 @@ browser instead of Remotion's download.
   hands over everywhere else; the traffic bar and panels follow from 5.9s.
 * The second dissolve spans both cards, so its veil peak is 0.45 as in
   Publish. The first, over a single card, keeps Build's 0.8.
+
+## Space notes
+
+* The shared story across the Space set is insurance claim CLM 2087.
+* SpaceChat: the composer text pill and the user bubble are one rectangle
+  (`UserBubble`) that interpolates position, size, radius, fill, border,
+  shadow and text. At morph 0 it is pixel identical to the composer. The
+  bubble width comes from `measureText` (@remotion/layout-utils) with the
+  loaded Inter, not from the DOM.
+* The thread's top is fixed so the thread at its tallest (result card) is
+  centred above the bottom composer; the card grows downward only.

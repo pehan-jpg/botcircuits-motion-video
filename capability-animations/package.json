@@ -23,11 +23,15 @@
     "render:monitor": "./scripts/render.sh Monitor 492 monitor-v1",
     "stills:optimize": "./scripts/stills.sh Optimize 0 18 60 120 150 204 228 288 342 366 432 492 528 599",
     "preview:optimize": "./scripts/preview.sh Optimize",
-    "render:optimize": "./scripts/render.sh Optimize 528 optimize-v1"
+    "render:optimize": "./scripts/render.sh Optimize 528 optimize-v1",
+    "stills:space-chat": "STILLS_DIR=out/space/stills/space-chat ./scripts/stills.sh SpaceChat 0 18 60 108 132 162 210 252 282 300 336 384 420 462 479",
+    "preview:space-chat": "PREVIEW_DIR=out/space/preview ./scripts/preview.sh SpaceChat",
+    "render:space-chat": "./scripts/render.sh SpaceChat 420 space/space-chat-v1"
   },
   "dependencies": {
     "@remotion/cli": "4.0.545",
     "@remotion/fonts": "4.0.545",
+    "@remotion/layout-utils": "4.0.545",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "remotion": "4.0.545"

@@ -11,6 +11,7 @@ import {Monitor} from './cx/monitor/Monitor';
 import {MONITOR_DURATION_SECONDS} from './cx/monitor/timeline';
 import {Optimize} from './cx/optimize/Optimize';
 import {OPTIMIZE_DURATION_SECONDS} from './cx/optimize/timeline';
+import {SpaceChat} from './space/chat/SpaceChat';
 
 ensureInter();
 
@@ -33,6 +34,8 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="Monitor" component={Monitor} durationInFrames={MONITOR_DURATION_SECONDS * FPS} {...canvas} />
       <Composition id="Optimize" component={Optimize} durationInFrames={OPTIMIZE_DURATION_SECONDS * FPS} {...canvas} />
     </Folder>
-    <Folder name="Space">{null}</Folder>
+    <Folder name="Space">
+      <Composition id="SpaceChat" component={SpaceChat} durationInFrames={DURATION_IN_FRAMES} {...canvas} />
+    </Folder>
   </>
 );
