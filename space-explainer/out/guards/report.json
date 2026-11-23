@@ -261,8 +261,8 @@
       "w": 391.16015625,
       "h": 315.4518127441406
      },
-     "fontPx": 11.98716607862903,
-     "cssPx": 9.5,
+     "fontPx": 35.330594758064514,
+     "cssPx": 28,
      "fontPxMax": 35.330594758064514,
      "maxCss": 28,
      "minLabel": "PDF",
@@ -598,8 +598,8 @@
       "w": 393.988037109375,
       "h": 317.7323913574219
      },
-     "fontPx": 12.073826943674394,
-     "cssPx": 9.5,
+     "fontPx": 35.58601625504032,
+     "cssPx": 28,
      "fontPxMax": 35.58601625504032,
      "maxCss": 28,
      "minLabel": "PDF",
@@ -975,8 +975,8 @@
       "w": 395.9493408203125,
       "h": 319.3139343261719
      },
-     "fontPx": 12.133931412235384,
-     "cssPx": 9.5,
+     "fontPx": 35.76316626764113,
+     "cssPx": 28,
      "fontPxMax": 35.76316626764113,
      "maxCss": 28,
      "minLabel": "PDF",
@@ -1392,8 +1392,8 @@
       "w": 397.21435546875,
       "h": 320.3341064453125
      },
-     "fontPx": 12.17269799017137,
-     "cssPx": 9.5,
+     "fontPx": 35.877425655241936,
+     "cssPx": 28,
      "fontPxMax": 35.877425655241936,
      "maxCss": 28,
      "minLabel": "PDF",
@@ -1869,8 +1869,8 @@
       "w": 398.001953125,
       "h": 320.96929931640625
      },
-     "fontPx": 12.196834047379033,
-     "cssPx": 9.5,
+     "fontPx": 35.94856350806452,
+     "cssPx": 28,
      "fontPxMax": 35.94856350806452,
      "maxCss": 28,
      "minLabel": "PDF",
@@ -2366,8 +2366,8 @@
       "w": 398.48388671875,
       "h": 321.3580322265625
      },
-     "fontPx": 12.211602980090726,
-     "cssPx": 9.5,
+     "fontPx": 35.992092993951616,
+     "cssPx": 28,
      "fontPxMax": 35.992092993951616,
      "maxCss": 28,
      "minLabel": "PDF",
@@ -2863,8 +2863,8 @@
       "w": 398.774658203125,
       "h": 321.5925598144531
      },
-     "fontPx": 12.220513719128023,
-     "cssPx": 9.5,
+     "fontPx": 36.01835622479838,
+     "cssPx": 28,
      "fontPxMax": 36.01835622479838,
      "maxCss": 28,
      "minLabel": "PDF",
@@ -3360,8 +3360,8 @@
       "w": 398.9456787109375,
       "h": 321.7303466796875
      },
-     "fontPx": 12.225754670173892,
-     "cssPx": 9.5,
+     "fontPx": 36.03380323840726,
+     "cssPx": 28,
      "fontPxMax": 36.03380323840726,
      "maxCss": 28,
      "minLabel": "PDF",
@@ -3837,8 +3837,8 @@
       "w": 399.0419921875,
       "h": 321.80804443359375
      },
-     "fontPx": 12.228706212197581,
-     "cssPx": 9.5,
+     "fontPx": 36.04250252016129,
+     "cssPx": 28,
      "fontPxMax": 36.04250252016129,
      "maxCss": 28,
      "minLabel": "PDF",
@@ -4334,8 +4334,8 @@
       "w": 399.092529296875,
       "h": 321.84881591796875
      },
-     "fontPx": 12.230254930065525,
-     "cssPx": 9.5,
+     "fontPx": 36.04706716229839,
+     "cssPx": 28,
      "fontPxMax": 36.04706716229839,
      "maxCss": 28,
      "minLabel": "PDF",
@@ -15065,11 +15065,11 @@
       "w": 2421.360107421875,
       "h": 1155.7904052734375
      },
-     "fontPx": 13.31187559057165,
-     "cssPx": 9.5,
+     "fontPx": 21.284988444292985,
+     "cssPx": 15.19,
      "fontPxMax": 33.44783898388898,
      "maxCss": 23.87,
-     "minLabel": "PDF",
+     "minLabel": "Northfield",
      "read": false,
      "color": "rgb(236, 236, 236)",
      "issues": [
@@ -15090,13 +15090,13 @@
       "w": 1456.690185546875,
       "h": 77.48358154296875
      },
-     "fontPx": 12.268224080403646,
-     "cssPx": 9.5,
+     "fontPx": 19.6162446085612,
+     "cssPx": 15.19,
      "fontPxMax": 21.307968139648438,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S1",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15147,11 +15147,11 @@
       "w": 2424.9599609375,
       "h": 1157.5087890625
      },
-     "fontPx": 13.331666451913339,
-     "cssPx": 9.5,
+     "fontPx": 21.316632989954066,
+     "cssPx": 15.19,
      "fontPxMax": 33.49756612707068,
      "maxCss": 23.87,
-     "minLabel": "PDF",
+     "minLabel": "Northfield",
      "read": false,
      "color": "rgb(236, 236, 236)",
      "issues": [
@@ -15172,13 +15172,13 @@
       "w": 1458.85595703125,
       "h": 77.5987548828125
      },
-     "fontPx": 12.286464177124888,
-     "cssPx": 9.5,
+     "fontPx": 19.645409563213374,
+     "cssPx": 15.19,
      "fontPxMax": 21.339648307637965,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S1",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15192,13 +15192,13 @@
       "w": 1458.85595703125,
       "h": 77.5987548828125
      },
-     "fontPx": 12.286464177124888,
-     "cssPx": 9.5,
+     "fontPx": 19.645409563213374,
+     "cssPx": 15.19,
      "fontPxMax": 21.339648307637965,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S2",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15249,11 +15249,11 @@
       "w": 2428.56005859375,
       "h": 1159.2271728515625
      },
-     "fontPx": 13.351458655463325,
-     "cssPx": 9.5,
+     "fontPx": 21.34827968173557,
+     "cssPx": 15.19,
      "fontPxMax": 33.547296642727325,
      "maxCss": 23.87,
-     "minLabel": "PDF",
+     "minLabel": "Northfield",
      "read": false,
      "color": "rgb(236, 236, 236)",
      "issues": [
@@ -15294,13 +15294,13 @@
       "w": 1461.021484375,
       "h": 77.71392822265625
      },
-     "fontPx": 12.304702217697251,
-     "cssPx": 9.5,
+     "fontPx": 19.67457123019171,
+     "cssPx": 15.19,
      "fontPxMax": 21.37132490442154,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S1",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15314,13 +15314,13 @@
       "w": 1461.021484375,
       "h": 77.71392822265625
      },
-     "fontPx": 12.304702217697251,
-     "cssPx": 9.5,
+     "fontPx": 19.67457123019171,
+     "cssPx": 15.19,
      "fontPxMax": 21.37132490442154,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S2",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15411,11 +15411,11 @@
       "w": 2432.16015625,
       "h": 1160.945556640625
      },
-     "fontPx": 13.37125085901331,
-     "cssPx": 9.5,
+     "fontPx": 21.379926373517073,
+     "cssPx": 15.19,
      "fontPxMax": 33.59702715838397,
      "maxCss": 23.87,
-     "minLabel": "PDF",
+     "minLabel": "Northfield",
      "read": false,
      "color": "rgb(236, 236, 236)",
      "issues": [
@@ -15456,13 +15456,13 @@
       "w": 1463.1875,
       "h": 77.8291015625
      },
-     "fontPx": 12.322944370567377,
-     "cssPx": 9.5,
+     "fontPx": 19.703739472517732,
+     "cssPx": 15.19,
      "fontPxMax": 21.403008643617024,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S1",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15476,13 +15476,13 @@
       "w": 1463.1875,
       "h": 77.82916259765625
      },
-     "fontPx": 12.322944370567377,
-     "cssPx": 9.5,
+     "fontPx": 19.703739472517732,
+     "cssPx": 15.19,
      "fontPxMax": 21.403008643617024,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S2",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15573,11 +15573,11 @@
       "w": 2435.760009765625,
       "h": 1162.6640625
      },
-     "fontPx": 13.391041720354998,
-     "cssPx": 9.5,
+     "fontPx": 21.41157091917815,
+     "cssPx": 15.19,
      "fontPxMax": 33.646754301565664,
      "maxCss": 23.87,
-     "minLabel": "PDF",
+     "minLabel": "Northfield",
      "read": false,
      "color": "rgb(236, 236, 236)",
      "issues": [
@@ -15618,13 +15618,13 @@
       "w": 1465.353271484375,
       "h": 77.9443359375
      },
-     "fontPx": 12.341184467288619,
-     "cssPx": 9.5,
+     "fontPx": 19.732904427169906,
+     "cssPx": 15.19,
      "fontPxMax": 21.43468881160655,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S1",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15638,13 +15638,13 @@
       "w": 1465.353271484375,
       "h": 77.9443359375
      },
-     "fontPx": 12.341184467288619,
-     "cssPx": 9.5,
+     "fontPx": 19.732904427169906,
+     "cssPx": 15.19,
      "fontPxMax": 21.43468881160655,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S2",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15735,11 +15735,11 @@
       "w": 1729.2568359375,
       "h": 825.4280395507812
      },
-     "fontPx": 9.506909688313803,
-     "cssPx": 9.5,
+     "fontPx": 15.201048227945964,
+     "cssPx": 15.19,
      "fontPxMax": 23.887361501057946,
      "maxCss": 23.87,
-     "minLabel": "PDF",
+     "minLabel": "Northfield",
      "read": false,
      "color": "rgb(236, 236, 236)",
      "issues": [
@@ -15780,13 +15780,13 @@
       "w": 1040.321044921875,
       "h": 55.33624267578125
      },
-     "fontPx": 8.761569084005153,
-     "cssPx": 9.5,
+     "fontPx": 14.009287830109292,
+     "cssPx": 15.19,
      "fontPxMax": 15.217462093272108,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S1",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15800,13 +15800,13 @@
       "w": 1040.321044921875,
       "h": 55.33624267578125
      },
-     "fontPx": 8.761569084005153,
-     "cssPx": 9.5,
+     "fontPx": 14.009287830109292,
+     "cssPx": 15.19,
      "fontPxMax": 15.217462093272108,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S2",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15897,11 +15897,11 @@
       "w": 1741.8240966796875,
       "h": 831.4267578125
      },
-     "fontPx": 9.576000531514486,
-     "cssPx": 9.5,
+     "fontPx": 15.311520849863689,
+     "cssPx": 15.19,
      "fontPxMax": 24.060961335500085,
      "maxCss": 23.87,
-     "minLabel": "PDF",
+     "minLabel": "Northfield",
      "read": false,
      "color": "rgb(236, 236, 236)",
      "issues": [
@@ -15942,13 +15942,13 @@
       "w": 1047.8814697265625,
       "h": 55.7384033203125
      },
-     "fontPx": 8.825242874470163,
-     "cssPx": 9.5,
+     "fontPx": 14.111098869810712,
+     "cssPx": 15.19,
      "fontPxMax": 15.328053413553441,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S1",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -15962,13 +15962,13 @@
       "w": 1047.8814697265625,
       "h": 55.7384033203125
      },
-     "fontPx": 8.825242874470163,
-     "cssPx": 9.5,
+     "fontPx": 14.111098869810712,
+     "cssPx": 15.19,
      "fontPxMax": 15.328053413553441,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S2",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -16153,11 +16153,11 @@
       "w": 1727.958740234375,
       "h": 824.8084716796875
      },
-     "fontPx": 9.499773166797779,
-     "cssPx": 9.5,
+     "fontPx": 15.189637305648237,
+     "cssPx": 15.19,
      "fontPxMax": 23.869430051732948,
      "maxCss": 23.87,
-     "minLabel": "PDF",
+     "minLabel": "Northfield",
      "read": false,
      "color": "rgb(236, 236, 236)",
      "issues": []
@@ -16193,13 +16193,13 @@
       "w": 1039.5400390625,
       "h": 55.29473876953125
      },
-     "fontPx": 8.754991463735594,
-     "cssPx": 9.5,
+     "fontPx": 13.998770561488808,
+     "cssPx": 15.19,
      "fontPxMax": 15.206037805435505,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S1",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -16213,13 +16213,13 @@
       "w": 1039.5400390625,
       "h": 55.294677734375
      },
-     "fontPx": 8.754991463735594,
-     "cssPx": 9.5,
+     "fontPx": 13.998770561488808,
+     "cssPx": 15.19,
      "fontPxMax": 15.206037805435505,
      "maxCss": 16.5,
-     "minLabel": "PDF",
+     "minLabel": "S2",
      "read": true,
-     "color": "rgb(0, 0, 0)",
+     "color": "rgb(236, 236, 236)",
      "issues": []
     },
     {
@@ -16412,8 +16412,8 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PlaybookDocsPlaybooksHome claim reviewdraftPersonalv1SequenceGraphCheckRun playbookShareSave draftSave & activateAdd stepINPUTASKAsk the user and store the answer: text, bu…OUTPUTSENDSend a message to the userACTIONSRUNRun an instruction, a tool, an API call, a fun…AGENTGive one of your agents a task and wait …PLAYBOOKRun another playbookTABLERead or change rows of a tablePAGEMake a page for this run: written here, or …EXTRACTRead a document into a fixed structu…REVIEWWait for a person to approve or declineFLOWIFBranch on conditions or natural languageFOR EACHRun an agent or a playbook for eac…WAITWait for a time, a table row or an emailGO TOContinue from another step (loops, retr…SETAssign a value to a variableENDEnd the playbook1TRIGGEREmail arrives in the claims inbox",
      "opacity": 1,
      "rect": {
-      "x": -714.2039794921875,
-      "y": -113.81195068359375,
+      "x": -714.08544921875,
+      "y": -113.45672607421875,
       "w": 2592,
       "h": 1237.2421875
      },
@@ -16427,7 +16427,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-714,\"y\":-114,\"w\":2592,\"h\":1237} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-714,\"y\":-113,\"w\":2592,\"h\":1237} enters the 96px margin"
       }
      ]
     },
@@ -16437,8 +16437,8 @@
      "text": "1TRIGGEREmail arrives in the claims inbox",
      "opacity": 0.996894,
      "rect": {
-      "x": 724.9920654296875,
-      "y": 158.68994140625,
+      "x": 725.110595703125,
+      "y": 159.045166015625,
       "w": 967.679931640625,
       "h": 91.2384033203125
      },
@@ -16457,8 +16457,8 @@
      "text": "",
      "opacity": 0.996894,
      "rect": {
-      "x": 1635.9935302734375,
-      "y": 189.10272216796875,
+      "x": 1636.112060546875,
+      "y": 189.45794677734375,
       "w": 33.177490234375,
       "h": 30.412841796875
      },
@@ -16477,8 +16477,8 @@
      "text": "",
      "opacity": 0.111111,
      "rect": {
-      "x": 250.13525390625,
-      "y": 785.5350952148438,
+      "x": 250.2537841796875,
+      "y": 785.8903198242188,
       "w": 92.384033203125,
       "h": 92.384033203125
      },
@@ -16497,8 +16497,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 291.8272705078125,
-      "y": 829.4771118164062,
+      "x": 291.94580078125,
+      "y": 829.8323364257812,
       "w": 54,
       "h": 66
      },
@@ -16554,8 +16554,8 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PlaybookDocsPlaybooksHome claim reviewdraftPersonalv1SequenceGraphCheckRun playbookShareSave draftSave & activateAdd stepINPUTASKAsk the user and store the answer: text, bu…OUTPUTSENDSend a message to the userACTIONSRUNRun an instruction, a tool, an API call, a fun…AGENTGive one of your agents a task and wait …PLAYBOOKRun another playbookTABLERead or change rows of a tablePAGEMake a page for this run: written here, or …EXTRACTRead a document into a fixed structu…REVIEWWait for a person to approve or declineFLOWIFBranch on conditions or natural languageFOR EACHRun an agent or a playbook for eac…WAITWait for a time, a table row or an emailGO TOContinue from another step (loops, retr…SETAssign a value to a variableENDEnd the playbook1TRIGGEREmail arrives in the claims inbox2AGENTRead claimNora",
      "opacity": 1,
      "rect": {
-      "x": -716.346923828125,
-      "y": -120.2406005859375,
+      "x": -716.0592041015625,
+      "y": -119.3778076171875,
       "w": 2592,
       "h": 1237.2421875
      },
@@ -16569,7 +16569,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-716,\"y\":-120,\"w\":2592,\"h\":1237} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-716,\"y\":-119,\"w\":2592,\"h\":1237} enters the 96px margin"
       }
      ]
     },
@@ -16579,8 +16579,8 @@
      "text": "1TRIGGEREmail arrives in the claims inbox",
      "opacity": 1,
      "rect": {
-      "x": 722.84912109375,
-      "y": 152.20980834960938,
+      "x": 723.1368408203125,
+      "y": 153.07260131835938,
       "w": 967.679931640625,
       "h": 91.23837280273438
      },
@@ -16599,8 +16599,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1633.8505859375,
-      "y": 182.62261962890625,
+      "x": 1634.1383056640625,
+      "y": 183.48541259765625,
       "w": 33.177490234375,
       "h": 30.41278076171875
      },
@@ -16619,8 +16619,8 @@
      "text": "2AGENTRead claimNora",
      "opacity": 0.987134,
      "rect": {
-      "x": 722.84912109375,
-      "y": 268.5447998046875,
+      "x": 723.1368408203125,
+      "y": 269.4075927734375,
       "w": 967.679931640625,
       "h": 91.2384033203125
      },
@@ -16639,8 +16639,8 @@
      "text": "",
      "opacity": 0.222222,
      "rect": {
-      "x": 248.0589599609375,
-      "y": 383.80596923828125,
+      "x": 248.3466796875,
+      "y": 384.66876220703125,
       "w": 92.2506103515625,
       "h": 92.25067138671875
      },
@@ -16659,8 +16659,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 289.684326171875,
-      "y": 427.6812744140625,
+      "x": 289.9720458984375,
+      "y": 428.5440673828125,
       "w": 54,
       "h": 66
      },
@@ -16716,8 +16716,8 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PlaybookDocsPlaybooksHome claim reviewdraftPersonalv1SequenceGraphCheckRun playbookShareSave draftSave & activateAdd step1TRIGGEREmail arrives in the claims inbox2AGENTRead claimNora3AGENTCheck policyHome Policy Wording 2026Theo",
      "opacity": 1,
      "rect": {
-      "x": -718.48974609375,
-      "y": -126.669189453125,
+      "x": -718.032958984375,
+      "y": -125.298828125,
       "w": 2592,
       "h": 1237.2421875
      },
@@ -16731,7 +16731,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-718,\"y\":-127,\"w\":2592,\"h\":1237} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-718,\"y\":-125,\"w\":2592,\"h\":1237} enters the 96px margin"
       }
      ]
     },
@@ -16741,8 +16741,8 @@
      "text": "1TRIGGEREmail arrives in the claims inbox",
      "opacity": 1,
      "rect": {
-      "x": 720.706298828125,
-      "y": 145.78121948242188,
+      "x": 721.1630859375,
+      "y": 147.15158081054688,
       "w": 967.679931640625,
       "h": 91.23837280273438
      },
@@ -16761,8 +16761,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1631.707763671875,
-      "y": 176.19403076171875,
+      "x": 1632.16455078125,
+      "y": 177.56439208984375,
       "w": 33.177490234375,
       "h": 30.41278076171875
      },
@@ -16781,8 +16781,8 @@
      "text": "2AGENTRead claimNora",
      "opacity": 1,
      "rect": {
-      "x": 720.706298828125,
-      "y": 261.90283203125,
+      "x": 721.1630859375,
+      "y": 263.273193359375,
       "w": 967.679931640625,
       "h": 91.2384033203125
      },
@@ -16801,8 +16801,8 @@
      "text": "3AGENTCheck policyHome Policy Wording 2026Theo",
      "opacity": 0.961383,
      "rect": {
-      "x": 720.706298828125,
-      "y": 378.6650390625,
+      "x": 721.1630859375,
+      "y": 380.035400390625,
       "w": 967.679931640625,
       "h": 91.2384033203125
      },
@@ -16821,8 +16821,8 @@
      "text": "",
      "opacity": 0.333333,
      "rect": {
-      "x": 246.141845703125,
-      "y": 377.60302734375,
+      "x": 246.5986328125,
+      "y": 378.973388671875,
       "w": 91.79931640625,
       "h": 91.79925537109375
      },
@@ -16841,8 +16841,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 287.54150390625,
-      "y": 421.252685546875,
+      "x": 287.998291015625,
+      "y": 422.623046875,
       "w": 54,
       "h": 66
      },
@@ -16898,8 +16898,8 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PlaybookDocsPlaybooksHome claim reviewdraftPersonalv1SequenceGraphCheckRun playbookShareSave draftSave & activateAdd step1TRIGGEREmail arrives in the claims inbox2AGENTRead claimNora3AGENTCheck policyHome Policy Wording 2026Theo4AGENTMatch evidenceOwen",
      "opacity": 1,
      "rect": {
-      "x": -720.632568359375,
-      "y": -133.09771728515625,
+      "x": -720.006591796875,
+      "y": -131.2198486328125,
       "w": 2592,
       "h": 1237.2421875
      },
@@ -16913,7 +16913,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-721,\"y\":-133,\"w\":2592,\"h\":1237} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-720,\"y\":-131,\"w\":2592,\"h\":1237} enters the 96px margin"
       }
      ]
     },
@@ -16923,8 +16923,8 @@
      "text": "1TRIGGEREmail arrives in the claims inbox",
      "opacity": 1,
      "rect": {
-      "x": 718.5634765625,
-      "y": 139.35269165039062,
+      "x": 719.189453125,
+      "y": 141.23056030273438,
       "w": 967.679931640625,
       "h": 91.23837280273438
      },
@@ -16943,8 +16943,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1629.56494140625,
-      "y": 169.7655029296875,
+      "x": 1630.19091796875,
+      "y": 171.64337158203125,
       "w": 33.177490234375,
       "h": 30.41278076171875
      },
@@ -16963,8 +16963,8 @@
      "text": "2AGENTRead claimNora",
      "opacity": 1,
      "rect": {
-      "x": 718.5634765625,
-      "y": 255.47430419921875,
+      "x": 719.189453125,
+      "y": 257.3521728515625,
       "w": 967.679931640625,
       "h": 91.2384033203125
      },
@@ -16983,8 +16983,8 @@
      "text": "3AGENTCheck policyHome Policy Wording 2026Theo",
      "opacity": 1,
      "rect": {
-      "x": 718.5634765625,
-      "y": 371.59588623046875,
+      "x": 719.189453125,
+      "y": 373.4737548828125,
       "w": 967.679931640625,
       "h": 91.23834228515625
      },
@@ -17003,8 +17003,8 @@
      "text": "4AGENTMatch evidenceOwen",
      "opacity": 0.900728,
      "rect": {
-      "x": 718.5634765625,
-      "y": 489.36419677734375,
+      "x": 719.189453125,
+      "y": 491.2420654296875,
       "w": 967.679931640625,
       "h": 91.238525390625
      },
@@ -17023,8 +17023,8 @@
      "text": "",
      "opacity": 0.900728,
      "rect": {
-      "x": 1629.56494140625,
-      "y": 519.777099609375,
+      "x": 1630.19091796875,
+      "y": 521.6549682617188,
       "w": 33.177490234375,
       "h": 30.4127197265625
      },
@@ -17043,8 +17043,8 @@
      "text": "",
      "opacity": 0.444444,
      "rect": {
-      "x": 244.566650390625,
-      "y": 371.7421875,
+      "x": 245.192626953125,
+      "y": 373.62005615234375,
       "w": 90.6640625,
       "h": 90.6639404296875
      },
@@ -17063,8 +17063,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 285.398681640625,
-      "y": 414.82415771484375,
+      "x": 286.024658203125,
+      "y": 416.7020263671875,
       "w": 54,
       "h": 66
      },
@@ -17120,8 +17120,8 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PlaybookDocsPlaybooksHome claim reviewdraftPersonalv1SequenceGraphCheckRun playbookShareSave draftSave & activateAdd step1TRIGGEREmail arrives in the claims inbox2AGENTRead claimNora3AGENTCheck policyHome Policy Wording 2026Theo4AGENTMatch evidenceOwen5REVIEWWaiting for Emily",
      "opacity": 1,
      "rect": {
-      "x": -722.7755126953125,
-      "y": -139.5262451171875,
+      "x": -721.980224609375,
+      "y": -137.1409912109375,
       "w": 2592,
       "h": 1237.2421875
      },
@@ -17135,7 +17135,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-723,\"y\":-140,\"w\":2592,\"h\":1237} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-722,\"y\":-137,\"w\":2592,\"h\":1237} enters the 96px margin"
       }
      ]
     },
@@ -17145,8 +17145,8 @@
      "text": "1TRIGGEREmail arrives in the claims inbox",
      "opacity": 1,
      "rect": {
-      "x": 716.4205322265625,
-      "y": 132.92416381835938,
+      "x": 717.2158203125,
+      "y": 135.30941772460938,
       "w": 967.679931640625,
       "h": 91.23837280273438
      },
@@ -17165,8 +17165,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1627.4219970703125,
-      "y": 163.33697509765625,
+      "x": 1628.21728515625,
+      "y": 165.72222900390625,
       "w": 33.177490234375,
       "h": 30.41278076171875
      },
@@ -17185,8 +17185,8 @@
      "text": "2AGENTRead claimNora",
      "opacity": 1,
      "rect": {
-      "x": 716.4205322265625,
-      "y": 249.0457763671875,
+      "x": 717.2158203125,
+      "y": 251.4310302734375,
       "w": 967.679931640625,
       "h": 91.2384033203125
      },
@@ -17205,8 +17205,8 @@
      "text": "3AGENTCheck policyHome Policy Wording 2026Theo",
      "opacity": 1,
      "rect": {
-      "x": 716.4205322265625,
-      "y": 365.1673583984375,
+      "x": 717.2158203125,
+      "y": 367.5526123046875,
       "w": 967.679931640625,
       "h": 91.23834228515625
      },
@@ -17225,8 +17225,8 @@
      "text": "4AGENTMatch evidenceOwen",
      "opacity": 1,
      "rect": {
-      "x": 716.4205322265625,
-      "y": 481.28900146484375,
+      "x": 717.2158203125,
+      "y": 483.67425537109375,
       "w": 967.679931640625,
       "h": 91.23834228515625
      },
@@ -17245,8 +17245,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1627.4219970703125,
-      "y": 511.70172119140625,
+      "x": 1628.21728515625,
+      "y": 514.0869750976562,
       "w": 33.177490234375,
       "h": 30.41278076171875
      },
@@ -17265,8 +17265,8 @@
      "text": "5REVIEWWaiting for Emily",
      "opacity": 0.764865,
      "rect": {
-      "x": 716.4205322265625,
-      "y": 601.3111572265625,
+      "x": 717.2158203125,
+      "y": 603.6964111328125,
       "w": 967.679931640625,
       "h": 91.23828125
      },
@@ -17280,13 +17280,33 @@
      "issues": []
     },
     {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 0.764865,
+     "rect": {
+      "x": 1611.62841796875,
+      "y": 624.432373046875,
+      "w": 49.766357421875,
+      "h": 49.76641845703125
+     },
+     "fontPx": 22.11838107638889,
+     "cssPx": 16,
+     "fontPxMax": 22.11838107638889,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
      "kind": "ripple",
      "label": "",
      "text": "",
      "opacity": 0.555556,
      "rect": {
-      "x": 243.6815185546875,
-      "y": 587.7745361328125,
+      "x": 244.476806640625,
+      "y": 590.1597900390625,
       "w": 88.1485595703125,
       "h": 88.1485595703125
      },
@@ -17305,8 +17325,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 283.2557373046875,
-      "y": 629.5987548828125,
+      "x": 284.051025390625,
+      "y": 631.9840087890625,
       "w": 54,
       "h": 66
      },
@@ -17362,8 +17382,8 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PlaybookDocsPlaybooksHome claim reviewdraftPersonalv1SequenceGraphCheckRun playbookShareSave draftSave & activateAdd stepINPUTASKAsk the user and store the answer: text, bu…OUTPUTSENDSend a message to the userACTIONSRUNRun an instruction, a tool, an API call, a fun…AGENTGive one of your agents a task and wait …PLAYBOOKRun another playbookTABLERead or change rows of a tablePAGEMake a page for this run: written here, or …EXTRACTRead a document into a fixed structu…REVIEWWait for a person to approve or declineFLOWIFBranch on conditions or natural languageFOR EACHRun an agent or a playbook for eac…WAITWait for a time, a table row or an emailGO TOContinue from another step (loops, retr…SETAssign a value to a variableENDEnd the playbook1TRIGGEREmail arrives in the claims inbox2AGENTRead claimNora3AGENTCheck policyHome Policy Wording 2026Theo4AGENTMatch evidenceOwen5REVIEWWaiting for Emily6IFapprovedthenSENDsettlement via Gmail",
      "opacity": 1,
      "rect": {
-      "x": -724.918212890625,
-      "y": -145.954833984375,
+      "x": -723.9539794921875,
+      "y": -143.06195068359375,
       "w": 2592,
       "h": 1237.2421875
      },
@@ -17377,7 +17397,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-725,\"y\":-146,\"w\":2592,\"h\":1237} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-724,\"y\":-143,\"w\":2592,\"h\":1237} enters the 96px margin"
       }
      ]
     },
@@ -17387,8 +17407,8 @@
      "text": "1TRIGGEREmail arrives in the claims inbox",
      "opacity": 1,
      "rect": {
-      "x": 714.27783203125,
-      "y": 126.49557495117188,
+      "x": 715.2420654296875,
+      "y": 129.38845825195312,
       "w": 967.679931640625,
       "h": 91.23837280273438
      },
@@ -17407,8 +17427,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1625.279296875,
-      "y": 156.90838623046875,
+      "x": 1626.2435302734375,
+      "y": 159.80126953125,
       "w": 33.177490234375,
       "h": 30.41278076171875
      },
@@ -17427,8 +17447,8 @@
      "text": "2AGENTRead claimNora",
      "opacity": 1,
      "rect": {
-      "x": 714.27783203125,
-      "y": 242.6171875,
+      "x": 715.2420654296875,
+      "y": 245.51007080078125,
       "w": 967.679931640625,
       "h": 91.2384033203125
      },
@@ -17447,8 +17467,8 @@
      "text": "3AGENTCheck policyHome Policy Wording 2026Theo",
      "opacity": 1,
      "rect": {
-      "x": 714.27783203125,
-      "y": 358.73876953125,
+      "x": 715.2420654296875,
+      "y": 361.63165283203125,
       "w": 967.679931640625,
       "h": 91.23834228515625
      },
@@ -17467,8 +17487,8 @@
      "text": "4AGENTMatch evidenceOwen",
      "opacity": 1,
      "rect": {
-      "x": 714.27783203125,
-      "y": 474.86041259765625,
+      "x": 715.2420654296875,
+      "y": 477.7532958984375,
       "w": 967.679931640625,
       "h": 91.23834228515625
      },
@@ -17487,8 +17507,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1625.279296875,
-      "y": 505.27313232421875,
+      "x": 1626.2435302734375,
+      "y": 508.166015625,
       "w": 33.177490234375,
       "h": 30.41278076171875
      },
@@ -17507,8 +17527,8 @@
      "text": "5REVIEWWaiting for Emily",
      "opacity": 1,
      "rect": {
-      "x": 714.27783203125,
-      "y": 590.98193359375,
+      "x": 715.2420654296875,
+      "y": 593.8748168945312,
       "w": 967.679931640625,
       "h": 91.2384033203125
      },
@@ -17522,13 +17542,33 @@
      "issues": []
     },
     {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1609.6546630859375,
+      "y": 614.6109008789062,
+      "w": 49.766357421875,
+      "h": 49.766357421875
+     },
+     "fontPx": 22.11838107638889,
+     "cssPx": 16,
+     "fontPxMax": 22.11838107638889,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
      "kind": "uitext",
      "label": "Step 6",
      "text": "6IFapprovedthenSENDsettlement via Gmail",
      "opacity": 0.48179,
      "rect": {
-      "x": 714.27783203125,
-      "y": 715.7000732421875,
+      "x": 715.2420654296875,
+      "y": 718.5929565429688,
       "w": 967.679931640625,
       "h": 91.23828125
      },
@@ -17547,8 +17587,8 @@
      "text": "",
      "opacity": 0.48179,
      "rect": {
-      "x": 1625.279296875,
-      "y": 746.11279296875,
+      "x": 1626.2435302734375,
+      "y": 749.0056762695312,
       "w": 33.177490234375,
       "h": 30.412841796875
      },
@@ -17567,8 +17607,8 @@
      "text": "",
      "opacity": 0.666667,
      "rect": {
-      "x": 244.171142578125,
-      "y": 669.689208984375,
+      "x": 245.1353759765625,
+      "y": 672.5820922851562,
       "w": 82.8836669921875,
       "h": 82.8836669921875
      },
@@ -17587,8 +17627,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 281.113037109375,
-      "y": 708.881103515625,
+      "x": 282.0772705078125,
+      "y": 711.7739868164062,
       "w": 54,
       "h": 66
      },
@@ -17644,8 +17684,8 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PlaybookDocsPlaybooksHome claim reviewdraftPersonalv1SequenceGraphCheckRun playbookShareSave draftSave & activateAdd stepINPUTASKAsk the user and store the answer: text, bu…OUTPUTSENDSend a message to the userACTIONSRUNRun an instruction, a tool, an API call, a fun…AGENTGive one of your agents a task and wait …PLAYBOOKRun another playbookTABLERead or change rows of a tablePAGEMake a page for this run: written here, or …EXTRACTRead a document into a fixed structu…REVIEWWait for a person to approve or declineFLOWIFBranch on conditions or natural languageFOR EACHRun an agent or a playbook for eac…WAITWait for a time, a table row or an emailGO TOContinue from another step (loops, retr…SETAssign a value to a variableENDEnd the playbook1TRIGGEREmail arrives in the claims inbox2AGENTRead claimNora3AGENTCheck policyHome Policy Wording 2026Theo4AGENTMatch evidenceOwen5REVIEWWaiting for Emily6IFapprovedthenSENDsettlement via Gmail",
      "opacity": 1,
      "rect": {
-      "x": -727.06103515625,
-      "y": -152.3834228515625,
+      "x": -725.927734375,
+      "y": -148.9830322265625,
       "w": 2592,
       "h": 1237.2421875
      },
@@ -17659,7 +17699,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-727,\"y\":-152,\"w\":2592,\"h\":1237} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-726,\"y\":-149,\"w\":2592,\"h\":1237} enters the 96px margin"
       }
      ]
     },
@@ -17669,8 +17709,8 @@
      "text": "1TRIGGEREmail arrives in the claims inbox",
      "opacity": 1,
      "rect": {
-      "x": 712.135009765625,
-      "y": 120.06698608398438,
+      "x": 713.268310546875,
+      "y": 123.46737670898438,
       "w": 967.679931640625,
       "h": 91.23837280273438
      },
@@ -17689,8 +17729,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1623.136474609375,
-      "y": 150.47979736328125,
+      "x": 1624.269775390625,
+      "y": 153.88018798828125,
       "w": 33.177490234375,
       "h": 30.41278076171875
      },
@@ -17709,8 +17749,8 @@
      "text": "2AGENTRead claimNora",
      "opacity": 1,
      "rect": {
-      "x": 712.135009765625,
-      "y": 236.1885986328125,
+      "x": 713.268310546875,
+      "y": 239.5889892578125,
       "w": 967.679931640625,
       "h": 91.2384033203125
      },
@@ -17729,8 +17769,8 @@
      "text": "3AGENTCheck policyHome Policy Wording 2026Theo",
      "opacity": 1,
      "rect": {
-      "x": 712.135009765625,
-      "y": 352.3101806640625,
+      "x": 713.268310546875,
+      "y": 355.7105712890625,
       "w": 967.679931640625,
       "h": 91.23834228515625
      },
@@ -17749,8 +17789,8 @@
      "text": "4AGENTMatch evidenceOwen",
      "opacity": 1,
      "rect": {
-      "x": 712.135009765625,
-      "y": 468.43182373046875,
+      "x": 713.268310546875,
+      "y": 471.83221435546875,
       "w": 967.679931640625,
       "h": 91.23834228515625
      },
@@ -17769,8 +17809,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1623.136474609375,
-      "y": 498.84454345703125,
+      "x": 1624.269775390625,
+      "y": 502.24493408203125,
       "w": 33.177490234375,
       "h": 30.41278076171875
      },
@@ -17789,8 +17829,8 @@
      "text": "5REVIEWWaiting for Emily",
      "opacity": 1,
      "rect": {
-      "x": 712.135009765625,
-      "y": 584.5533447265625,
+      "x": 713.268310546875,
+      "y": 587.9537353515625,
       "w": 967.679931640625,
       "h": 91.2384033203125
      },
@@ -17804,13 +17844,33 @@
      "issues": []
     },
     {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1607.680908203125,
+      "y": 608.6898193359375,
+      "w": 49.766357421875,
+      "h": 49.766357421875
+     },
+     "fontPx": 22.11838107638889,
+     "cssPx": 16,
+     "fontPxMax": 22.11838107638889,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
      "kind": "uitext",
      "label": "Step 6",
      "text": "6IFapprovedthenSENDsettlement via Gmail",
      "opacity": 1,
      "rect": {
-      "x": 712.135009765625,
-      "y": 700.6749267578125,
+      "x": 713.268310546875,
+      "y": 704.0753173828125,
       "w": 967.679931640625,
       "h": 91.2384033203125
      },
@@ -17829,8 +17889,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1623.136474609375,
-      "y": 731.0877685546875,
+      "x": 1624.269775390625,
+      "y": 734.4881591796875,
       "w": 33.177490234375,
       "h": 30.412841796875
      },
@@ -17849,8 +17909,8 @@
      "text": "",
      "opacity": 0.777778,
      "rect": {
-      "x": 247.3502197265625,
-      "y": 317.44183349609375,
+      "x": 248.4835205078125,
+      "y": 320.84222412109375,
       "w": 72.2401123046875,
       "h": 72.2401123046875
      },
@@ -17869,8 +17929,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 279.420166015625,
-      "y": 351.536865234375,
+      "x": 280.553466796875,
+      "y": 354.937255859375,
       "w": 48.60009765625,
       "h": 59.4000244140625
      },
@@ -17926,19 +17986,24 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PlaybookDocsPlaybooksHome claim reviewdraftPersonalv1SequenceGraphCheckRun playbookShareSave draftSave & activateAdd step1TRIGGEREmail arrives in the claims inbox2AGENTRead claimNora3AGENTCheck policyHome Policy Wording 2026Theo4AGENTMatch evidenceOwen5REVIEWWaiting for Emily6IFapprovedthenSENDsettlement via Gmail7NOTIFYSlack: Claim CL-7305 approved by Emily",
      "opacity": 1,
      "rect": {
-      "x": 95.77703857421875,
-      "y": 127.82905578613281,
-      "w": 1728.44580078125,
-      "h": 825.041015625
+      "x": -204.11785888671875,
+      "y": 20.478012084960938,
+      "w": 2075.736083984375,
+      "h": 990.8132934570312
      },
-     "fontPx": 15.193918815895362,
+     "fontPx": 18.246777266043203,
      "cssPx": 15.19,
-     "fontPxMax": 23.87615813926414,
+     "fontPxMax": 28.673507132353606,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
      "color": "rgb(236, 236, 236)",
-     "issues": []
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-204,\"y\":20,\"w\":2076,\"h\":991} enters the 96px margin"
+      }
+     ]
     },
     {
      "kind": "uitext",
@@ -17946,14 +18011,14 @@
      "text": "1TRIGGEREmail arrives in the claims inbox",
      "opacity": 1,
      "rect": {
-      "x": 1055.48876953125,
-      "y": 309.5095520019531,
-      "w": 645.286376953125,
-      "h": 60.841278076171875
+      "x": 948.4249267578125,
+      "y": 238.66287231445312,
+      "w": 774.9415283203125,
+      "h": 73.06588745117188
      },
-     "fontPx": 14.002714379882812,
+     "fontPx": 16.816231164550782,
      "cssPx": 15.19,
-     "fontPxMax": 15.210321742466519,
+     "fontPxMax": 18.26647888183594,
      "maxCss": 16.5,
      "minLabel": "1",
      "read": true,
@@ -17966,14 +18031,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1662.979736328125,
-      "y": 329.78997802734375,
-      "w": 22.1240234375,
-      "h": 20.280426025390625
+      "x": 1677.9769287109375,
+      "y": 263.0181884765625,
+      "w": 26.5694580078125,
+      "h": 24.355255126953125
      },
-     "fontPx": 14.749348958333334,
+     "fontPx": 17.712972005208332,
      "cssPx": 16,
-     "fontPxMax": 14.749348958333334,
+     "fontPxMax": 17.712972005208332,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -17986,14 +18051,14 @@
      "text": "2AGENTRead claimNora",
      "opacity": 1,
      "rect": {
-      "x": 1055.48876953125,
-      "y": 386.94390869140625,
-      "w": 645.286376953125,
-      "h": 60.84130859375
+      "x": 948.4249267578125,
+      "y": 331.65582275390625,
+      "w": 774.9415283203125,
+      "h": 73.06591796875
      },
-     "fontPx": 14.002714379882812,
+     "fontPx": 16.816231164550782,
      "cssPx": 15.19,
-     "fontPxMax": 15.210321742466519,
+     "fontPxMax": 18.26647888183594,
      "maxCss": 16.5,
      "minLabel": "2",
      "read": true,
@@ -18006,14 +18071,14 @@
      "text": "3AGENTCheck policyHome Policy Wording 2026Theo",
      "opacity": 1,
      "rect": {
-      "x": 1055.48876953125,
-      "y": 464.3782958984375,
-      "w": 645.286376953125,
-      "h": 60.84124755859375
+      "x": 948.4249267578125,
+      "y": 424.6488037109375,
+      "w": 774.9415283203125,
+      "h": 73.06585693359375
      },
-     "fontPx": 14.002714379882812,
+     "fontPx": 16.816231164550782,
      "cssPx": 15.19,
-     "fontPxMax": 15.210321742466519,
+     "fontPxMax": 18.26647888183594,
      "maxCss": 16.5,
      "minLabel": "3",
      "read": true,
@@ -18026,14 +18091,14 @@
      "text": "4AGENTMatch evidenceOwen",
      "opacity": 1,
      "rect": {
-      "x": 1055.48876953125,
-      "y": 541.8126831054688,
-      "w": 645.286376953125,
-      "h": 60.84130859375
+      "x": 948.4249267578125,
+      "y": 517.6417846679688,
+      "w": 774.9415283203125,
+      "h": 73.06591796875
      },
-     "fontPx": 14.002714379882812,
+     "fontPx": 16.816231164550782,
      "cssPx": 15.19,
-     "fontPxMax": 15.210321742466519,
+     "fontPxMax": 18.26647888183594,
      "maxCss": 16.5,
      "minLabel": "4",
      "read": true,
@@ -18046,14 +18111,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1662.979736328125,
-      "y": 562.0930786132812,
-      "w": 22.1240234375,
-      "h": 20.28045654296875
+      "x": 1677.9769287109375,
+      "y": 541.9970703125,
+      "w": 26.5694580078125,
+      "h": 24.35528564453125
      },
-     "fontPx": 14.749348958333334,
+     "fontPx": 17.712972005208332,
      "cssPx": 16,
-     "fontPxMax": 14.749348958333334,
+     "fontPxMax": 17.712972005208332,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -18066,18 +18131,38 @@
      "text": "5REVIEWWaiting for Emily",
      "opacity": 1,
      "rect": {
-      "x": 1055.48876953125,
-      "y": 619.2470703125,
-      "w": 645.286376953125,
-      "h": 60.84124755859375
+      "x": 948.4249267578125,
+      "y": 610.634765625,
+      "w": 774.9415283203125,
+      "h": 73.06585693359375
      },
-     "fontPx": 14.002714379882812,
+     "fontPx": 16.816231164550782,
      "cssPx": 15.19,
-     "fontPxMax": 15.210321742466519,
+     "fontPxMax": 18.26647888183594,
      "maxCss": 16.5,
      "minLabel": "5",
      "read": true,
      "color": "rgb(207, 207, 207)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1664.6922607421875,
+      "y": 627.2406616210938,
+      "w": 39.8541259765625,
+      "h": 39.85406494140625
+     },
+     "fontPx": 17.71294487847222,
+     "cssPx": 16,
+     "fontPxMax": 17.71294487847222,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -18086,14 +18171,14 @@
      "text": "6IFapprovedthenSENDsettlement via Gmail",
      "opacity": 1,
      "rect": {
-      "x": 1055.48876953125,
-      "y": 696.681396484375,
-      "w": 645.286376953125,
-      "h": 60.84130859375
+      "x": 948.4249267578125,
+      "y": 703.627685546875,
+      "w": 774.9415283203125,
+      "h": 73.06591796875
      },
-     "fontPx": 14.002714379882812,
+     "fontPx": 16.816231164550782,
      "cssPx": 15.19,
-     "fontPxMax": 15.210321742466519,
+     "fontPxMax": 18.26647888183594,
      "maxCss": 16.5,
      "minLabel": "6",
      "read": true,
@@ -18106,14 +18191,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1662.979736328125,
-      "y": 716.9618530273438,
-      "w": 22.1240234375,
-      "h": 20.2803955078125
+      "x": 1677.9769287109375,
+      "y": 727.9829711914062,
+      "w": 26.5694580078125,
+      "h": 24.3553466796875
      },
-     "fontPx": 14.749348958333334,
+     "fontPx": 17.712972005208332,
      "cssPx": 16,
-     "fontPxMax": 14.749348958333334,
+     "fontPxMax": 17.712972005208332,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -18126,14 +18211,14 @@
      "text": "7NOTIFYSlack: Claim CL-7305 approved by Emily",
      "opacity": 1,
      "rect": {
-      "x": 1055.48876953125,
-      "y": 774.1157836914062,
-      "w": 645.286376953125,
-      "h": 60.84136962890625
+      "x": 948.4249267578125,
+      "y": 796.6206665039062,
+      "w": 774.9415283203125,
+      "h": 73.06597900390625
      },
-     "fontPx": 14.002714379882812,
+     "fontPx": 16.816231164550782,
      "cssPx": 15.19,
-     "fontPxMax": 15.210321742466519,
+     "fontPxMax": 18.26647888183594,
      "maxCss": 16.5,
      "minLabel": "7",
      "read": true,
@@ -18146,14 +18231,34 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1662.979736328125,
-      "y": 794.396240234375,
-      "w": 22.1240234375,
-      "h": 20.28045654296875
+      "x": 1677.9769287109375,
+      "y": 820.9760131835938,
+      "w": 26.5694580078125,
+      "h": 24.35528564453125
      },
-     "fontPx": 14.749348958333334,
+     "fontPx": 17.712972005208332,
      "cssPx": 16,
-     "fontPxMax": 14.749348958333334,
+     "fontPxMax": 17.712972005208332,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
+     "kind": "cursor",
+     "label": "",
+     "text": "",
+     "opacity": 0.235135,
+     "rect": {
+      "x": 1446.1177978515625,
+      "y": 924.3706665039062,
+      "w": 43.2445068359375,
+      "h": 52.8543701171875
+     },
+     "fontPx": 16,
+     "cssPx": 16,
+     "fontPxMax": 16,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -18223,14 +18328,14 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PlaybookDocsPlaybooksHome claim reviewdraftPersonalv1SequenceGraphCheckRun playbookShareSave draftSave & activateAdd step1TRIGGEREmail arrives in the claims inbox2AGENTRead claimNora3AGENTCheck policyHome Policy Wording 2026Theo4AGENTMatch evidenceOwen5REVIEWWaiting for Emily6IFapprovedthenSENDsettlement via Gmail7NOTIFYSlack: Claim CL-7305 approved by Emily",
      "opacity": 1,
      "rect": {
-      "x": 93.54736328125,
-      "y": 126.11756896972656,
-      "w": 1732.9052734375,
-      "h": 827.1696166992188
+      "x": 94.61759185791016,
+      "y": 126.93954467773438,
+      "w": 1730.764892578125,
+      "h": 826.1478271484375
      },
-     "fontPx": 15.233119851571542,
+     "fontPx": 15.214304813808864,
      "cssPx": 15.19,
-     "fontPxMax": 23.93775976675528,
+     "fontPxMax": 23.908193278842504,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
@@ -18238,7 +18343,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":94,\"y\":126,\"w\":1733,\"h\":827} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":95,\"y\":127,\"w\":1731,\"h\":826} enters the 96px margin"
       }
      ]
     },
@@ -18248,14 +18353,14 @@
      "text": "1TRIGGEREmail arrives in the claims inbox",
      "opacity": 1,
      "rect": {
-      "x": 1055.735107421875,
-      "y": 308.26678466796875,
-      "w": 646.951171875,
-      "h": 60.998260498046875
+      "x": 1055.61669921875,
+      "y": 308.86376953125,
+      "w": 646.1522216796875,
+      "h": 60.92291259765625
      },
-     "fontPx": 14.0388404296875,
+     "fontPx": 14.021503210449218,
      "cssPx": 15.19,
-     "fontPxMax": 15.249563337053571,
+     "fontPxMax": 15.230730939592632,
      "maxCss": 16.5,
      "minLabel": "1",
      "read": true,
@@ -18268,14 +18373,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1664.79345703125,
-      "y": 328.59954833984375,
-      "w": 22.18115234375,
-      "h": 20.332733154296875
+      "x": 1663.9228515625,
+      "y": 329.1714172363281,
+      "w": 22.15380859375,
+      "h": 20.3076171875
      },
-     "fontPx": 14.787434895833334,
+     "fontPx": 14.769205729166666,
      "cssPx": 16,
-     "fontPxMax": 14.787434895833334,
+     "fontPxMax": 14.769205729166666,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -18288,14 +18393,14 @@
      "text": "2AGENTRead claimNora",
      "opacity": 1,
      "rect": {
-      "x": 1055.735107421875,
-      "y": 385.90093994140625,
-      "w": 646.951171875,
-      "h": 60.998260498046875
+      "x": 1055.61669921875,
+      "y": 386.40203857421875,
+      "w": 646.1522216796875,
+      "h": 60.92291259765625
      },
-     "fontPx": 14.0388404296875,
+     "fontPx": 14.021503210449218,
      "cssPx": 15.19,
-     "fontPxMax": 15.249563337053571,
+     "fontPxMax": 15.230730939592632,
      "maxCss": 16.5,
      "minLabel": "2",
      "read": true,
@@ -18308,14 +18413,14 @@
      "text": "3AGENTCheck policyHome Policy Wording 2026Theo",
      "opacity": 1,
      "rect": {
-      "x": 1055.735107421875,
-      "y": 463.53509521484375,
-      "w": 646.951171875,
-      "h": 60.99822998046875
+      "x": 1055.61669921875,
+      "y": 463.9403076171875,
+      "w": 646.1522216796875,
+      "h": 60.9228515625
      },
-     "fontPx": 14.0388404296875,
+     "fontPx": 14.021503210449218,
      "cssPx": 15.19,
-     "fontPxMax": 15.249563337053571,
+     "fontPxMax": 15.230730939592632,
      "maxCss": 16.5,
      "minLabel": "3",
      "read": true,
@@ -18328,14 +18433,14 @@
      "text": "4AGENTMatch evidenceOwen",
      "opacity": 1,
      "rect": {
-      "x": 1055.735107421875,
-      "y": 541.1693115234375,
-      "w": 646.951171875,
-      "h": 60.99822998046875
+      "x": 1055.61669921875,
+      "y": 541.4785766601562,
+      "w": 646.1522216796875,
+      "h": 60.92291259765625
      },
-     "fontPx": 14.0388404296875,
+     "fontPx": 14.021503210449218,
      "cssPx": 15.19,
-     "fontPxMax": 15.249563337053571,
+     "fontPxMax": 15.230730939592632,
      "maxCss": 16.5,
      "minLabel": "4",
      "read": true,
@@ -18348,14 +18453,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1664.79345703125,
-      "y": 561.5020141601562,
-      "w": 22.18115234375,
-      "h": 20.332763671875
+      "x": 1663.9228515625,
+      "y": 561.7861938476562,
+      "w": 22.15380859375,
+      "h": 20.3076171875
      },
-     "fontPx": 14.787434895833334,
+     "fontPx": 14.769205729166666,
      "cssPx": 16,
-     "fontPxMax": 14.787434895833334,
+     "fontPxMax": 14.769205729166666,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -18368,18 +18473,38 @@
      "text": "5REVIEWWaiting for Emily",
      "opacity": 1,
      "rect": {
-      "x": 1055.735107421875,
-      "y": 618.8034057617188,
-      "w": 646.951171875,
-      "h": 60.99822998046875
+      "x": 1055.61669921875,
+      "y": 619.016845703125,
+      "w": 646.1522216796875,
+      "h": 60.9228515625
      },
-     "fontPx": 14.0388404296875,
+     "fontPx": 14.021503210449218,
      "cssPx": 15.19,
-     "fontPxMax": 15.249563337053571,
+     "fontPxMax": 15.230730939592632,
      "maxCss": 16.5,
      "minLabel": "5",
      "read": true,
      "color": "rgb(207, 207, 207)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1652.845947265625,
+      "y": 632.8629760742188,
+      "w": 33.230712890625,
+      "h": 33.23065185546875
+     },
+     "fontPx": 14.769205729166666,
+     "cssPx": 16,
+     "fontPxMax": 14.769205729166666,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -18388,14 +18513,14 @@
      "text": "6IFapprovedthenSENDsettlement via Gmail",
      "opacity": 1,
      "rect": {
-      "x": 1055.735107421875,
-      "y": 696.4375610351562,
-      "w": 646.951171875,
-      "h": 60.998291015625
+      "x": 1055.61669921875,
+      "y": 696.5550537109375,
+      "w": 646.1522216796875,
+      "h": 60.9229736328125
      },
-     "fontPx": 14.0388404296875,
+     "fontPx": 14.021503210449218,
      "cssPx": 15.19,
-     "fontPxMax": 15.249563337053571,
+     "fontPxMax": 15.230730939592632,
      "maxCss": 16.5,
      "minLabel": "6",
      "read": true,
@@ -18408,14 +18533,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1664.79345703125,
-      "y": 716.7703247070312,
-      "w": 22.18115234375,
-      "h": 20.332763671875
+      "x": 1663.9228515625,
+      "y": 716.8627319335938,
+      "w": 22.15380859375,
+      "h": 20.3076171875
      },
-     "fontPx": 14.787434895833334,
+     "fontPx": 14.769205729166666,
      "cssPx": 16,
-     "fontPxMax": 14.787434895833334,
+     "fontPxMax": 14.769205729166666,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -18428,14 +18553,14 @@
      "text": "7NOTIFYSlack: Claim CL-7305 approved by Emily",
      "opacity": 1,
      "rect": {
-      "x": 1055.735107421875,
-      "y": 774.0717163085938,
-      "w": 646.951171875,
-      "h": 60.998291015625
+      "x": 1055.61669921875,
+      "y": 774.0933227539062,
+      "w": 646.1522216796875,
+      "h": 60.9229736328125
      },
-     "fontPx": 14.0388404296875,
+     "fontPx": 14.021503210449218,
      "cssPx": 15.19,
-     "fontPxMax": 15.249563337053571,
+     "fontPxMax": 15.230730939592632,
      "maxCss": 16.5,
      "minLabel": "7",
      "read": true,
@@ -18448,14 +18573,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1664.79345703125,
-      "y": 794.4044799804688,
-      "w": 22.18115234375,
-      "h": 20.332763671875
+      "x": 1663.9228515625,
+      "y": 794.4010009765625,
+      "w": 22.15380859375,
+      "h": 20.3076171875
      },
-     "fontPx": 14.787434895833334,
+     "fontPx": 14.769205729166666,
      "cssPx": 16,
-     "fontPxMax": 14.787434895833334,
+     "fontPxMax": 14.769205729166666,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -18525,14 +18650,14 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PlaybookDocsPlaybooksHome claim reviewdraftPersonalv1SequenceGraphCheckRun playbookShareSave draftSave & activateAdd step1TRIGGEREmail arrives in the claims inbox2AGENTRead claimNora3AGENTCheck policyHome Policy Wording 2026Theo4AGENTMatch evidenceOwen5REVIEWWaiting for Emily6IFapprovedthenSENDsettlement via Gmail7NOTIFYSlack: Claim CL-7305 approved by Emily",
      "opacity": 1,
      "rect": {
-      "x": 91.31768798828125,
-      "y": 124.40284729003906,
-      "w": 1737.36474609375,
-      "h": 829.2982177734375
+      "x": 91.85282897949219,
+      "y": 124.81465148925781,
+      "w": 1736.29443359375,
+      "h": 828.7872924804688
      },
-     "fontPx": 15.272320887247721,
+     "fontPx": 15.262912295306169,
      "cssPx": 15.19,
-     "fontPxMax": 23.99936139424642,
+     "fontPxMax": 23.984576464052555,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
@@ -18540,7 +18665,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":91,\"y\":124,\"w\":1737,\"h\":829} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":92,\"y\":125,\"w\":1736,\"h\":829} enters the 96px margin"
       }
      ]
     },
@@ -18550,14 +18675,14 @@
      "text": "1TRIGGEREmail arrives in the claims inbox",
      "opacity": 1,
      "rect": {
-      "x": 1055.9814453125,
-      "y": 307.0207824707031,
-      "w": 648.615966796875,
-      "h": 61.155242919921875
+      "x": 1055.922119140625,
+      "y": 307.3200988769531,
+      "w": 648.216552734375,
+      "h": 61.1175537109375
      },
-     "fontPx": 14.074966479492186,
+     "fontPx": 14.066299194335937,
      "cssPx": 15.19,
-     "fontPxMax": 15.288804931640625,
+     "fontPxMax": 15.279390171595983,
      "maxCss": 16.5,
      "minLabel": "1",
      "read": true,
@@ -18570,14 +18695,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1666.607177734375,
-      "y": 327.4058837890625,
-      "w": 22.23828125,
-      "h": 20.385040283203125
+      "x": 1666.171630859375,
+      "y": 327.692626953125,
+      "w": 22.224609375,
+      "h": 20.37249755859375
      },
-     "fontPx": 14.825520833333334,
+     "fontPx": 14.81640625,
      "cssPx": 16,
-     "fontPxMax": 14.825520833333334,
+     "fontPxMax": 14.81640625,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -18590,14 +18715,14 @@
      "text": "2AGENTRead claimNora",
      "opacity": 1,
      "rect": {
-      "x": 1055.9814453125,
-      "y": 384.854736328125,
-      "w": 648.615966796875,
-      "h": 61.15521240234375
+      "x": 1055.922119140625,
+      "y": 385.1060791015625,
+      "w": 648.216552734375,
+      "h": 61.1175537109375
      },
-     "fontPx": 14.074966479492186,
+     "fontPx": 14.066299194335937,
      "cssPx": 15.19,
-     "fontPxMax": 15.288804931640625,
+     "fontPxMax": 15.279390171595983,
      "maxCss": 16.5,
      "minLabel": "2",
      "read": true,
@@ -18610,14 +18735,14 @@
      "text": "3AGENTCheck policyHome Policy Wording 2026Theo",
      "opacity": 1,
      "rect": {
-      "x": 1055.9814453125,
-      "y": 462.68865966796875,
-      "w": 648.615966796875,
-      "h": 61.15521240234375
+      "x": 1055.922119140625,
+      "y": 462.8920593261719,
+      "w": 648.216552734375,
+      "h": 61.117523193359375
      },
-     "fontPx": 14.074966479492186,
+     "fontPx": 14.066299194335937,
      "cssPx": 15.19,
-     "fontPxMax": 15.288804931640625,
+     "fontPxMax": 15.279390171595983,
      "maxCss": 16.5,
      "minLabel": "3",
      "read": true,
@@ -18630,14 +18755,14 @@
      "text": "4AGENTMatch evidenceOwen",
      "opacity": 1,
      "rect": {
-      "x": 1055.9814453125,
-      "y": 540.5226440429688,
-      "w": 648.615966796875,
-      "h": 61.15521240234375
+      "x": 1055.922119140625,
+      "y": 540.6781005859375,
+      "w": 648.216552734375,
+      "h": 61.11749267578125
      },
-     "fontPx": 14.074966479492186,
+     "fontPx": 14.066299194335937,
      "cssPx": 15.19,
-     "fontPxMax": 15.288804931640625,
+     "fontPxMax": 15.279390171595983,
      "maxCss": 16.5,
      "minLabel": "4",
      "read": true,
@@ -18650,14 +18775,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1666.607177734375,
-      "y": 560.9076538085938,
-      "w": 22.23828125,
-      "h": 20.38507080078125
+      "x": 1666.171630859375,
+      "y": 561.050537109375,
+      "w": 22.224609375,
+      "h": 20.37255859375
      },
-     "fontPx": 14.825520833333334,
+     "fontPx": 14.81640625,
      "cssPx": 16,
-     "fontPxMax": 14.825520833333334,
+     "fontPxMax": 14.81640625,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -18670,18 +18795,38 @@
      "text": "5REVIEWWaiting for Emily",
      "opacity": 1,
      "rect": {
-      "x": 1055.9814453125,
-      "y": 618.3565063476562,
-      "w": 648.615966796875,
-      "h": 61.15521240234375
+      "x": 1055.922119140625,
+      "y": 618.4640502929688,
+      "w": 648.216552734375,
+      "h": 61.11749267578125
      },
-     "fontPx": 14.074966479492186,
+     "fontPx": 14.066299194335937,
      "cssPx": 15.19,
-     "fontPxMax": 15.288804931640625,
+     "fontPxMax": 15.279390171595983,
      "maxCss": 16.5,
      "minLabel": "5",
      "read": true,
      "color": "rgb(207, 207, 207)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1655.0595703125,
+      "y": 632.3544311523438,
+      "w": 33.336669921875,
+      "h": 33.3367919921875
+     },
+     "fontPx": 14.816297743055555,
+     "cssPx": 16,
+     "fontPxMax": 14.816297743055555,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -18690,14 +18835,14 @@
      "text": "6IFapprovedthenSENDsettlement via Gmail",
      "opacity": 1,
      "rect": {
-      "x": 1055.9814453125,
-      "y": 696.1904296875,
-      "w": 648.615966796875,
-      "h": 61.1552734375
+      "x": 1055.922119140625,
+      "y": 696.25,
+      "w": 648.216552734375,
+      "h": 61.1175537109375
      },
-     "fontPx": 14.074966479492186,
+     "fontPx": 14.066299194335937,
      "cssPx": 15.19,
-     "fontPxMax": 15.288804931640625,
+     "fontPxMax": 15.279390171595983,
      "maxCss": 16.5,
      "minLabel": "6",
      "read": true,
@@ -18710,14 +18855,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1666.607177734375,
-      "y": 716.5755004882812,
-      "w": 22.23828125,
-      "h": 20.3851318359375
+      "x": 1666.171630859375,
+      "y": 716.6224975585938,
+      "w": 22.224609375,
+      "h": 20.37255859375
      },
-     "fontPx": 14.825520833333334,
+     "fontPx": 14.81640625,
      "cssPx": 16,
-     "fontPxMax": 14.825520833333334,
+     "fontPxMax": 14.81640625,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -18730,14 +18875,14 @@
      "text": "7NOTIFYSlack: Claim CL-7305 approved by Emily",
      "opacity": 1,
      "rect": {
-      "x": 1055.9814453125,
-      "y": 774.0244140625,
-      "w": 648.615966796875,
-      "h": 61.1552734375
+      "x": 1055.922119140625,
+      "y": 774.0360107421875,
+      "w": 648.216552734375,
+      "h": 61.1175537109375
      },
-     "fontPx": 14.074966479492186,
+     "fontPx": 14.066299194335937,
      "cssPx": 15.19,
-     "fontPxMax": 15.288804931640625,
+     "fontPxMax": 15.279390171595983,
      "maxCss": 16.5,
      "minLabel": "7",
      "read": true,
@@ -18750,14 +18895,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1666.607177734375,
-      "y": 794.4094848632812,
-      "w": 22.23828125,
-      "h": 20.38507080078125
+      "x": 1666.171630859375,
+      "y": 794.4085083007812,
+      "w": 22.224609375,
+      "h": 20.37255859375
      },
-     "fontPx": 14.825520833333334,
+     "fontPx": 14.81640625,
      "cssPx": 16,
-     "fontPxMax": 14.825520833333334,
+     "fontPxMax": 14.81640625,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -18984,6 +19129,26 @@
      "minLabel": "5",
      "read": true,
      "color": "rgb(207, 207, 207)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1657.273193359375,
+      "y": 631.8408203125,
+      "w": 33.44287109375,
+      "h": 33.4429931640625
+     },
+     "fontPx": 14.86349826388889,
+     "cssPx": 16,
+     "fontPxMax": 14.86349826388889,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -19398,6 +19563,26 @@
      "issues": []
     },
     {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 0.983244,
+     "rect": {
+      "x": 1651.3900146484375,
+      "y": 633.4049682617188,
+      "w": 33.1607666015625,
+      "h": 33.16082763671875
+     },
+     "fontPx": 14.738118489583334,
+     "cssPx": 16,
+     "fontPxMax": 14.738118489583334,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
      "kind": "uitext",
      "label": "Step 6",
      "text": "6IFapprovedthenSENDsettlement via Gmail",
@@ -19697,6 +19882,26 @@
      "minLabel": "5",
      "read": true,
      "color": "rgb(207, 207, 207)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1331.5538330078125,
+      "y": 637.5704956054688,
+      "w": 44.772705078125,
+      "h": 44.7725830078125
+     },
+     "fontPx": 19.89898003472222,
+     "cssPx": 16,
+     "fontPxMax": 19.89898003472222,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -20052,6 +20257,26 @@
      "issues": []
     },
     {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1337.5286865234375,
+      "y": 626.7818603515625,
+      "w": 44.925537109375,
+      "h": 44.9254150390625
+     },
+     "fontPx": 19.966905381944443,
+     "cssPx": 16,
+     "fontPxMax": 19.966905381944443,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
      "kind": "uitext",
      "label": "Step 6",
      "text": "6IFapprovedthenSENDsettlement via Gmail",
@@ -20249,8 +20474,8 @@
       "w": 2347.7236328125,
       "h": 1120.6416015625
      },
-     "fontPx": 16.98295451976635,
-     "cssPx": 12.5,
+     "fontPx": 19.020909062138312,
+     "cssPx": 14,
      "fontPxMax": 32.43064995094582,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -20401,6 +20626,26 @@
      "minLabel": "5",
      "read": true,
      "color": "rgb(207, 207, 207)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1153.27978515625,
+      "y": 614.7205200195312,
+      "w": 45.076416015625,
+      "h": 45.07623291015625
+     },
+     "fontPx": 20.03396267361111,
+     "cssPx": 16,
+     "fontPxMax": 20.03396267361111,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -20601,8 +20846,8 @@
       "w": 1728.44580078125,
       "h": 825.041015625
      },
-     "fontPx": 12.50322483204029,
-     "cssPx": 12.5,
+     "fontPx": 14.003611811885126,
+     "cssPx": 14,
      "fontPxMax": 23.87615813926414,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -20748,6 +20993,26 @@
      "minLabel": "5",
      "read": true,
      "color": "rgb(207, 207, 207)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1510.7900390625,
+      "y": 633.0746459960938,
+      "w": 33.186279296875,
+      "h": 33.18609619140625
+     },
+     "fontPx": 14.749457465277779,
+     "cssPx": 16,
+     "fontPxMax": 14.749457465277779,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -20958,8 +21223,8 @@
       "w": 1732.9052734375,
       "h": 827.1696166992188
      },
-     "fontPx": 12.535483748824507,
-     "cssPx": 12.5,
+     "fontPx": 14.03974179868345,
+     "cssPx": 14,
      "fontPxMax": 23.93775976675528,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -21110,6 +21375,26 @@
      "minLabel": "5",
      "read": true,
      "color": "rgb(207, 207, 207)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1512.211181640625,
+      "y": 632.6666870117188,
+      "w": 33.271728515625,
+      "h": 33.271728515625
+     },
+     "fontPx": 14.787434895833334,
+     "cssPx": 16,
+     "fontPxMax": 14.787434895833334,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -21320,8 +21605,8 @@
       "w": 1737.36474609375,
       "h": 829.2982177734375
      },
-     "fontPx": 12.567742665608725,
-     "cssPx": 12.5,
+     "fontPx": 14.075871785481771,
+     "cssPx": 14,
      "fontPxMax": 23.99936139424642,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -21472,6 +21757,26 @@
      "minLabel": "5",
      "read": true,
      "color": "rgb(207, 207, 207)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1513.632080078125,
+      "y": 632.2554931640625,
+      "w": 33.357421875,
+      "h": 33.35736083984375
+     },
+     "fontPx": 14.825520833333334,
+     "cssPx": 16,
+     "fontPxMax": 14.825520833333334,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -21682,8 +21987,8 @@
       "w": 1741.8240966796875,
       "h": 831.4267578125
      },
-     "fontPx": 12.600000699361166,
-     "cssPx": 12.5,
+     "fontPx": 14.112000783284506,
+     "cssPx": 14,
      "fontPxMax": 24.060961335500085,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -21834,6 +22139,26 @@
      "minLabel": "5",
      "read": true,
      "color": "rgb(207, 207, 207)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1515.05322265625,
+      "y": 631.8408203125,
+      "w": 33.44287109375,
+      "h": 33.4429931640625
+     },
+     "fontPx": 14.86349826388889,
+     "cssPx": 16,
+     "fontPxMax": 14.86349826388889,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -22118,8 +22443,8 @@
       "w": 1727.958740234375,
       "h": 824.8084716796875
      },
-     "fontPx": 12.499701535260236,
-     "cssPx": 12.5,
+     "fontPx": 13.999665719491464,
+     "cssPx": 14,
      "fontPxMax": 23.869430051732948,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -22265,6 +22590,26 @@
      "minLabel": "5",
      "read": true,
      "color": "rgb(207, 207, 207)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 0.999204,
+     "rect": {
+      "x": 1510.634765625,
+      "y": 633.12890625,
+      "w": 33.1768798828125,
+      "h": 33.1767578125
+     },
+     "fontPx": 14.745279947916666,
+     "cssPx": 16,
+     "fontPxMax": 14.745279947916666,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -22522,8 +22867,8 @@
       "w": 1728,
       "h": 824.828125
      },
-     "fontPx": 12.5,
-     "cssPx": 12.5,
+     "fontPx": 14,
+     "cssPx": 14,
      "fontPxMax": 23.87,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -22548,7 +22893,7 @@
      "maxCss": 15.19,
      "minLabel": "Add a note for the record",
      "read": true,
-     "color": "rgb(138, 138, 138)",
+     "color": "rgb(154, 154, 154)",
      "issues": []
     },
     {
@@ -22639,8 +22984,8 @@
       "w": 2347.51708984375,
       "h": 1120.542724609375
      },
-     "fontPx": 16.981460430003978,
-     "cssPx": 12.5,
+     "fontPx": 19.019235681604457,
+     "cssPx": 14,
      "fontPxMax": 32.427796837135595,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -22735,7 +23080,7 @@
      "maxCss": 15.19,
      "minLabel": "Add a note for the record",
      "read": true,
-     "color": "rgb(138, 138, 138)",
+     "color": "rgb(154, 154, 154)",
      "issues": [
       {
        "guard": "SafeAreaGuard",
@@ -22811,8 +23156,8 @@
       "w": 2764.80029296875,
       "h": 1319.7249755859375
      },
-     "fontPx": 20.000002119276257,
-     "cssPx": 12.5,
+     "fontPx": 22.40000237358941,
+     "cssPx": 14,
      "fontPxMax": 38.19200404696994,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -22912,7 +23257,7 @@
      "maxCss": 15.19,
      "minLabel": "Add a note for the record",
      "read": true,
-     "color": "rgb(138, 138, 138)",
+     "color": "rgb(154, 154, 154)",
      "issues": [
       {
        "guard": "SafeAreaGuard",
@@ -22988,8 +23333,8 @@
       "w": 2764.80029296875,
       "h": 1319.7249755859375
      },
-     "fontPx": 20.000002119276257,
-     "cssPx": 12.5,
+     "fontPx": 22.40000237358941,
+     "cssPx": 14,
      "fontPxMax": 38.19200404696994,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -23084,7 +23429,7 @@
      "maxCss": 15.19,
      "minLabel": "Add a note for the record",
      "read": true,
-     "color": "rgb(138, 138, 138)",
+     "color": "rgb(154, 154, 154)",
      "issues": [
       {
        "guard": "SafeAreaGuard",
@@ -23160,8 +23505,8 @@
       "w": 2419.199951171875,
       "h": 1154.75927734375
      },
-     "fontPx": 17.49999964678729,
-     "cssPx": 12.5,
+     "fontPx": 19.599999604401766,
+     "cssPx": 14,
      "fontPxMax": 33.41799932550501,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -23232,6 +23577,26 @@
      "minLabel": "Evidence",
      "read": true,
      "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 139.48419189453125,
+      "y": 396.5623779296875,
+      "w": 51.609619140625,
+      "h": 51.609619140625
+     },
+     "fontPx": 20.64384765625,
+     "cssPx": 16,
+     "fontPxMax": 20.64384765625,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -23322,8 +23687,8 @@
       "w": 2419.199951171875,
       "h": 1154.75927734375
      },
-     "fontPx": 17.49999964678729,
-     "cssPx": 12.5,
+     "fontPx": 19.599999604401766,
+     "cssPx": 14,
      "fontPxMax": 33.41799932550501,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -23394,6 +23759,26 @@
      "minLabel": "Evidence",
      "read": true,
      "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 132.95086669921875,
+      "y": 394.69573974609375,
+      "w": 51.609619140625,
+      "h": 51.609619140625
+     },
+     "fontPx": 20.64384765625,
+     "cssPx": 16,
+     "fontPxMax": 20.64384765625,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -23484,8 +23869,8 @@
       "w": 2419.199951171875,
       "h": 1154.75927734375
      },
-     "fontPx": 17.49999964678729,
-     "cssPx": 12.5,
+     "fontPx": 19.599999604401766,
+     "cssPx": 14,
      "fontPxMax": 33.41799932550501,
      "maxCss": 23.87,
      "minLabel": "1",
@@ -23556,6 +23941,26 @@
      "minLabel": "Evidence",
      "read": true,
      "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 126.41766357421875,
+      "y": 392.8291015625,
+      "w": 51.609619140625,
+      "h": 51.609619140625
+     },
+     "fontPx": 20.64384765625,
+     "cssPx": 16,
+     "fontPxMax": 20.64384765625,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -23734,6 +24139,26 @@
        "message": "Finding Evidence at {\"x\":1230,\"y\":-101,\"w\":490,\"h\":219} enters the 96px margin"
       }
      ]
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 193.10797119140625,
+      "y": 166.9727783203125,
+      "w": 51.609619140625,
+      "h": 51.609619140625
+     },
+     "fontPx": 20.64384765625,
+     "cssPx": 16,
+     "fontPxMax": 20.64384765625,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
     },
     {
      "kind": "uitext",
@@ -23933,6 +24358,26 @@
      ]
     },
     {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 187.59808349609375,
+      "y": 165.06591796875,
+      "w": 51.609619140625,
+      "h": 51.609619140625
+     },
+     "fontPx": 20.64384765625,
+     "cssPx": 16,
+     "fontPxMax": 20.64384765625,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
      "kind": "uitext",
      "label": "Review note",
      "text": "Approved. Invoice date confirmed with the insured by phone.",
@@ -24130,6 +24575,26 @@
      ]
     },
     {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 179.96160888671875,
+      "y": 165.06591796875,
+      "w": 51.609619140625,
+      "h": 51.609619140625
+     },
+     "fontPx": 20.64384765625,
+     "cssPx": 16,
+     "fontPxMax": 20.64384765625,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
      "kind": "uitext",
      "label": "Review note",
      "text": "Approved. Invoice date confirmed with the insured by phone.",
@@ -24324,6 +24789,26 @@
      "minLabel": "Evidence",
      "read": true,
      "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 543.9759521484375,
+      "y": 597.1727905273438,
+      "w": 36.864013671875,
+      "h": 36.864013671875
+     },
+     "fontPx": 14.74560546875,
+     "cssPx": 16,
+     "fontPxMax": 14.74560546875,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -24549,6 +25034,26 @@
      "issues": []
     },
     {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 542.3118896484375,
+      "y": 596.3958129882812,
+      "w": 37.01141357421875,
+      "h": 37.011474609375
+     },
+     "fontPx": 14.8045654296875,
+     "cssPx": 16,
+     "fontPxMax": 14.8045654296875,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
      "kind": "uitext",
      "label": "Review note",
      "text": "Approved. Invoice date confirmed with the insured by phone.",
@@ -24768,6 +25273,26 @@
      "minLabel": "Evidence",
      "read": true,
      "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 540.6477661132812,
+      "y": 595.61083984375,
+      "w": 37.158935546875,
+      "h": 37.158935546875
+     },
+     "fontPx": 14.86357421875,
+     "cssPx": 16,
+     "fontPxMax": 14.86357421875,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -25099,6 +25624,26 @@
      "minLabel": "Evidence",
      "read": true,
      "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 0.999204,
+     "rect": {
+      "x": 543.9859008789062,
+      "y": 597.1873779296875,
+      "w": 36.86309814453125,
+      "h": 36.8631591796875
+     },
+     "fontPx": 14.7452392578125,
+     "cssPx": 16,
+     "fontPxMax": 14.7452392578125,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -25561,14 +26106,14 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›Control RoomControl RoomA live view of your workspaceDashboardAgentsRecordsAgents 4Resources 4Active tasks 0LiveClaim CL-7305, Home claim reviewRun of Home claim review, started by an email, finished 9:12 AMReplay6:42 PMEmail received6:43 PMIntake summaryNora6:44 PMPolicy checkTheo6:46 PMEvidence matchOwen6:47 PMReview requested9:12 AMApproved by Emily Carter“Approved. Invoice date confirmed with the insured by phone.”Emily Carter9:12 AMSettlement notice sent9:12 AMSlack notified",
      "opacity": 1,
      "rect": {
-      "x": -13.991424560546875,
-      "y": -22.58294677734375,
-      "w": 2246.073974609375,
-      "h": 1072.12109375
+      "x": -58.92315673828125,
+      "y": -48.554931640625,
+      "w": 2349.688720703125,
+      "h": 1121.57958984375
      },
-     "fontPx": 19.744134070784956,
+     "fontPx": 20.654960455717863,
      "cssPx": 15.19,
-     "fontPxMax": 31.026496396947792,
+     "fontPxMax": 32.457795001842356,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
@@ -25576,7 +26121,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-14,\"y\":-23,\"w\":2246,\"h\":1072} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-59,\"y\":-49,\"w\":2350,\"h\":1122} enters the 96px margin"
       }
      ]
     },
@@ -25586,14 +26131,14 @@
      "text": "6:42 PMEmail received",
      "opacity": 1,
      "rect": {
-      "x": 308.34722900390625,
-      "y": 339.28662109375,
-      "w": 1461.445556640625,
-      "h": 52.7078857421875
+      "x": 278.28546142578125,
+      "y": 330.0081787109375,
+      "w": 1528.8642578125,
+      "h": 55.139404296875
      },
-     "fontPx": 18.196195086369748,
+     "fontPx": 19.03561317719006,
      "cssPx": 15.19,
-     "fontPxMax": 19.765452200467468,
+     "fontPxMax": 20.677262503201845,
      "maxCss": 16.5,
      "minLabel": "6:42 PM",
      "read": true,
@@ -25606,14 +26151,14 @@
      "text": "6:43 PMIntake summaryNora",
      "opacity": 1,
      "rect": {
-      "x": 308.34722900390625,
-      "y": 401.5777587890625,
-      "w": 1461.445556640625,
-      "h": 52.70782470703125
+      "x": 278.28546142578125,
+      "y": 395.17291259765625,
+      "w": 1528.8642578125,
+      "h": 55.13934326171875
      },
-     "fontPx": 18.196195086369748,
+     "fontPx": 19.03561317719006,
      "cssPx": 15.19,
-     "fontPxMax": 19.765452200467468,
+     "fontPxMax": 20.677262503201845,
      "maxCss": 16.5,
      "minLabel": "6:43 PM",
      "read": true,
@@ -25626,14 +26171,14 @@
      "text": "6:44 PMPolicy checkTheo",
      "opacity": 1,
      "rect": {
-      "x": 308.34722900390625,
-      "y": 463.86883544921875,
-      "w": 1461.445556640625,
-      "h": 52.7078857421875
+      "x": 278.28546142578125,
+      "y": 460.33758544921875,
+      "w": 1528.8642578125,
+      "h": 55.139404296875
      },
-     "fontPx": 18.196195086369748,
+     "fontPx": 19.03561317719006,
      "cssPx": 15.19,
-     "fontPxMax": 19.765452200467468,
+     "fontPxMax": 20.677262503201845,
      "maxCss": 16.5,
      "minLabel": "6:44 PM",
      "read": true,
@@ -25646,14 +26191,14 @@
      "text": "6:46 PMEvidence matchOwen",
      "opacity": 1,
      "rect": {
-      "x": 308.34722900390625,
-      "y": 526.1599731445312,
-      "w": 1461.445556640625,
-      "h": 52.70782470703125
+      "x": 278.28546142578125,
+      "y": 525.5023193359375,
+      "w": 1528.8642578125,
+      "h": 55.13934326171875
      },
-     "fontPx": 18.196195086369748,
+     "fontPx": 19.03561317719006,
      "cssPx": 15.19,
-     "fontPxMax": 19.765452200467468,
+     "fontPxMax": 20.677262503201845,
      "maxCss": 16.5,
      "minLabel": "6:46 PM",
      "read": true,
@@ -25666,14 +26211,14 @@
      "text": "6:47 PMReview requested",
      "opacity": 1,
      "rect": {
-      "x": 308.34722900390625,
-      "y": 588.4510498046875,
-      "w": 1461.445556640625,
-      "h": 52.7078857421875
+      "x": 278.28546142578125,
+      "y": 590.6669921875,
+      "w": 1528.8642578125,
+      "h": 55.139404296875
      },
-     "fontPx": 18.196195086369748,
+     "fontPx": 19.03561317719006,
      "cssPx": 15.19,
-     "fontPxMax": 19.765452200467468,
+     "fontPxMax": 20.677262503201845,
      "maxCss": 16.5,
      "minLabel": "6:47 PM",
      "read": true,
@@ -25686,14 +26231,14 @@
      "text": "9:12 AMApproved by Emily Carter“Approved. Invoice date confirmed with the insured by phone.”Emily Carter",
      "opacity": 1,
      "rect": {
-      "x": 308.34722900390625,
-      "y": 650.7421875,
-      "w": 1461.445556640625,
-      "h": 91.0408935546875
+      "x": 278.28546142578125,
+      "y": 655.8317260742188,
+      "w": 1528.8642578125,
+      "h": 95.24072265625
      },
-     "fontPx": 18.196195086369748,
+     "fontPx": 19.03561317719006,
      "cssPx": 15.19,
-     "fontPxMax": 19.765452200467468,
+     "fontPxMax": 20.677262503201845,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -25706,14 +26251,14 @@
      "text": "9:12 AMSettlement notice sent",
      "opacity": 1,
      "rect": {
-      "x": 308.34722900390625,
-      "y": 713.0333251953125,
-      "w": 1461.445556640625,
-      "h": 52.7078857421875
+      "x": 278.28546142578125,
+      "y": 720.9964599609375,
+      "w": 1528.8642578125,
+      "h": 55.13934326171875
      },
-     "fontPx": 18.196195086369748,
+     "fontPx": 19.03561317719006,
      "cssPx": 15.19,
-     "fontPxMax": 19.765452200467468,
+     "fontPxMax": 20.677262503201845,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -25726,14 +26271,14 @@
      "text": "9:12 AMSlack notified",
      "opacity": 1,
      "rect": {
-      "x": 308.34722900390625,
-      "y": 775.324462890625,
-      "w": 1461.445556640625,
-      "h": 52.70782470703125
+      "x": 278.28546142578125,
+      "y": 786.1611938476562,
+      "w": 1528.8642578125,
+      "h": 55.13922119140625
      },
-     "fontPx": 18.196195086369748,
+     "fontPx": 19.03561317719006,
      "cssPx": 15.19,
-     "fontPxMax": 19.765452200467468,
+     "fontPxMax": 20.677262503201845,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -25746,14 +26291,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1670.7469482421875,
-      "y": 247.4122314453125,
-      "w": 18.197265625,
-      "h": 18.1973876953125
+      "x": 1703.53466796875,
+      "y": 233.89553833007812,
+      "w": 19.036865234375,
+      "h": 19.036834716796875
      },
-     "fontPx": 5.19921875,
+     "fontPx": 5.439104352678571,
      "cssPx": 16,
-     "fontPxMax": 5.19921875,
+     "fontPxMax": 5.439104352678571,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -25766,10 +26311,10 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1676.336181640625,
-      "y": 254.75616455078125,
-      "w": 42.1138916015625,
-      "h": 51.4725341796875
+      "x": 1709.3818359375,
+      "y": 241.5782470703125,
+      "w": 44.056640625,
+      "h": 53.8470458984375
      },
      "fontPx": 16,
      "cssPx": 16,
@@ -25823,14 +26368,14 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›Control RoomControl RoomA live view of your workspaceDashboardAgentsRecordsAgents 4Resources 4Active tasks 0LiveClaim CL-7305, Home claim reviewRun of Home claim review, started by an email, finished 9:12 AMReplay6:42 PMEmail received6:43 PMIntake summaryNora6:44 PMPolicy checkTheo6:46 PMEvidence matchOwen6:47 PMReview requested9:12 AMApproved by Emily Carter“Approved. Invoice date confirmed with the insured by phone.”Emily Carter9:12 AMSettlement notice sent9:12 AMSlack notified",
      "opacity": 1,
      "rect": {
-      "x": -15.911064147949219,
-      "y": -35.161590576171875,
-      "w": 2246.39990234375,
-      "h": 1072.276611328125
+      "x": -60.95306396484375,
+      "y": -61.72669982910156,
+      "w": 2350.080078125,
+      "h": 1121.7662353515625
      },
-     "fontPx": 19.74699914155183,
+     "fontPx": 20.658400686758537,
      "cssPx": 15.19,
-     "fontPxMax": 31.03099865101002,
+     "fontPxMax": 32.46320107919199,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
@@ -25838,7 +26383,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-16,\"y\":-35,\"w\":2246,\"h\":1072} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-61,\"y\":-62,\"w\":2350,\"h\":1122} enters the 96px margin"
       }
      ]
     },
@@ -25848,14 +26393,14 @@
      "text": "6:42 PMEmail received",
      "opacity": 1,
      "rect": {
-      "x": 306.474365234375,
-      "y": 326.76043701171875,
-      "w": 1461.6575927734375,
-      "h": 52.715576171875
+      "x": 276.31170654296875,
+      "y": 316.89947509765625,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:42 PM",
      "read": true,
@@ -25868,14 +26413,14 @@
      "text": "6:43 PMIntake summaryNora",
      "opacity": 1,
      "rect": {
-      "x": 306.474365234375,
-      "y": 389.06060791015625,
-      "w": 1461.6575927734375,
-      "h": 52.71551513671875
+      "x": 276.31170654296875,
+      "y": 382.07501220703125,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:43 PM",
      "read": true,
@@ -25888,14 +26433,14 @@
      "text": "6:44 PMPolicy checkTheo",
      "opacity": 1,
      "rect": {
-      "x": 306.474365234375,
-      "y": 451.36077880859375,
-      "w": 1461.6575927734375,
-      "h": 52.71551513671875
+      "x": 276.31170654296875,
+      "y": 447.25054931640625,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:44 PM",
      "read": true,
@@ -25908,14 +26453,14 @@
      "text": "6:46 PMEvidence matchOwen",
      "opacity": 1,
      "rect": {
-      "x": 306.474365234375,
-      "y": 513.6609497070312,
-      "w": 1461.6575927734375,
-      "h": 52.7154541015625
+      "x": 276.31170654296875,
+      "y": 512.4261474609375,
+      "w": 1529.11865234375,
+      "h": 55.14849853515625
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:46 PM",
      "read": true,
@@ -25928,14 +26473,14 @@
      "text": "6:47 PMReview requested",
      "opacity": 1,
      "rect": {
-      "x": 306.474365234375,
-      "y": 575.9610595703125,
-      "w": 1461.6575927734375,
-      "h": 52.71551513671875
+      "x": 276.31170654296875,
+      "y": 577.6016235351562,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:47 PM",
      "read": true,
@@ -25948,14 +26493,14 @@
      "text": "9:12 AMApproved by Emily Carter“Approved. Invoice date confirmed with the insured by phone.”Emily Carter",
      "opacity": 1,
      "rect": {
-      "x": 306.474365234375,
-      "y": 638.26123046875,
-      "w": 1461.6575927734375,
-      "h": 91.05413818359375
+      "x": 276.31170654296875,
+      "y": 642.7772216796875,
+      "w": 1529.11865234375,
+      "h": 95.256591796875
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -25968,14 +26513,14 @@
      "text": "9:12 AMSettlement notice sent",
      "opacity": 1,
      "rect": {
-      "x": 306.474365234375,
-      "y": 700.5614013671875,
-      "w": 1461.6575927734375,
-      "h": 52.715576171875
+      "x": 276.31170654296875,
+      "y": 707.9528198242188,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -25988,14 +26533,14 @@
      "text": "9:12 AMSlack notified",
      "opacity": 1,
      "rect": {
-      "x": 306.474365234375,
-      "y": 762.861572265625,
-      "w": 1461.6575927734375,
-      "h": 52.7154541015625
+      "x": 276.31170654296875,
+      "y": 773.1283569335938,
+      "w": 1529.11865234375,
+      "h": 55.1484375
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -26008,10 +26553,10 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1849.1826171875,
-      "y": 358.25091552734375,
-      "w": 46.800048828125,
-      "h": 57.199951171875
+      "x": 1890.2220458984375,
+      "y": 349.84332275390625,
+      "w": 48.9599609375,
+      "h": 59.8399658203125
      },
      "fontPx": 16,
      "cssPx": 16,
@@ -26023,7 +26568,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": " at {\"x\":1849,\"y\":358,\"w\":47,\"h\":57} enters the 96px margin"
+       "message": " at {\"x\":1890,\"y\":350,\"w\":49,\"h\":60} enters the 96px margin"
       }
      ]
     },
@@ -26070,14 +26615,14 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›Control RoomControl RoomA live view of your workspaceDashboardAgentsRecordsAgents 4Resources 4Active tasks 0LiveClaim CL-7305, Home claim reviewRun of Home claim review, started by an email, finished 9:12 AMReplay6:42 PMEmail received6:43 PMIntake summaryNora6:44 PMPolicy checkTheo6:46 PMEvidence matchOwen6:47 PMReview requested9:12 AMApproved by Emily Carter“Approved. Invoice date confirmed with the insured by phone.”Emily Carter9:12 AMSettlement notice sent9:12 AMSlack notified",
      "opacity": 1,
      "rect": {
-      "x": -17.99102020263672,
-      "y": -49.028167724609375,
-      "w": 2246.39990234375,
-      "h": 1072.2764892578125
+      "x": -63.12908935546875,
+      "y": -76.23335266113281,
+      "w": 2350.080322265625,
+      "h": 1121.766357421875
      },
-     "fontPx": 19.74699914155183,
+     "fontPx": 20.65840283287896,
      "cssPx": 15.19,
-     "fontPxMax": 31.03099865101002,
+     "fontPxMax": 32.46320445166694,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
@@ -26085,7 +26630,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-18,\"y\":-49,\"w\":2246,\"h\":1072} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-63,\"y\":-76,\"w\":2350,\"h\":1122} enters the 96px margin"
       }
      ]
     },
@@ -26095,14 +26640,14 @@
      "text": "6:42 PMEmail received",
      "opacity": 1,
      "rect": {
-      "x": 304.3944091796875,
-      "y": 312.89385986328125,
-      "w": 1461.6575927734375,
-      "h": 52.715576171875
+      "x": 274.13568115234375,
+      "y": 302.392822265625,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:42 PM",
      "read": true,
@@ -26115,14 +26660,14 @@
      "text": "6:43 PMIntake summaryNora",
      "opacity": 1,
      "rect": {
-      "x": 304.3944091796875,
-      "y": 375.19403076171875,
-      "w": 1461.6575927734375,
-      "h": 52.71551513671875
+      "x": 274.13568115234375,
+      "y": 367.568359375,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:43 PM",
      "read": true,
@@ -26135,14 +26680,14 @@
      "text": "6:44 PMPolicy checkTheo",
      "opacity": 1,
      "rect": {
-      "x": 304.3944091796875,
-      "y": 437.49420166015625,
-      "w": 1461.6575927734375,
-      "h": 52.71551513671875
+      "x": 274.13568115234375,
+      "y": 432.743896484375,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:44 PM",
      "read": true,
@@ -26155,14 +26700,14 @@
      "text": "6:46 PMEvidence matchOwen",
      "opacity": 1,
      "rect": {
-      "x": 304.3944091796875,
-      "y": 499.79437255859375,
-      "w": 1461.6575927734375,
-      "h": 52.7154541015625
+      "x": 274.13568115234375,
+      "y": 497.91949462890625,
+      "w": 1529.11865234375,
+      "h": 55.14849853515625
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:46 PM",
      "read": true,
@@ -26175,14 +26720,14 @@
      "text": "6:47 PMReview requested",
      "opacity": 1,
      "rect": {
-      "x": 304.3944091796875,
-      "y": 562.094482421875,
-      "w": 1461.6575927734375,
-      "h": 52.71551513671875
+      "x": 274.13568115234375,
+      "y": 563.094970703125,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:47 PM",
      "read": true,
@@ -26195,18 +26740,38 @@
      "text": "9:12 AMApproved by Emily Carter“Approved. Invoice date confirmed with the insured by phone.”Emily Carter",
      "opacity": 1,
      "rect": {
-      "x": 304.3944091796875,
-      "y": 624.3946533203125,
-      "w": 1461.6575927734375,
-      "h": 91.05413818359375
+      "x": 274.13568115234375,
+      "y": 628.2705688476562,
+      "w": 1529.11865234375,
+      "h": 95.256591796875
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
      "color": "rgb(168, 168, 168)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 0.597528,
+     "rect": {
+      "x": 1623.5712890625,
+      "y": 639.5509643554688,
+      "w": 45.1214599609375,
+      "h": 45.12152099609375
+     },
+     "fontPx": 20.05398220486111,
+     "cssPx": 16,
+     "fontPxMax": 20.05398220486111,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -26215,14 +26780,14 @@
      "text": "9:12 AMSettlement notice sent",
      "opacity": 1,
      "rect": {
-      "x": 304.3944091796875,
-      "y": 686.69482421875,
-      "w": 1461.6575927734375,
-      "h": 52.715576171875
+      "x": 274.13568115234375,
+      "y": 693.4461669921875,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -26235,14 +26800,14 @@
      "text": "9:12 AMSlack notified",
      "opacity": 1,
      "rect": {
-      "x": 304.3944091796875,
-      "y": 748.9949951171875,
-      "w": 1461.6575927734375,
-      "h": 52.7154541015625
+      "x": 274.13568115234375,
+      "y": 758.6217041015625,
+      "w": 1529.11865234375,
+      "h": 55.1484375
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -26255,10 +26820,10 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1775.86669921875,
-      "y": 601.2561645507812,
-      "w": 46.800048828125,
-      "h": 57.20001220703125
+      "x": 1813.522216796875,
+      "y": 604.0641479492188,
+      "w": 48.9600830078125,
+      "h": 59.84002685546875
      },
      "fontPx": 16,
      "cssPx": 16,
@@ -26267,7 +26832,12 @@
      "minLabel": "",
      "read": false,
      "color": "rgb(0, 0, 0)",
-     "issues": []
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": " at {\"x\":1814,\"y\":604,\"w\":49,\"h\":60} enters the 96px margin"
+      }
+     ]
     },
     {
      "kind": "fitcheck",
@@ -26312,14 +26882,14 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›Control RoomControl RoomA live view of your workspaceDashboardAgentsRecordsAgents 4Resources 4Active tasks 0LiveClaim CL-7305, Home claim reviewRun of Home claim review, started by an email, finished 9:12 AMReplay6:42 PMEmail received6:43 PMIntake summaryNora6:44 PMPolicy checkTheo6:46 PMEvidence matchOwen6:47 PMReview requested9:12 AMApproved by Emily Carter“Approved. Invoice date confirmed with the insured by phone.”Emily Carter9:12 AMSettlement notice sent9:12 AMSlack notified",
      "opacity": 1,
      "rect": {
-      "x": -20.07097625732422,
-      "y": -62.894866943359375,
-      "w": 2246.400146484375,
-      "h": 1072.2764892578125
+      "x": -65.30511474609375,
+      "y": -90.74000549316406,
+      "w": 2350.080078125,
+      "h": 1121.766357421875
      },
-     "fontPx": 19.747001287672255,
+     "fontPx": 20.658400686758537,
      "cssPx": 15.19,
-     "fontPxMax": 31.031002023484977,
+     "fontPxMax": 32.46320107919199,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
@@ -26327,7 +26897,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-20,\"y\":-63,\"w\":2246,\"h\":1072} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-65,\"y\":-91,\"w\":2350,\"h\":1122} enters the 96px margin"
       }
      ]
     },
@@ -26337,14 +26907,14 @@
      "text": "6:42 PMEmail received",
      "opacity": 1,
      "rect": {
-      "x": 302.314453125,
-      "y": 299.02716064453125,
-      "w": 1461.6575927734375,
-      "h": 52.715576171875
+      "x": 271.95965576171875,
+      "y": 287.88616943359375,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:42 PM",
      "read": true,
@@ -26357,14 +26927,14 @@
      "text": "6:43 PMIntake summaryNora",
      "opacity": 1,
      "rect": {
-      "x": 302.314453125,
-      "y": 361.32733154296875,
-      "w": 1461.6575927734375,
-      "h": 52.71551513671875
+      "x": 271.95965576171875,
+      "y": 353.06170654296875,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:43 PM",
      "read": true,
@@ -26377,14 +26947,14 @@
      "text": "6:44 PMPolicy checkTheo",
      "opacity": 1,
      "rect": {
-      "x": 302.314453125,
-      "y": 423.62750244140625,
-      "w": 1461.6575927734375,
-      "h": 52.71551513671875
+      "x": 271.95965576171875,
+      "y": 418.23724365234375,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:44 PM",
      "read": true,
@@ -26397,14 +26967,14 @@
      "text": "6:46 PMEvidence matchOwen",
      "opacity": 1,
      "rect": {
-      "x": 302.314453125,
-      "y": 485.92767333984375,
-      "w": 1461.6575927734375,
-      "h": 52.7154541015625
+      "x": 271.95965576171875,
+      "y": 483.412841796875,
+      "w": 1529.11865234375,
+      "h": 55.14849853515625
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:46 PM",
      "read": true,
@@ -26417,14 +26987,14 @@
      "text": "6:47 PMReview requested",
      "opacity": 1,
      "rect": {
-      "x": 302.314453125,
-      "y": 548.227783203125,
-      "w": 1461.6575927734375,
-      "h": 52.71551513671875
+      "x": 271.95965576171875,
+      "y": 548.5883178710938,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "6:47 PM",
      "read": true,
@@ -26437,18 +27007,38 @@
      "text": "9:12 AMApproved by Emily Carter“Approved. Invoice date confirmed with the insured by phone.”Emily Carter",
      "opacity": 1,
      "rect": {
-      "x": 302.314453125,
-      "y": 610.5279541015625,
-      "w": 1461.6575927734375,
-      "h": 91.05413818359375
+      "x": 271.95965576171875,
+      "y": 613.763916015625,
+      "w": 1529.11865234375,
+      "h": 95.256591796875
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
      "color": "rgb(168, 168, 168)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1621.395263671875,
+      "y": 625.0443115234375,
+      "w": 45.1214599609375,
+      "h": 45.12152099609375
+     },
+     "fontPx": 20.05398220486111,
+     "cssPx": 16,
+     "fontPxMax": 20.05398220486111,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -26457,14 +27047,14 @@
      "text": "9:12 AMSettlement notice sent",
      "opacity": 1,
      "rect": {
-      "x": 302.314453125,
-      "y": 672.828125,
-      "w": 1461.6575927734375,
-      "h": 52.715576171875
+      "x": 271.95965576171875,
+      "y": 678.9395141601562,
+      "w": 1529.11865234375,
+      "h": 55.1485595703125
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -26477,14 +27067,14 @@
      "text": "9:12 AMSlack notified",
      "opacity": 1,
      "rect": {
-      "x": 302.314453125,
-      "y": 735.1282958984375,
-      "w": 1461.6575927734375,
-      "h": 52.7154541015625
+      "x": 271.95965576171875,
+      "y": 744.1150512695312,
+      "w": 1529.11865234375,
+      "h": 55.1484375
      },
-     "fontPx": 18.19883511002337,
+     "fontPx": 19.03878059762423,
      "cssPx": 15.19,
-     "fontPxMax": 19.768319902263702,
+     "fontPxMax": 20.680703084976948,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -26497,10 +27087,10 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1773.13671875,
-      "y": 605.955078125,
-      "w": 46.800048828125,
-      "h": 57.20001220703125
+      "x": 1810.6661376953125,
+      "y": 608.97998046875,
+      "w": 48.9599609375,
+      "h": 59.84002685546875
      },
      "fontPx": 16,
      "cssPx": 16,
@@ -26509,7 +27099,12 @@
      "minLabel": "",
      "read": false,
      "color": "rgb(0, 0, 0)",
-     "issues": []
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": " at {\"x\":1811,\"y\":609,\"w\":49,\"h\":60} enters the 96px margin"
+      }
+     ]
     },
     {
      "kind": "fitcheck",
@@ -26554,14 +27149,14 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›Control RoomControl RoomA live view of your workspaceDashboardAgentsRecordsAgents 4Resources 4Active tasks 0LiveClaim CL-7305, Home claim reviewRun of Home claim review, started by an email, finished 9:12 AMReplay6:42 PMEmail received6:43 PMIntake summaryNora6:44 PMPolicy checkTheo6:46 PMEvidence matchOwen6:47 PMReview requested9:12 AMApproved by Emily Carter“Approved. Invoice date confirmed with the insured by phone.”Emily Carter9:12 AMSettlement notice sent9:12 AMSlack notified",
      "opacity": 1,
      "rect": {
-      "x": 95.53298950195312,
-      "y": 127.42694091796875,
-      "w": 1729.610107421875,
-      "h": 825.5966796875
+      "x": 95.37210083007812,
+      "y": 127.35008239746094,
+      "w": 1729.9320068359375,
+      "h": 825.7503051757812
      },
-     "fontPx": 15.204153664200394,
+     "fontPx": 15.20698332398026,
      "cssPx": 15.19,
-     "fontPxMax": 23.892241472314907,
+     "fontPxMax": 23.89668808054041,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
@@ -26569,7 +27164,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":96,\"y\":127,\"w\":1730,\"h\":826} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":95,\"y\":127,\"w\":1730,\"h\":826} enters the 96px margin"
       }
      ]
     },
@@ -26579,14 +27174,14 @@
      "text": "6:42 PMEmail received",
      "opacity": 1,
      "rect": {
-      "x": 343.7528381347656,
-      "y": 406.0879211425781,
-      "w": 1125.3997802734375,
-      "h": 40.58819580078125
+      "x": 343.63818359375,
+      "y": 406.06292724609375,
+      "w": 1125.609130859375,
+      "h": 40.59576416015625
      },
-     "fontPx": 14.012149723240585,
+     "fontPx": 14.014756309634349,
      "cssPx": 15.19,
-     "fontPxMax": 15.220570798780097,
+     "fontPxMax": 15.223402179655482,
      "maxCss": 16.5,
      "minLabel": "6:42 PM",
      "read": true,
@@ -26599,14 +27194,14 @@
      "text": "6:43 PMIntake summaryNora",
      "opacity": 1,
      "rect": {
-      "x": 343.7528381347656,
-      "y": 454.0557861328125,
-      "w": 1125.3997802734375,
-      "h": 40.588165283203125
+      "x": 343.63818359375,
+      "y": 454.03973388671875,
+      "w": 1125.609130859375,
+      "h": 40.595733642578125
      },
-     "fontPx": 14.012149723240585,
+     "fontPx": 14.014756309634349,
      "cssPx": 15.19,
-     "fontPxMax": 15.220570798780097,
+     "fontPxMax": 15.223402179655482,
      "maxCss": 16.5,
      "minLabel": "6:43 PM",
      "read": true,
@@ -26619,14 +27214,14 @@
      "text": "6:44 PMPolicy checkTheo",
      "opacity": 1,
      "rect": {
-      "x": 343.7528381347656,
-      "y": 502.02362060546875,
-      "w": 1125.3997802734375,
-      "h": 40.58819580078125
+      "x": 343.63818359375,
+      "y": 502.0165100097656,
+      "w": 1125.609130859375,
+      "h": 40.595733642578125
      },
-     "fontPx": 14.012149723240585,
+     "fontPx": 14.014756309634349,
      "cssPx": 15.19,
-     "fontPxMax": 15.220570798780097,
+     "fontPxMax": 15.223402179655482,
      "maxCss": 16.5,
      "minLabel": "6:44 PM",
      "read": true,
@@ -26639,14 +27234,14 @@
      "text": "6:46 PMEvidence matchOwen",
      "opacity": 1,
      "rect": {
-      "x": 343.7528381347656,
-      "y": 549.9915161132812,
-      "w": 1125.3997802734375,
-      "h": 40.588134765625
+      "x": 343.63818359375,
+      "y": 549.9932861328125,
+      "w": 1125.609130859375,
+      "h": 40.595703125
      },
-     "fontPx": 14.012149723240585,
+     "fontPx": 14.014756309634349,
      "cssPx": 15.19,
-     "fontPxMax": 15.220570798780097,
+     "fontPxMax": 15.223402179655482,
      "maxCss": 16.5,
      "minLabel": "6:46 PM",
      "read": true,
@@ -26659,14 +27254,14 @@
      "text": "6:47 PMReview requested",
      "opacity": 1,
      "rect": {
-      "x": 343.7528381347656,
-      "y": 597.9592895507812,
-      "w": 1125.3997802734375,
-      "h": 40.58819580078125
+      "x": 343.63818359375,
+      "y": 597.9700317382812,
+      "w": 1125.609130859375,
+      "h": 40.59576416015625
      },
-     "fontPx": 14.012149723240585,
+     "fontPx": 14.014756309634349,
      "cssPx": 15.19,
-     "fontPxMax": 15.220570798780097,
+     "fontPxMax": 15.223402179655482,
      "maxCss": 16.5,
      "minLabel": "6:47 PM",
      "read": true,
@@ -26679,18 +27274,38 @@
      "text": "9:12 AMApproved by Emily Carter“Approved. Invoice date confirmed with the insured by phone.”Emily Carter",
      "opacity": 1,
      "rect": {
-      "x": 343.7528381347656,
-      "y": 645.9271850585938,
-      "w": 1125.3997802734375,
-      "h": 70.10687255859375
+      "x": 343.63818359375,
+      "y": 645.9468383789062,
+      "w": 1125.609130859375,
+      "h": 70.11993408203125
      },
-     "fontPx": 14.012149723240585,
+     "fontPx": 14.014756309634349,
      "cssPx": 15.19,
-     "fontPxMax": 15.220570798780097,
+     "fontPxMax": 15.223402179655482,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
      "color": "rgb(168, 168, 168)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1336.9796142578125,
+      "y": 654.2505493164062,
+      "w": 33.2147216796875,
+      "h": 33.21466064453125
+     },
+     "fontPx": 14.762098524305555,
+     "cssPx": 16,
+     "fontPxMax": 14.762098524305555,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -26699,14 +27314,14 @@
      "text": "9:12 AMSettlement notice sent",
      "opacity": 1,
      "rect": {
-      "x": 343.7528381347656,
-      "y": 693.89501953125,
-      "w": 1125.3997802734375,
-      "h": 40.58819580078125
+      "x": 343.63818359375,
+      "y": 693.9236450195312,
+      "w": 1125.609130859375,
+      "h": 40.59576416015625
      },
-     "fontPx": 14.012149723240585,
+     "fontPx": 14.014756309634349,
      "cssPx": 15.19,
-     "fontPxMax": 15.220570798780097,
+     "fontPxMax": 15.223402179655482,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -26719,14 +27334,14 @@
      "text": "9:12 AMSlack notified",
      "opacity": 1,
      "rect": {
-      "x": 343.7528381347656,
-      "y": 741.8629150390625,
-      "w": 1125.3997802734375,
-      "h": 40.588134765625
+      "x": 343.63818359375,
+      "y": 741.9004516601562,
+      "w": 1125.609130859375,
+      "h": 40.595703125
      },
-     "fontPx": 14.012149723240585,
+     "fontPx": 14.014756309634349,
      "cssPx": 15.19,
-     "fontPxMax": 15.220570798780097,
+     "fontPxMax": 15.223402179655482,
      "maxCss": 16.5,
      "minLabel": "9:12 AM",
      "read": true,
@@ -26739,14 +27354,14 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 146.62742614746094,
-      "y": 406.3741149902344,
-      "w": 14.013046264648438,
-      "h": 14.013031005859375
+      "x": 146.47605895996094,
+      "y": 406.34918212890625,
+      "w": 14.015640258789062,
+      "h": 14.015655517578125
      },
-     "fontPx": 4.003727504185268,
+     "fontPx": 4.004468645368304,
      "cssPx": 16,
-     "fontPxMax": 4.003727504185268,
+     "fontPxMax": 4.004468645368304,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -26759,10 +27374,10 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 150.9314422607422,
-      "y": 412.02935791015625,
-      "w": 32.43017578125,
-      "h": 39.63690185546875
+      "x": 150.78086853027344,
+      "y": 412.0054931640625,
+      "w": 32.43621826171875,
+      "h": 39.644287109375
      },
      "fontPx": 16,
      "cssPx": 16,
@@ -27020,14 +27635,14 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageOpen claims by status, with who approved eachBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetOpen claims by statusStatusCountApproved byApproved18Emily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
      "opacity": 1,
      "rect": {
-      "x": -134.1981201171875,
-      "y": -68.48667907714844,
-      "w": 1935.4810791015625,
-      "h": 923.8652954101562
+      "x": -212.31993103027344,
+      "y": -111.96012878417969,
+      "w": 2073.667236328125,
+      "h": 989.825927734375
      },
-     "fontPx": 17.013864346963388,
+     "fontPx": 18.22859104156494,
      "cssPx": 15.19,
-     "fontPxMax": 26.736072545228183,
+     "fontPxMax": 28.64492877960205,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
@@ -27035,7 +27650,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-134,\"y\":-68,\"w\":1935,\"h\":924} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-212,\"y\":-112,\"w\":2074,\"h\":990} enters the 96px margin"
       }
      ]
     },
@@ -27045,14 +27660,14 @@
      "text": "Open claims by status, with who approved each",
      "opacity": 1,
      "rect": {
-      "x": 375.82440185546875,
-      "y": 177.2781982421875,
-      "w": 1177.804931640625,
-      "h": 57.806396484375
+      "x": 334.1163330078125,
+      "y": 151.35147094726562,
+      "w": 1261.8958740234375,
+      "h": 61.933563232421875
      },
-     "fontPx": 18.064492816574003,
+     "fontPx": 19.354231196678487,
      "cssPx": 17.5,
-     "fontPxMax": 18.064492816574003,
+     "fontPxMax": 19.354231196678487,
      "maxCss": 17.5,
      "minLabel": "O",
      "read": true,
@@ -27065,18 +27680,38 @@
      "text": "Open claims by statusStatusCountApproved byApproved18Emily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
      "opacity": 1,
      "rect": {
-      "x": 353.11480712890625,
-      "y": 345.5360107421875,
-      "w": 1222.191650390625,
-      "h": 454.19293212890625
+      "x": 309.785400390625,
+      "y": 331.62225341796875,
+      "w": 1309.4517822265625,
+      "h": 486.62060546875
      },
-     "fontPx": 15.679975649859452,
+     "fontPx": 16.799470077720848,
      "cssPx": 15.19,
-     "fontPxMax": 19.096744537353512,
+     "fontPxMax": 20.46018409729004,
      "maxCss": 18.5,
      "minLabel": "Status",
      "read": true,
      "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 636.0424194335938,
+      "y": 449.4066162109375,
+      "w": 30.9666748046875,
+      "h": 30.966796875
+     },
+     "fontPx": 18.248219081333705,
+     "cssPx": 16.5,
+     "fontPxMax": 18.248219081333705,
+     "maxCss": 16.5,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(216, 216, 216)",
      "issues": []
     },
     {
@@ -27085,10 +27720,10 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1552.2774658203125,
-      "y": 320.70269775390625,
-      "w": 40.322509765625,
-      "h": 49.2830810546875
+      "x": 1594.5638427734375,
+      "y": 305.01593017578125,
+      "w": 43.201416015625,
+      "h": 52.80169677734375
      },
      "fontPx": 16,
      "cssPx": 16,
@@ -27162,14 +27797,14 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageOpen claims by status, with who approved eachBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetOpen claims by statusStatusCountApproved byApproved18Emily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
      "opacity": 1,
      "rect": {
-      "x": -148.008056640625,
-      "y": -73.5460205078125,
-      "w": 1944,
-      "h": 927.931640625
+      "x": -226.7997283935547,
+      "y": -117.20555114746094,
+      "w": 2082.240234375,
+      "h": 993.91796875
      },
-     "fontPx": 17.08875,
+     "fontPx": 18.30395206027561,
      "cssPx": 15.19,
-     "fontPxMax": 26.85375,
+     "fontPxMax": 28.763353237575956,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
@@ -27177,7 +27812,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-148,\"y\":-74,\"w\":1944,\"h\":928} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-227,\"y\":-117,\"w\":2082,\"h\":994} enters the 96px margin"
       }
      ]
     },
@@ -27187,14 +27822,14 @@
      "text": "Open claims by status, with who approved each",
      "opacity": 1,
      "rect": {
-      "x": 364.25927734375,
-      "y": 173.30056762695312,
-      "w": 1182.9888916015625,
-      "h": 58.060821533203125
+      "x": 321.8955078125,
+      "y": 147.194580078125,
+      "w": 1267.112548828125,
+      "h": 62.189605712890625
      },
-     "fontPx": 18.14400140493194,
+     "fontPx": 19.434241546443637,
      "cssPx": 17.5,
-     "fontPxMax": 18.14400140493194,
+     "fontPxMax": 19.434241546443637,
      "maxCss": 17.5,
      "minLabel": "O",
      "read": true,
@@ -27207,18 +27842,58 @@
      "text": "Open claims by statusStatusCountApproved byApproved18Emily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
      "opacity": 1,
      "rect": {
-      "x": 341.44976806640625,
-      "y": 342.2989501953125,
-      "w": 1227.571044921875,
-      "h": 456.1920166015625
+      "x": 297.4639892578125,
+      "y": 328.21063232421875,
+      "w": 1314.8651123046875,
+      "h": 488.63238525390625
      },
-     "fontPx": 15.74899001044196,
+     "fontPx": 16.86891981073328,
      "cssPx": 15.19,
-     "fontPxMax": 19.180797576904297,
+     "fontPxMax": 20.544767379760742,
      "maxCss": 18.5,
      "minLabel": "Status",
      "read": true,
      "color": "rgb(236, 236, 236)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 625.0697631835938,
+      "y": 446.48193359375,
+      "w": 31.0947265625,
+      "h": 31.09478759765625
+     },
+     "fontPx": 18.323678152901785,
+     "cssPx": 16.5,
+     "fontPxMax": 18.323678152901785,
+     "maxCss": 16.5,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(216, 216, 216)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 625.0697631835938,
+      "y": 599.7347412109375,
+      "w": 31.0947265625,
+      "h": 31.09478759765625
+     },
+     "fontPx": 18.323678152901785,
+     "cssPx": 16.5,
+     "fontPxMax": 18.323678152901785,
+     "maxCss": 16.5,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(216, 216, 216)",
      "issues": []
     },
     {
@@ -27501,7 +28176,7 @@
       "x": 770.3125,
       "y": 368,
       "w": 629.6875,
-      "h": 69.796875
+      "h": 69.8125
      },
      "fontPx": 27.98611111111111,
      "cssPx": 28,
@@ -27521,7 +28196,7 @@
       "x": 520,
       "y": 520,
       "w": 547.625,
-      "h": 109.59375
+      "h": 109.625
      },
      "fontPx": 27.980839416058394,
      "cssPx": 28,
@@ -27656,14 +28331,14 @@
      "opacity": 0.866719,
      "rect": {
       "x": 896.171875,
-      "y": 697,
-      "w": 232.140625,
-      "h": 48
+      "y": 693,
+      "w": 284.375,
+      "h": 56
      },
-     "fontPx": 22.01333512931034,
-     "cssPx": 22,
-     "fontPxMax": 22.01333512931034,
-     "maxCss": 22,
+     "fontPx": 28.036971830985916,
+     "cssPx": 28,
+     "fontPxMax": 28.036971830985916,
+     "maxCss": 28,
      "minLabel": "",
      "read": false,
      "color": "rgb(13, 18, 36)",
@@ -27793,21 +28468,21 @@
      "opacity": 0.666667,
      "rect": {
       "x": 1995.2764892578125,
-      "y": 697,
-      "w": 232.1405029296875,
-      "h": 48
+      "y": 693,
+      "w": 284.3748779296875,
+      "h": 56
      },
-     "fontPx": 22.013323553677264,
-     "cssPx": 22,
-     "fontPxMax": 22.013323553677264,
-     "maxCss": 22,
+     "fontPx": 28.036959795884684,
+     "cssPx": 28,
+     "fontPxMax": 28.036959795884684,
+     "maxCss": 28,
      "minLabel": "",
      "read": false,
      "color": "rgb(13, 18, 36)",
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "Claim tag at {\"x\":1995,\"y\":697,\"w\":232,\"h\":48} enters the 96px margin"
+       "message": "Claim tag at {\"x\":1995,\"y\":693,\"w\":284,\"h\":56} enters the 96px margin"
       }
      ]
     },
@@ -27884,6 +28559,26 @@
      "fontPxMax": 80.02027027027027,
      "maxCss": 80,
      "minLabel": "People",
+     "read": false,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 682.421875,
+      "y": 570,
+      "w": 0,
+      "h": 8
+     },
+     "fontPx": 80,
+     "cssPx": 80,
+     "fontPxMax": 80,
+     "maxCss": 80,
+     "minLabel": "",
      "read": false,
      "color": "rgb(13, 18, 36)",
      "issues": []
@@ -27986,6 +28681,26 @@
      "issues": []
     },
     {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 682.421875,
+      "y": 570,
+      "w": 0,
+      "h": 8
+     },
+     "fontPx": 80,
+     "cssPx": 80,
+     "fontPxMax": 80,
+     "maxCss": 80,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
      "kind": "text",
      "label": "End card: Every step on record.",
      "text": "Every step on record.",
@@ -28083,6 +28798,26 @@
      "issues": []
     },
     {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 682.421875,
+      "y": 570,
+      "w": 0,
+      "h": 8
+     },
+     "fontPx": 80,
+     "cssPx": 80,
+     "fontPxMax": 80,
+     "maxCss": 80,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
      "kind": "text",
      "label": "End card: Every step on record.",
      "text": "Every step on record.",
@@ -28175,6 +28910,46 @@
      "fontPxMax": 80.02027027027027,
      "maxCss": 80,
      "minLabel": "People",
+     "read": false,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 682.421875,
+      "y": 570,
+      "w": 555.140625,
+      "h": 8
+     },
+     "fontPx": 80.02027027027027,
+     "cssPx": 80,
+     "fontPxMax": 80.02027027027027,
+     "maxCss": 80,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 1263.5625,
+      "y": 482.75,
+      "w": 74.515625,
+      "h": 74.5
+     },
+     "fontPx": 79.48333333333333,
+     "cssPx": 80,
+     "fontPxMax": 79.48333333333333,
+     "maxCss": 80,
+     "minLabel": "",
      "read": false,
      "color": "rgb(13, 18, 36)",
      "issues": []
