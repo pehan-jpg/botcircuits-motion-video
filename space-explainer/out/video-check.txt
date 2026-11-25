@@ -6,13 +6,13 @@ Scene boundaries (last frame of scene, first frame of next):
   Scene 1 to 2 at frame 1140: mean abs diff 0.32/255, PSNR 45.6 dB, pixels changed by more than 12 levels 0.03%; neighbouring frames inside the scene 55.4 dB  [seamless]
   Scene 2 to 3 at frame 1440: mean abs diff 0.19/255, PSNR 48.1 dB, pixels changed by more than 12 levels 0.05%; neighbouring frames inside the scene 55.5 dB  [seamless]
   Scene 3 to 4 at frame 2520: mean abs diff 0.40/255, PSNR 37.6 dB, pixels changed by more than 12 levels 0.79%; neighbouring frames inside the scene 35.5 dB  [continuous motion]
-  Scene 4 to 5 at frame 4920: mean abs diff 0.12/255, PSNR 39.2 dB, pixels changed by more than 12 levels 0.12%; neighbouring frames inside the scene 44.1 dB  [seamless]
+  Scene 4 to 5 at frame 4920: mean abs diff 0.12/255, PSNR 39.1 dB, pixels changed by more than 12 levels 0.12%; neighbouring frames inside the scene 44.2 dB  [seamless]
   Scene 5 to 6 at frame 5760: mean abs diff 0.22/255, PSNR 39.0 dB, pixels changed by more than 12 levels 0.38%; neighbouring frames inside the scene 41.1 dB  [seamless]
   Scene 6 to 7 at frame 6900: mean abs diff 0.53/255, PSNR 34.8 dB, pixels changed by more than 12 levels 1.00%; neighbouring frames inside the scene 37.1 dB  [VISIBLE CHANGE]
   Scene 7 to 8 at frame 7560: mean abs diff 0.59/255, PSNR 34.1 dB, pixels changed by more than 12 levels 0.44%; neighbouring frames inside the scene 41.9 dB  [VISIBLE CHANGE]
   Scene 8 to 9 at frame 8580: mean abs diff 0.13/255, PSNR 43.1 dB, pixels changed by more than 12 levels 0.23%; neighbouring frames inside the scene 43.1 dB  [seamless]
-  Scene 9 to 10 at frame 9120: mean abs diff 0.32/255, PSNR 36.7 dB, pixels changed by more than 12 levels 0.53%; neighbouring frames inside the scene 36.3 dB  [continuous motion]
-  Scene 10 to 11 at frame 9840: mean abs diff 0.20/255, PSNR 41.0 dB, pixels changed by more than 12 levels 0.30%; neighbouring frames inside the scene 37.1 dB  [seamless]
+  Scene 9 to 10 at frame 9120: mean abs diff 0.33/255, PSNR 36.7 dB, pixels changed by more than 12 levels 0.52%; neighbouring frames inside the scene 36.3 dB  [continuous motion]
+  Scene 10 to 11 at frame 9840: mean abs diff 0.19/255, PSNR 41.0 dB, pixels changed by more than 12 levels 0.29%; neighbouring frames inside the scene 37.1 dB  [seamless]
   Scene 11 to 12 at frame 10320: mean abs diff 0.00/255, PSNR 99.0 dB, pixels changed by more than 12 levels 0.00%; neighbouring frames inside the scene 99.0 dB  [seamless]
 
 3 issue(s): stretches without motion; boundary 6 to 7 is not continuous; boundary 7 to 8 is not continuous
