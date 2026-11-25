@@ -15,7 +15,7 @@ import { ConciergeCard, lerpRect, type Rect } from "../components/ConciergeCard"
 import type { CursorKey } from "../components/Cursor";
 import { typeDuration } from "../lib/typewriter";
 import type { TextBeatSpec } from "../lib/guards";
-import { reviewsStateAt, S8_END_CAM, S8_KB_END, S8_PILL_LABEL } from "./Scene08Review";
+import { ApprovedToast, reviewsStateAt, S8, S8_END_CAM, S8_KB_END, S8_PILL_LABEL, TOAST_CLICK } from "./Scene08Review";
 import { S2_PLATE } from "./Scene02Intro";
 import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./shared/stage";
 
@@ -84,7 +84,8 @@ const replayC = nat(RECORDS.replay.x + RECORDS.replay.w / 2, RECORDS.replay.y + 
 const buildC = nat(PAGES.button.x + PAGES.button.w / 2, PAGES.button.y + PAGES.button.h / 2);
 const claimC = nat(S9_CLAIM_ROW_NATIVE.x, S9_CLAIM_ROW_NATIVE.y);
 export const S9_CURSOR: CursorKey[] = [
-  { ...nat(1500, 420), t: -1 },
+  { ...TOAST_CLICK(), t: -1 },
+  { ...TOAST_CLICK(), t: 0.6 },
   { ...nat(1560, 520), t: 5.6 },
   { ...nat(63, navY("pages")), t: S9.clickPages - 0.05 },
   { ...nat(63, navY("pages")), t: S9.clickPages, click: true },
@@ -144,9 +145,12 @@ export const Scene09Body: React.FC<{ t: number; F: (s: number) => number; clock:
         <PlateBackground plate="02" to="03" crossfadeAt={F(0.2)} crossfadeSeconds={1.5} duration={F(sceneById(S).duration)} kbFrom={S8_KB_END} kbTo={S9_KB_END} timeOffset={sceneById(S).start - 15} {...S2_PLATE} />
       )}
       <FeatureTitle text={S9_TITLE} startFrame={F(TITLE_START) + shift} variant="compact" />
-      <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S9_CURSOR, opacity: o.showPrev || frozen ? 0 : cursorO }}>
+      <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S9_CURSOR, opacity: frozen ? 0 : o.showPrev ? 1 - o.sink : cursorO }}>
         {o.showPrev ? (
-          <ReviewsPage s={reviewsStateAt(dS8, F, clock, shift - F(dS8))} />
+          <>
+            <ReviewsPage s={reviewsStateAt(dS8, F, clock, shift - F(dS8))} />
+            <ApprovedToast opacity={1} pressed={Math.max(0, 1 - Math.abs(dS8 + t - S8.toastClick) / 0.15)} />
+          </>
         ) : (
           <div style={{ position: "absolute", inset: 0, filter: blur > 0.05 ? `blur(${blur}px)` : undefined }}>
             {v === "pages" ? <PagesPage s={pagesStateAt(t, F, shift)} /> : <RecordsPage s={recordsStateAt(t, clock)} />}

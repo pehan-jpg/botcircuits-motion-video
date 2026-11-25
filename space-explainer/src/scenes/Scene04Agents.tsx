@@ -264,7 +264,7 @@ export const S4_CAM_KEYS: CamKey[] = [
   { t: 0, c: S3_END_CAM },
   { t: S4.sinkEnd, c: { x: S3_END_CAM.x + 5.8, y: S3_END_CAM.y + 1.8, z: S3_END_CAM.z }, lin: true },
   { t: 1.6, c: { ...FRAME_CENTRE, z: 1 } },
-  { t: S4.panelOpen, c: { ...FRAME_CENTRE, z: 1 } },
+  { t: S4.panelOpen, c: { x: FRAME_CENTRE.x + 4, y: FRAME_CENTRE.y + 2, z: 1.008 }, lin: true },
   { t: S4.panelOpen + 0.5, c: { ...panelCentre, z: 1.3 } },
   { t: S4.panelClose, c: { x: panelCentre.x + 6, y: panelCentre.y + 4, z: 1.31 }, lin: true },
   { t: S4.panelClose + 0.6, c: { ...gridCentre, z: 1.35 } },
@@ -303,7 +303,9 @@ export const s4CamAt = (t: number): Cam => {
   const w = SMOOTH(ramp(t, FOLLOW.in0, FOLLOW.in1)) * (1 - SMOOTH(ramp(t, FOLLOW.out0, FOLLOW.out1)));
   if (w <= 0) return base;
   const f = followFocus(t);
-  return { x: base.x + (f.x - base.x) * w, y: base.y + (f.y - base.y) * w, z: base.z + (FOLLOW.z - base.z) * w };
+  // A slow creep while following, so the frame never holds still.
+  const creep = ramp(t, FOLLOW.in0, FOLLOW.out1);
+  return { x: base.x + (f.x + 14 * creep - base.x) * w, y: base.y + (f.y + 4 * creep - base.y) * w, z: base.z + (FOLLOW.z + 0.035 * creep - base.z) * w };
 };
 export const S4_END_CAM = s4CamAt(DUR);
 

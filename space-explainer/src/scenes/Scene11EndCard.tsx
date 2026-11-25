@@ -11,7 +11,7 @@ import { ramp, useScene } from "./shared/stage";
 
 const S = "S11" as const;
 const LINES = P.endCard;
-export const S11 = { white: [0, 0.5], lines: [0.35, 0.8, 1.25], underline: [2.05, 2.45], exit: [3.55, 3.95], lockup: 3.9 };
+export const S11 = { white: [0, 0.5], lines: [0.1, 0.55, 1.0], underline: [2.05, 2.45], exit: [3.55, 3.95], lockup: 3.9 };
 const SIZE = 80;
 const LINE_Y = [400, 520, 640];
 const lock = lockupTiming("", "s11-lockup", "assemble");
@@ -55,7 +55,7 @@ export const Scene11EndCard: React.FC = () => {
     <AbsoluteFill style={{ width: 1920, height: 1080, background: "#FFFFFF" }}>
       {/* Scene 10's orb bloom ends on pure white, so this scene starts white. */}
       {exitP < 1 ? (
-        <AbsoluteFill style={{ transform: `scale(${1 + 0.025 * ramp(t, 0, S11.exit[1])})`, transformOrigin: "50% 50%" }}>
+        <AbsoluteFill style={{ transform: `scale(${1 + 0.05 * ramp(t, 0, S11.exit[1])})`, transformOrigin: "50% 50%" }}>
         {LINES.map((l, i) => (
             <Line key={l} text={l} t={t} start={S11.lines[i]} exitP={exitP} y={LINE_Y[i]}>
               {i === 1 ? (

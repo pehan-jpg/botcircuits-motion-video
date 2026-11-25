@@ -130,6 +130,8 @@ const n2 = (p: { x: number; y: number }) => nat(p.x, p.y);
 const selectC = nat(PBG.select.x + PBG.select.w / 2, PBG.select.y + PBG.select.h / 2);
 const addC = nat(PBG.add.x + PBG.add.w / 2, PBG.add.y + PBG.add.h / 2);
 export const S6_CURSOR: CursorKey[] = [
+  { ...nat(S5_USE_NATIVE.x, S5_USE_NATIVE.y), t: -1 },
+  { ...nat(S5_USE_NATIVE.x, S5_USE_NATIVE.y), t: 0.5 },
   { ...nat(1300, 640), t: 3.1 },
   { ...n2(toolbarCentre("settings")), t: S6.clickSettings - 0.05 },
   { ...n2(toolbarCentre("settings")), t: S6.clickSettings, click: true },
@@ -156,7 +158,7 @@ export const S6_CURSOR: CursorKey[] = [
 
 export const S6_PILL_LABEL = "Steps, agents, tools and a review";
 export const S6_PILLS: Pill[] = [
-  { label: "Answers point back to your sources", at: -10, until: -1 },
+  { label: "Answers point back to your sources", at: -10, until: 0 },
   { label: S6_PILL_LABEL, at: 16.2, until: 999 },
 ];
 export const SCENE06_TEXT: TextBeatSpec[] = [
@@ -196,7 +198,7 @@ export const Scene06Playbook: React.FC = () => {
     <AbsoluteFill style={{ width: 1920, height: 1080 }}>
       <PlateBackground plate="03" duration={F(dur)} kbFrom={S5_KB_END} kbTo={S6_KB_END} timeOffset={sceneById(S).start - 15} {...S2_PLATE} />
       <FeatureTitle text={S6_TITLE} startFrame={F(TITLE_START)} variant="compact" />
-      <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S6_CURSOR, opacity: o.showPrev ? 0 : cursorO }}>
+      <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S6_CURSOR, opacity: o.showPrev ? 1 - o.sink : cursorO }}>
         {o.showPrev ? <BrainPage s={brainStateAt(sceneById("S05").duration, F, -F(sceneById("S05").duration))} /> : <PlaybookGraphPage s={graphStateAt(t, F, clock)} />}
       </ProductStage>
       <KbFlight t={t} cam={cam} />

@@ -153,7 +153,7 @@ export const Scene07Evening: React.FC = () => {
         frameStyle={o.frameStyle}
         visible={o.visible}
         cursor={{ keys: [{ ...nat(1300, 640), t: 9.0 }, { ...nat(SLACK_NOTE.x + 200, SLACK_NOTE.y + 40), t: 9.8 }], opacity: EASE(ramp(t, 9.0, 9.3)) }}
-        overlay={<div style={{ position: "absolute", inset: 0, borderRadius: PRODUCT_RECT.radius, background: "#0F1A33", opacity: 0.18 * Math.max(0, Math.min(1, (grade - 0.31) / 0.69)), pointerEvents: "none" }} />}
+        overlay={grade > 0.312 ? <div style={{ position: "absolute", inset: 0, borderRadius: PRODUCT_RECT.radius, background: "#0F1A33", opacity: 0.18 * Math.max(0, Math.min(1, (grade - 0.31) / 0.69)), pointerEvents: "none" }} /> : null}
       >
         <PlaybookGraphPage s={o.showPrev ? graphStateAt(sceneById("S06").duration, F, clock, -F(sceneById("S06").duration)) : s7GraphAt(t, F, clock)} />
         {/* Email from BotCircuits Concierge starts the run; it leaves as the night passes */}

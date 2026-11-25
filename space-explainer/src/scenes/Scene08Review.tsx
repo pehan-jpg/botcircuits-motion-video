@@ -71,6 +71,7 @@ const approveC = nat(REVIEWS.approve.x + REVIEWS.approve.w / 2, REVIEWS.approve.
 const NOTE_C = nat(SLACK_NOTE.x + 200, SLACK_NOTE.y + 40);
 export const TOAST = { x: 1400, y: 40, w: 450, h: 64, btn: { x: 1700, y: 52, w: 136, h: 40 } };
 const TOAST_BTN_C = nat(TOAST.btn.x + TOAST.btn.w / 2, TOAST.btn.y + TOAST.btn.h / 2);
+export const TOAST_CLICK = () => TOAST_BTN_C;
 export const S8_CURSOR: CursorKey[] = [
   { ...NOTE_C, t: -1 },
   { ...NOTE_C, t: S8.slackClick, click: true },
@@ -99,6 +100,24 @@ export const SCENE08_TEXT: TextBeatSpec[] = [
   { id: "pill", text: S8_PILL_LABEL, readyAt: 14.8, leaveAt: 17, fontPx: 28 },
 ];
 
+/** "Approved. View record": clicked at the end of this scene; Scene 9 carries it over. */
+export const ApprovedToast: React.FC<{ opacity: number; pressed: number }> = ({ opacity, pressed }) => {
+  const toast = opacity;
+  const toastPressed = pressed;
+  return (
+              <div
+                style={{ position: "absolute", left: TOAST.x, top: TOAST.y, width: TOAST.w, height: TOAST.h, boxSizing: "border-box", padding: "0 12px 0 18px", borderRadius: 12, background: "#FFFFFF", border: `1px solid ${UI.line}`, boxShadow: "0 16px 40px rgba(20,24,60,0.18)", display: "flex", alignItems: "center", gap: 12, fontFamily: FONT.sans, fontSize: 16.5, fontWeight: 600, color: UI.text, opacity: toast, transform: `translateY(${(1 - toast) * -12}px)`, zIndex: 9 }}
+              >
+                <span style={{ width: 10, height: 10, borderRadius: 5, background: UI.green }} />
+                <span data-guard="uitext" data-guard-read="1" data-guard-label="Approved toast">Approved.</span>
+                <div style={{ marginLeft: "auto", width: TOAST.btn.w, height: TOAST.btn.h, borderRadius: 9, background: toastPressed > 0.3 ? "#2A3147" : UI.primaryBg, color: UI.primaryText, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: UIN.button, transform: `scale(${1 - 0.04 * toastPressed})` }}>
+                  <FileClock size={15} color={UI.primaryText} />
+                  View record
+                </div>
+              </div>
+  );
+};
+
 export const Scene08Review: React.FC = () => {
   const { t, F, clock, dur, start } = useScene(S);
   const o = opening(Math.max(0, t - SHIFT), S8_TITLE, TITLE_START - SHIFT, "compact");
@@ -113,7 +132,7 @@ export const Scene08Review: React.FC = () => {
     <AbsoluteFill style={{ width: 1920, height: 1080 }}>
       <PlateBackground plate="01" to="02" crossfadeAt={0} crossfadeSeconds={1.5} duration={F(dur)} kbFrom={1} kbTo={S8_KB_END} timeOffset={start - 15} {...S2_PLATE} />
       <FeatureTitle text={S8_TITLE} startFrame={F(TITLE_START)} variant="compact" />
-      <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S8_CURSOR, opacity: o.showPrev ? 0 : cursorO }}>
+      <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S8_CURSOR, opacity: cursorO }}>
         {toReviews < 1 ? (
           <div style={{ position: "absolute", inset: 0, opacity: 1 - toReviews, filter: blur > 0.05 ? `blur(${blur}px)` : undefined }}>
             <PlaybookGraphPage s={pb} />
@@ -124,18 +143,7 @@ export const Scene08Review: React.FC = () => {
         {toReviews > 0 ? (
           <div style={{ position: "absolute", inset: 0, opacity: toReviews, filter: blur > 0.05 ? `blur(${blur}px)` : undefined }}>
             <ReviewsPage s={reviewsStateAt(t, F, clock)} />
-            {toast > 0 ? (
-              <div
-                style={{ position: "absolute", left: TOAST.x, top: TOAST.y, width: TOAST.w, height: TOAST.h, boxSizing: "border-box", padding: "0 12px 0 18px", borderRadius: 12, background: "#FFFFFF", border: `1px solid ${UI.line}`, boxShadow: "0 16px 40px rgba(20,24,60,0.18)", display: "flex", alignItems: "center", gap: 12, fontFamily: FONT.sans, fontSize: 16.5, fontWeight: 600, color: UI.text, opacity: toast, transform: `translateY(${(1 - toast) * -12}px)`, zIndex: 9 }}
-              >
-                <span style={{ width: 10, height: 10, borderRadius: 5, background: UI.green }} />
-                <span data-guard="uitext" data-guard-read="1" data-guard-label="Approved toast">Approved.</span>
-                <div style={{ marginLeft: "auto", width: TOAST.btn.w, height: TOAST.btn.h, borderRadius: 9, background: toastPressed > 0.3 ? "#2A3147" : UI.primaryBg, color: UI.primaryText, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: UIN.button, transform: `scale(${1 - 0.04 * toastPressed})` }}>
-                  <FileClock size={15} color={UI.primaryText} />
-                  View record
-                </div>
-              </div>
-            ) : null}
+            {toast > 0 ? <ApprovedToast opacity={toast} pressed={toastPressed} /> : null}
           </div>
         ) : null}
       </ProductStage>

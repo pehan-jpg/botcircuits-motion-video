@@ -28,7 +28,10 @@ export const SCENE10_TEXT: TextBeatSpec[] = [
 export const Scene10Concierge: React.FC = () => {
   const { t, F, clock, start } = useScene(S);
   const neutral = EASE(ramp(t, S10.neutral[0], S10.neutral[1]));
-  const r = lerpRect(S9_CARD_END, CARD, EASE(ramp(t, S10.move[0], S10.move[1])));
+  const r0 = lerpRect(S9_CARD_END, CARD, EASE(ramp(t, S10.move[0], S10.move[1])));
+  // A slow push in while the reply types, so the frame keeps moving.
+  const g = 1 + 0.03 * ramp(t, 0, S10.bloom[1]);
+  const r: Rect = { x: r0.x - (r0.w * (g - 1)) / 2, y: r0.y - (r0.h * (g - 1)) / 2, w: r0.w * g, h: r0.h * g };
   const chip = EASE(ramp(t, S10.chip, S10.chip + 0.35));
   // Bloom: the chip's orb grows and turns to white light that fills the frame.
   const grow = EASE(ramp(t, S10.bloom[0], S10.bloom[1]));
