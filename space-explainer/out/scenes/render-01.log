@@ -1,0 +1,11 @@
+ProtocolError: Protocol error (Target.createTarget): Target closed. https://www.remotion.dev/docs/target-closed
+    at Connection.send (/home/user/botcircuits-motion-video/space-explainer/node_modules/@remotion/renderer/dist/browser/Connection.js:57:48)
+    at HeadlessBrowser._createPageInContext (/home/user/botcircuits-motion-video/space-explainer/node_modules/@remotion/renderer/dist/browser/Browser.js:89:64)
+    at BrowserContext.newPage (/home/user/botcircuits-motion-video/space-explainer/node_modules/@remotion/renderer/dist/browser/Browser.js:232:75)
+    at HeadlessBrowser.newPage (/home/user/botcircuits-motion-video/space-explainer/node_modules/@remotion/renderer/dist/browser/Browser.js:79:83)
+    at makePage (/home/user/botcircuits-motion-video/space-explainer/node_modules/@remotion/renderer/dist/make-page.js:10:10)
+    at makeNewPage (/home/user/botcircuits-motion-video/space-explainer/node_modules/@remotion/renderer/dist/render-frames.js:81:53)
+    at /home/user/botcircuits-motion-video/space-explainer/node_modules/@remotion/renderer/dist/render-frames.js:117:28
+    at Array.map (<anonymous>)
+    at getPool (/home/user/botcircuits-motion-video/space-explainer/node_modules/@remotion/renderer/dist/render-frames.js:117:14)
+    at innerRenderFrames (/home/user/botcircuits-motion-video/space-explainer/node_modules/@remotion/renderer/dist/render-frames.js:137:25)
