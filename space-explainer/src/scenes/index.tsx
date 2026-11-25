@@ -9,8 +9,9 @@ import { Scene06Playbook as Scene06 } from "./Scene06Playbook";
 import { Scene07Evening as Scene07 } from "./Scene07Evening";
 import { Scene08Review as Scene08 } from "./Scene08Review";
 import { Scene09Records as Scene09 } from "./Scene09Records";
-import { Scene10Concierge as Scene10 } from "./Scene10Concierge";
-import { Scene11EndCard as Scene11 } from "./Scene11EndCard";
+import { Scene10Pages as Scene10 } from "./Scene10Pages";
+import { Scene11Contrast as Scene11 } from "./Scene11Contrast";
+import { Scene12EndCard as Scene12 } from "./Scene12EndCard";
 
 
 export { Scene01Problem, Scene02Intro, Scene03Chat, Scene04Agents };
@@ -28,4 +29,5 @@ export const SCENE_COMPONENTS: Partial<Record<SceneId, React.FC>> = {
   S09: Scene09,
   S10: Scene10,
   S11: Scene11,
+  S12: Scene12,
 };

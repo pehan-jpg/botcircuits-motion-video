@@ -9,17 +9,17 @@ import { lockupTiming, SpaceByLockup } from "../components/SpaceByLockup";
 import type { TextBeatSpec } from "../lib/guards";
 import { ramp, useScene } from "./shared/stage";
 
-const S = "S11" as const;
+const S = "S12" as const;
 const LINES = P.endCard;
-export const S11 = { white: [0, 0.5], lines: [0.1, 0.55, 1.0], underline: [2.05, 2.45], exit: [3.55, 3.95], lockup: 3.9 };
+export const S12 = { white: [0, 0.5], lines: [0.1, 0.55, 1.0], underline: [2.05, 2.45], exit: [3.55, 3.95], lockup: 3.9 };
 const SIZE = 80;
 const LINE_Y = [400, 520, 640];
 const lock = lockupTiming("", "s11-lockup", "assemble");
-export const S11_LOCKUP_READY = S11.lockup + lock.ready;
+export const S12_LOCKUP_READY = S12.lockup + lock.ready;
 
-export const SCENE11_TEXT: TextBeatSpec[] = [
-  { id: "lines", text: LINES.join(" "), readyAt: S11.lines[0], leaveAt: S11.exit[0], fontPx: SIZE },
-  { id: "lockup", text: "Space by", readyAt: S11_LOCKUP_READY, leaveAt: 7, fontPx: 96 },
+export const SCENE12_TEXT: TextBeatSpec[] = [
+  { id: "lines", text: LINES.join(" "), readyAt: S12.lines[0], leaveAt: S12.exit[0], fontPx: SIZE },
+  { id: "lockup", text: "Space by", readyAt: S12_LOCKUP_READY, leaveAt: 7, fontPx: 96 },
 ];
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
@@ -46,18 +46,18 @@ const Line: React.FC<{ text: string; t: number; start: number; exitP: number; y:
   );
 };
 
-export const Scene11EndCard: React.FC = () => {
+export const Scene12EndCard: React.FC = () => {
   const { t, F } = useScene(S);
-  const exitP = EASE(ramp(t, S11.exit[0], S11.exit[1]));
-  const under = EASE(ramp(t, S11.underline[0], S11.underline[1]));
-  const glyph = EASE(ramp(t, S11.underline[0] + 0.15, S11.underline[1] + 0.1));
+  const exitP = EASE(ramp(t, S12.exit[0], S12.exit[1]));
+  const under = EASE(ramp(t, S12.underline[0], S12.underline[1]));
+  const glyph = EASE(ramp(t, S12.underline[0] + 0.15, S12.underline[1] + 0.1));
   return (
     <AbsoluteFill style={{ width: 1920, height: 1080, background: "#FFFFFF" }}>
       {/* Scene 10's orb bloom ends on pure white, so this scene starts white. */}
       {exitP < 1 ? (
-        <AbsoluteFill style={{ transform: `scale(${1 + 0.05 * ramp(t, 0, S11.exit[1])})`, transformOrigin: "50% 50%" }}>
+        <AbsoluteFill style={{ transform: `scale(${1 + 0.05 * ramp(t, 0, S12.exit[1])})`, transformOrigin: "50% 50%" }}>
         {LINES.map((l, i) => (
-            <Line key={l} text={l} t={t} start={S11.lines[i]} exitP={exitP} y={LINE_Y[i]}>
+            <Line key={l} text={l} t={t} start={S12.lines[i]} exitP={exitP} y={LINE_Y[i]}>
               {i === 1 ? (
                 <>
                   {/* Amber underline: the line about people deciding. */}
@@ -71,9 +71,9 @@ export const Scene11EndCard: React.FC = () => {
           ))}
         </AbsoluteFill>
       ) : null}
-      {t >= S11.lockup ? (
+      {t >= S12.lockup ? (
         <div style={{ position: "absolute", left: 0, right: 0, top: 540, display: "flex", justifyContent: "center", transform: "translateY(-50%)" }}>
-          <SpaceByLockup fontSize={96} startFrame={F(S11.lockup)} seed="s11-lockup" logoMode="assemble" backing="white" color={COLOR.ink} />
+          <SpaceByLockup fontSize={96} startFrame={F(S12.lockup)} seed="s11-lockup" logoMode="assemble" backing="white" color={COLOR.ink} />
         </div>
       ) : null}
       <GuardLayer scene={S} />

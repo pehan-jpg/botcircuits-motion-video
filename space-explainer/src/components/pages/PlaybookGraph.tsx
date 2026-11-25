@@ -89,8 +89,7 @@ export type NodeStatus = "idle" | "running" | "done" | "waiting" | "approved";
 export type GraphState = {
   status: "Draft" | "Active";
   statusPulse: number;
-  /** Claims knowledge chip: 0 hidden, shown parked by the title; land 0 to 1 moves it onto Theo's step. */
-  kbParked: number;
+  /** Claims knowledge chip inside Theo's step: 0 hidden to 1 shown (it appears once the step is added). */
   kbLand: number;
   settings: number;
   selectValue: string;
@@ -158,7 +157,7 @@ const edgePath = (e: (typeof EDGES)[number]) => {
   return `M ${a.x} ${a.y} C ${a.x} ${my}, ${b.x} ${my}, ${b.x} ${b.y}`;
 };
 
-const Node: React.FC<{ i: number; st: GraphState["nodes"][number]; clock: number; reviewGlow: number; kbOn: boolean }> = ({ i, st, clock, reviewGlow, kbOn }) => {
+const Node: React.FC<{ i: number; st: GraphState["nodes"][number]; clock: number; reviewGlow: number; kbOn: number }> = ({ i, st, clock, reviewGlow, kbOn }) => {
   const n = P.graph.nodes[i];
   const r = NODE_RECTS[i];
   const running = st.status === "running";
@@ -216,7 +215,7 @@ const Node: React.FC<{ i: number; st: GraphState["nodes"][number]; clock: number
       {!review ? (
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
           {n.chip ? (
-            <span style={{ opacity: kbOn ? 1 : 0, padding: "2px 10px", borderRadius: 8, background: UI.lilacBg, color: UI.lilacText, fontSize: UIN.helper, fontWeight: 600, whiteSpace: "nowrap" }}>{n.chip}</span>
+            <span style={{ opacity: kbOn, transform: `scale(${0.9 + 0.1 * kbOn})`, padding: "2px 10px", borderRadius: 8, background: UI.lilacBg, color: UI.lilacText, fontSize: UIN.helper, fontWeight: 600, whiteSpace: "nowrap" }}>{n.chip}</span>
           ) : null}
           {n.agent ? <SpaceOrb size={24} palette={n.agent as OrbPaletteKey} timeOffset={clock} /> : null}
           {n.agent ? <span style={{ fontSize: UIN.helper, fontWeight: 600, color: UI.text }}>{n.agent[0].toUpperCase() + n.agent.slice(1)}</span> : null}
@@ -255,9 +254,7 @@ export const PlaybookGraphPage: React.FC<{ s: GraphState }> = ({ s }) => {
       >
         {s.status}
       </div>
-      {s.kbParked > 0 && s.kbLand < 1 ? (
-        <div style={{ position: "absolute", left: PBG.kbPark.x, top: PBG.kbPark.y - 4, fontFamily: FONT.sans, fontSize: UIN.helper, color: UI.secondary, opacity: s.kbParked * (1 - s.kbLand) }}>Knowledge</div>
-      ) : null}
+
       {/* Toolbar */}
       <div style={{ position: "absolute", left: TOOLBAR.sequence.x, top: PBG.toolbarY, width: TOOLBAR.sequence.w + TOOLBAR.graph.w, height: 38, boxSizing: "border-box", borderRadius: 10, border: `1px solid ${UI.line}`, display: "flex", padding: 3, gap: 3 }}>
         <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, fontFamily: FONT.sans, fontSize: UIN.button, color: UI.placeholder }}>
@@ -296,32 +293,8 @@ export const PlaybookGraphPage: React.FC<{ s: GraphState }> = ({ s }) => {
           return k > 0 ? <circle key={`dot-${e.from}-${e.to}`} cx={a.x} cy={a.y} r={3.5} fill={e.out === "approved" ? UI.green : e.out === "declined" ? "#E5484D" : "#7B8194"} /> : null;
         })}
       </svg>
-      {P.graph.nodes.map((_, i) => (s.nodes[i].appear > 0 ? <Node key={i} i={i} st={s.nodes[i]} clock={s.clock} reviewGlow={s.reviewGlow} kbOn={s.kbLand >= 1} /> : null))}
+      {P.graph.nodes.map((_, i) => (s.nodes[i].appear > 0 ? <Node key={i} i={i} st={s.nodes[i]} clock={s.clock} reviewGlow={s.reviewGlow} kbOn={s.kbLand} /> : null))}
 
-      {/* Claims knowledge chip: parked by the title, then it lands on Theo's step */}
-      {s.kbParked > 0 && s.kbLand < 1 ? (
-        <div
-          style={{
-            position: "absolute",
-            left: KB_PARKED.x + (KB_CHIP_TARGET.x - KB_PARKED.x) * s.kbLand,
-            top: KB_PARKED.y + (KB_CHIP_TARGET.y - KB_PARKED.y) * s.kbLand - Math.sin(Math.PI * s.kbLand) * 60,
-            transform: "translate(-50%, -50%)",
-            padding: "2px 10px",
-            borderRadius: 8,
-            background: UI.lilacBg,
-            color: UI.lilacText,
-            fontFamily: FONT.sans,
-            fontSize: UIN.helper,
-            fontWeight: 600,
-            whiteSpace: "nowrap",
-            opacity: s.kbParked,
-            boxShadow: s.kbLand > 0 ? `0 ${10 * Math.sin(Math.PI * s.kbLand)}px 20px rgba(60,40,140,0.2)` : undefined,
-            zIndex: 7,
-          }}
-        >
-          Claims knowledge
-        </div>
-      ) : null}
       {/* Add control */}
       <div style={{ position: "absolute", left: PBG.select.x - 8, top: PBG.select.y - 8, width: PBG.add.x + PBG.add.w - PBG.select.x + 16, height: PBG.select.h + 16, boxSizing: "border-box", borderRadius: 12, background: "#FFFFFF", border: `1px solid ${UI.line}`, boxShadow: "0 6px 18px rgba(20,24,60,0.08)" }} />
       <div style={{ position: "absolute", left: PBG.select.x, top: PBG.select.y, width: PBG.select.w, height: PBG.select.h, boxSizing: "border-box", borderRadius: 9, border: `1.5px solid ${s.menu.open > 0 ? UI.text : UI.line}`, display: "flex", alignItems: "center", padding: "0 12px", fontFamily: FONT.sans, fontSize: UIN.button, color: UI.text, transform: `scale(${1 - 0.03 * s.selectPressed})` }}>

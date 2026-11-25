@@ -1,43 +1,43 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
-import { EASE, PRODUCT } from "../theme";
+import { EASE } from "../theme";
 import { sceneById } from "../timeline";
 import { PLACEHOLDERS as P } from "../placeholders";
 import { PlateBackground } from "../backgrounds/PlateBackground";
 import { GuardLayer } from "../components/GuardLayer";
-import { FeatureTitle } from "../components/FeatureTitle";
+import { FeatureTitle, featureTitleTiming } from "../components/FeatureTitle";
 import { camAt, FRAME_CENTRE, nat, type Cam, type CamKey } from "../components/chat/ProductWindow";
 import { ControlRoomPage } from "../components/office/ControlRoomPage";
 import { BRAIN, BrainPage, tileCentre, TILES, type BrainState, type BrainView } from "../components/pages/BrainPage";
-import { SourceChip } from "../components/pages/common";
 import type { CursorKey } from "../components/Cursor";
 import { CHAT_CPS } from "../theme";
 import { typeDuration } from "../lib/typewriter";
 import type { TextBeatSpec } from "../lib/guards";
-import { controlRoomStateAt, S4_CITE, S4_END_CAM, S4_KB_END } from "./Scene04Agents";
+import { controlRoomStateAt, S4_END_CAM, S4_KB_END } from "./Scene04Agents";
 import { S2_PLATE } from "./Scene02Intro";
 import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./shared/stage";
 
 const S = "S05" as const;
 export const S5_TITLE = "Ground it in your own sources";
-const TITLE_START = 0.15;
+/** The title starts once the previous frame has sunk away (clean title rule). */
+const TITLE_START = 0.45;
 /** Scene 5 beats, seconds from the scene start. */
+/** The Brain page has risen by this time; the S1 tag appears in its file row 0.5s later. */
+const RISE_END = TITLE_START + featureTitleTiming(S5_TITLE, "compact").frameRiseEnd;
 export const S5 = {
-  chipPark: [0.0, 0.55],
-  chipLand: [2.5, 3.3],
-  highlight: 3.3,
-  clickConnect: 4.1,
-  connect: 4.15,
-  clicks: { drive: 4.7, sheets: 5.5, web: 6.3, slack: 8.2, file: 8.9 },
-  urlFocus: 6.35,
-  urlType: 6.45,
-  clickKb: 10.1,
-  kb: 10.15,
-  clickGraph: 11.1,
-  graph: 11.15,
+  highlight: RISE_END + 0.5,
+  clickConnect: 4.7,
+  connect: 4.75,
+  clicks: { drive: 5.3, sheets: 6.1, web: 6.9, slack: 8.75, file: 9.45 },
+  urlFocus: 6.95,
+  urlType: 7.05,
+  clickKb: 10.45,
+  kb: 10.5,
+  clickGraph: 11.4,
+  graph: 11.45,
   clickUse: 13.4,
-  zoomIn: 4.4,
-  zoomOut: 9.7,
+  zoomIn: 5.0,
+  zoomOut: 10.1,
 };
 const URL_DONE = S5.urlType + typeDuration(P.brain.url, CHAT_CPS, "brain-url");
 /** Appear and indexing window per source (same order as P.brain.sources). */
@@ -73,8 +73,8 @@ const content = nat(1077, 520);
 export const S5_CAM_KEYS: CamKey[] = [
   { t: 0, c: S4_END_CAM },
   { t: 1.6, c: { ...FRAME_CENTRE, z: 1 } },
-  { t: 3.0, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 2, z: 1.006 }, lin: true },
-  { t: 3.55, c: { ...nat(1077, 320), z: 1.36 } },
+  { t: RISE_END, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 2, z: 1.006 }, lin: true },
+  { t: RISE_END + 0.45, c: { ...nat(1077, 320), z: 1.36 } },
   { t: S5.zoomIn, c: { ...nat(1082, 322), z: 1.36 }, lin: true },
   { t: S5.zoomIn + 0.6, c: { ...content, z: 1.46 } },
   { t: S5.zoomOut, c: { x: content.x + 16, y: content.y + 4, z: 1.47 }, lin: true },
@@ -108,41 +108,14 @@ export const S5_PILL_LABEL = "Answers point back to your sources";
 export const S5_PILLS: Pill[] = [
   // Carried over from Scene 4's last frame, then faded out.
   { label: P.controlRoom.pills[3], at: -10, until: 0 },
-  { label: S5_PILL_LABEL, at: 10.4, until: 999 },
+  { label: S5_PILL_LABEL, at: 10.8, until: 999 },
 ];
 export const SCENE05_TEXT: TextBeatSpec[] = [
   { id: "title", text: S5_TITLE, readyAt: TITLE_START, leaveAt: TITLE_START + 1.96, fontPx: 88, exception: "Brief: compact title, 0.9s hold" },
   { id: "sources", text: P.brain.sources.map((x) => `${x.name} ${x.done}`).join(" "), readyAt: SRC_TIMES[5][0] + 0.7, leaveAt: S5.kb, fontPx: 21, ui: true, exception: "Brief: five source types added one after another; each is read as it lands" },
   { id: "kb", text: P.brain.sources.map((x) => x.name).join(" "), readyAt: S5.kb + 0.4, leaveAt: S5.graph, fontPx: 21, ui: true, exception: "Brief: the list, then a short graph view" },
-  { id: "pill", text: S5_PILL_LABEL, readyAt: 10.7, leaveAt: 14 + 1, fontPx: 28, carriesOver: true },
+  { id: "pill", text: S5_PILL_LABEL, readyAt: 11.1, leaveAt: 14 + 1, fontPx: 28, carriesOver: true },
 ];
-
-/** Screen point of a pre-camera point under camera c. */
-const toScreen = (c: Cam, p: { x: number; y: number }) => ({ x: FRAME_CENTRE.x + c.z * (p.x - c.x), y: FRAME_CENTRE.y + c.z * (p.y - c.y) });
-
-/**
- * The [S1] chip clicked in Scene 4 is the shared element: it lifts off Theo's
- * card, waits above the title, then lands on the S1 file row in Brain.
- */
-const ChipFlight: React.FC<{ t: number; cam: Cam }> = ({ t, cam }) => {
-  const start = toScreen(S4_END_CAM, S4_CITE);
-  const park = { x: 1500, y: 250 };
-  const chipNative = { x: BRAIN.x + BRAIN.w - 18 - 16, y: BRAIN.fileRow0 + 27 };
-  const end = toScreen(cam, nat(chipNative.x, chipNative.y));
-  const a = EASE(ramp(t, S5.chipPark[0], S5.chipPark[1]));
-  const b = EASE(ramp(t, S5.chipLand[0], S5.chipLand[1]));
-  if (b >= 1) return null;
-  const x = start.x + (park.x - start.x) * a + (end.x - park.x) * b;
-  const y = start.y + (park.y - start.y) * a + (end.y - park.y) * b - Math.sin(Math.PI * b) * 40;
-  const baseScale = PRODUCT.scale * S4_END_CAM.z;
-  const endScale = PRODUCT.scale * cam.z;
-  const scale = (baseScale + (1.7 - baseScale) * a) * (1 - b) + endScale * b;
-  return (
-    <div data-guard="box" data-guard-label="Shared chip S1" style={{ position: "absolute", left: x, top: y, transform: `translate(-50%, -50%) scale(${scale})`, filter: `drop-shadow(0 ${8 * a * (1 - b)}px ${14 * a * (1 - b)}px rgba(60,40,140,0.25))` }}>
-      <SourceChip id="S1" active={1} />
-    </div>
-  );
-};
 
 export const Scene05Brain: React.FC = () => {
   const { t, F, clock, dur } = useScene(S);
@@ -152,8 +125,8 @@ export const Scene05Brain: React.FC = () => {
   const blur = v === "connect" ? swap(S5.connect) : v === "kb" ? swap(S5.kb) : 0;
   const cam = camAt(S5_CAM_KEYS, t, EASE);
   const cursorO = EASE(ramp(t, 3.5, 3.8));
+  // The clicked [S1] chip stays in its page and dissolves with it as the frame sinks.
   const prev = controlRoomStateAt(sceneById("S04").duration, clock);
-  prev.outputs = prev.outputs.map((c) => ({ ...c, citeHidden: true }));
   return (
     <AbsoluteFill style={{ width: 1920, height: 1080 }}>
       <PlateBackground plate="02" to="03" crossfadeAt={F(0.2)} crossfadeSeconds={1.5} duration={F(dur)} kbFrom={S4_KB_END} kbTo={S5_KB_END} timeOffset={plateOffset(S)} {...S2_PLATE} />
@@ -167,7 +140,6 @@ export const Scene05Brain: React.FC = () => {
           </div>
         )}
       </ProductStage>
-      <ChipFlight t={t} cam={cam} />
       <Pills t={t} pills={S5_PILLS} />
       <GuardLayer scene={S} />
     </AbsoluteFill>

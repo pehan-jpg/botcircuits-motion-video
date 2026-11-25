@@ -21,7 +21,8 @@ import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./share
 
 const S = "S09" as const;
 export const S9_TITLE = "Every step on record";
-const TITLE_START = 0.15;
+/** The title starts once the previous frame has sunk away (clean title rule). */
+const TITLE_START = 0.45;
 const APPROVED = 5;
 /** Scene 9 beats, seconds from the scene start. Records opens from the toast clicked in Scene 8. */
 export const S9 = { records: 0.3, clickPages: 6.8, pages: 6.85, type: 7.35, build: 9.2, claimRow: 10.2, clickClaim: 11.4, record: 11.45, replay: 12.1, rewind: [12.25, 13.45], expand: [13.8, 14.8] };

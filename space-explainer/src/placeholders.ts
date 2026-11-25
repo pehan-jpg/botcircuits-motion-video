@@ -57,7 +57,7 @@ export const PLACEHOLDERS = {
   sourceCardTitle: "Home Policy Wording 2026, p. 12",
   /** Scene 1: one claim, five places (an employee's screen). */
   scene1: {
-    lines: ["One claim to review.", "The information is everywhere.", "What if agents did the gathering?"],
+    lines: ["The information is everywhere.", "What if agents did the work?"],
     task: "Prepare claim CL-7305 for review",
     clocks: ["9:04 AM", "9:22 AM", "9:47 AM", "10:12 AM", "10:41 AM", "11:20 AM", "11:48 AM"],
     gmail: {
@@ -102,7 +102,7 @@ export const PLACEHOLDERS = {
       title: "Review summary",
       lines: ["Claim CL-7305, kitchen water damage.", "Policy: Home Policy Wording 2026, Section 4.2."],
     },
-    chips: ["Claim read", "Policy checked", "Evidence matched"],
+    chips: ["Claim read", "Policy checked", "Evidence matched", "Review pack drafted"],
   },
   /** Scene 3, turn 2: an action request. */
   chat2: {
@@ -165,7 +165,12 @@ export const PLACEHOLDERS = {
     clockStart: "6:42 PM",
     clockEnd: "9:05 AM",
     email: "New claim CL-7305, James Whitfield, kitchen water damage",
-    emailFrom: "BotCircuits Concierge",
+    emailFrom: "Claims inbox",
+    emailTime: "6:42 PM",
+    slackTime: "9:05 AM",
+    runTime: "2:04",
+    prepared: "Prepared in 2 min 4 s",
+    nextMorning: "Next morning",
     slack: "Claim CL-7305 needs your review",
     slackFrom: "Space",
   },
@@ -195,11 +200,11 @@ export const PLACEHOLDERS = {
     title: "Claim CL-7305, Home claim review",
     sub: "Run of Home claim review, started by an email, finished 9:12 AM",
     rows: [
-      { time: "6:42 PM", text: "Handed over by BotCircuits Concierge" },
-      { time: "6:43 PM", text: "Intake summary", agent: "Nora" },
-      { time: "6:44 PM", text: "Policy check", agent: "Theo" },
-      { time: "6:46 PM", text: "Evidence match", agent: "Owen" },
-      { time: "6:47 PM", text: "Review requested" },
+      { time: "6:42 PM", text: "Claim email received" },
+      { time: "6:42 PM", text: "Intake summary", agent: "Nora" },
+      { time: "6:43 PM", text: "Policy check", agent: "Theo" },
+      { time: "6:44 PM", text: "Evidence match", agent: "Owen" },
+      { time: "6:44 PM", text: "Review requested" },
       { time: "9:12 AM", text: "Approved by Emily Carter", human: true, note: "Approved. Invoice date confirmed with the insured by phone." },
       { time: "9:12 AM", text: "Settlement notice sent" },
       { time: "9:12 AM", text: "Slack notified" },
@@ -215,12 +220,31 @@ export const PLACEHOLDERS = {
       { status: "Declined", count: 3, approvedBy: "Emily Carter" },
     ],
     claimRow: { id: "Claim CL-7305", insured: "James Whitfield", approvedBy: "Emily Carter" },
+    /** Scene 10: the dashboard (all numbers are placeholders). */
+    dashPrompt: "A weekly claims dashboard: volume, time to prepare, and flags",
+    dashTitle: "Weekly claims",
+    kpis: [
+      { label: "Claims this week", value: "38" },
+      { label: "Time to prepare", value: "2 min" },
+      { label: "Flags raised", value: "5" },
+      { label: "Awaiting decision", value: "7" },
+    ],
+    perDay: [{ d: "Mon", n: 9 }, { d: "Tue", n: 6 }, { d: "Wed", n: 8 }, { d: "Thu", n: 5 }, { d: "Fri", n: 7 }, { d: "Sat", n: 2 }, { d: "Sun", n: 1 }],
+    flags: [{ type: "Date mismatch", n: 2 }, { type: "Missing invoice", n: 2 }, { type: "Over limit", n: 1 }],
   },
-  concierge: {
-    title: "BotCircuits Concierge",
-    customer: "My kitchen has water damage. Can you help?",
-    reply: ["Yes, James. I have your details and I am", "passing this to the claims team."],
-    handed: "Handed to Space",
+  /** Scene 11: the same claim, before and with Space (illustrative, placeholder data). */
+  contrast: {
+    line: "Same claim. Prepared in minutes.",
+    before: "Before",
+    after: "With Space",
+    beforeChips: ["5 tools", "14 tabs"],
+    beforeTime: "2 h 44 min",
+    afterChips: ["1 place", "0 tabs"],
+    afterTime: "2 min 4 s",
+    pack: "Review pack",
+    packItems: ["Intake summary", "Policy check, Section 4.2", "Evidence check, 1 flag", "Settlement draft"],
+    ready: "Ready for review",
+    footnote: "Illustrative example, placeholder data.",
   },
   endCard: ["Agents prepare.", "People decide.", "Every step on record."],
   brain: {

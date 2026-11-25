@@ -11,24 +11,26 @@ export type SceneId =
   | "S08"
   | "S09"
   | "S10"
-  | "S11";
+  | "S11"
+  | "S12";
 
 /**
  * Scene list. Only durations are authored: start and end are computed, so a
  * scene that grows pushes every later scene along automatically.
  */
 const SCENE_LIST: { id: SceneId; name: string; duration: number; built: boolean }[] = [
-  { id: "S01", name: "Problem", duration: 15, built: true },
+  { id: "S01", name: "Problem", duration: 19, built: true },
   { id: "S02", name: "Intro", duration: 5, built: true },
   { id: "S03", name: "Chat", duration: 18, built: true },
   { id: "S04", name: "Agents and Control Room", duration: 40, built: true },
   { id: "S05", name: "Company Brain", duration: 14, built: true },
   { id: "S06", name: "Playbook", duration: 19, built: true },
-  { id: "S07", name: "Evening trigger", duration: 10, built: true },
+  { id: "S07", name: "Run and wait", duration: 11, built: true },
   { id: "S08", name: "Morning review", duration: 17, built: true },
-  { id: "S09", name: "Records and Pages", duration: 16, built: true },
-  { id: "S10", name: "Concierge handoff", duration: 6, built: true },
-  { id: "S11", name: "End card", duration: 7, built: true },
+  { id: "S09", name: "Records", duration: 9, built: true },
+  { id: "S10", name: "Pages and dashboards", duration: 12, built: true },
+  { id: "S11", name: "Same claim, minutes not hours", duration: 8, built: true },
+  { id: "S12", name: "End card", duration: 7, built: true },
 ];
 
 export type SceneDef = {

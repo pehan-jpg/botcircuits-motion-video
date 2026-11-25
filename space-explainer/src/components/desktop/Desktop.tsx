@@ -40,14 +40,16 @@ const DocIcon: React.FC = () => (
  * A window: blur in and scale 0.96 to 1 on `appear`; `gather` 0 to 1 slides and
  * shrinks it into a point (the orb), given in desktop px.
  */
-export const Win: React.FC<{ k: WinKey; appear: number; gather?: number; to?: { x: number; y: number }; badge?: number; background?: boolean; children: React.ReactNode }> = ({ k, appear, gather = 0, to, badge, background, children }) => {
+/** Logo centre in a window header (desktop px), where a logo detaches from. */
+export const logoPoint = (k: WinKey) => ({ x: WINDOWS[k].x + 20 + 53 + 15, y: WINDOWS[k].y + WIN.header / 2 });
+export const Win: React.FC<{ k: WinKey; appear: number; gather?: number; to?: { x: number; y: number }; badge?: number; background?: boolean; rot?: number; logoGone?: boolean; children: React.ReactNode }> = ({ k, appear, gather = 0, to, badge, background, rot = 0, logoGone = false, children }) => {
   const p = WINDOWS[k];
   const g = gather;
   const cx = p.x + WIN.w / 2;
   const cy = p.y + WIN.h / 2;
   const dx = to ? (to.x - cx) * g : 0;
   const dy = to ? (to.y - cy) * g : 0;
-  const s = (0.96 + 0.04 * appear) * (1 - 0.94 * g);
+  const s = (0.96 + 0.04 * appear) * (1 - 0.88 * g);
   const blur = 10 * (1 - appear) + 6 * g;
   if (appear <= 0 || g >= 1) return null;
   return (
@@ -63,11 +65,12 @@ export const Win: React.FC<{ k: WinKey; appear: number; gather?: number; to?: { 
         borderRadius: WIN.radius,
         background: "#FFFFFF",
         border: `1px solid ${T.border}`,
-        boxShadow: "0 30px 80px rgba(20,24,60,0.16), 0 8px 20px rgba(20,24,60,0.08)",
+        // Shadows fade as the window shrinks.
+        boxShadow: `0 30px 80px rgba(20,24,60,${0.16 * (1 - g)}), 0 8px 20px rgba(20,24,60,${0.08 * (1 - g)})`,
         overflow: "hidden",
-        opacity: Math.min(1, appear * 1.4) * (1 - Math.max(0, (g - 0.6) / 0.4)),
+        opacity: Math.min(1, appear * 1.4) * (1 - Math.max(0, (g - 0.75) / 0.25)),
         filter: blur > 0.05 ? `blur(${blur}px)` : undefined,
-        transform: `translate(${dx}px, ${dy}px) scale(${s})`,
+        transform: `translate(${dx}px, ${dy}px) rotate(${rot * g}deg) scale(${s})`,
         transformOrigin: "50% 50%",
       }}
     >
@@ -78,7 +81,7 @@ export const Win: React.FC<{ k: WinKey; appear: number; gather?: number; to?: { 
           ))}
         </div>
         {LOGO[k] ? (
-          <span data-guard="logo" data-guard-backing="white" data-guard-label={`Logo ${k}`} style={{ position: "relative", display: "inline-flex", width: 30, height: 30, alignItems: "center", justifyContent: "center" }}>
+          <span data-guard={logoGone ? undefined : "logo"} data-guard-backing="white" data-guard-label={`Logo ${k}`} style={{ position: "relative", display: "inline-flex", width: 30, height: 30, alignItems: "center", justifyContent: "center", opacity: logoGone ? 0 : 1 }}>
             <Img data-guard="brand" src={staticFile(LOGO[k]!)} style={{ width: 30, height: 30, objectFit: "contain" }} />
             {badge !== undefined && badge > 0 ? (
               <span style={{ position: "absolute", right: -16, top: -10, minWidth: 28, height: 26, borderRadius: 13, background: "#E5484D", color: "#FFFFFF", fontFamily: FONT.sans, fontSize: 18, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 6px", boxSizing: "border-box" }}>{badge}</span>

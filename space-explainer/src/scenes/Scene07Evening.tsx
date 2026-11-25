@@ -18,7 +18,8 @@ import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./share
 
 const S = "S07" as const;
 export const S7_TITLE = "Let it run on its own";
-const TITLE_START = 0.15;
+/** The title starts once the previous frame has sunk away (clean title rule). */
+const TITLE_START = 0.45;
 export const S7 = { email: 3.3, run: 3.8, stepLen: 0.45, review: 6.05, zoomIn: 3.6, zoomOut: 6.4, ribbon: [6.5, 8.5], dawn: 8.5, slack: 8.6 };
 
 /** Night grade: dusk (brightness 0.8) at the start, full night (0.35) by 6s, easing back as morning comes. */

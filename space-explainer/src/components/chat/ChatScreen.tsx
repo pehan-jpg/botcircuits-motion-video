@@ -138,13 +138,9 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
         </div>
         <div style={{ opacity: 1 - s.sent }}>
           <div style={{ ...ui, left: 1170, top: inputTop + inputH + 13, fontSize: UIN.helper, color: "#5B6478" }}>Connect your apps</div>
-          {["#5B8DEF", "#3D7BF2", "#2F6FD6", "#6B7280"].map((c, i) => (
-            <div
-              key={i}
-              style={{ position: "absolute", left: 1338 + i * 24, top: inputTop + inputH + 13, width: 23, height: 23, borderRadius: 12, background: "#FFFFFF", border: `1px solid ${UI.line}`, display: "flex", alignItems: "center", justifyContent: "center" }}
-            >
-              <div style={{ width: 11, height: 11, borderRadius: 3, background: c }} />
-            </div>
+          {/* Official logos, unmodified: Gmail, Google Drive, Google Sheets, Slack (22px on screen). */}
+          {["logos/gmail.svg", "logos/google-drive.svg", "logos/google-sheets.svg", "logos/slack.svg"].map((src, i) => (
+            <Img key={src} data-guard="brand" src={staticFile(src)} style={{ position: "absolute", left: 1316 + i * 30, top: inputTop + inputH + 12, width: 24, height: 24, objectFit: "contain" }} />
           ))}
         </div>
         <div

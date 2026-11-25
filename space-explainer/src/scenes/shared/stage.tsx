@@ -24,7 +24,7 @@ export const useScene = (id: SceneId) => {
  * (0 to sinkEnd), the FeatureTitle plays from titleStart, and the frame rises
  * again 0.3s before the title has left.
  */
-export const opening = (t: number, title: string, titleStart: number, variant: TitleVariant, sinkEnd = 0.6) => {
+export const opening = (t: number, title: string, titleStart: number, variant: TitleVariant, sinkEnd = 0.45) => {
   const T = featureTitleTiming(title, variant);
   const sink = EASE(ramp(t, 0, sinkEnd));
   const riseStart = titleStart + T.frameRiseStart;

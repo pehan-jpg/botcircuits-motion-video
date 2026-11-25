@@ -11,7 +11,7 @@ import { ChatScreen } from "../components/chat/ChatScreen";
 import { navY } from "../components/chat/Sidebar";
 import { camAt, camTransform, FRAME_CENTRE, nat, PRODUCT_RECT, ProductWindow, type Cam, type CamKey } from "../components/chat/ProductWindow";
 import { AgentsPage, slotRect, type CardData } from "../components/agents/AgentsPage";
-import { CreateAgentPanel, PANEL, createButtonCentre, swatchCentre, NEW_AGENT_FIELDS } from "../components/agents/CreateAgentPanel";
+import { CreateAgentPanel, PANEL, createButtonCentre, NEW_AGENT_FIELDS } from "../components/agents/CreateAgentPanel";
 import { ControlRoomPage, CR_OFFSET, type ControlRoomState, type FigureRender, type OutputCard } from "../components/office/ControlRoomPage";
 import { makeRoute, sampleRoutes, type Route } from "../components/office/motion";
 import { AGENT_ORDER, proj, DESKS, FIGURE_H, plateAnchor, STANDING, type AgentKey, type AgentState, type BubbleLine, type OfficeState, type PedestalKey, type Pose } from "../components/office/Office";
@@ -26,14 +26,14 @@ const DUR = sceneById(S).duration;
 const S3 = sceneById("S03");
 const S3_FRAMES = sceneFrames("S03");
 export const S4_TITLE = "Give every agent a job";
-const TITLE_START = 0.15;
+const TITLE_START = 0.45;
 const TT = featureTitleTiming(S4_TITLE);
 /** Plate Ken Burns progress at the end of this scene (Scene 5 continues from here). */
 export const S4_KB_END = S3_KB_END + 0.03;
 
 /** Scene 4 beats, seconds from the scene start. 4A is 0 to 10s, 4B is 10 to 34s. */
 export const S4 = {
-  sinkEnd: 0.6,
+  sinkEnd: 0.45,
   frameRise: TITLE_START + TT.frameRiseStart,
   /** The clicked chip in Scene 3 opens the Agents page: blur through while the frame sinks. */
   agentsPage: 0.05,
@@ -42,7 +42,6 @@ export const S4 = {
   nameType: 4.85,
   handle: 5.05,
   roleType: 5.15,
-  clickSwatch: 5.45,
   taskType: 5.5,
   clickCreate: 7.85,
   panelClose: 7.9,
@@ -320,8 +319,6 @@ export const S4_CURSOR: CursorKey[] = [
   { ...nat(1350, 700), t: 3.4 },
   { ...slotCentre(1), t: S4.clickTile - 0.05 },
   { ...slotCentre(1), t: S4.clickTile, click: true },
-  { ...nat(swatchCentre(1).x, swatchCentre(1).y), t: S4.clickSwatch - 0.05 },
-  { ...nat(swatchCentre(1).x, swatchCentre(1).y), t: S4.clickSwatch, click: true },
   { ...nat(createButtonCentre().x, createButtonCentre().y), t: S4.clickCreate - 0.05 },
   { ...nat(createButtonCentre().x, createButtonCentre().y), t: S4.clickCreate, click: true },
   { ...nat(createButtonCentre().x, createButtonCentre().y - 60), t: 10.0 },
@@ -444,7 +441,6 @@ export const Scene04Agents: React.FC = () => {
                       roleStart: F(S4.roleType),
                       taskStart: F(S4.taskType),
                       handle: EASE(ramp(t, S4.handle, S4.handle + 0.3)),
-                      swatch: t >= S4.clickSwatch ? 1 : -1,
                       createPressed: Math.max(0, 1 - Math.abs(t - S4.clickCreate) / 0.15),
                       clock,
                     }}

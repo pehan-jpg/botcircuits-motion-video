@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
-import { EASE, PRODUCT } from "../theme";
+import { EASE } from "../theme";
 import { sceneById } from "../timeline";
 import { PLACEHOLDERS as P } from "../placeholders";
 import { PlateBackground } from "../backgrounds/PlateBackground";
@@ -8,9 +8,7 @@ import { GuardLayer } from "../components/GuardLayer";
 import { FeatureTitle } from "../components/FeatureTitle";
 import { camAt, FRAME_CENTRE, nat, type Cam, type CamKey } from "../components/chat/ProductWindow";
 import { BrainPage } from "../components/pages/BrainPage";
-import { KB_PARKED, menuItemCentre, PBG, PlaybookGraphPage, toolbarCentre, type GraphState, type NodeStatus } from "../components/pages/PlaybookGraph";
-import { UI } from "../components/chat/Sidebar";
-import { FONT, UIN } from "../theme";
+import { menuItemCentre, PBG, PlaybookGraphPage, toolbarCentre, type GraphState, type NodeStatus } from "../components/pages/PlaybookGraph";
 import type { CursorKey } from "../components/Cursor";
 import { typeDuration } from "../lib/typewriter";
 import type { TextBeatSpec } from "../lib/guards";
@@ -20,20 +18,20 @@ import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./share
 
 const S = "S06" as const;
 export const S6_TITLE = "Define the process once";
-const TITLE_START = 0.15;
+/** The title starts once the previous frame has sunk away (clean title rule). */
+const TITLE_START = 0.45;
 /** Menu item for each of the six steps. */
 const STEP_ITEMS = ["Ask", "Agent", "Agent", "Agent", "Page", "Review"];
 /** Scene 6 beats, seconds from the scene start. */
 export const S6 = {
-  chipPark: [0.0, 0.55],
-  chipLand: [2.5, 3.3],
   clickSettings: 3.7,
   settingsClose: 4.95,
   firstSelect: 5.2,
   firstItem: 5.75,
   firstAdd: 6.3,
   cadence: 1.1,
-  kbLand: [8.6, 9.1],
+  /** The chip from Brain appears inside Theo's step just after it lands. */
+  kbLand: [8.75, 9.1],
   inspector: 11.9,
   nameType: 12.05,
   reviewer: 13.0,
@@ -81,7 +79,6 @@ export const graphStateAt = (t: number, F: (s: number) => number, clock: number,
   return {
     status: t >= S6.clickSave + 0.05 ? "Active" : "Draft",
     statusPulse: Math.sin(Math.PI * ramp(t, S6.clickSave + 0.05, S6.clickSave + 0.55)),
-    kbParked: t >= S6.chipLand[1] ? 1 : 0,
     kbLand: EASE(ramp(t, S6.kbLand[0], S6.kbLand[1])),
     settings: EASE(ramp(t, S6.clickSettings + 0.05, S6.clickSettings + 0.25)) * (1 - EASE(ramp(t, S6.settingsClose, S6.settingsClose + 0.2))),
     selectValue,
@@ -169,26 +166,6 @@ export const SCENE06_TEXT: TextBeatSpec[] = [
   { id: "message", text: P.graph.reviewMessage.join(" "), readyAt: MSG_DONE, leaveAt: S6.inspectorClose, fontPx: 21, ui: true, exception: "Read as it types; brief fits the inspector, branches, Check and Save in 19s" },
 ];
 
-const toScreen = (c: Cam, p: { x: number; y: number }) => ({ x: FRAME_CENTRE.x + c.z * (p.x - c.x), y: FRAME_CENTRE.y + c.z * (p.y - c.y) });
-
-/** The Claims knowledge chip leaves "Use in playbook", waits above the title and lands in the playbook header. */
-const KbFlight: React.FC<{ t: number; cam: Cam }> = ({ t, cam }) => {
-  const start = toScreen(S5_END_CAM, nat(S5_USE_NATIVE.x, S5_USE_NATIVE.y));
-  const park = { x: 1500, y: 250 };
-  const end = toScreen(cam, nat(KB_PARKED.x, KB_PARKED.y));
-  const a = EASE(ramp(t, S6.chipPark[0], S6.chipPark[1]));
-  const b = EASE(ramp(t, S6.chipLand[0], S6.chipLand[1]));
-  if (b >= 1) return null;
-  const x = start.x + (park.x - start.x) * a + (end.x - park.x) * b;
-  const y = start.y + (park.y - start.y) * a + (end.y - park.y) * b - Math.sin(Math.PI * b) * 40;
-  const scale = (PRODUCT.scale + (1.6 - PRODUCT.scale) * a) * (1 - b) + PRODUCT.scale * cam.z * b;
-  return (
-    <div data-guard="box" data-guard-label="Shared chip Claims knowledge" style={{ position: "absolute", left: x, top: y, transform: `translate(-50%, -50%) scale(${scale})`, opacity: Math.min(1, t / 0.15), padding: "2px 10px", borderRadius: 8, background: UI.lilacBg, color: UI.lilacText, fontFamily: FONT.sans, fontSize: UIN.helper, fontWeight: 600, whiteSpace: "nowrap", boxShadow: `0 ${8 * a * (1 - b)}px ${16 * a * (1 - b)}px rgba(60,40,140,0.25)` }}>
-      Claims knowledge
-    </div>
-  );
-};
-
 export const Scene06Playbook: React.FC = () => {
   const { t, F, clock, dur } = useScene(S);
   const o = opening(t, S6_TITLE, TITLE_START, "compact");
@@ -201,7 +178,6 @@ export const Scene06Playbook: React.FC = () => {
       <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S6_CURSOR, opacity: o.showPrev ? 1 - o.sink : cursorO }}>
         {o.showPrev ? <BrainPage s={brainStateAt(sceneById("S05").duration, F, -F(sceneById("S05").duration))} /> : <PlaybookGraphPage s={graphStateAt(t, F, clock)} />}
       </ProductStage>
-      <KbFlight t={t} cam={cam} />
       <Pills t={t} pills={S6_PILLS} />
       <GuardLayer scene={S} />
     </AbsoluteFill>

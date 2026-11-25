@@ -22,8 +22,8 @@ import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./share
 const S = "S08" as const;
 export const S8_TITLE = "People approve what matters";
 /** The notification is clicked at 0.3s; the frame then sinks under the title (opening shifted by 0.45s). */
-const SHIFT = 0.45;
-const TITLE_START = 0.15 + SHIFT;
+const SHIFT = 0.35;
+const TITLE_START = 0.45 + SHIFT;
 export const S8 = { slackClick: 0.3, toast: 14.5, toastClick: 16.2, page: 0.35, itemClick: 4.6, detail: 4.65, findings: [5.1, 5.3, 5.5], zoomFlag: 5.9, noteClick: 8.5, glyph: 8.4, type: 8.8, approve: 11.25, strip: 11.7, steps: [11.9, 12.3, 12.7, 13.6], email: 12.9, slack: 13.9, zoomOut: 14.4 };
 export const S8_KB_END = 1.25;
 

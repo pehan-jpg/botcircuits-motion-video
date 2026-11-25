@@ -1,20 +1,15 @@
 import React from "react";
-import { Check, X } from "lucide-react";
-import { CHAT_CPS, FONT, PRODUCT, UIN, type OrbPaletteKey } from "../../theme";
+import { X } from "lucide-react";
+import { CHAT_CPS, FONT, PRODUCT, UIN } from "../../theme";
 import { Typewriter } from "../Typewriter";
-import { SpaceOrb } from "../SpaceOrb";
 import { UI } from "../chat/Sidebar";
 
 /** Input text in the panel: 17px native (15.7px at 1x), read at a 1.3x zoom. */
 export const PANEL_TEXT = 17;
 /** 560px wide on screen at 1x. */
-export const PANEL = { w: Math.round(560 / PRODUCT.scale), h: 612, x: 0, y: 140 };
+export const PANEL = { w: Math.round(560 / PRODUCT.scale), h: 528, x: 0, y: 170 };
 PANEL.x = Math.round((229 + 1875) / 2 - PANEL.w / 2);
 
-export const SWATCHES: OrbPaletteKey[] = ["iris", "nora", "theo", "owen", "plum"];
-const SW = { size: 38, gap: 16, x: 28, y: 470 };
-/** Swatch centre, native px. */
-export const swatchCentre = (i: number) => ({ x: PANEL.x + SW.x + SW.size / 2 + i * (SW.size + SW.gap), y: PANEL.y + SW.y + SW.size / 2 });
 export const CREATE_BUTTON = { x: 0, y: 0, w: 156, h: 42 };
 CREATE_BUTTON.x = PANEL.x + PANEL.w - 28 - CREATE_BUTTON.w;
 CREATE_BUTTON.y = PANEL.y + PANEL.h - 26 - CREATE_BUTTON.h;
@@ -27,7 +22,6 @@ export type PanelState = {
   roleStart: number;
   taskStart: number;
   handle: number;
-  swatch: number; // selected index, -1 none
   createPressed: number;
   clock: number;
 };
@@ -128,22 +122,6 @@ export const CreateAgentPanel: React.FC<{ s: PanelState }> = ({ s }) => {
             </div>
           ))}
         </div>
-
-        <div style={{ ...label, top: 446 }}>Avatar</div>
-        {SWATCHES.map((p, i) => {
-          const c = swatchCentre(i);
-          const on = s.swatch === i;
-          return (
-            <div key={p} style={{ position: "absolute", left: c.x - PANEL.x - SW.size / 2 - 5, top: c.y - PANEL.y - SW.size / 2 - 5, width: SW.size + 10, height: SW.size + 10, borderRadius: "50%", border: `2px solid ${on ? "#0D1224" : "transparent"}`, boxSizing: "border-box" }}>
-              <SpaceOrb size={SW.size} palette={p} timeOffset={s.clock} style={{ position: "absolute", left: 3, top: 3 }} />
-              {on ? (
-                <div style={{ position: "absolute", right: -4, bottom: -4, width: 18, height: 18, borderRadius: 9, background: "#0D1224", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Check size={12} color={UI.primaryText} strokeWidth={3} />
-                </div>
-              ) : null}
-            </div>
-          );
-        })}
 
         <div style={{ position: "absolute", left: 28, right: 28, top: PANEL.h - 92, height: 1, background: "#E7E9F2" }} />
         <div style={{ position: "absolute", left: CREATE_BUTTON.x - PANEL.x - 112, top: CREATE_BUTTON.y - PANEL.y, width: 100, height: CREATE_BUTTON.h, borderRadius: 10, border: `1px solid ${UI.chipBorder}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: UIN.button, color: "#5B6478" }}>

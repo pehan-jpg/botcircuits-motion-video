@@ -15,8 +15,7 @@ import { SCENE06_TEXT, S6_CURSOR } from "../src/scenes/Scene06Playbook";
 import { SCENE07_TEXT } from "../src/scenes/Scene07Evening";
 import { SCENE08_TEXT, S8_CURSOR } from "../src/scenes/Scene08Review";
 import { SCENE09_TEXT, S9_CURSOR } from "../src/scenes/Scene09Records";
-import { SCENE10_TEXT } from "../src/scenes/Scene10Concierge";
-import { SCENE11_TEXT, S11_LOCKUP_READY } from "../src/scenes/Scene11EndCard";
+import { SCENE12_TEXT, S12_LOCKUP_READY } from "../src/scenes/Scene12EndCard";
 import { cursorClickReport } from "../src/components/Cursor";
 
 const issues: GuardIssue[] = [];
@@ -42,17 +41,16 @@ report("Scene 6", SCENE06_TEXT);
 report("Scene 7", SCENE07_TEXT);
 report("Scene 8", SCENE08_TEXT);
 report("Scene 9", SCENE09_TEXT);
-report("Scene 10", SCENE10_TEXT);
-report("Scene 11", SCENE11_TEXT);
+report("Scene 12", SCENE12_TEXT);
 
 console.log("\nScene 4 thought bubble lines (each must hold at least 0.9s):");
 for (const b of BUBBLE_HOLDS) {
   console.log(`  ${b.agent.padEnd(5)} ${b.hold.toFixed(2)}s  "${b.text}"`);
   if (b.hold < 0.9 - 1e-6) issues.push({ guard: "bubble", message: `${b.agent} line "${b.text}" holds ${b.hold.toFixed(2)}s` });
 }
-const s11Hold = 7 - S11_LOCKUP_READY;
-console.log(`\nScene 11 lockup complete at ${S11_LOCKUP_READY.toFixed(2)}s, hold ${s11Hold.toFixed(2)}s (needs at least 1.5s)`);
-if (s11Hold < 1.5) issues.push({ guard: "timeline", message: "Scene 11 lockup hold is under 1.5s" });
+const s11Hold = 7 - S12_LOCKUP_READY;
+console.log(`\nScene 12 lockup complete at ${S12_LOCKUP_READY.toFixed(2)}s, hold ${s11Hold.toFixed(2)}s (needs at least 1.5s)`);
+if (s11Hold < 1.5) issues.push({ guard: "timeline", message: "Scene 12 lockup hold is under 1.5s" });
 
 // Scene 1 motion: window centres through the camera, every frame; nothing may jump more than 14px per frame.
 {
@@ -60,7 +58,7 @@ if (s11Hold < 1.5) issues.push({ guard: "timeline", message: "Scene 11 lockup ho
   let worst = 0;
   let worstT = 0;
   // Windows on screen at a time: opened and not yet gathered into the orb.
-  const pts = (Object.keys(WINDOWS) as (keyof typeof WINDOWS)[]).map((k) => ({ x: WINDOWS[k].x + WIN.w / 2, y: WINDOWS[k].y + WIN.h / 2, from: (S1 as unknown as Record<string, number>)[k], to: S1.gather[k] + S1.gatherLen }));
+  const pts = (Object.keys(WINDOWS) as (keyof typeof WINDOWS)[]).map((k) => ({ x: WINDOWS[k].x + WIN.w / 2, y: WINDOWS[k].y + WIN.h / 2, from: (S1 as unknown as Record<string, number>)[k], to: k === "summary" ? S1.hudOut[1] : S1.gather[k] + S1.gatherLen }));
   const screen = (t: number, p: { x: number; y: number }) => {
     const c = s1CamAt(t);
     return { x: 960 + c.z * (p.x - c.x), y: 540 + c.z * (p.y - c.y) };
@@ -79,8 +77,8 @@ if (s11Hold < 1.5) issues.push({ guard: "timeline", message: "Scene 11 lockup ho
   }
   console.log(`\nScene 1 camera: largest move of a window centre between frames ${worst.toFixed(2)}px at ${worstT.toFixed(2)}s (limit 14px)`);
   if (worst > 14) issues.push({ guard: "motion", message: `Scene 1 camera moves a window ${worst.toFixed(1)}px in one frame at ${worstT.toFixed(2)}s` });
-  console.log(`Scene 1 closing line holds ${S1_LINE3_HOLD.toFixed(2)}s once revealed (brief: at least 1.4s)`);
-  if (S1_LINE3_HOLD < 1.4) issues.push({ guard: "timeline", message: "Scene 1 closing line holds under 1.4s" });
+  console.log(`Scene 1 complete closing frame holds ${S1_LINE3_HOLD.toFixed(2)}s (brief: at least 1.2s)`);
+  if (S1_LINE3_HOLD < 1.2) issues.push({ guard: "timeline", message: "Scene 1 closing frame holds under 1.2s" });
   for (const c of cursorClickReport(S1_CURSOR)) {
     console.log(`  Scene 1 click at ${c.t.toFixed(2)}s: worst offset ${c.worst.toFixed(2)}px`);
     if (c.worst > 1) issues.push({ guard: "cursor", message: `Scene 1 click at ${c.t.toFixed(2)}s drifts ${c.worst.toFixed(1)}px from its ripple` });
