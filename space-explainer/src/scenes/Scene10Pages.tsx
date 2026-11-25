@@ -117,7 +117,7 @@ const Scene10Body: React.FC<{ t: number; F: (s: number) => number; clock: number
     <>
       <PlateBackground plate="03" duration={F(def.duration)} kbFrom={S9_KB_END} kbTo={S10_KB_END} timeOffset={def.start - 15} {...S2_PLATE} />
       <FeatureTitle text={S10_TITLE} startFrame={F(TITLE_START) + shift} variant="compact" />
-      <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S10_CURSOR, opacity: cursorO }}>
+      <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S10_CURSOR, opacity: cursorO, shift }}>
         {o.showPrev ? (
           <div data-guard-bg="Scene 9 records, read in Scene 9" style={{ position: "absolute", inset: 0 }}>
             <RecordsPage s={recordsStateAt(sceneById("S09").duration, clock)} />

@@ -73,6 +73,14 @@ export const Scene11Contrast: React.FC = () => {
   const R = { x: PANEL.right, y: PANEL.y, w: PANEL.w, h: PANEL.h };
   const rOut = { x: R.x * (1 - out), y: R.y * (1 - out), w: R.w + (1920 - R.w) * out, h: R.h + (1080 - R.h) * out };
   const words = C.line.split(" ");
+  // The tile fades in over the clicked tile (so the cursor and the first frame match Scene 10), then tints
+  // to a soft grey under the panels so the With Space card visibly grows to white at the end.
+  const tileIn = EASE(ramp(t, 0, 0.3));
+  const tint = panels * (1 - out);
+  const mix = (a: number, b: number) => Math.round(a + (b - a) * tint);
+  const tileBg = `rgba(${mix(255, 242)},${mix(255, 243)},${mix(255, 247)},${tileIn})`;
+  // A slow push in keeps the frame alive while the stopwatches run.
+  const drift = 1 + 0.03 * ramp(t, S11.panels[0], S11.out[1]);
   return (
     <AbsoluteFill style={{ width: 1920, height: 1080, background: "#FFFFFF" }}>
       {g < 1 ? (
@@ -81,15 +89,16 @@ export const Scene11Contrast: React.FC = () => {
         </AbsoluteFill>
       ) : null}
       {/* The clicked tile, growing into the white frame */}
-      <div style={{ position: "absolute", left: rect.x, top: rect.y, width: rect.w, height: rect.h, background: "#FFFFFF", borderRadius: 14 * (1 - g), boxShadow: g < 1 ? `0 20px 60px rgba(20,24,60,${0.18 * (1 - g)})` : undefined, overflow: "hidden" }}>
+      <div style={{ position: "absolute", left: rect.x, top: rect.y, width: rect.w, height: rect.h, background: tileBg, borderRadius: 14 * (1 - g), boxShadow: g < 1 ? `0 20px 60px rgba(20,24,60,${0.18 * (1 - g) * tileIn})` : undefined, overflow: "hidden" }}>
         {tileText > 0 ? (
-          <div style={{ position: "absolute", left: 20 * (T0.w / 281), top: 16 * (T0.w / 281), opacity: tileText, fontFamily: FONT.sans, transform: `scale(${T0.w / 281})`, transformOrigin: "0 0" }}>
+          <div style={{ position: "absolute", left: 20 * (T0.w / 281), top: 16 * (T0.w / 281), opacity: tileText * tileIn, fontFamily: FONT.sans, transform: `scale(${T0.w / 281})`, transformOrigin: "0 0" }}>
             <div style={{ fontSize: 15.2, color: T.secondary }}>{P.pages.kpis[1].label}</div>
             <div style={{ fontSize: 23.5, fontWeight: 700, color: T.ink, marginTop: 8 }}>{P.pages.kpis[1].value}</div>
           </div>
         ) : null}
       </div>
 
+      <div style={{ position: "absolute", inset: 0, transform: `scale(${drift})`, transformOrigin: "50% 50%" }}>
       {/* Top line */}
       {t >= S11.line ? (
         <div style={{ position: "absolute", left: 0, right: 0, top: LINE_Y, display: "flex", justifyContent: "center", transform: "translateY(-50%)", opacity: 1 - out }}>
@@ -177,6 +186,7 @@ export const Scene11Contrast: React.FC = () => {
         <div style={{ position: "absolute", left: 0, right: 0, top: 936, textAlign: "center", fontFamily: FONT.sans, fontSize: 20, color: "#8A91A5", opacity: panels * (1 - out) }}>{C.footnote}</div>
       ) : null}
 
+      </div>
       <GuardLayer scene={S} />
     </AbsoluteFill>
   );

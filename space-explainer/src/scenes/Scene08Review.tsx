@@ -15,7 +15,7 @@ import { cardX, REVIEWS, ReviewsPage, type ReviewsState } from "../components/pa
 import type { CursorKey } from "../components/Cursor";
 import { typeDuration } from "../lib/typewriter";
 import type { TextBeatSpec } from "../lib/guards";
-import { s7GraphAt, SLACK_NOTE, SlackNotification, S7_END_CAM } from "./Scene07Evening";
+import { s7GraphAt, SLACK_NOTE, SlackNotification, Stopwatch, S7_END_CAM } from "./Scene07Evening";
 import { S2_PLATE } from "./Scene02Intro";
 import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./shared/stage";
 
@@ -135,6 +135,7 @@ export const Scene08Review: React.FC = () => {
         {toReviews < 1 ? (
           <div style={{ position: "absolute", inset: 0, opacity: 1 - toReviews, filter: blur > 0.05 ? `blur(${blur}px)` : undefined }}>
             <PlaybookGraphPage s={pb} />
+            <Stopwatch t={sceneById("S07").duration} />
             {/* Carried over from Scene 7: clicked, it opens Reviews. */}
             <SlackNotification opacity={1} pressed={Math.max(0, 1 - Math.abs(t - S8.slackClick) / 0.15)} />
           </div>

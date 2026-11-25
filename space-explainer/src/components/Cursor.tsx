@@ -74,8 +74,9 @@ export const cursorClickReport = (keys: CursorKey[], fps = 60) =>
 const TIP = { x: 3, y: 1.5 };
 
 /** Standard arrow cursor moving on eased, gently curved paths, with a soft neutral click ripple centred on the hotspot. */
-export const Cursor: React.FC<{ keys: CursorKey[]; opacity?: number; ripple?: "violet" | "neutral" }> = ({ keys, opacity = 1, ripple = "violet" }) => {
-  const frame = useCurrentFrame();
+export const Cursor: React.FC<{ keys: CursorKey[]; opacity?: number; ripple?: "violet" | "neutral"; shift?: number }> = ({ keys, opacity = 1, ripple = "violet", shift = 0 }) => {
+  // `shift` freezes a carried-over cursor at its own scene time (frozen end frames).
+  const frame = useCurrentFrame() - shift;
   const { fps } = useVideoConfig();
   const t = frame / fps;
   const { x, y } = cursorPosAt(keys, t);

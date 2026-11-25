@@ -42,7 +42,7 @@ export const ProductStage: React.FC<{
   cam: Cam;
   frameStyle?: React.CSSProperties;
   visible?: boolean;
-  cursor?: { keys: CursorKey[]; opacity: number };
+  cursor?: { keys: CursorKey[]; opacity: number; shift?: number };
   children: React.ReactNode;
   overlay?: React.ReactNode;
 }> = ({ cam, frameStyle, visible = true, cursor, children, overlay }) =>
@@ -52,7 +52,7 @@ export const ProductStage: React.FC<{
         <ProductWindow>{children}</ProductWindow>
         {overlay}
       </div>
-      {cursor && cursor.opacity > 0 ? <Cursor keys={cursor.keys} opacity={cursor.opacity} /> : null}
+      {cursor && cursor.opacity > 0 ? <Cursor keys={cursor.keys} opacity={cursor.opacity} shift={cursor.shift} /> : null}
     </AbsoluteFill>
   ) : null;
 
