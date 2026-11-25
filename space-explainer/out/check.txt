@@ -1,8 +1,8 @@
-Checked 229 stills.
-Overflow test: 764 text boxes in 182 plates or boxes checked; collision test: 180 label pairs checked
+Checked 179 stills.
+Overflow test: 513 text boxes in 136 plates or boxes checked; collision test: 180 label pairs checked
 Logo on plate: lowest contrast 10.29:1 (Scene02 t=4s)
-Product UI text at 1x: 14.0px to 31.3px (allowed 14 to 22)
-Cursor ripples in stills: 26 measured, worst offset 0.0px
+Product UI text at 1x: 14.0px to 22.0px (allowed 14 to 22)
+Cursor ripples in stills: 21 measured, worst offset 0.0px
 UI text meant to be read, largest effective size after camera zoom:
   (labels also shown in the previous scene are carried over; that scene owns them)
   Scene03 Action card: 23.4px
@@ -76,41 +76,15 @@ UI text meant to be read, largest effective size after camera zoom:
   Scene10 Built page: 24.3px
   Scene10 Claims per day: 22.0px
   Scene10 Flags by type: 22.0px
-  Scene10 KPI Awaiting decision: 31.9px
-  Scene10 KPI Claims this week: 45.4px
-  Scene10 KPI Flags raised: 45.4px
-  Scene10 KPI Time to prepare: 45.4px
+  Scene10 KPI Awaiting decision: 31.4px
+  Scene10 KPI Claims this week: 31.4px
+  Scene10 KPI Flags raised: 31.4px
+  Scene10 KPI Time to prepare: 31.4px
   Scene10 Pages prompt: 23.4px
 Lowest contrast samples:
-  3.28:1  Scene07 t=8s  Run time
-  3.28:1  Scene07 t=9s  Run time
-  3.30:1  Scene07 t=7s  Run time
-  3.35:1  Scene07 t=5s  Run time
-  3.39:1  Scene11 t=0s  KPI Time to prepare
-
-25 issue(s):
-  Scene01 t=7s: SafeAreaGuard: Policy page 12 at {"x":591,"y":529,"w":728,"h":462} enters the 96px margin
-  Scene07 t=4s: ReadabilityGuard: "Run time" contrast 3.99:1 (bg lum mean 0.60, 5th pct 0.47)
-  Scene07 t=5s: ReadabilityGuard: "Run time" contrast 3.35:1 (bg lum mean 0.56, 5th pct 0.39)
-  Scene07 t=6s: ReadabilityGuard: "Run time" contrast 3.40:1 (bg lum mean 0.55, 5th pct 0.39)
-  Scene07 t=7s: ReadabilityGuard: "Run time" contrast 3.30:1 (bg lum mean 0.54, 5th pct 0.38)
-  Scene07 t=8s: ReadabilityGuard: "Run time" contrast 3.28:1 (bg lum mean 0.59, 5th pct 0.60)
-  Scene07 t=9s: ReadabilityGuard: "Run time" contrast 3.28:1 (bg lum mean 0.59, 5th pct 0.60)
-  Scene10 t=7s: Colour: 8 amber pixels with no person deciding in Scene10
-  Scene10 t=9s: Colour: 9 amber pixels with no person deciding in Scene10
-  Scene10 t=10s: ReadabilityGuard: UI text in "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb" is 31.3px at 1x, maximum 22px
-  Scene10 t=10s: ReadabilityGuard: UI text in "KPI Claims this week" is 31.3px at 1x, maximum 22px
-  Scene10 t=10s: ReadabilityGuard: UI text in "KPI Time to prepare" is 31.3px at 1x, maximum 22px
-  Scene10 t=10s: ReadabilityGuard: UI text in "KPI Flags raised" is 31.3px at 1x, maximum 22px
-  Scene10 t=11s: ReadabilityGuard: UI text in "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb" is 31.3px at 1x, maximum 22px
-  Scene10 t=11s: ReadabilityGuard: UI text in "KPI Claims this week" is 31.3px at 1x, maximum 22px
-  Scene10 t=11s: ReadabilityGuard: UI text in "KPI Time to prepare" is 31.3px at 1x, maximum 22px
-  Scene10 t=11s: ReadabilityGuard: UI text in "KPI Flags raised" is 31.3px at 1x, maximum 22px
-  Scene10 t=11s: ReadabilityGuard: UI text in "KPI Awaiting decision" is 31.3px at 1x, maximum 22px
-  Scene11 t=0s: ReadabilityGuard: UI text in "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb" is 31.3px at 1x, maximum 22px
-  Scene11 t=0s: ReadabilityGuard: UI text in "KPI Claims this week" is 31.3px at 1x, maximum 22px
-  Scene11 t=0s: ReadabilityGuard: UI text in "KPI Time to prepare" is 31.3px at 1x, maximum 22px
-  Scene11 t=0s: ReadabilityGuard: "KPI Time to prepare" contrast 3.39:1 (bg lum mean 0.95, 5th pct 0.55)
-  Scene11 t=0s: ReadabilityGuard: UI text in "KPI Flags raised" is 31.3px at 1x, maximum 22px
-  Scene11 t=0s: ReadabilityGuard: UI text in "KPI Awaiting decision" is 31.3px at 1x, maximum 22px
-  Scene11 t=7s: SafeAreaGuard: With Space stopwatch at {"x":1627,"y":127,"w":214,"h":64} enters the 96px margin
+  4.75:1  Scene11 t=4s  With Space stopwatch
+  4.75:1  Scene11 t=5s  With Space stopwatch
+  4.75:1  Scene11 t=6s  With Space stopwatch
+  4.80:1  Scene07 t=8s  Step 6
+  4.80:1  Scene07 t=9s  Step 6
+All guards passed.

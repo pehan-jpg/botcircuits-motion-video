@@ -1500,24 +1500,19 @@
      "text": "Section 4.2 Accidental water damageWe cover sudden and accidental escape of waterfrom a fixed pipe or appliance in your home.",
      "opacity": 1,
      "rect": {
-      "x": 590.9019165039062,
-      "y": 528.6678466796875,
-      "w": 728.0000610351562,
-      "h": 462.00006103515625
+      "x": 632.9019165039062,
+      "y": 565.06787109375,
+      "w": 644.0000610351562,
+      "h": 143.89373779296875
      },
-     "fontPx": 25.20000211275541,
+     "fontPx": 25.2000023883322,
      "cssPx": 18,
-     "fontPxMax": 28.000002347506012,
+     "fontPxMax": 28.000002653702445,
      "maxCss": 20,
      "minLabel": "We cover sudden and accidental escape of",
      "read": false,
      "color": "rgb(13, 18, 36)",
-     "issues": [
-      {
-       "guard": "SafeAreaGuard",
-       "message": "Policy page 12 at {\"x\":591,\"y\":529,\"w\":728,\"h\":462} enters the 96px margin"
-      }
-     ]
+     "issues": []
     },
     {
      "kind": "cursor",
@@ -3864,14 +3859,14 @@
      "text": "Introducing Space by",
      "opacity": 1,
      "rect": {
-      "x": 342.390625,
+      "x": 338.59375,
       "y": 488,
-      "w": 1235.203125,
+      "w": 1242.796875,
       "h": 100.640625
      },
-     "fontPx": 84.01381578947368,
+     "fontPx": 83.98627312952534,
      "cssPx": 84,
-     "fontPxMax": 84.01381578947368,
+     "fontPxMax": 83.98627312952534,
      "maxCss": 84,
      "minLabel": "I",
      "read": false,
@@ -26193,7 +26188,7 @@
      "maxCss": 16.5,
      "minLabel": "",
      "read": true,
-     "color": "rgb(75, 52, 199)",
+     "color": "rgb(13, 18, 36)",
      "issues": [
       {
        "guard": "SafeAreaGuard",
@@ -26667,7 +26662,7 @@
      "maxCss": 16.5,
      "minLabel": "",
      "read": true,
-     "color": "rgb(75, 52, 199)",
+     "color": "rgb(13, 18, 36)",
      "issues": [
       {
        "guard": "SafeAreaGuard",
@@ -27141,7 +27136,7 @@
      "maxCss": 16.5,
      "minLabel": "",
      "read": true,
-     "color": "rgb(75, 52, 199)",
+     "color": "rgb(13, 18, 36)",
      "issues": [
       {
        "guard": "SafeAreaGuard",
@@ -27615,7 +27610,7 @@
      "maxCss": 16.5,
      "minLabel": "",
      "read": true,
-     "color": "rgb(75, 52, 199)",
+     "color": "rgb(13, 18, 36)",
      "issues": [
       {
        "guard": "SafeAreaGuard",
@@ -28019,7 +28014,7 @@
      "maxCss": 16.5,
      "minLabel": "",
      "read": true,
-     "color": "rgb(30, 122, 58)",
+     "color": "rgb(13, 18, 36)",
      "issues": []
     },
     {
@@ -28438,7 +28433,7 @@
      "maxCss": 16.5,
      "minLabel": "",
      "read": true,
-     "color": "rgb(30, 122, 58)",
+     "color": "rgb(13, 18, 36)",
      "issues": []
     },
     {
@@ -28857,7 +28852,7 @@
      "maxCss": 16.5,
      "minLabel": "",
      "read": true,
-     "color": "rgb(30, 122, 58)",
+     "color": "rgb(13, 18, 36)",
      "issues": []
     },
     {
@@ -34527,126 +34522,6 @@
      ]
     },
     {
-     "kind": "uitext",
-     "label": "Record row 1",
-     "text": "6:42 PMClaim email received",
-     "opacity": 1,
-     "rect": {
-      "x": 338.5127868652344,
-      "y": 403.8575134277344,
-      "w": 1128.8492431640625,
-      "h": 40.712615966796875
-     },
-     "fontPx": 14.055098363657466,
-     "cssPx": 15.19,
-     "fontPxMax": 15.267223370661501,
-     "maxCss": 16.5,
-     "minLabel": "6:42 PM",
-     "read": true,
-     "color": "rgb(69, 76, 96)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "Record row 2",
-     "text": "6:42 PMIntake summaryNora",
-     "opacity": 1,
-     "rect": {
-      "x": 338.5127868652344,
-      "y": 451.972412109375,
-      "w": 1128.8492431640625,
-      "h": 40.71258544921875
-     },
-     "fontPx": 14.055098363657466,
-     "cssPx": 15.19,
-     "fontPxMax": 15.267223370661501,
-     "maxCss": 16.5,
-     "minLabel": "6:42 PM",
-     "read": true,
-     "color": "rgb(69, 76, 96)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "Record row 3",
-     "text": "6:43 PMPolicy checkTheo",
-     "opacity": 1,
-     "rect": {
-      "x": 338.5127868652344,
-      "y": 500.0873107910156,
-      "w": 1128.8492431640625,
-      "h": 40.712615966796875
-     },
-     "fontPx": 14.055098363657466,
-     "cssPx": 15.19,
-     "fontPxMax": 15.267223370661501,
-     "maxCss": 16.5,
-     "minLabel": "6:43 PM",
-     "read": true,
-     "color": "rgb(69, 76, 96)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "Record row 4",
-     "text": "6:44 PMEvidence matchOwen",
-     "opacity": 1,
-     "rect": {
-      "x": 338.5127868652344,
-      "y": 548.2022094726562,
-      "w": 1128.8492431640625,
-      "h": 40.7125244140625
-     },
-     "fontPx": 14.055098363657466,
-     "cssPx": 15.19,
-     "fontPxMax": 15.267223370661501,
-     "maxCss": 16.5,
-     "minLabel": "6:44 PM",
-     "read": true,
-     "color": "rgb(69, 76, 96)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "Record row 5",
-     "text": "6:44 PMReview requested",
-     "opacity": 1,
-     "rect": {
-      "x": 338.5127868652344,
-      "y": 596.3170776367188,
-      "w": 1128.8492431640625,
-      "h": 40.71258544921875
-     },
-     "fontPx": 14.055098363657466,
-     "cssPx": 15.19,
-     "fontPxMax": 15.267223370661501,
-     "maxCss": 16.5,
-     "minLabel": "6:44 PM",
-     "read": true,
-     "color": "rgb(69, 76, 96)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "Record row 6",
-     "text": "9:12 AMApproved by Emily Carter“Approved. Invoice date confirmed with the insured by phone.”Emily Carter",
-     "opacity": 1,
-     "rect": {
-      "x": 338.5127868652344,
-      "y": 644.4319458007812,
-      "w": 1128.8492431640625,
-      "h": 70.32183837890625
-     },
-     "fontPx": 14.055098363657466,
-     "cssPx": 15.19,
-     "fontPxMax": 15.267223370661501,
-     "maxCss": 16.5,
-     "minLabel": "9:12 AM",
-     "read": true,
-     "color": "rgb(69, 76, 96)",
-     "issues": []
-    },
-    {
      "kind": "decision",
      "label": "",
      "text": "",
@@ -34664,46 +34539,6 @@
      "minLabel": "",
      "read": false,
      "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "Record row 7",
-     "text": "9:12 AMSettlement notice sent",
-     "opacity": 1,
-     "rect": {
-      "x": 338.5127868652344,
-      "y": 692.546875,
-      "w": 1128.8492431640625,
-      "h": 40.71258544921875
-     },
-     "fontPx": 14.055098363657466,
-     "cssPx": 15.19,
-     "fontPxMax": 15.267223370661501,
-     "maxCss": 16.5,
-     "minLabel": "9:12 AM",
-     "read": true,
-     "color": "rgb(69, 76, 96)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "Record row 8",
-     "text": "9:12 AMSlack notified",
-     "opacity": 1,
-     "rect": {
-      "x": 338.5127868652344,
-      "y": 740.6618041992188,
-      "w": 1128.8492431640625,
-      "h": 40.7125244140625
-     },
-     "fontPx": 14.055098363657466,
-     "cssPx": 15.19,
-     "fontPxMax": 15.267223370661501,
-     "maxCss": 16.5,
-     "minLabel": "9:12 AM",
-     "read": true,
-     "color": "rgb(69, 76, 96)",
      "issues": []
     },
     {
@@ -34977,7 +34812,7 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageOpen claims by status, with who approved eachBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yet",
      "opacity": 1,
      "rect": {
-      "x": -407.6543273925781,
+      "x": -408.5206604003906,
       "y": 192.0511932373047,
       "w": 2419.199951171875,
       "h": 1154.7593994140625
@@ -34992,7 +34827,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-408,\"y\":192,\"w\":2419,\"h\":1155} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-409,\"y\":192,\"w\":2419,\"h\":1155} enters the 96px margin"
       }
      ]
     },
@@ -35002,7 +34837,7 @@
      "text": "Open claims by status, with who approved each",
      "opacity": 1,
      "rect": {
-      "x": 228.43389892578125,
+      "x": 227.56756591796875,
       "y": 497.8380432128906,
       "w": 1472.163818359375,
       "h": 72.25344848632812
@@ -35020,16 +34855,16 @@
      "kind": "ripple",
      "label": "",
      "text": "",
-     "opacity": 0.222222,
+     "opacity": 0.111111,
      "rect": {
-      "x": 572.4547119140625,
-      "y": 490.9071350097656,
-      "w": 86.1005859375,
-      "h": 86.10061645507812
+      "x": 571.526123046875,
+      "y": 490.8448791503906,
+      "w": 86.22509765625,
+      "h": 86.22512817382812
      },
-     "fontPx": 24.600167410714285,
+     "fontPx": 24.6357421875,
      "cssPx": 16,
-     "fontPxMax": 24.600167410714285,
+     "fontPxMax": 24.6357421875,
      "maxCss": 16,
      "minLabel": "",
      "read": false,
@@ -35042,7 +34877,7 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 611.3050537109375,
+      "x": 610.438720703125,
       "y": 531.857421875,
       "w": 50.4000244140625,
       "h": 61.60003662109375
@@ -35099,8 +34934,8 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageOpen claims by status, with who approved eachBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yet",
      "opacity": 1,
      "rect": {
-      "x": -418.4811096191406,
-      "y": 192.0511932373047,
+      "x": -298.3275451660156,
+      "y": 15.592636108398438,
       "w": 2419.199951171875,
       "h": 1154.7593994140625
      },
@@ -35114,7 +34949,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-418,\"y\":192,\"w\":2419,\"h\":1155} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-298,\"y\":16,\"w\":2419,\"h\":1155} enters the 96px margin"
       }
      ]
     },
@@ -35124,8 +34959,8 @@
      "text": "Open claims by status, with who approved each",
      "opacity": 1,
      "rect": {
-      "x": 217.60711669921875,
-      "y": 497.8380432128906,
+      "x": 337.76068115234375,
+      "y": 321.3794860839844,
       "w": 1472.163818359375,
       "h": 72.25344848632812
      },
@@ -35139,15 +34974,35 @@
      "issues": []
     },
     {
+     "kind": "ripple",
+     "label": "",
+     "text": "",
+     "opacity": 0.82162,
+     "rect": {
+      "x": 1698.609130859375,
+      "y": 408.1292724609375,
+      "w": 61.31396484375,
+      "h": 61.31414794921875
+     },
+     "fontPx": 17.518275669642858,
+     "cssPx": 16,
+     "fontPxMax": 17.518275669642858,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
+     "issues": []
+    },
+    {
      "kind": "cursor",
      "label": "",
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1593.800048828125,
-      "y": 614.8511962890625,
-      "w": 50.400146484375,
-      "h": 61.5999755859375
+      "x": 1725.486328125,
+      "y": 436.8963623046875,
+      "w": 45.35986328125,
+      "h": 55.44000244140625
      },
      "fontPx": 16,
      "cssPx": 16,
@@ -35198,11 +35053,11 @@
     {
      "kind": "frame",
      "label": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb",
-     "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageOpen claims by status, with who approved eachBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetOpen claims by statusStatusCountApproved byApproved18Emily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
+     "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageOpen claims by status, with who approved eachBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetOpen claims by statusStatusCountApproved byApproved18Emily CarterClaim CL-7305JamesEmily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
      "opacity": 1,
      "rect": {
-      "x": -118.21255493164062,
-      "y": -236.39857482910156,
+      "x": -113.35098266601562,
+      "y": -247.8562774658203,
       "w": 2419.199951171875,
       "h": 1154.7593994140625
      },
@@ -35216,7 +35071,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-118,\"y\":-236,\"w\":2419,\"h\":1155} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-113,\"y\":-248,\"w\":2419,\"h\":1155} enters the 96px margin"
       }
      ]
     },
@@ -35226,8 +35081,8 @@
      "text": "Open claims by status, with who approved each",
      "opacity": 1,
      "rect": {
-      "x": 517.8756713867188,
-      "y": 69.38827514648438,
+      "x": 522.7372436523438,
+      "y": 57.930572509765625,
       "w": 1472.163818359375,
       "h": 72.25344848632812
      },
@@ -35241,20 +35096,20 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "Pages prompt at {\"x\":518,\"y\":69,\"w\":1472,\"h\":72} enters the 96px margin"
+       "message": "Pages prompt at {\"x\":523,\"y\":58,\"w\":1472,\"h\":72} enters the 96px margin"
       }
      ]
     },
     {
      "kind": "uitext",
      "label": "Built page",
-     "text": "Open claims by statusStatusCountApproved byApproved18Emily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
-     "opacity": 0.983146,
+     "text": "Open claims by statusStatusCountApproved byApproved18Emily CarterClaim CL-7305JamesEmily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
+     "opacity": 1,
      "rect": {
-      "x": 489.490478515625,
-      "y": 280.04534912109375,
+      "x": 494.35205078125,
+      "y": 268.23968505859375,
       "w": 1527.64404296875,
-      "h": 606.412841796875
+      "h": 606.4127807617188
      },
      "fontPx": 19.59874409856023,
      "cssPx": 15.19,
@@ -35266,7 +35121,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "Built page at {\"x\":489,\"y\":280,\"w\":1528,\"h\":606} enters the 96px margin"
+       "message": "Built page at {\"x\":494,\"y\":268,\"w\":1528,\"h\":606} enters the 96px margin"
       }
      ]
     },
@@ -35274,12 +35129,32 @@
      "kind": "decision",
      "label": "",
      "text": "",
-     "opacity": 0.644148410886,
+     "opacity": 1,
      "rect": {
-      "x": 870.111328125,
-      "y": 417.4559326171875,
+      "x": 874.972900390625,
+      "y": 405.6502685546875,
       "w": 36.1265869140625,
-      "h": 36.12664794921875
+      "h": 36.12677001953125
+     },
+     "fontPx": 21.28888157435826,
+     "cssPx": 16.5,
+     "fontPxMax": 21.28888157435826,
+     "maxCss": 16.5,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(91, 100, 120)",
+     "issues": []
+    },
+    {
+     "kind": "decision",
+     "label": "",
+     "text": "",
+     "opacity": 1,
+     "rect": {
+      "x": 874.972900390625,
+      "y": 622.0274658203125,
+      "w": 36.1265869140625,
+      "h": 36.1268310546875
      },
      "fontPx": 21.28888157435826,
      "cssPx": 16.5,
@@ -35296,9 +35171,9 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1905.18115234375,
-      "y": 184.6951904296875,
-      "w": 50.39990234375,
+      "x": 1023.3614501953125,
+      "y": 76.7249755859375,
+      "w": 50.4000244140625,
       "h": 61.5999755859375
      },
      "fontPx": 16,
@@ -35311,7 +35186,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": " at {\"x\":1905,\"y\":185,\"w\":50,\"h\":62} enters the 96px margin"
+       "message": " at {\"x\":1023,\"y\":77,\"w\":50,\"h\":62} enters the 96px margin"
       }
      ]
     },
@@ -35372,17 +35247,17 @@
     {
      "kind": "frame",
      "label": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb",
-     "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageA weekly claims dashboard: volume, time to prepare, and flagsBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetOpen claims by statusStatusCountApproved byApproved18Emily CarterClaim CL-7305JamesEmily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
+     "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageOpen claims by status, with who approved eachBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetOpen claims by statusStatusCountApproved byApproved18Emily CarterClaim CL-7305JamesEmily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
      "opacity": 1,
      "rect": {
-      "x": -381.2007141113281,
-      "y": 150.89329528808594,
-      "w": 2419.199951171875,
-      "h": 1154.75927734375
+      "x": -122.09915161132812,
+      "y": -252.2304229736328,
+      "w": 2419.19970703125,
+      "h": 1154.7593994140625
      },
-     "fontPx": 21.265999570775914,
+     "fontPx": 21.26599742465549,
      "cssPx": 15.19,
-     "fontPxMax": 33.41799932550501,
+     "fontPxMax": 33.41799595303006,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
@@ -35390,18 +35265,18 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-381,\"y\":151,\"w\":2419,\"h\":1155} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-122,\"y\":-252,\"w\":2419,\"h\":1155} enters the 96px margin"
       }
      ]
     },
     {
      "kind": "uitext",
      "label": "Pages prompt",
-     "text": "A weekly claims dashboard: volume, time to prepare, and flags",
+     "text": "Open claims by status, with who approved each",
      "opacity": 1,
      "rect": {
-      "x": 254.88751220703125,
-      "y": 456.6801452636719,
+      "x": 513.9890747070312,
+      "y": 53.556427001953125,
       "w": 1472.163818359375,
       "h": 72.25344848632812
      },
@@ -35409,10 +35284,15 @@
      "cssPx": 17.5,
      "fontPxMax": 22.57919966808857,
      "maxCss": 17.5,
-     "minLabel": "A",
+     "minLabel": "O",
      "read": true,
      "color": "rgb(13, 18, 36)",
-     "issues": []
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "Pages prompt at {\"x\":514,\"y\":54,\"w\":1472,\"h\":72} enters the 96px margin"
+      }
+     ]
     },
     {
      "kind": "uitext",
@@ -35420,10 +35300,10 @@
      "text": "Open claims by statusStatusCountApproved byApproved18Emily CarterClaim CL-7305JamesEmily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
      "opacity": 1,
      "rect": {
-      "x": 226.5023193359375,
-      "y": 666.9892578125,
+      "x": 485.6038818359375,
+      "y": 263.86553955078125,
       "w": 1527.64404296875,
-      "h": 606.412841796875
+      "h": 606.4127807617188
      },
      "fontPx": 19.59874409856023,
      "cssPx": 15.19,
@@ -35435,7 +35315,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "Built page at {\"x\":227,\"y\":667,\"w\":1528,\"h\":606} enters the 96px margin"
+       "message": "Built page at {\"x\":486,\"y\":264,\"w\":1528,\"h\":606} enters the 96px margin"
       }
      ]
     },
@@ -35445,8 +35325,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 607.1231689453125,
-      "y": 804.3998413085938,
+      "x": 866.2247314453125,
+      "y": 401.276123046875,
       "w": 36.1265869140625,
       "h": 36.12677001953125
      },
@@ -35465,8 +35345,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 607.1231689453125,
-      "y": 1039.2236328125,
+      "x": 866.2247314453125,
+      "y": 636.099853515625,
       "w": 36.1265869140625,
       "h": 36.126708984375
      },
@@ -35480,35 +35360,15 @@
      "issues": []
     },
     {
-     "kind": "ripple",
-     "label": "",
-     "text": "",
-     "opacity": 0.888889,
-     "rect": {
-      "x": 617.564208984375,
-      "y": 468.4051513671875,
-      "w": 48.788818359375,
-      "h": 48.78875732421875
-     },
-     "fontPx": 13.939662388392858,
-     "cssPx": 16,
-     "fontPxMax": 13.939662388392858,
-     "maxCss": 16,
-     "minLabel": "",
-     "read": false,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
-    {
      "kind": "cursor",
      "label": "",
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 638.1785888671875,
-      "y": 490.9095458984375,
-      "w": 45.360107421875,
-      "h": 55.44000244140625
+      "x": 896.94775390625,
+      "y": 87.553955078125,
+      "w": 50.39990234375,
+      "h": 61.5999755859375
      },
      "fontPx": 16,
      "cssPx": 16,
@@ -35517,7 +35377,12 @@
      "minLabel": "",
      "read": false,
      "color": "rgb(0, 0, 0)",
-     "issues": []
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": " at {\"x\":897,\"y\":88,\"w\":50,\"h\":62} enters the 96px margin"
+      }
+     ]
     },
     {
      "kind": "fitcheck",
@@ -35579,7 +35444,7 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageA weekly claims dashboard: volume, time to prepare, and flagsBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetOpen claims by statusStatusCountApproved byApproved18Emily CarterClaim CL-7305JamesEmily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
      "opacity": 1,
      "rect": {
-      "x": -413.7385559082031,
+      "x": -412.3742980957031,
       "y": 192.0511932373047,
       "w": 2419.199951171875,
       "h": 1154.7593994140625
@@ -35594,7 +35459,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-414,\"y\":192,\"w\":2419,\"h\":1155} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-412,\"y\":192,\"w\":2419,\"h\":1155} enters the 96px margin"
       }
      ]
     },
@@ -35604,7 +35469,7 @@
      "text": "A weekly claims dashboard: volume, time to prepare, and flags",
      "opacity": 1,
      "rect": {
-      "x": 222.34967041015625,
+      "x": 223.71392822265625,
       "y": 497.8380432128906,
       "w": 1472.163818359375,
       "h": 72.25344848632812
@@ -35624,7 +35489,7 @@
      "text": "Open claims by statusStatusCountApproved byApproved18Emily CarterClaim CL-7305JamesEmily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
      "opacity": 1,
      "rect": {
-      "x": 193.9644775390625,
+      "x": 195.3287353515625,
       "y": 708.1471557617188,
       "w": 1527.64404296875,
       "h": 606.4127807617188
@@ -35639,7 +35504,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "Built page at {\"x\":194,\"y\":708,\"w\":1528,\"h\":606} enters the 96px margin"
+       "message": "Built page at {\"x\":195,\"y\":708,\"w\":1528,\"h\":606} enters the 96px margin"
       }
      ]
     },
@@ -35649,7 +35514,7 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 574.5853271484375,
+      "x": 575.9495849609375,
       "y": 845.5577392578125,
       "w": 36.1265869140625,
       "h": 36.12677001953125
@@ -35669,7 +35534,7 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 574.5853271484375,
+      "x": 575.9495849609375,
       "y": 1080.3814697265625,
       "w": 36.1265869140625,
       "h": 36.126708984375
@@ -35689,10 +35554,10 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1507.0614013671875,
-      "y": 626.7511596679688,
-      "w": 50.39990234375,
-      "h": 61.60003662109375
+      "x": 1431.010009765625,
+      "y": 633.8168334960938,
+      "w": 50.4000244140625,
+      "h": 61.5999755859375
      },
      "fontPx": 16,
      "cssPx": 16,
@@ -35760,17 +35625,17 @@
     {
      "kind": "frame",
      "label": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb",
-     "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageA weekly claims dashboard: volume, time to prepare, and flagsBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetOpen claims by statusStatusCountApproved byApproved18Emily CarterClaim CL-7305JamesEmily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
+     "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageA weekly claims dashboard: volume, time to prepare, and flagsBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetOpen claims by statusStatusCountApproved byApproved18Emily CarterClaim CL-7305JamesEmily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3DeclinedClaims this week38Time to prepare2 minFlags raised5Awaiting decision7Claims per dayMonTueWedThuFriSatSunFlags by typeDate mismatch2Missing invoice2Over limit1",
      "opacity": 1,
      "rect": {
-      "x": -423.8789367675781,
-      "y": 192.0511932373047,
-      "w": 2419.199951171875,
-      "h": 1154.7593994140625
+      "x": -442.5101318359375,
+      "y": -33.037567138671875,
+      "w": 2462.1923828125,
+      "h": 1175.281005859375
      },
-     "fontPx": 21.265999570775914,
+     "fontPx": 21.6439249391909,
      "cssPx": 15.19,
-     "fontPxMax": 33.41799932550501,
+     "fontPxMax": 34.011882047299984,
      "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
@@ -35778,7 +35643,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-424,\"y\":192,\"w\":2419,\"h\":1155} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-443,\"y\":-33,\"w\":2462,\"h\":1175} enters the 96px margin"
       }
      ]
     },
@@ -35788,14 +35653,14 @@
      "text": "A weekly claims dashboard: volume, time to prepare, and flags",
      "opacity": 1,
      "rect": {
-      "x": 212.20928955078125,
-      "y": 497.8380432128906,
-      "w": 1472.163818359375,
-      "h": 72.25344848632812
+      "x": 204.88226318359375,
+      "y": 278.18353271484375,
+      "w": 1498.326171875,
+      "h": 73.5374755859375
      },
-     "fontPx": 22.57919966808857,
+     "fontPx": 22.98046275881902,
      "cssPx": 17.5,
-     "fontPxMax": 22.57919966808857,
+     "fontPxMax": 22.98046275881902,
      "maxCss": 17.5,
      "minLabel": "A",
      "read": true,
@@ -35806,16 +35671,16 @@
      "kind": "uitext",
      "label": "Built page",
      "text": "Open claims by statusStatusCountApproved byApproved18Emily CarterClaim CL-7305JamesEmily CarterIn review7Not yet decidedWith agents12Not yet decidedDeclined3Emily Carter18Approved7In review12With agents3Declined",
-     "opacity": 1,
+     "opacity": 0.937497,
      "rect": {
-      "x": 183.8240966796875,
-      "y": 708.1471557617188,
-      "w": 1527.64404296875,
-      "h": 606.4127807617188
+      "x": 175.99261474609375,
+      "y": 492.2301025390625,
+      "w": 1554.792236328125,
+      "h": 617.1895751953125
      },
-     "fontPx": 19.59874409856023,
+     "fontPx": 19.94703891032451,
      "cssPx": 15.19,
-     "fontPxMax": 23.86943817138672,
+     "fontPxMax": 24.293628692626953,
      "maxCss": 18.5,
      "minLabel": "Status",
      "read": true,
@@ -35823,7 +35688,7 @@
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "Built page at {\"x\":184,\"y\":708,\"w\":1528,\"h\":606} enters the 96px margin"
+       "message": "Built page at {\"x\":176,\"y\":492,\"w\":1555,\"h\":617} enters the 96px margin"
       }
      ]
     },
@@ -35831,16 +35696,16 @@
      "kind": "decision",
      "label": "",
      "text": "",
-     "opacity": 1,
+     "opacity": 0.937497,
      "rect": {
-      "x": 564.4449462890625,
-      "y": 845.5577392578125,
-      "w": 36.1265869140625,
-      "h": 36.12677001953125
+      "x": 563.3775634765625,
+      "y": 632.0826416015625,
+      "w": 36.7686767578125,
+      "h": 36.76873779296875
      },
-     "fontPx": 21.28888157435826,
+     "fontPx": 21.66725594656808,
      "cssPx": 16.5,
-     "fontPxMax": 21.28888157435826,
+     "fontPxMax": 21.66725594656808,
      "maxCss": 16.5,
      "minLabel": "",
      "read": false,
@@ -35851,20 +35716,40 @@
      "kind": "decision",
      "label": "",
      "text": "",
-     "opacity": 1,
+     "opacity": 0.937497,
      "rect": {
-      "x": 564.4449462890625,
-      "y": 1080.3814697265625,
-      "w": 36.1265869140625,
-      "h": 36.126708984375
+      "x": 563.3775634765625,
+      "y": 871.0794067382812,
+      "w": 36.7686767578125,
+      "h": 36.768798828125
      },
-     "fontPx": 21.28888157435826,
+     "fontPx": 21.66725594656808,
      "cssPx": 16.5,
-     "fontPxMax": 21.28888157435826,
+     "fontPxMax": 21.66725594656808,
      "maxCss": 16.5,
      "minLabel": "",
      "read": false,
      "color": "rgb(91, 100, 120)",
+     "issues": []
+    },
+    {
+     "kind": "ripple",
+     "label": "",
+     "text": "",
+     "opacity": 0.768481,
+     "rect": {
+      "x": 1586.239990234375,
+      "y": 362.80035400390625,
+      "w": 69.753173828125,
+      "h": 69.7530517578125
+     },
+     "fontPx": 19.929478236607142,
+     "cssPx": 16,
+     "fontPxMax": 19.929478236607142,
+     "maxCss": 16,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(0, 0, 0)",
      "issues": []
     },
     {
@@ -35873,10 +35758,10 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1599.5147705078125,
-      "y": 613.1449584960938,
-      "w": 50.39990234375,
-      "h": 61.5999755859375
+      "x": 1617.26953125,
+      "y": 395.7532958984375,
+      "w": 46.166015625,
+      "h": 56.42523193359375
      },
      "fontPx": 16,
      "cssPx": 16,
@@ -35947,22 +35832,22 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageA weekly claims dashboard: volume, time to prepare, and flagsBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetClaims this week38Time to prepare2 minFlags raised5Awaiting decision7Claims per dayMonTueWedThuFriSatSunFlags by typeDate mismatch2Missing invoice2Over limit1",
      "opacity": 1,
      "rect": {
-      "x": -462.36846923828125,
-      "y": -155.40054321289062,
+      "x": -463.56536865234375,
+      "y": -269.5862121582031,
       "w": 2505.60009765625,
       "h": 1196.0008544921875
      },
      "fontPx": 22.02550085844817,
      "cssPx": 15.19,
-     "fontPxMax": 49.30000192147715,
-     "maxCss": 34,
+     "fontPxMax": 34.61150134898998,
+     "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
      "color": "rgb(13, 18, 36)",
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-462,\"y\":-155,\"w\":2506,\"h\":1196} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":-464,\"y\":-270,\"w\":2506,\"h\":1196} enters the 96px margin"
       }
      ]
     },
@@ -35972,8 +35857,8 @@
      "text": "A weekly claims dashboard: volume, time to prepare, and flags",
      "opacity": 1,
      "rect": {
-      "x": 196.437255859375,
-      "y": 161.30728149414062,
+      "x": 195.2403564453125,
+      "y": 47.121612548828125,
       "w": 1524.7413330078125,
       "h": 74.83395385742188
      },
@@ -35984,7 +35869,12 @@
      "minLabel": "A",
      "read": true,
      "color": "rgb(13, 18, 36)",
-     "issues": []
+     "issues": [
+      {
+       "guard": "SafeAreaGuard",
+       "message": "Pages prompt at {\"x\":195,\"y\":47,\"w\":1525,\"h\":75} enters the 96px margin"
+      }
+     ]
     },
     {
      "kind": "uitext",
@@ -35992,15 +35882,15 @@
      "text": "Claims this week38",
      "opacity": 1,
      "rect": {
-      "x": 167.03826904296875,
-      "y": 379.12744140625,
+      "x": 165.84136962890625,
+      "y": 264.9417724609375,
       "w": 375.50592041015625,
       "h": 149.6678466796875
      },
      "fontPx": 20.298700822171792,
      "cssPx": 15.19,
-     "fontPxMax": 45.434880049627445,
-     "maxCss": 34,
+     "fontPxMax": 31.403520034301323,
+     "maxCss": 23.5,
      "minLabel": "Claims this week",
      "read": true,
      "color": "rgb(91, 100, 120)",
@@ -36012,15 +35902,15 @@
      "text": "Time to prepare2 min",
      "opacity": 1,
      "rect": {
-      "x": 569.2705078125,
-      "y": 379.12744140625,
+      "x": 568.0736083984375,
+      "y": 264.9417724609375,
       "w": 375.506103515625,
       "h": 149.6678466796875
      },
      "fontPx": 20.298710720293037,
      "cssPx": 15.19,
-     "fontPxMax": 45.43490220473755,
-     "maxCss": 34,
+     "fontPxMax": 31.40353534739213,
+     "maxCss": 23.5,
      "minLabel": "Time to prepare",
      "read": true,
      "color": "rgb(91, 100, 120)",
@@ -36030,17 +35920,17 @@
      "kind": "uitext",
      "label": "KPI Flags raised",
      "text": "Flags raised5",
-     "opacity": 0.999998,
+     "opacity": 1,
      "rect": {
-      "x": 971.5028076171875,
-      "y": 379.12750244140625,
+      "x": 970.305908203125,
+      "y": 264.9417724609375,
       "w": 375.506103515625,
-      "h": 149.66778564453125
+      "h": 149.6678466796875
      },
      "fontPx": 20.298710720293037,
      "cssPx": 15.19,
-     "fontPxMax": 45.43490220473755,
-     "maxCss": 34,
+     "fontPxMax": 31.40353534739213,
+     "maxCss": 23.5,
      "minLabel": "Flags raised",
      "read": true,
      "color": "rgb(91, 100, 120)",
@@ -36050,17 +35940,17 @@
      "kind": "uitext",
      "label": "KPI Awaiting decision",
      "text": "Awaiting decision7",
-     "opacity": 0.844228,
+     "opacity": 1,
      "rect": {
-      "x": 1373.735107421875,
-      "y": 382.041748046875,
+      "x": 1372.5382080078125,
+      "y": 264.9417724609375,
       "w": 375.5059814453125,
-      "h": 149.66778564453125
+      "h": 149.6678466796875
      },
      "fontPx": 20.29870412154554,
      "cssPx": 15.19,
-     "fontPxMax": 45.43488743466415,
-     "maxCss": 34,
+     "fontPxMax": 31.403525138664925,
+     "maxCss": 23.5,
      "minLabel": "Awaiting decision",
      "read": true,
      "color": "rgb(91, 100, 120)",
@@ -36070,10 +35960,10 @@
      "kind": "uitext",
      "label": "Claims per day",
      "text": "Claims per dayMonTueWedThuFriSatSun",
-     "opacity": 0.266434,
+     "opacity": 1,
      "rect": {
-      "x": 167.03826904296875,
-      "y": 555.521728515625,
+      "x": 165.84136962890625,
+      "y": 441.3360595703125,
       "w": 1015.6032104492188,
       "h": 440.98553466796875
      },
@@ -36084,12 +35974,27 @@
      "minLabel": "Claims per day",
      "read": true,
      "color": "rgb(13, 18, 36)",
-     "issues": [
-      {
-       "guard": "SafeAreaGuard",
-       "message": "Claims per day at {\"x\":167,\"y\":556,\"w\":1016,\"h\":441} enters the 96px margin"
-      }
-     ]
+     "issues": []
+    },
+    {
+     "kind": "uitext",
+     "label": "Flags by type",
+     "text": "Flags by typeDate mismatch2Missing invoice2Over limit1",
+     "opacity": 1,
+     "rect": {
+      "x": 1208.1710205078125,
+      "y": 441.3360595703125,
+      "w": 539.8731689453125,
+      "h": 440.98553466796875
+     },
+     "fontPx": 22.049275464350636,
+     "cssPx": 16.5,
+     "fontPxMax": 22.049275464350636,
+     "maxCss": 16.5,
+     "minLabel": "Flags by type",
+     "read": true,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
     },
     {
      "kind": "cursor",
@@ -36097,8 +36002,8 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 1536.7510986328125,
-      "y": 843.0150756835938,
+      "x": 1536.00732421875,
+      "y": 735.7622680664062,
       "w": 52.199951171875,
       "h": 63.800048828125
      },
@@ -36112,8 +36017,28 @@
      "issues": []
     },
     {
+     "kind": "text",
+     "label": "StatusPill: Pages and dashboards on live data",
+     "text": "Pages and dashboards on live data",
+     "opacity": 0.879128,
+     "rect": {
+      "x": 685.046875,
+      "y": 913.6921997070312,
+      "w": 549.890625,
+      "h": 65
+     },
+     "fontPx": 27.994431818181816,
+     "cssPx": 28,
+     "fontPxMax": 27.994431818181816,
+     "maxCss": 28,
+     "minLabel": "",
+     "read": false,
+     "color": "rgb(13, 18, 36)",
+     "issues": []
+    },
+    {
      "kind": "fitcheck",
-     "label": "fit 4 boxes 8 texts 0 pairs",
+     "label": "fit 5 boxes 11 texts 0 pairs",
      "text": "",
      "opacity": 1,
      "rect": {
@@ -36154,22 +36079,22 @@
      "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageA weekly claims dashboard: volume, time to prepare, and flagsBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetClaims this week38Time to prepare2 minFlags raised5Awaiting decision7Claims per dayMonTueWedThuFriSatSunFlags by typeDate mismatch2Missing invoice2Over limit1",
      "opacity": 1,
      "rect": {
-      "x": 76.1270751953125,
-      "y": 118.05084228515625,
-      "w": 1758.0289306640625,
-      "h": 839.161865234375
+      "x": 44.578582763671875,
+      "y": 94.10838317871094,
+      "w": 1805.19384765625,
+      "h": 861.6751098632812
      },
-     "fontPx": 15.453969593048095,
+     "fontPx": 15.868573232580113,
      "cssPx": 15.19,
-     "fontPxMax": 34.59084701538086,
-     "maxCss": 34,
+     "fontPxMax": 24.936329365483036,
+     "maxCss": 23.87,
      "minLabel": "Northfield",
      "read": false,
      "color": "rgb(13, 18, 36)",
      "issues": [
       {
        "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":76,\"y\":118,\"w\":1758,\"h\":839} enters the 96px margin"
+       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":45,\"y\":94,\"w\":1805,\"h\":862} enters the 96px margin"
       }
      ]
     },
@@ -36179,14 +36104,14 @@
      "text": "A weekly claims dashboard: volume, time to prepare, and flags",
      "opacity": 1,
      "rect": {
-      "x": 538.3714599609375,
-      "y": 340.26568603515625,
-      "w": 1069.8192138671875,
-      "h": 52.506500244140625
+      "x": 519.2241821289062,
+      "y": 322.2848815917969,
+      "w": 1098.520751953125,
+      "h": 53.915130615234375
      },
-     "fontPx": 16.408270151337234,
+     "fontPx": 16.8484777906921,
      "cssPx": 17.5,
-     "fontPxMax": 16.408270151337234,
+     "fontPxMax": 16.8484777906921,
      "maxCss": 17.5,
      "minLabel": "A",
      "read": true,
@@ -36199,15 +36124,15 @@
      "text": "Claims this week38",
      "opacity": 1,
      "rect": {
-      "x": 517.7439575195312,
-      "y": 493.09698486328125,
-      "w": 263.46990966796875,
-      "h": 105.012939453125
+      "x": 498.04327392578125,
+      "y": 479.21636962890625,
+      "w": 270.53839111328125,
+      "h": 107.83026123046875
      },
-     "fontPx": 14.24237696746066,
+     "fontPx": 14.624477441319367,
      "cssPx": 15.19,
-     "fontPxMax": 31.878921454487323,
-     "maxCss": 34,
+     "fontPxMax": 22.625096765701457,
+     "maxCss": 23.5,
      "minLabel": "Claims this week",
      "read": true,
      "color": "rgb(91, 100, 120)",
@@ -36219,15 +36144,15 @@
      "text": "Time to prepare2 min",
      "opacity": 1,
      "rect": {
-      "x": 799.9661254882812,
-      "y": 493.09698486328125,
-      "w": 263.46990966796875,
-      "h": 105.012939453125
+      "x": 787.8370361328125,
+      "y": 479.21636962890625,
+      "w": 270.5384521484375,
+      "h": 107.83026123046875
      },
-     "fontPx": 14.24237696746066,
+     "fontPx": 14.624480740693116,
      "cssPx": 15.19,
-     "fontPxMax": 31.878921454487323,
-     "maxCss": 34,
+     "fontPxMax": 22.62510187006506,
+     "maxCss": 23.5,
      "minLabel": "Time to prepare",
      "read": true,
      "color": "rgb(91, 100, 120)",
@@ -36239,15 +36164,15 @@
      "text": "Flags raised5",
      "opacity": 1,
      "rect": {
-      "x": 1082.188232421875,
-      "y": 493.09698486328125,
-      "w": 263.47021484375,
-      "h": 105.012939453125
+      "x": 1077.6307373046875,
+      "y": 479.21636962890625,
+      "w": 270.53857421875,
+      "h": 107.83026123046875
      },
-     "fontPx": 14.242393464329403,
+     "fontPx": 14.624487339440613,
      "cssPx": 15.19,
-     "fontPxMax": 31.878958379670816,
-     "maxCss": 34,
+     "fontPxMax": 22.62511207879226,
+     "maxCss": 23.5,
      "minLabel": "Flags raised",
      "read": true,
      "color": "rgb(91, 100, 120)",
@@ -36259,15 +36184,15 @@
      "text": "Awaiting decision7",
      "opacity": 1,
      "rect": {
-      "x": 1364.41064453125,
-      "y": 493.09698486328125,
-      "w": 263.469970703125,
-      "h": 105.012939453125
+      "x": 1367.424560546875,
+      "y": 479.21636962890625,
+      "w": 270.538330078125,
+      "h": 107.83026123046875
      },
-     "fontPx": 14.242380266834408,
+     "fontPx": 14.624474141945619,
      "cssPx": 15.19,
-     "fontPxMax": 31.878928839524022,
-     "maxCss": 34,
+     "fontPxMax": 22.625091661337855,
+     "maxCss": 23.5,
      "minLabel": "Awaiting decision",
      "read": true,
      "color": "rgb(91, 100, 120)",
@@ -36279,14 +36204,14 @@
      "text": "Claims per dayMonTueWedThuFriSatSun",
      "opacity": 1,
      "rect": {
-      "x": 517.7439575195312,
-      "y": 616.8622436523438,
-      "w": 712.5878295898438,
-      "h": 309.4130859375
+      "x": 498.04327392578125,
+      "y": 606.3020629882812,
+      "w": 731.7052612304688,
+      "h": 317.714111328125
      },
-     "fontPx": 15.470656826621607,
+     "fontPx": 15.885706329345703,
      "cssPx": 16.5,
-     "fontPxMax": 15.470656826621607,
+     "fontPxMax": 15.885706329345703,
      "maxCss": 16.5,
      "minLabel": "Claims per day",
      "read": true,
@@ -36299,14 +36224,14 @@
      "text": "Flags by typeDate mismatch2Missing invoice2Over limit1",
      "opacity": 1,
      "rect": {
-      "x": 1249.083984375,
-      "y": 616.8622436523438,
-      "w": 378.796630859375,
-      "h": 309.4130859375
+      "x": 1249.00390625,
+      "y": 606.3020629882812,
+      "w": 388.958984375,
+      "h": 317.714111328125
      },
-     "fontPx": 15.470654478167543,
+     "fontPx": 15.885701094523514,
      "cssPx": 16.5,
-     "fontPxMax": 15.470654478167543,
+     "fontPxMax": 15.885701094523514,
      "maxCss": 16.5,
      "minLabel": "Flags by type",
      "read": true,
@@ -36319,10 +36244,10 @@
      "text": "",
      "opacity": 1,
      "rect": {
-      "x": 936.0974731445312,
-      "y": 545.9376831054688,
-      "w": 36.6256103515625,
-      "h": 44.7646484375
+      "x": 927.6205444335938,
+      "y": 533.4747314453125,
+      "w": 37.60821533203125,
+      "h": 45.965576171875
      },
      "fontPx": 16,
      "cssPx": 16,
@@ -36390,191 +36315,6 @@
     "h": 1080
    },
    "items": [
-    {
-     "kind": "frame",
-     "label": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb",
-     "text": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlaybookPagesExploreRecentsClaim CL-7211 summaryWeekly claims by statusEEmily CarterClaims OfficerWorkspace›PagesDocsPagesDescribe a page once. The copilot builds it, and from then on it opens straight away with live data.Build a pageA weekly claims dashboard: volume, time to prepare, and flagsBuild pageYour pagesAllPersonalGroupOrganizationNew pageSearch pages…No pages yetClaims this week38Time to prepare2 minFlags raised5Awaiting decision7Claims per dayMonTueWedThuFriSatSunFlags by typeDate mismatch2Missing invoice2Over limit1",
-     "opacity": 1,
-     "rect": {
-      "x": 90.5360336303711,
-      "y": 125.34634399414062,
-      "w": 1734.9119873046875,
-      "h": 828.12744140625
-     },
-     "fontPx": 15.250759888401738,
-     "cssPx": 15.19,
-     "fontPxMax": 34.13599975020797,
-     "maxCss": 34,
-     "minLabel": "Northfield",
-     "read": false,
-     "color": "rgb(13, 18, 36)",
-     "issues": [
-      {
-       "guard": "SafeAreaGuard",
-       "message": "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb at {\"x\":91,\"y\":125,\"w\":1735,\"h\":828} enters the 96px margin"
-      }
-     ]
-    },
-    {
-     "kind": "uitext",
-     "label": "Pages prompt",
-     "text": "A weekly claims dashboard: volume, time to prepare, and flags",
-     "opacity": 1,
-     "rect": {
-      "x": 546.7021484375,
-      "y": 344.6391906738281,
-      "w": 1055.751708984375,
-      "h": 51.816070556640625
-     },
-     "fontPx": 16.192510873993484,
-     "cssPx": 17.5,
-     "fontPxMax": 16.192510873993484,
-     "maxCss": 17.5,
-     "minLabel": "A",
-     "read": true,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "KPI Claims this week",
-     "text": "Claims this week38",
-     "opacity": 1,
-     "rect": {
-      "x": 526.3458862304688,
-      "y": 495.46087646484375,
-      "w": 260.0054931640625,
-      "h": 103.632080078125
-     },
-     "fontPx": 14.055101214100034,
-     "cssPx": 15.19,
-     "fontPxMax": 31.459739386399022,
-     "maxCss": 34,
-     "minLabel": "Claims this week",
-     "read": true,
-     "color": "rgb(91, 100, 120)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "KPI Time to prepare",
-     "text": "Time to prepare2 min",
-     "opacity": 1,
-     "rect": {
-      "x": 804.8570556640625,
-      "y": 495.46087646484375,
-      "w": 260.0054931640625,
-      "h": 103.632080078125
-     },
-     "fontPx": 14.055101214100034,
-     "cssPx": 15.19,
-     "fontPxMax": 31.459739386399022,
-     "maxCss": 34,
-     "minLabel": "Time to prepare",
-     "read": true,
-     "color": "rgb(91, 100, 120)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "KPI Flags raised",
-     "text": "Flags raised5",
-     "opacity": 1,
-     "rect": {
-      "x": 1083.3681640625,
-      "y": 495.46087646484375,
-      "w": 260.005615234375,
-      "h": 103.632080078125
-     },
-     "fontPx": 14.055107812847531,
-     "cssPx": 15.19,
-     "fontPxMax": 31.45975415647242,
-     "maxCss": 34,
-     "minLabel": "Flags raised",
-     "read": true,
-     "color": "rgb(91, 100, 120)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "KPI Awaiting decision",
-     "text": "Awaiting decision7",
-     "opacity": 1,
-     "rect": {
-      "x": 1361.87939453125,
-      "y": 495.46087646484375,
-      "w": 260.00537109375,
-      "h": 103.632080078125
-     },
-     "fontPx": 14.055094615352536,
-     "cssPx": 15.19,
-     "fontPxMax": 31.459724616325623,
-     "maxCss": 34,
-     "minLabel": "Awaiting decision",
-     "read": true,
-     "color": "rgb(91, 100, 120)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "Claims per day",
-     "text": "Claims per dayMonTueWedThuFriSatSun",
-     "opacity": 1,
-     "rect": {
-      "x": 526.3458862304688,
-      "y": 617.5986938476562,
-      "w": 703.2175903320312,
-      "h": 305.344482421875
-     },
-     "fontPx": 15.267224000629625,
-     "cssPx": 16.5,
-     "fontPxMax": 15.267224000629625,
-     "maxCss": 16.5,
-     "minLabel": "Claims per day",
-     "read": true,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "uitext",
-     "label": "Flags by type",
-     "text": "Flags by typeDate mismatch2Missing invoice2Over limit1",
-     "opacity": 1,
-     "rect": {
-      "x": 1248.0693359375,
-      "y": 617.5986938476562,
-      "w": 373.8154296875,
-      "h": 305.344482421875
-     },
-     "fontPx": 15.267214331296412,
-     "cssPx": 16.5,
-     "fontPxMax": 15.267214331296412,
-     "maxCss": 16.5,
-     "minLabel": "Flags by type",
-     "read": true,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "cursor",
-     "label": "",
-     "text": "",
-     "opacity": 1,
-     "rect": {
-      "x": 145.8031005859375,
-      "y": 410.67059326171875,
-      "w": 36.14399719238281,
-      "h": 44.175994873046875
-     },
-     "fontPx": 16,
-     "cssPx": 16,
-     "fontPxMax": 16,
-     "maxCss": 16,
-     "minLabel": "",
-     "read": false,
-     "color": "rgb(0, 0, 0)",
-     "issues": []
-    },
     {
      "kind": "fitcheck",
      "label": "fit 5 boxes 11 texts 0 pairs",
@@ -37820,116 +37560,8 @@
      "issues": []
     },
     {
-     "kind": "text",
-     "label": "Review pack",
-     "text": "Review pack, Claim CL-7305Intake summaryPolicy check, Section 4.2Evidence check, 1 flagSettlement draft",
-     "opacity": 0.384676,
-     "rect": {
-      "x": 425.359375,
-      "y": 200.703125,
-      "w": 716,
-      "h": 295
-     },
-     "fontPx": 28,
-     "cssPx": 28,
-     "fontPxMax": 28,
-     "maxCss": 28,
-     "minLabel": "Review pack, Claim CL-7305",
-     "read": false,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Chip 1 place",
-     "minPx": 24,
-     "text": "1 place",
-     "opacity": 0.384676,
-     "rect": {
-      "x": 425.359375,
-      "y": 924.046875,
-      "w": 116.703125,
-      "h": 48
-     },
-     "fontPx": 23.939102564102562,
-     "cssPx": 24,
-     "fontPxMax": 23.939102564102562,
-     "maxCss": 24,
-     "minLabel": "",
-     "read": false,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Chip 0 tabs",
-     "minPx": 24,
-     "text": "0 tabs",
-     "opacity": 0.384676,
-     "rect": {
-      "x": 554.0625,
-      "y": 924.046875,
-      "w": 111.234375,
-      "h": 48
-     },
-     "fontPx": 24.050675675675674,
-     "cssPx": 24,
-     "fontPxMax": 24.050675675675674,
-     "maxCss": 24,
-     "minLabel": "",
-     "read": false,
-     "color": "rgb(13, 18, 36)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "Chip Ready for review",
-     "minPx": 24,
-     "text": "Ready for review",
-     "opacity": 0.384676,
-     "rect": {
-      "x": 677.296875,
-      "y": 924.046875,
-      "w": 230.578125,
-      "h": 48
-     },
-     "fontPx": 23.95616883116883,
-     "cssPx": 24,
-     "fontPxMax": 23.95616883116883,
-     "maxCss": 24,
-     "minLabel": "",
-     "read": false,
-     "color": "rgb(75, 52, 199)",
-     "issues": []
-    },
-    {
-     "kind": "text",
-     "label": "With Space stopwatch",
-     "text": "2 min 4 s",
-     "opacity": 0.384676,
-     "rect": {
-      "x": 1626.640625,
-      "y": 126.703125,
-      "w": 214.1875,
-      "h": 64
-     },
-     "fontPx": 32.02803738317757,
-     "cssPx": 32,
-     "fontPxMax": 32.02803738317757,
-     "maxCss": 32,
-     "minLabel": "",
-     "read": false,
-     "color": "rgb(30, 122, 58)",
-     "issues": [
-      {
-       "guard": "SafeAreaGuard",
-       "message": "With Space stopwatch at {\"x\":1627,\"y\":127,\"w\":214,\"h\":64} enters the 96px margin"
-      }
-     ]
-    },
-    {
      "kind": "fitcheck",
-     "label": "fit 1 boxes 5 texts 0 pairs",
+     "label": "fit 0 boxes 0 texts 0 pairs",
      "text": "",
      "opacity": 1,
      "rect": {
