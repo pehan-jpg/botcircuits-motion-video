@@ -144,6 +144,10 @@ def main(paths):
                     if it.get("read"):
                         ui_max[key] = max(ui_max.get(key, 0), it.get("fontPxMax", it["fontPx"]) if presented else 0)
                     problems += [f"{where}: {m}" for m in check_copy(it.get("text", ""))]
+                if it["kind"] == "person":
+                    if entry["scene"] == "Scene01":
+                        problems.append(f'{where}: People check: {it["label"]} on screen (no people allowed in Scene 1)')
+                    continue
                 if it["kind"] not in ("text", "uitext"):
                     continue
                 if it["kind"] == "text":
@@ -151,7 +155,7 @@ def main(paths):
                 if not presented:
                     continue
                 # 28px applies to FeatureTitle, overlay pills and other overlay text (kind "text").
-                if it["kind"] == "text" and it["fontPx"] < MIN_PX - 0.1:  # layout widths are whole pixels, so allow rounding
+                if it["kind"] == "text" and it["fontPx"] < it.get("minPx", MIN_PX) - 0.1:  # layout widths are whole pixels, so allow rounding
                     problems.append(f'{where}: ReadabilityGuard: "{it["label"]}" is {it["fontPx"]}px')
                 if bg is None:
                     continue

@@ -37,7 +37,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
       const k = base.width ? base.width / 1920 : 1;
       const nodes = Array.from(
         root.querySelectorAll<HTMLElement>("[data-guard]"),
-      );
+      ).filter((el) => el.dataset.guard === "brand" || el.dataset.guard === "decision" || !el.closest("[data-guard-bg]"));
       const items = nodes
         .map((el) => {
           let op = 1;
@@ -97,7 +97,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
             h: rect.height / k,
           };
           const issues = [
-            ...(kind === "agent" || kind === "decision" ? [] : checkSafeArea(r, label)),
+            ...(kind === "agent" || kind === "decision" || (kind === "brand" && el.closest("[data-guard-bg]")) ? [] : checkSafeArea(r, label)),
             ...(kind === "logo"
               ? checkLogo(
                   (el.querySelector("img")?.getBoundingClientRect().height ??
@@ -113,6 +113,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
             kind,
             label,
             ...(kind === "agent" ? { zoom: Number(el.dataset.zoom ?? 1), morph: el.dataset.morph === "1" } : {}),
+            ...(el.dataset.guardMin ? { minPx: Number(el.dataset.guardMin) } : {}),
             text: (el.textContent ?? "").trim(),
             backing: el.dataset.guardBacking,
             opacity: op,
@@ -186,6 +187,9 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
         color: "",
         issues: fitIssues,
       });
+      // People check: any figure, avatar or person glyph rendered in this frame.
+      const people = root.querySelectorAll("[data-person]").length;
+      if (people) items.push({ kind: "person", label: `${people} person element(s)`, text: "", opacity: 1, rect: { x: 0, y: 0, w: 0, h: 0 }, fontPx: 0, cssPx: null, read: false, color: "", issues: [] } as unknown as (typeof items)[number]);
       // eslint-disable-next-line no-console
       console.log(
         `[guard] ${JSON.stringify({ scene, frame, base: { w: base.width, h: base.height }, items })}`,

@@ -76,24 +76,7 @@ const at = (scene: SceneId, t: number) => sceneById(scene).start + t;
  * Scene code reads them through `local(event, sceneId)`.
  */
 export const EVENTS = {
-  // Scene 1, Problem
-  headline_work_moves: at("S01", 0.1),
-  claim_lands: at("S01", 0.35),
-  hop_sheet: at("S01", 1.3),
-  hop_chat: at("S01", 2.1),
-  hop_pdf: at("S01", 2.9),
-  chip_who_has_it: at("S01", 3.0),
-  chip_who_approved: at("S01", 3.6),
-  chip_which_version: at("S01", 4.2),
-  card_to_orb: at("S01", 5.0),
-  headline_who_checks: at("S01", 6.0),
-  stamp_sent: at("S01", 7.0),
-  stamp_paid: at("S01", 7.6),
-  empty_slot: at("S01", 8.2),
-  strays_fade: at("S01", 10.0),
-  line_no_record: at("S01", 10.4),
-  line_no_one: at("S01", 11.7),
-  orb_to_centre: at("S01", 13.2),
+  // Scene 1 keeps its beats in Scene01Problem.tsx (S1).
   // Scene 2, Intro
   colour_returns: at("S02", 0),
   orb_dissolve: at("S02", 0),

@@ -74,7 +74,7 @@ export const cursorClickReport = (keys: CursorKey[], fps = 60) =>
 const TIP = { x: 3, y: 1.5 };
 
 /** Standard arrow cursor moving on eased, gently curved paths, with a soft neutral click ripple centred on the hotspot. */
-export const Cursor: React.FC<{ keys: CursorKey[]; opacity?: number }> = ({ keys, opacity = 1 }) => {
+export const Cursor: React.FC<{ keys: CursorKey[]; opacity?: number; ripple?: "violet" | "neutral" }> = ({ keys, opacity = 1, ripple = "violet" }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;
@@ -95,8 +95,8 @@ export const Cursor: React.FC<{ keys: CursorKey[]; opacity?: number }> = ({ keys
             width: size,
             height: size,
             borderRadius: "50%",
-            border: "2px solid rgba(124,98,240,0.45)",
-            background: "rgba(124,98,240,0.25)",
+            border: ripple === "neutral" ? "2px solid rgba(13,18,36,0.28)" : "2px solid rgba(124,98,240,0.45)",
+            background: ripple === "neutral" ? "rgba(13,18,36,0.12)" : "rgba(124,98,240,0.25)",
             transform: `scale(${0.25 + EASE(p) * 0.85})`,
             opacity: (1 - p) * opacity,
           }}

@@ -21,7 +21,8 @@ agent workspace where agents prepare and people decide.
   `logo.png` (recomposition verified to 0 differing pixels) and the finished
   frame shows the untouched `logo.png`.
 - Third party logos: `public/logos/` (Gmail, Google Drive, Google Sheets,
-  Slack), unmodified, sources in `public/logos/SOURCES.md`. They are third party
+  Slack), unmodified, sources in `public/logos/SOURCES.md` (also used in the
+  Scene 1 window headers). They are third party
   copies (Wikimedia Commons) pending verification against official media kits.
   Never redraw a real logo. Tag them `data-guard="brand"`; the PDF icon is an
   original drawing (`PdfIcon`).
@@ -258,15 +259,35 @@ table **[S2]**. Evidence: 3 photos and 1 plumber invoice. One flag: the invoice
 date does not match the reported date of loss, so a person should check it.
 State it as a flag, never as an accusation.
 
-### Scene 1, Problem (0:00 to 0:15), built
-ProblemBackdrop. Claim card lands in the Inbox, hops to Sheet, Chat and PDF,
-leaving a dashed stray copy (v1, v2, v2 final, v3) at each hop. Tab icons at
-35px: Gmail, Google Sheets, Slack logos and an original PDF icon. Headline "Work
-moves between people, tools and inboxes." Chips one at a time. Row and orb group
-scaled 1.25x, centred. The card morphs into the SpaceOrb (ticks, pulse); "Sent"
-and "Paid" stamp themselves; a dashed empty slot shows where a person would be
-(grey, no amber). Headline "AI can do the work. But who checks it?". "No record
-of who decided." then "No one deciding." The orb ends centred at 187.5px.
+### Scene 1, One claim, five places (0:00 to 0:15), built
+An employee's screen; **no people on screen** (no figures, avatars, initials,
+silhouettes or photos; the cursor is the only actor; names only as plain text
+inside content). ProblemBackdrop, Plus Jakarta Sans only, light theme, black
+arrow cursor with a neutral ripple. Windows (`components/desktop/Desktop.tsx`)
+are white, 640x420, radius 20, official logos in the header (Gmail, Google
+Drive, Google Sheets, Slack), cascading like a desktop; window text 18px or
+more at 1x. HUD: task card top left ("Prepare claim CL-7305 for review", empty
+checkbox) and chips top right ("Open tabs", clock), 24px.
+- 0 to 2.2s "One claim to review." word by word at 88px; 2.2 to 3.4s it
+  glides to the top at 64px, the task card and chips rise in (tabs 1, 9:04 AM).
+- 3.4s Gmail: the claim email with photo_1 to 3 (original kitchen thumbnails)
+  and invoice.pdf, dragged to Downloads. 5.0s Drive: "home policy" typed, three
+  near identical results, the 2026 file opens, scrolls to page 12, Section 4.2
+  highlighted; the line becomes "The information is everywhere." (6.25s).
+  7.0s Sheets: the row "Home, escape of water, $250" found and highlighted.
+  8.6s Slack: the question typed and sent in #claims, "Someone is typing", no
+  reply, unread badge counts to 12. Tabs and clock climb to 14 and 11:48 AM.
+- 10.0s pull back to the whole cascade; the Review summary appears at the back
+  with two lines and an empty rest.
+- 11.2s the SpaceOrb (300px, ticks, pulse) rises; the windows slide and shrink
+  into it; tabs count down to 0; the clock fades; chips "Claim read", "Policy
+  checked", "Evidence matched"; "What if agents did the gathering?" (11.3s).
+- 13.9s the HUD fades and blurs out; the orb settles to 187.5px at the centre,
+  exactly Scene 2's first frame.
+Camera follows the cursor with symmetric eases up to 1.4x, framed so the top
+line never covers a window header; a check keeps every visible window's move
+under 14px per frame. The people check (`data-person` markers on figures and
+person glyphs) fails Scene 1 if any appear.
 
 ### Scene 2, Intro (0:15 to 0:20), built
 First frame equals Scene 1's last. Over the first 1s the orb dissolves (scale

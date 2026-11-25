@@ -5,7 +5,8 @@
 import { BUILT_FRAMES, BUILT_SCENES, SCENES, TOTAL_SECONDS } from "../src/timeline";
 import { checkReadability, type GuardIssue, type TextBeatSpec } from "../src/lib/guards";
 import { readHoldSeconds } from "../src/theme";
-import { SCENE01_TEXT } from "../src/scenes/Scene01Problem";
+import { S1, SCENE01_TEXT, S1_LINE3_HOLD, s1CamAt, S1_CURSOR } from "../src/scenes/Scene01Problem";
+import { WINDOWS, WIN } from "../src/components/desktop/Desktop";
 import { SCENE02_TEXT, SCENE02_SETTLED } from "../src/scenes/Scene02Intro";
 import { SCENE03_TEXT, S3_CURSOR } from "../src/scenes/Scene03Chat";
 import { BUBBLE_HOLDS, SCENE04_TEXT, S4_CURSOR } from "../src/scenes/Scene04Agents";
@@ -52,6 +53,39 @@ for (const b of BUBBLE_HOLDS) {
 const s11Hold = 7 - S11_LOCKUP_READY;
 console.log(`\nScene 11 lockup complete at ${S11_LOCKUP_READY.toFixed(2)}s, hold ${s11Hold.toFixed(2)}s (needs at least 1.5s)`);
 if (s11Hold < 1.5) issues.push({ guard: "timeline", message: "Scene 11 lockup hold is under 1.5s" });
+
+// Scene 1 motion: window centres through the camera, every frame; nothing may jump more than 14px per frame.
+{
+  const fps = 60;
+  let worst = 0;
+  let worstT = 0;
+  // Windows on screen at a time: opened and not yet gathered into the orb.
+  const pts = (Object.keys(WINDOWS) as (keyof typeof WINDOWS)[]).map((k) => ({ x: WINDOWS[k].x + WIN.w / 2, y: WINDOWS[k].y + WIN.h / 2, from: (S1 as unknown as Record<string, number>)[k], to: S1.gather[k] + S1.gatherLen }));
+  const screen = (t: number, p: { x: number; y: number }) => {
+    const c = s1CamAt(t);
+    return { x: 960 + c.z * (p.x - c.x), y: 540 + c.z * (p.y - c.y) };
+  };
+  for (let f = 1; f < 15 * fps; f++) {
+    for (const p of pts) {
+      if (f / fps < p.from || f / fps > p.to) continue;
+      const a = screen((f - 1) / fps, p);
+      const b = screen(f / fps, p);
+      const d = Math.hypot(b.x - a.x, b.y - a.y);
+      if (d > worst) {
+        worst = d;
+        worstT = f / fps;
+      }
+    }
+  }
+  console.log(`\nScene 1 camera: largest move of a window centre between frames ${worst.toFixed(2)}px at ${worstT.toFixed(2)}s (limit 14px)`);
+  if (worst > 14) issues.push({ guard: "motion", message: `Scene 1 camera moves a window ${worst.toFixed(1)}px in one frame at ${worstT.toFixed(2)}s` });
+  console.log(`Scene 1 closing line holds ${S1_LINE3_HOLD.toFixed(2)}s once revealed (brief: at least 1.4s)`);
+  if (S1_LINE3_HOLD < 1.4) issues.push({ guard: "timeline", message: "Scene 1 closing line holds under 1.4s" });
+  for (const c of cursorClickReport(S1_CURSOR)) {
+    console.log(`  Scene 1 click at ${c.t.toFixed(2)}s: worst offset ${c.worst.toFixed(2)}px`);
+    if (c.worst > 1) issues.push({ guard: "cursor", message: `Scene 1 click at ${c.t.toFixed(2)}s drifts ${c.worst.toFixed(1)}px from its ripple` });
+  }
+}
 
 const s2Len = 5;
 const hold = s2Len - SCENE02_SETTLED;

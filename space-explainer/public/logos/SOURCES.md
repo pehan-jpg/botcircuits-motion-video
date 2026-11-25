@@ -22,3 +22,5 @@ The PDF file icon used in Scene 1 is drawn originally in
 `src/components/PdfIcon.tsx` (a red document with a "PDF" mark, no Adobe branding).
 
 Trademarks belong to their owners. Their use here shows integrations only.
+
+Scene 1 (2026 rebuild) uses the same four files, unmodified, in its window headers. Still third party copies (Wikimedia Commons) to verify against the official media kits.

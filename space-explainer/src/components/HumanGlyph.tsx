@@ -13,6 +13,7 @@ export const HumanGlyph: React.FC<{
   return (
     <div
       data-guard="decision"
+      data-person="glyph"
       style={{
         width: disc,
         height: disc,

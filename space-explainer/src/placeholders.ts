@@ -55,6 +55,55 @@ export const PLACEHOLDERS = {
     "does not match the date of loss.",
   ],
   sourceCardTitle: "Home Policy Wording 2026, p. 12",
+  /** Scene 1: one claim, five places (an employee's screen). */
+  scene1: {
+    lines: ["One claim to review.", "The information is everywhere.", "What if agents did the gathering?"],
+    task: "Prepare claim CL-7305 for review",
+    clocks: ["9:04 AM", "9:22 AM", "9:47 AM", "10:12 AM", "10:41 AM", "11:20 AM", "11:48 AM"],
+    gmail: {
+      subject: "Claim CL-7305, kitchen water damage",
+      sender: "James Whitfield",
+      body: "My kitchen flooded overnight. Photos and the plumber invoice are attached.",
+      attachments: ["photo_1.jpg", "photo_2.jpg", "photo_3.jpg", "invoice.pdf"],
+    },
+    downloads: "Downloads",
+    drive: {
+      query: "home policy",
+      files: [
+        { name: "Home Policy Wording 2025.pdf", meta: "Modified Jan 12, 2025" },
+        { name: "Home Policy Wording 2026.pdf", meta: "Modified Jan 9, 2026" },
+        { name: "Home Policy Wording 2026 (copy).pdf", meta: "Modified Feb 3, 2026" },
+      ],
+      page: "Page 12 of 40",
+      heading: "Section 4.2 Accidental water damage",
+      text: ["We cover sudden and accidental escape of water", "from a fixed pipe or appliance in your home."],
+    },
+    sheets: {
+      title: "Excess and limits",
+      header: ["Cover", "Peril", "Excess"],
+      rows: [
+        ["Home", "storm", "$500"],
+        ["Home", "escape of water", "$250"],
+        ["Home", "theft", "$300"],
+        ["Contents", "accidental damage", "$100"],
+        ["Motor", "glass", "$75"],
+      ],
+      match: 1,
+    },
+    slack: {
+      channel: "#claims",
+      earlier: "Reminder: the excess table moved to the shared drive.",
+      message: "Has anyone seen the invoice for CL-7305?",
+      you: "You",
+      typing: "Someone is typing",
+      unread: 12,
+    },
+    summary: {
+      title: "Review summary",
+      lines: ["Claim CL-7305, kitchen water damage.", "Policy: Home Policy Wording 2026, Section 4.2."],
+    },
+    chips: ["Claim read", "Policy checked", "Evidence matched"],
+  },
   /** Scene 3, turn 2: an action request. */
   chat2: {
     prompt: "Send me the weekly claims by status on Mondays at 8, and tell me in Slack when a review is waiting for me.",

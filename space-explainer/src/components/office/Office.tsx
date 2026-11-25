@@ -173,7 +173,7 @@ export const Person: React.FC<{ look: Look; pose: Pose }> = ({ look, pose }) => 
   const turn = inWave ? 2.4 * up : 0;
   const back = facing === "back";
   return (
-    <g transform={`scale(${pose.mirror ? -1 : 1} 1)`}>
+    <g data-person="figure" transform={`scale(${pose.mirror ? -1 : 1} 1)`}>
       <ellipse cx={0} cy={0} rx={15} ry={4.5} fill="rgba(0,0,0,0.16)" />
       {/* Legs swing about the hips */}
       <g transform={`rotate(${legA} -4.5 -27)`}>
