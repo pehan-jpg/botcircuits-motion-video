@@ -10,7 +10,7 @@ export const nat = (x: number, y: number) => ({ x: PRODUCT_RECT.x + x * PRODUCT_
 /** Centre of the product frame on screen. */
 export const FRAME_CENTRE = { x: PRODUCT_RECT.x + PRODUCT_RECT.w / 2, y: PRODUCT_RECT.y + PRODUCT_RECT.h / 2 };
 
-/** The dark app window: 24px radius, soft shadow. Children are drawn in native units (1875 x 895). */
+/** The light app window (white rounded card): 24px radius, soft shadow. Children are drawn in native units (1875 x 895). */
 export const ProductWindow: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div
     data-guard="frame"
@@ -20,7 +20,6 @@ export const ProductWindow: React.FC<{ children: React.ReactNode }> = ({ childre
       borderRadius: PRODUCT_RECT.radius,
       background: UI.bg,
       boxShadow: PRODUCT_FRAME.shadow,
-      border: "1px solid rgba(255,255,255,0.08)",
       overflow: "hidden",
     }}
   >

@@ -11,10 +11,10 @@ import { READ } from "./common";
 /** Menu items, from reference/ui/06-playbook-add-step.png. SEND and WAIT use a lime tone: amber is reserved for the human decision (REVIEW). */
 type Tone = "grey" | "green" | "lime" | "amber";
 const TONES: Record<Tone, { bg: string; fg: string }> = {
-  grey: { bg: "#3a3a3a", fg: "#e6e6e6" },
-  green: { bg: "#1F3A27", fg: "#5DD08A" },
-  lime: { bg: "#30351A", fg: "#C9D86A" },
-  amber: { bg: "#3E3015", fg: COLOR.amber },
+  grey: { bg: "#E7E9F2", fg: "#0D1224" },
+  green: { bg: "#E7F6EA", fg: "#5DD08A" },
+  lime: { bg: "#ECE8FF", fg: "#4B34C7" },
+  amber: { bg: "#FFF1DC", fg: COLOR.amber },
 };
 export const MENU: { section?: string; badge: string; tone: Tone; desc: string }[] = [
   { section: "INPUT", badge: "ASK", tone: "grey", desc: "Ask the user and store the answer: text, bu…" },
@@ -78,7 +78,7 @@ const Badge: React.FC<{ label: string; tone: Tone }> = ({ label, tone }) => (
 );
 
 const ToolButton: React.FC<{ icon: React.ReactNode; label: string; primary?: boolean; dim?: boolean; pressed?: number }> = ({ icon, label, primary, dim, pressed = 0 }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 8, height: 36, padding: "0 13px", borderRadius: 9, border: `1px solid ${primary ? "transparent" : UI.line}`, background: primary ? "#FFFFFF" : pressed > 0 ? "#333" : "transparent", color: primary ? "#111" : dim ? "#8a8a8a" : UI.text, fontFamily: FONT.sans, fontSize: UIN.button, fontWeight: 500, whiteSpace: "nowrap" }}>
+  <div style={{ display: "flex", alignItems: "center", gap: 8, height: 36, padding: "0 13px", borderRadius: 9, border: `1px solid ${primary ? "transparent" : UI.line}`, background: primary ? "#FFFFFF" : pressed > 0 ? "#E7E9F2" : "transparent", color: primary ? "#111" : dim ? "#5B6478" : UI.text, fontFamily: FONT.sans, fontSize: UIN.button, fontWeight: 500, whiteSpace: "nowrap" }}>
     {icon}
     {label}
   </div>
@@ -88,47 +88,47 @@ export const PlaybookPage: React.FC<{ s: PlaybookState }> = ({ s }) => (
   <div style={{ position: "absolute", inset: 0, background: UI.bg }}>
     <Sidebar active="playbook" />
     <TopBar page="Playbook" bellBadge={s.bellBadge ?? 0} bellPulse={s.bellPulse ?? 0} />
-    <div style={{ position: "absolute", left: 455, top: 66, display: "flex", alignItems: "center", gap: 8, fontFamily: FONT.sans, fontSize: UIN.button, color: "#bdbdbd" }}>
-      <ArrowLeft size={15} color="#bdbdbd" />
+    <div style={{ position: "absolute", left: 455, top: 66, display: "flex", alignItems: "center", gap: 8, fontFamily: FONT.sans, fontSize: UIN.button, color: "#5B6478" }}>
+      <ArrowLeft size={15} color="#5B6478" />
       Playbooks
     </div>
     <div style={{ position: "absolute", left: 455, top: 98, display: "flex", alignItems: "center", gap: 10 }}>
       <div style={{ fontFamily: FONT.sans, fontSize: UIN.pageTitle, fontWeight: 600, color: UI.text, whiteSpace: "nowrap" }}>{P.playbook.name}</div>
-      <span style={{ padding: "1px 9px", borderRadius: 999, background: "#333", color: "#d0d0d0", fontFamily: FONT.sans, fontSize: UIN.helper }}>draft</span>
+      <span style={{ padding: "1px 9px", borderRadius: 999, background: "#E7E9F2", color: "#5B6478", fontFamily: FONT.sans, fontSize: UIN.helper }}>draft</span>
       <span style={{ padding: "1px 9px", borderRadius: 999, background: "#3A4A1E", color: "#E6F0C8", fontFamily: FONT.sans, fontSize: UIN.helper, fontWeight: 600 }}>Personal</span>
-      <span style={{ fontFamily: FONT.sans, fontSize: UIN.helper, color: "#bdbdbd" }}>v1</span>
+      <span style={{ fontFamily: FONT.sans, fontSize: UIN.helper, color: "#5B6478" }}>v1</span>
     </div>
     <div style={{ position: "absolute", left: 900, top: 98, display: "flex", gap: 8 }}>
       <div style={{ display: "flex", gap: 2, padding: 3, borderRadius: 10, border: `1px solid ${UI.line}` }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "4px 12px", borderRadius: 8, background: "#333", fontFamily: FONT.sans, fontSize: UIN.button, color: UI.text }}>
-          <ListOrdered size={15} color="#e6e6e6" />
+        <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "4px 12px", borderRadius: 8, background: "#E7E9F2", fontFamily: FONT.sans, fontSize: UIN.button, color: UI.text }}>
+          <ListOrdered size={15} color="#0D1224" />
           Sequence
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "4px 12px", fontFamily: FONT.sans, fontSize: UIN.button, color: "#cfcfcf" }}>
-          <GitBranch size={15} color="#cfcfcf" />
+        <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "4px 12px", fontFamily: FONT.sans, fontSize: UIN.button, color: "#5B6478" }}>
+          <GitBranch size={15} color="#5B6478" />
           Graph
         </div>
       </div>
-      <ToolButton icon={<ShieldCheck size={15} color="#e6e6e6" />} label="Check" />
-      <ToolButton icon={<Play size={15} color="#e6e6e6" />} label="Run playbook" pressed={s.runPressed} />
-      <ToolButton icon={<Share2 size={15} color="#e6e6e6" />} label="Share" />
-      <ToolButton icon={<Braces size={15} color="#e6e6e6" />} label="Save draft" />
-      <ToolButton icon={<Save size={15} color="#111" />} label="Save & activate" primary />
+      <ToolButton icon={<ShieldCheck size={15} color="#0D1224" />} label="Check" />
+      <ToolButton icon={<Play size={15} color="#0D1224" />} label="Run playbook" pressed={s.runPressed} />
+      <ToolButton icon={<Share2 size={15} color="#0D1224" />} label="Share" />
+      <ToolButton icon={<Braces size={15} color="#0D1224" />} label="Save draft" />
+      <ToolButton icon={<Save size={15} color={UI.primaryText} />} label="Save & activate" primary />
     </div>
 
     {/* + Add step and its menu */}
-    <div style={{ position: "absolute", left: ADD_STEP.x, top: ADD_STEP.y, display: "flex", alignItems: "center", gap: 6, padding: "3px 10px", borderRadius: 7, background: s.addPressed > 0 ? "#3a3a3a" : "#2c2c2c", fontFamily: FONT.sans, fontSize: UIN.helper, color: UI.text, whiteSpace: "nowrap" }}>
-      <Plus size={14} color="#e6e6e6" />
+    <div style={{ position: "absolute", left: ADD_STEP.x, top: ADD_STEP.y, display: "flex", alignItems: "center", gap: 6, padding: "3px 10px", borderRadius: 7, background: s.addPressed > 0 ? "#E7E9F2" : "#EEF0FA", fontFamily: FONT.sans, fontSize: UIN.helper, color: UI.text, whiteSpace: "nowrap" }}>
+      <Plus size={14} color="#0D1224" />
       Add step
     </div>
     {s.menu.open > 0 ? (
-      <div style={{ position: "absolute", left: MENU_BOX.x, top: MENU_BOX.y, width: MENU_BOX.w, padding: "8px 12px 12px", boxSizing: "border-box", borderRadius: 12, background: "#262626", border: "1px solid #3a3a3a", boxShadow: "0 20px 50px rgba(0,0,0,0.45)", opacity: s.menu.open, transform: `translateY(${(1 - s.menu.open) * -8}px)` }}>
+      <div style={{ position: "absolute", left: MENU_BOX.x, top: MENU_BOX.y, width: MENU_BOX.w, padding: "8px 12px 12px", boxSizing: "border-box", borderRadius: 12, background: "#FFFFFF", border: "1px solid #E7E9F2", boxShadow: "0 20px 50px rgba(0,0,0,0.45)", opacity: s.menu.open, transform: `translateY(${(1 - s.menu.open) * -8}px)` }}>
         {MENU.map((m, i) => (
           <React.Fragment key={m.badge}>
-            {m.section ? <div style={{ height: 30, display: "flex", alignItems: "flex-end", paddingBottom: 4, fontFamily: FONT.sans, fontSize: UIN.helper, fontWeight: 600, color: "#a3a3a3" }}>{m.section}</div> : null}
+            {m.section ? <div style={{ height: 30, display: "flex", alignItems: "flex-end", paddingBottom: 4, fontFamily: FONT.sans, fontSize: UIN.helper, fontWeight: 600, color: "#5B6478" }}>{m.section}</div> : null}
             <div style={{ height: 32, display: "flex", alignItems: "center", gap: 10, padding: "0 6px", margin: "0 -6px", borderRadius: 7, background: i === s.menu.highlight ? "#353535" : "transparent", overflow: "hidden", whiteSpace: "nowrap" }}>
               <Badge label={m.badge} tone={m.tone} />
-              <span style={{ fontFamily: FONT.sans, fontSize: UIN.helper, color: "#cfcfcf", overflow: "hidden", textOverflow: "ellipsis" }}>{m.desc}</span>
+              <span style={{ fontFamily: FONT.sans, fontSize: UIN.helper, color: "#5B6478", overflow: "hidden", textOverflow: "ellipsis" }}>{m.desc}</span>
             </div>
           </React.Fragment>
         ))}
@@ -145,7 +145,7 @@ export const PlaybookPage: React.FC<{ s: PlaybookState }> = ({ s }) => (
       return (
         <React.Fragment key={i}>
           {i > 0 && a.connector > 0 ? (
-            <div style={{ position: "absolute", left: CARD.x + 34, top: cardY(i - 1) + CARD.h, width: 2, height: CARD.gap * a.connector, background: a.status === "idle" ? "#555" : "#8fd694" }} />
+            <div style={{ position: "absolute", left: CARD.x + 34, top: cardY(i - 1) + CARD.h, width: 2, height: CARD.gap * a.connector, background: a.status === "idle" ? "#E7E9F2" : "#3DBE5A" }} />
           ) : null}
           <div
             data-guard="uitext"
@@ -159,9 +159,9 @@ export const PlaybookPage: React.FC<{ s: PlaybookState }> = ({ s }) => (
               height: CARD.h,
               boxSizing: "border-box",
               borderRadius: 14,
-              background: "#262626",
-              border: `1.5px solid ${review && s.reviewGlow > 0 ? `rgba(242,164,58,${0.4 + 0.6 * s.reviewGlow})` : lit ? "#B5D23E" : a.status === "done" || a.status === "approved" ? "#3E6B4A" : "#3a3a3a"}`,
-              boxShadow: review && s.reviewGlow > 0 ? `0 0 ${18 + 16 * a.pulse}px rgba(242,164,58,${0.25 + 0.25 * s.reviewGlow * (0.6 + 0.4 * a.pulse)})` : lit ? "0 0 18px rgba(181,210,62,0.25)" : "none",
+              background: "#FFFFFF",
+              border: `1.5px solid ${review && s.reviewGlow > 0 ? `rgba(242,164,58,${0.4 + 0.6 * s.reviewGlow})` : lit ? "#7C62F0" : a.status === "done" || a.status === "approved" ? "#BFE3C8" : "#E7E9F2"}`,
+              boxShadow: review && s.reviewGlow > 0 ? `0 0 ${18 + 16 * a.pulse}px rgba(242,164,58,${0.25 + 0.25 * s.reviewGlow * (0.6 + 0.4 * a.pulse)})` : lit ? "0 0 18px rgba(124,98,240,0.25)" : "none",
               display: "flex",
               alignItems: "center",
               gap: 12,
@@ -173,33 +173,33 @@ export const PlaybookPage: React.FC<{ s: PlaybookState }> = ({ s }) => (
               whiteSpace: "nowrap",
             }}
           >
-            <div style={{ width: 28, height: 28, borderRadius: 14, border: `1px solid ${UI.chipBorder}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: UIN.helper, color: "#cfcfcf", flexShrink: 0 }}>{i + 1}</div>
+            <div style={{ width: 28, height: 28, borderRadius: 14, border: `1px solid ${UI.chipBorder}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: UIN.helper, color: "#5B6478", flexShrink: 0 }}>{i + 1}</div>
             <Badge label={st.badge} tone={st.tone} />
             <span style={{ fontSize: READ, fontWeight: 600, color: UI.text }}>{st.title}</span>
             {st.sub ? (
               <>
-                <span style={{ fontSize: READ, color: "#9a9a9a" }}>then</span>
+                <span style={{ fontSize: READ, color: "#5B6478" }}>then</span>
                 <Badge label={st.sub.badge} tone={st.sub.tone} />
                 <span style={{ fontSize: READ, color: UI.text }}>{st.sub.text}</span>
               </>
             ) : null}
             <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 10 }}>
-              {st.chip ? <span style={{ padding: "2px 10px", borderRadius: 8, background: "#2f2f2f", border: `1px solid ${UI.chipBorder}`, fontSize: UIN.helper, color: "#d8d8d8" }}>{st.chip}</span> : null}
+              {st.chip ? <span style={{ padding: "2px 10px", borderRadius: 8, background: "#E7E9F2", border: `1px solid ${UI.chipBorder}`, fontSize: UIN.helper, color: "#5B6478" }}>{st.chip}</span> : null}
               {st.agent ? (
                 <>
                   <SpaceOrb size={26} palette={st.agent.palette} timeOffset={s.clock} style={{ transform: `scale(${1 + 0.12 * lit * a.pulse})` }} />
-                  <span style={{ fontSize: UIN.button, color: "#d8d8d8" }}>{st.agent.name}</span>
+                  <span style={{ fontSize: UIN.button, color: "#5B6478" }}>{st.agent.name}</span>
                 </>
               ) : null}
               {st.logo || st.sub?.logo ? <Img data-guard="brand" src={staticFile((st.logo ?? st.sub?.logo)!)} style={{ width: 24, height: 22, objectFit: "contain" }} /> : null}
               {review ? <HumanGlyph size={26} style={{ width: 36, height: 36 }} /> : null}
               {a.status === "done" || a.status === "approved" ? (
-                <div style={{ width: 22, height: 22, borderRadius: 11, background: "#3C8F52", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ width: 22, height: 22, borderRadius: 11, background: "#2E9E4F", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <Check size={14} color="#fff" strokeWidth={3} />
                 </div>
               ) : null}
-              {a.status === "waiting" ? <span style={{ padding: "2px 10px", borderRadius: 8, background: "#3E3015", color: COLOR.amber, fontSize: UIN.helper, fontWeight: 700 }}>{P.playbook.waiting}</span> : null}
-              {a.status === "approved" ? <span style={{ padding: "2px 10px", borderRadius: 8, background: "#1F3A27", color: "#8fd694", fontSize: UIN.helper, fontWeight: 700 }}>Approved</span> : null}
+              {a.status === "waiting" ? <span style={{ padding: "2px 10px", borderRadius: 8, background: "#FFF1DC", color: COLOR.amber, fontSize: UIN.helper, fontWeight: 700 }}>{P.playbook.waiting}</span> : null}
+              {a.status === "approved" ? <span style={{ padding: "2px 10px", borderRadius: 8, background: "#E7F6EA", color: "#3DBE5A", fontSize: UIN.helper, fontWeight: 700 }}>Approved</span> : null}
             </div>
           </div>
         </React.Fragment>

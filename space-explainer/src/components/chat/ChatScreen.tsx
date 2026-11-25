@@ -100,7 +100,7 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
         <div style={{ ...ui, left: 229, width: 1680, top: 334, textAlign: "center", fontSize: UIN.pageTitle, fontWeight: 700, letterSpacing: "-0.02em" }}>
           Describe the work. Get your agent team.
         </div>
-        <div style={{ ...ui, left: 229, width: 1680, top: 380, textAlign: "center", fontSize: UIN.helper, color: "#c9c9c9" }}>
+        <div style={{ ...ui, left: 229, width: 1680, top: 380, textAlign: "center", fontSize: UIN.helper, color: "#5B6478" }}>
           Find answers, turn ideas into action, and make room for your best work.
         </div>
       </div>
@@ -108,15 +108,15 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
       {/* Input with footer row */}
       <div style={{ opacity: s.heroIn, transform: `translateY(${heroY}px)` }}>
         <div style={{ position: "absolute", left: 685, top: inputTop, width: 768, height: inputH + 50, border: `1px solid ${UI.line}`, borderRadius: 14, opacity: 1 - s.sent }} />
-        <div style={{ ...ui, left: 702, top: inputTop + inputH + 13, fontSize: UIN.helper, color: "#bdbdbd", opacity: 1 - s.sent }}>
+        <div style={{ ...ui, left: 702, top: inputTop + inputH + 13, fontSize: UIN.helper, color: "#5B6478", opacity: 1 - s.sent }}>
           Your agents work across your tools.
         </div>
         <div style={{ opacity: 1 - s.sent }}>
-          <div style={{ ...ui, left: 1170, top: inputTop + inputH + 13, fontSize: UIN.helper, color: "#bdbdbd" }}>Connect your apps</div>
+          <div style={{ ...ui, left: 1170, top: inputTop + inputH + 13, fontSize: UIN.helper, color: "#5B6478" }}>Connect your apps</div>
           {["#5B8DEF", "#3D7BF2", "#2F6FD6", "#6B7280"].map((c, i) => (
             <div
               key={i}
-              style={{ position: "absolute", left: 1338 + i * 24, top: inputTop + inputH + 13, width: 23, height: 23, borderRadius: 12, background: "#1d1d1d", border: `1px solid ${UI.line}`, display: "flex", alignItems: "center", justifyContent: "center" }}
+              style={{ position: "absolute", left: 1338 + i * 24, top: inputTop + inputH + 13, width: 23, height: 23, borderRadius: 12, background: "#FFFFFF", border: `1px solid ${UI.line}`, display: "flex", alignItems: "center", justifyContent: "center" }}
             >
               <div style={{ width: 11, height: 11, borderRadius: 3, background: c }} />
             </div>
@@ -132,16 +132,16 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
             borderRadius: 14,
             background: UI.inputBg,
             border: `1.5px solid ${border}`,
-            boxShadow: lime > 0 ? `0 0 0 ${3 * lime}px rgba(181,210,62,${0.12 * lime})` : undefined,
+            boxShadow: lime > 0 ? `0 0 0 ${3 * lime}px rgba(124,98,240,${0.12 * lime})` : undefined,
           }}
         />
-        <Plus size={18} color="#cfcfcf" style={{ position: "absolute", left: 707, top: rowY - 9 }} />
-        <div style={{ ...ui, left: 740, top: inputTop + 20, fontSize: UIN.helper, color: "#a8a8a8", opacity: placeholderO }}>
+        <Plus size={18} color="#5B6478" style={{ position: "absolute", left: 707, top: rowY - 9 }} />
+        <div style={{ ...ui, left: 740, top: inputTop + 20, fontSize: UIN.helper, color: "#5B6478", opacity: placeholderO }}>
           Ask anything, or @ to mention an agent, a colleague or a resource
         </div>
-        <Zap size={16} color="#e6e6e6" style={{ position: "absolute", left: 1306, top: rowY - 8 }} />
+        <Zap size={16} color="#0D1224" style={{ position: "absolute", left: 1306, top: rowY - 8 }} />
         <div style={{ ...ui, left: 1327, top: rowY - 11, fontSize: UIN.button, fontWeight: 500 }}>Auto</div>
-        <ChevronDown size={14} color="#e6e6e6" style={{ position: "absolute", left: 1372, top: rowY - 7 }} />
+        <ChevronDown size={14} color="#0D1224" style={{ position: "absolute", left: 1372, top: rowY - 7 }} />
         <div
           style={{
             position: "absolute",
@@ -150,7 +150,7 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
             width: 30,
             height: 30,
             borderRadius: 15,
-            background: s.focus > 0.5 && s.sent === 0 ? "#ececec" : "#333",
+            background: s.focus > 0.5 && s.sent === 0 ? "#0D1224" : "#E7E9F2",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -158,7 +158,7 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
             transform: `scale(${1 - 0.4 * s.statusOrb})`,
           }}
         >
-          <ArrowUp size={16} color={s.focus > 0.5 && s.sent === 0 ? "#111" : "#8a8a8a"} />
+          <ArrowUp size={16} color={s.focus > 0.5 && s.sent === 0 ? "#111" : "#5B6478"} />
         </div>
         {/* The send button turns into a small status orb */}
         {s.statusOrb > 0 ? (
@@ -198,11 +198,11 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
                   gap: 8,
                   fontFamily: FONT.sans,
                   fontSize: UIN.button,
-                  color: "#e6e6e6",
+                  color: "#0D1224",
                   whiteSpace: "nowrap",
                 }}
               >
-                <c.icon size={15} color="#cfcfcf" strokeWidth={1.6} />
+                <c.icon size={15} color="#5B6478" strokeWidth={1.6} />
                 {c.label}
               </div>
             ))}
@@ -252,7 +252,7 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
               gap: 12,
               padding: "9px 22px 9px 12px",
               borderRadius: 999,
-              background: "#2a2a2a",
+              background: "#FFFFFF",
               border: `1px solid ${UI.chipBorder}`,
               fontFamily: FONT.sans,
               fontWeight: 500,
@@ -295,9 +295,9 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
                     padding: "0 7px",
                     margin: "0 3px",
                     borderRadius: 7,
-                    background: `rgba(${52 + 129 * active}, ${55 + 155 * active}, ${61 + 1 * active}, ${1 - 0.7 * active})`,
-                    border: `1.5px solid ${active > 0 ? `rgba(181,210,62,${0.4 + 0.6 * active})` : "#4b4f57"}`,
-                    color: "#dfe6ff",
+                    background: active > 0 ? "#EDE9FF" : "#F4F5F9",
+                    border: `1.5px solid ${active > 0 ? `rgba(124,98,240,${0.4 + 0.6 * active})` : UI.line}`,
+                    color: active > 0 ? UI.lilacText : UI.text,
                     verticalAlign: "0.1em",
                   }}
                 >
@@ -336,10 +336,10 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
         >
           <div style={{ fontSize: UIN.sourceTitle, fontWeight: 700, lineHeight: 1.3 }}>{P.sourceCardTitle}</div>
           <div style={{ height: 1, background: UI.chipBorder, margin: "14px 0" }} />
-          <div style={{ fontSize: UIN.sourceBody, lineHeight: 1.5, color: "#d9d9d9" }}>
+          <div style={{ fontSize: UIN.sourceBody, lineHeight: 1.5, color: "#5B6478" }}>
             <span
               style={{
-                background: `rgba(181,210,62,${0.26 * Math.min(1, s.cardOpen * 1.5)})`,
+                background: `rgba(124,98,240,${0.26 * Math.min(1, s.cardOpen * 1.5)})`,
                 color: UI.text,
                 borderRadius: 5,
                 boxDecorationBreak: "clone",

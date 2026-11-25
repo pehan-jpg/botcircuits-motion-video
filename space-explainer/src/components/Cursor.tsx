@@ -95,9 +95,8 @@ export const Cursor: React.FC<{ keys: CursorKey[]; opacity?: number }> = ({ keys
             width: size,
             height: size,
             borderRadius: "50%",
-            border: "2px solid rgba(255,255,255,0.85)",
-            background: "rgba(255,255,255,0.22)",
-            boxShadow: "0 0 0 1px rgba(13,18,36,0.18)",
+            border: "2px solid rgba(124,98,240,0.45)",
+            background: "rgba(124,98,240,0.25)",
             transform: `scale(${0.25 + EASE(p) * 0.85})`,
             opacity: (1 - p) * opacity,
           }}
@@ -125,9 +124,9 @@ export const Cursor: React.FC<{ keys: CursorKey[]; opacity?: number }> = ({ keys
       >
         <path
           d="M2 1 L2 23 L7.5 17.8 L11.2 26.5 L15 24.9 L11.4 16.4 L19 16.4 Z"
-          fill="#FFFFFF"
-          stroke="#0D1224"
-          strokeWidth={1.4}
+          fill="#0D1224"
+          stroke="#FFFFFF"
+          strokeWidth={1.5}
           strokeLinejoin="round"
         />
       </svg>

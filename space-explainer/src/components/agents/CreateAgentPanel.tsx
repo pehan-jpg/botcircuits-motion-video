@@ -40,7 +40,7 @@ export const NEW_AGENT_FIELDS = {
   access: ["Works with Emily's access", "Own access"],
 };
 
-const label: React.CSSProperties = { position: "absolute", left: 28, fontFamily: FONT.sans, fontSize: UIN.helper, color: "#bdbdbd", whiteSpace: "nowrap" };
+const label: React.CSSProperties = { position: "absolute", left: 28, fontFamily: FONT.sans, fontSize: UIN.helper, color: "#5B6478", whiteSpace: "nowrap" };
 const field = (top: number, h: number): React.CSSProperties => ({
   position: "absolute",
   left: 28,
@@ -49,7 +49,7 @@ const field = (top: number, h: number): React.CSSProperties => ({
   height: h,
   boxSizing: "border-box",
   borderRadius: 10,
-  background: "#1d1d1d",
+  background: "#FFFFFF",
   border: `1px solid ${UI.chipBorder}`,
 });
 const typed: React.CSSProperties = { fontFamily: FONT.sans, fontSize: PANEL_TEXT, color: UI.text, lineHeight: 1.4 };
@@ -70,8 +70,8 @@ export const CreateAgentPanel: React.FC<{ s: PanelState }> = ({ s }) => {
           width: PANEL.w,
           height: PANEL.h,
           borderRadius: 18,
-          background: "#262626",
-          border: "1px solid #3a3a3a",
+          background: "#FFFFFF",
+          border: "1px solid #E7E9F2",
           boxShadow: "0 30px 80px rgba(0,0,0,0.5)",
           opacity: s.open,
           transform: `translateY(${(1 - s.open) * 18}px) scale(${0.97 + 0.03 * s.open})`,
@@ -80,7 +80,7 @@ export const CreateAgentPanel: React.FC<{ s: PanelState }> = ({ s }) => {
         }}
       >
         <div style={{ position: "absolute", left: 28, top: 22, fontSize: UIN.sourceTitle, fontWeight: 700, whiteSpace: "nowrap" }}>New agent</div>
-        <X size={18} color="#a3a3a3" style={{ position: "absolute", right: 26, top: 28 }} />
+        <X size={18} color="#5B6478" style={{ position: "absolute", right: 26, top: 28 }} />
 
         <div style={{ ...label, top: 74 }}>Name</div>
         <div style={field(98, 44)}>
@@ -115,14 +115,14 @@ export const CreateAgentPanel: React.FC<{ s: PanelState }> = ({ s }) => {
                 gap: 10,
                 padding: "8px 14px",
                 borderRadius: 10,
-                border: `1px solid ${i === 0 ? "#8a8a8a" : UI.chipBorder}`,
-                background: i === 0 ? "#303030" : "transparent",
+                border: `1px solid ${i === 0 ? "#5B6478" : UI.chipBorder}`,
+                background: i === 0 ? "#E7E9F2" : "transparent",
                 fontSize: PANEL_TEXT,
                 whiteSpace: "nowrap",
               }}
             >
-              <div style={{ width: 18, height: 18, borderRadius: 9, border: `2px solid ${i === 0 ? "#ececec" : "#6a6a6a"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                {i === 0 ? <div style={{ width: 8, height: 8, borderRadius: 4, background: "#ececec" }} /> : null}
+              <div style={{ width: 18, height: 18, borderRadius: 9, border: `2px solid ${i === 0 ? "#0D1224" : "#C5CAD8"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                {i === 0 ? <div style={{ width: 8, height: 8, borderRadius: 4, background: "#0D1224" }} /> : null}
               </div>
               {a}
             </div>
@@ -134,19 +134,19 @@ export const CreateAgentPanel: React.FC<{ s: PanelState }> = ({ s }) => {
           const c = swatchCentre(i);
           const on = s.swatch === i;
           return (
-            <div key={p} style={{ position: "absolute", left: c.x - PANEL.x - SW.size / 2 - 5, top: c.y - PANEL.y - SW.size / 2 - 5, width: SW.size + 10, height: SW.size + 10, borderRadius: "50%", border: `2px solid ${on ? "#ececec" : "transparent"}`, boxSizing: "border-box" }}>
+            <div key={p} style={{ position: "absolute", left: c.x - PANEL.x - SW.size / 2 - 5, top: c.y - PANEL.y - SW.size / 2 - 5, width: SW.size + 10, height: SW.size + 10, borderRadius: "50%", border: `2px solid ${on ? "#0D1224" : "transparent"}`, boxSizing: "border-box" }}>
               <SpaceOrb size={SW.size} palette={p} timeOffset={s.clock} style={{ position: "absolute", left: 3, top: 3 }} />
               {on ? (
-                <div style={{ position: "absolute", right: -4, bottom: -4, width: 18, height: 18, borderRadius: 9, background: "#ececec", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Check size={12} color="#111" strokeWidth={3} />
+                <div style={{ position: "absolute", right: -4, bottom: -4, width: 18, height: 18, borderRadius: 9, background: "#0D1224", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Check size={12} color={UI.primaryText} strokeWidth={3} />
                 </div>
               ) : null}
             </div>
           );
         })}
 
-        <div style={{ position: "absolute", left: 28, right: 28, top: PANEL.h - 92, height: 1, background: "#3a3a3a" }} />
-        <div style={{ position: "absolute", left: CREATE_BUTTON.x - PANEL.x - 112, top: CREATE_BUTTON.y - PANEL.y, width: 100, height: CREATE_BUTTON.h, borderRadius: 10, border: `1px solid ${UI.chipBorder}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: UIN.button, color: "#d0d0d0" }}>
+        <div style={{ position: "absolute", left: 28, right: 28, top: PANEL.h - 92, height: 1, background: "#E7E9F2" }} />
+        <div style={{ position: "absolute", left: CREATE_BUTTON.x - PANEL.x - 112, top: CREATE_BUTTON.y - PANEL.y, width: 100, height: CREATE_BUTTON.h, borderRadius: 10, border: `1px solid ${UI.chipBorder}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: UIN.button, color: "#5B6478" }}>
           Cancel
         </div>
         <div
@@ -157,14 +157,14 @@ export const CreateAgentPanel: React.FC<{ s: PanelState }> = ({ s }) => {
             width: CREATE_BUTTON.w,
             height: CREATE_BUTTON.h,
             borderRadius: 10,
-            background: s.createPressed > 0 ? "#d9d9d9" : "#FFFFFF",
+            background: s.createPressed > 0 ? "#2A3147" : UI.primaryBg,
             transform: `scale(${1 - 0.04 * s.createPressed})`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             fontSize: UIN.button,
             fontWeight: 600,
-            color: "#111",
+            color: UI.primaryText,
             whiteSpace: "nowrap",
           }}
         >

@@ -1,20 +1,34 @@
 import React from "react";
 import { Img, staticFile } from "remotion";
 import { Bell, Bot, Brain, Ellipsis, LayoutDashboard, LayoutGrid, PanelLeft, Search, SquarePen, Workflow } from "lucide-react";
-import { FONT, UIN } from "../../theme";
+import { FONT, PRODUCT_THEME_LIGHT as T, UIN } from "../../theme";
 import { PLACEHOLDERS as P } from "../../placeholders";
 
+/** Product UI colours, all from PRODUCT_THEME_LIGHT. */
 export const UI = {
-  bg: "#212121",
-  side: "#1b1b1b",
-  line: "#2f2f2f",
-  text: "#ececec",
-  muted: "#a3a3a3",
-  chipBorder: "#3d3d3d",
-  inputBg: "#252525",
-  lime: "#B5D23E",
-  bubble: "#303030",
-  card: "#2a2a2a",
+  bg: T.panel,
+  side: T.sidebar,
+  app: T.appBg,
+  line: T.border,
+  text: T.ink,
+  secondary: T.secondary,
+  muted: T.secondary,
+  placeholder: T.muted,
+  chipBorder: T.border,
+  inputBg: T.panel,
+  accent: T.violet,
+  lilacBg: T.lilacBg,
+  lilacText: T.lilacText,
+  selected: T.selected,
+  primaryBg: T.primaryBg,
+  primaryText: T.primaryText,
+  focus: T.focusRing,
+  bubble: T.selected,
+  card: T.panel,
+  green: T.green,
+  greenBg: T.greenBg,
+  greenText: T.greenText,
+  icon: T.secondary,
 };
 
 export const SIDEBAR_W = 229;
@@ -35,7 +49,7 @@ export const navY = (key: Exclude<NavKey, null>) => 158 + NAV.findIndex((n) => n
 export const ProductMark: React.FC<{ size: number; tile?: boolean; style?: React.CSSProperties }> = ({ size, tile = true, style }) => {
   const icon = tile ? size * 0.62 : size;
   const inner = (
-    <div style={{ width: icon * (350 / 390), height: icon, overflow: "hidden", filter: "invert(1)" }}>
+    <div style={{ width: icon * (350 / 390), height: icon, overflow: "hidden" }}>
       <Img src={staticFile("logo.png")} style={{ height: icon, width: icon * (1898 / 390), display: "block" }} />
     </div>
   );
@@ -46,8 +60,8 @@ export const ProductMark: React.FC<{ size: number; tile?: boolean; style?: React
         width: size,
         height: size,
         borderRadius: size * 0.25,
-        background: "#0B0B0B",
-        border: "1px solid #333",
+        background: "#FFFFFF",
+        border: `1px solid ${UI.line}`,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -71,18 +85,18 @@ export const Sidebar: React.FC<{ active: NavKey; activeOpacity?: number }> = ({ 
     <Search size={15} color={UI.muted} style={{ position: "absolute", left: 10, top: 68 }} />
     <div style={{ ...t, left: 34, top: 65, fontSize: UIN.sidebar, color: UI.muted }}>Search chats</div>
     <div style={{ ...t, left: 178, top: 65, fontSize: UIN.helper, color: UI.muted }}>⌘K</div>
-    <div style={{ position: "absolute", left: 0, top: 102, width: 220, height: 36, background: "#FFFFFF", borderRadius: 8 }} />
-    <SquarePen size={15} color="#111" style={{ position: "absolute", left: 62, top: 112 }} />
-    <div style={{ ...t, left: 85, top: 109, fontSize: UIN.button, fontWeight: 500, color: "#111" }}>New chat</div>
+    <div style={{ position: "absolute", left: 0, top: 102, width: 220, height: 36, background: UI.primaryBg, borderRadius: 8 }} />
+    <SquarePen size={15} color={UI.primaryText} style={{ position: "absolute", left: 62, top: 112 }} />
+    <div style={{ ...t, left: 85, top: 109, fontSize: UIN.button, fontWeight: 500, color: UI.primaryText }}>New chat</div>
     {NAV.map((n) => {
       const y = navY(n.key);
       const on = n.key === active;
       return (
         <React.Fragment key={n.key}>
           {on ? (
-            <div style={{ position: "absolute", left: 0, top: y - 18, width: 222, height: 36, borderRadius: 8, background: "rgba(255,255,255,0.09)", opacity: activeOpacity }} />
+            <div style={{ position: "absolute", left: 0, top: y - 18, width: 222, height: 36, borderRadius: 8, background: UI.selected, opacity: activeOpacity }} />
           ) : null}
-          <n.icon size={17} color="#d0d0d0" strokeWidth={1.6} style={{ position: "absolute", left: 9, top: y - 9 }} />
+          <n.icon size={17} color={on ? UI.text : UI.icon} strokeWidth={1.6} style={{ position: "absolute", left: 9, top: y - 9 }} />
           <div style={{ ...t, left: 37, top: y - 11, fontSize: UIN.sidebar, fontWeight: on ? 600 : 400 }}>{n.label}</div>
         </React.Fragment>
       );
@@ -94,7 +108,7 @@ export const Sidebar: React.FC<{ active: NavKey; activeOpacity?: number }> = ({ 
       </div>
     ))}
     <div style={{ position: "absolute", left: 0, top: 832, width: SIDEBAR_W, borderTop: `1px solid ${UI.line}` }} />
-    <div style={{ position: "absolute", left: 5, top: 848, width: 34, height: 34, borderRadius: 7, background: "#FFFFFF", color: "#111", fontFamily: FONT.sans, fontSize: UIN.sidebar, display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ position: "absolute", left: 5, top: 848, width: 34, height: 34, borderRadius: 7, background: UI.lilacBg, color: UI.lilacText, fontWeight: 600, fontFamily: FONT.sans, fontSize: UIN.sidebar, display: "flex", alignItems: "center", justifyContent: "center" }}>
       {P.user.initial}
     </div>
     <div style={{ ...t, left: 47, top: 843, fontSize: UIN.sidebar, fontWeight: 600 }}>{P.user.name}</div>
@@ -114,7 +128,7 @@ export const TopBar: React.FC<{ page: string; actions?: boolean; bellBadge?: num
     {actions ? <div style={{ ...t, left: 1760, top: 12, fontSize: UIN.sidebar }}>Docs</div> : null}
     {actions ? (
       <div style={{ position: "absolute", left: BELL.x - 10, top: BELL.y - 10, transform: `scale(${1 + 0.15 * bellPulse})` }}>
-        <Bell size={20} color="#d0d0d0" />
+        <Bell size={20} color={UI.icon} />
         {bellBadge > 0 ? (
           <div style={{ position: "absolute", left: 11, top: -7, minWidth: 22, height: 22, borderRadius: 11, background: "#E5484D", color: "#fff", fontFamily: FONT.sans, fontSize: 15.2, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>
             {bellBadge}

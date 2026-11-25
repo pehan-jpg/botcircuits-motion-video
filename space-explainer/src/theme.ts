@@ -105,10 +105,40 @@ export const TEXT_BEAT = {
 export const readHoldSeconds = (text: string) =>
   1.2 + 0.25 * text.trim().split(/\s+/).filter(Boolean).length;
 
+/**
+ * Light product theme (reference/ui/11-playbook-graph.png). Every product
+ * screen uses these tokens: a white window on the plate, no dark frame.
+ */
+export const PRODUCT_THEME_LIGHT = {
+  window: "#FFFFFF",
+  panel: "#FFFFFF",
+  sidebar: "#F7F8FC",
+  appBg: "#F7F8FB",
+  border: "#E7E9F2",
+  ink: "#0D1224",
+  secondary: "#5B6478",
+  muted: "#8A91A5",
+  selected: "#EEF0FA",
+  primaryBg: "#0D1224",
+  primaryText: "#FFFFFF",
+  secondaryBg: "#FFFFFF",
+  chipBg: "#FFFFFF",
+  lilacBg: "#ECE8FF",
+  lilacText: "#4B34C7",
+  citeHighlight: "#EDE9FF",
+  focusRing: "rgba(124,98,240,0.35)",
+  violet: "#7C62F0",
+  green: "#3DBE5A",
+  greenBg: "#E7F6EA",
+  greenText: "#1E7A3A",
+  red: "#E5484D",
+  shadow: "0 40px 120px rgba(20,24,60,0.18)",
+} as const;
+
 export const PRODUCT_FRAME = {
   width: 1500,
   radius: 24,
-  shadow: "0 40px 120px rgba(13,18,36,0.28), 0 12px 32px rgba(13,18,36,0.18)",
+  shadow: PRODUCT_THEME_LIGHT.shadow,
   maxCameraScale: 1.06,
 } as const;
 

@@ -32,8 +32,9 @@ const Badge: React.FC<{ label: string; tone: "grey" | "olive" }> = ({ label, ton
       fontWeight: tone === "olive" ? 700 : 500,
       padding: "1px 11px",
       borderRadius: 999,
-      background: tone === "olive" ? "#4B5A1E" : "#333333",
-      color: tone === "olive" ? "#EEF5D2" : "#c8c8c8",
+      background: tone === "olive" ? UI.lilacBg : "#FFFFFF",
+      border: `1px solid ${tone === "olive" ? UI.lilacBg : UI.line}`,
+      color: tone === "olive" ? UI.lilacText : UI.secondary,
     }}
   >
     {label}
@@ -55,8 +56,8 @@ export const AgentCard: React.FC<{ d: CardData; slot: number; appear: number; cl
         height: r.h,
         boxSizing: "border-box",
         borderRadius: 16,
-        background: "#262626",
-        border: "1px solid #3a3a3a",
+        background: "#FFFFFF",
+        border: "1px solid #E7E9F2",
         opacity: appear,
         filter: appear < 1 ? `blur(${(1 - appear) * 10}px)` : undefined,
         transform: `scale(${0.96 + 0.04 * appear})`,
@@ -67,8 +68,8 @@ export const AgentCard: React.FC<{ d: CardData; slot: number; appear: number; cl
       <div style={{ ...text, left: 70, top: 14, fontSize: CARD_TEXT }}>
         <span style={{ fontWeight: 700 }}>{d.name}</span> <span style={{ color: UI.muted }}>{d.handle}</span>
       </div>
-      <div style={{ ...text, left: 70, top: 39, fontSize: CARD_TEXT, color: "#d2d2d2" }}>{d.role}</div>
-      {d.line ? <div style={{ ...text, left: 70, top: 64, fontSize: CARD_TEXT, color: "#d2d2d2" }}>{d.line}</div> : null}
+      <div style={{ ...text, left: 70, top: 39, fontSize: CARD_TEXT, color: "#5B6478" }}>{d.role}</div>
+      {d.line ? <div style={{ ...text, left: 70, top: 64, fontSize: CARD_TEXT, color: "#5B6478" }}>{d.line}</div> : null}
       {d.badges ? (
         <div style={{ position: "absolute", left: 70, top: d.line ? 91 : 68, display: "flex", gap: 8 }}>
           {d.badges.map((b) => (
@@ -93,18 +94,18 @@ export const NewAgentTile: React.FC<{ slot: number; opacity: number; pressed?: n
         boxSizing: "border-box",
         borderRadius: 16,
         border: "1.5px dashed #474747",
-        background: `rgba(255,255,255,${0.05 * pressed})`,
+        background: `rgba(13,18,36,${0.04 * pressed})`,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         gap: 9,
         fontFamily: FONT.sans,
         fontSize: UIN.button,
-        color: "#cfcfcf",
+        color: "#5B6478",
         opacity,
       }}
     >
-      <Plus size={17} color="#cfcfcf" />
+      <Plus size={17} color="#5B6478" />
       New agent
     </div>
   );
@@ -125,7 +126,7 @@ export const AgentsPage: React.FC<{ s: AgentsPageState }> = ({ s }) => {
       <Sidebar active="agents" />
       <TopBar page="Agents" />
       <div style={{ ...text, left: 479, top: 86, fontSize: UIN.pageTitle, fontWeight: 600, letterSpacing: "-0.01em" }}>Agents</div>
-      <div style={{ ...text, whiteSpace: "normal", left: 479, top: 128, width: 760, fontSize: UIN.helper, lineHeight: "24px", color: "#bdbdbd" }}>
+      <div style={{ ...text, whiteSpace: "normal", left: 479, top: 128, width: 760, fontSize: UIN.helper, lineHeight: "24px", color: "#5B6478" }}>
         Named agents that work on tasks in the background. Give them tasks from the chat with @name, now, later or on a schedule; you get a
         notification when they finish or need you.
       </div>
@@ -137,17 +138,17 @@ export const AgentsPage: React.FC<{ s: AgentsPageState }> = ({ s }) => {
           width: NEW_AGENT_BUTTON.w,
           height: NEW_AGENT_BUTTON.h,
           borderRadius: 10,
-          background: "#FFFFFF",
+          background: UI.primaryBg,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           gap: 8,
           fontFamily: FONT.sans,
           fontSize: UIN.button,
-          color: "#111",
+          color: UI.primaryText,
         }}
       >
-        <Plus size={16} color="#111" />
+        <Plus size={16} color={UI.primaryText} />
         New agent
       </div>
       {[
@@ -156,15 +157,15 @@ export const AgentsPage: React.FC<{ s: AgentsPageState }> = ({ s }) => {
         { l: "Links", x: 686 },
         { l: "Activity", x: 744 },
       ].map((tab) => (
-        <div key={tab.l} style={{ ...text, left: tab.x, top: 208, fontSize: UIN.tabs, fontWeight: tab.on ? 700 : 400, color: tab.on ? UI.text : "#bdbdbd" }}>
+        <div key={tab.l} style={{ ...text, left: tab.x, top: 208, fontSize: UIN.tabs, fontWeight: tab.on ? 700 : 400, color: tab.on ? UI.text : "#5B6478" }}>
           {tab.l}
         </div>
       ))}
       <div style={{ position: "absolute", left: 479, top: 239, width: 78, height: 2, background: UI.text }} />
-      <div style={{ position: "absolute", left: 479, top: 241, width: 1184, height: 1, background: "#3a3a3a" }} />
+      <div style={{ position: "absolute", left: 479, top: 241, width: 1184, height: 1, background: "#E7E9F2" }} />
       {s.cards.map((c) => (c.appear > 0 ? <AgentCard key={c.d.name} d={c.d} slot={c.slot} appear={c.appear} clock={s.clock} /> : null))}
       <NewAgentTile slot={s.tileSlot} opacity={s.tileOpacity} pressed={s.tilePressed} />
-      <div style={{ ...text, left: 479, top: helpTop, fontSize: UIN.helper, color: "#bdbdbd" }}>
+      <div style={{ ...text, left: 479, top: helpTop, fontSize: UIN.helper, color: "#5B6478" }}>
         Create an agent for a job you hand off often, then give it tasks from the chat.
       </div>
     </div>
