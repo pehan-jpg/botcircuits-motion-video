@@ -71,7 +71,7 @@ export const S1 = {
   gatherLen: 0.55,
   chips: [12.3, 12.6, 12.9],
   hudOut: [13.9, 14.4],
-  orbShrink: [13.6, 14.6],
+  orbShrink: [13.6, 14.95],
 };
 /** Top lines: on screen from, to (swaps blur out and in). */
 const LINES: { text: string; from: number; to: number }[] = [
@@ -206,7 +206,8 @@ export const Scene01Problem: React.FC = () => {
   // Top line: centred at 88px, then glides up and shrinks to 64px at the top centre.
   const glide = EASE(ramp(t, S1.hudIn, S1.hudIn + 1.2));
   const lineY = 540 + (HUD.lineY - 540) * glide;
-  const lineS = 1 + (HUD.lineScale - 1) * glide;
+  // A slow push while the first line holds, so the frame never stands still.
+  const lineS = (1 + (HUD.lineScale - 1) * glide) * (1 + 0.04 * ramp(t, 0.5, S1.hudIn) * (1 - glide));
   const active = LINES.findIndex((l, i) => t >= l.from && (t < l.to + 0.3 || (i === LINES.length - 1 && t < S1.hudOut[1])));
 
   // Gmail drag: the attachments follow the cursor to Downloads.
