@@ -79,7 +79,7 @@ export const S9_CAM_KEYS: CamKey[] = [
 export const S9_END_CAM: Cam = S9_CAM_KEYS[S9_CAM_KEYS.length - 1].c;
 
 /** Claim row in the Pages table (native px), measured from the rendered page. */
-export const S9_CLAIM_ROW_NATIVE = { x: 640, y: 571 };
+export const S9_CLAIM_ROW_NATIVE = { x: 744, y: 663 };
 const replayC = nat(RECORDS.replay.x + RECORDS.replay.w / 2, RECORDS.replay.y + RECORDS.replay.h / 2);
 const buildC = nat(PAGES.button.x + PAGES.button.w / 2, PAGES.button.y + PAGES.button.h / 2);
 const claimC = nat(S9_CLAIM_ROW_NATIVE.x, S9_CLAIM_ROW_NATIVE.y);

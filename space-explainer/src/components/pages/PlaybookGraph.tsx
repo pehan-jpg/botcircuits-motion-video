@@ -193,6 +193,8 @@ const Node: React.FC<{ i: number; st: GraphState["nodes"][number]; clock: number
         gap: review ? 4 : 10,
       }}
     >
+      {/* The REVIEW step is where a person decides: its amber glow is a decision mark. */}
+      {review ? <div data-guard="decision" style={{ position: "absolute", inset: -8, pointerEvents: "none" }} /> : null}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <Badge b={n.badge} />
         <span style={{ fontSize: UIN.helper, color: UI.placeholder }}>s{i + 1}</span>

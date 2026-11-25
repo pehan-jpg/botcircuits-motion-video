@@ -4,7 +4,7 @@ Read this before building or changing any scene. It captures the brief for the
 whole video so later sessions follow the same rules. Code paths are relative to
 this project (`space-explainer/`).
 
-Video: 1920x1080, 60 fps, 122 s (2:02). Product: **Space by BotCircuits**, an
+Video: 1920x1080, 60 fps, 167 s (2:47). Product: **Space by BotCircuits**, an
 agent workspace where agents prepare and people decide.
 
 ## 0. Assets and rules
@@ -81,10 +81,21 @@ grey #D6E2F0 at 55 percent top right, faint peach #F6E3D9 at 40 percent bottom
 right, drifting at most 3 percent, 3 percent grain. Soft and cool, never flat. Scenes 2 to 9 photographic plates. Scene 10 neutral
 pale `#F4F6F8`. Scene 11 pure white.
 
-**Product frame** (from Scene 3), `ProductWindow`: dark app window, 24px
-radius, soft shadow, 1728x825 at (96, 128). Product screens are authored at
+**Product frame** (from Scene 3), `ProductWindow`: a white rounded card (24px
+radius, shadow 0 40px 120px rgba(20,24,60,0.18)) sitting on the plate, no dark
+frame anywhere, 1728x825 at (96, 128). Product screens are authored at
 the screenshots' native size (1875x895) and scaled 0.9216 (`PRODUCT` in
 `theme.ts`), which keeps real product proportions: 15px native reads as 14px.
+
+**Light product theme** (`PRODUCT_THEME_LIGHT` in `theme.ts`, mapped to `UI`
+in `chat/Sidebar.tsx`; reference `reference/ui/11-playbook-graph.png`). Every
+product screen uses it: window and panels #FFFFFF, sidebar #F7F8FC, app
+background #F7F8FB, borders #E7E9F2, ink #0D1224, secondary text #5B6478, muted
+#8A91A5 (placeholders only), selected nav item #EEF0FA, primary buttons ink
+with white text, secondary buttons and chips white with a #E7E9F2 border,
+Default chip and highlights soft lilac (#ECE8FF, text #4B34C7), citation
+highlight #EDE9FF, input focus ring violet (#7C62F0 at 35 percent); status
+green dots stay. Typed text and carets are ink. Text passes 4.5:1.
 
 **UI type scale** (`UI_TYPE_PX`, on-screen px at 1x camera; `UIN` holds the
 native values components set): chat input 18, user message 17, assistant answer
@@ -151,8 +162,8 @@ area, 56px. Holds 2.5 s, or longer when the ReadabilityGuard needs it.
 
 **Status pill** (`StatusPill`): frosted glass pill, small spinner, 28px label.
 
-**Cursor** (`Cursor`): standard arrow moving on eased, gently curved paths. The
-click ripple is neutral (white ring, soft fill), 0.45s, centred on the arrow's
+**Cursor** (`Cursor`): a black arrow with a 1.5px white outline, moving on
+eased, gently curved paths. The click ripple is violet (#7C62F0 at 25 percent), 0.45s, centred on the arrow's
 hotspot (the tip). After every click the cursor dwells on the hotspot until its
 ripple has finished, so the ripple never trails behind a moving cursor.
 `cursorClickReport` checks every frame of every ripple (scripts/check-timing.ts)
@@ -181,6 +192,32 @@ rules, green orb pixels and stray amber; `scripts/check-timing.ts` checks
 reading time, scene start times and cursor clicks; `scripts/check-video.py`
 checks duration, black frames, motion gaps and scene boundaries.
 
+**Motion rules (Remotion).** Everything is derived from `useCurrentFrame` and
+`interpolate`: no CSS transitions, CSS animations or state driven motion, and
+no pixel rounding of positions. Camera blends that start or stop a follow use
+a symmetric smoothstep (zero speed at both ends) so the camera never jumps.
+
+**Meaningful transitions.** Every scene boundary has a cause: a cursor click,
+a shared element or a time cue. Plain dissolves are used only for plate changes
+tied to time of day. Each boundary is one continuous motion with no blank frame.
+- 1 to 2: the lone orb dissolves into the lockup. 2 to 3: the lockup blurs
+  out, the FeatureTitle arrives, the window rises.
+- 3 to 4: the cursor clicks the chip "Create agents for this claim"; the chat
+  blurs through to the Agents page under Scene 4's title. 4A to 4B: click
+  Control Room.
+- 4 to 5: the cursor clicks [S1] in Theo's result card; that chip lifts off,
+  waits above the title and lands as the S1 file highlight in Brain.
+- 5 to 6: "Use in playbook" on Claims knowledge; the chip travels to the
+  playbook header, then onto Theo's step.
+- 6 to 7: Save & activate makes the playbook Active; the clock appears at
+  6:42 PM and the evening begins.
+- 7 to 8: the time ribbon reaches 9:05 AM and the Slack notification arrives;
+  Scene 8 clicks it.
+- 8 to 9: the toast "Approved. View record" is clicked and opens Records.
+- 9 to 10: the Pages table row opens the record; Replay rewinds to the first
+  entry, which expands into the Concierge chat.
+- 10 to 11: the orb in "Handed to Space" blooms into the white end card.
+
 ## 1A. Plate background system (`src/backgrounds`)
 
 - `PlateBackground` shows one plate, or crossfades between two (1.5 s unless
@@ -204,9 +241,9 @@ crossfades to 02. Scene 6 is not in the brief's mapping; the placeholder uses 03
 
 - `src/timeline.ts`: authored scene durations; starts and ends are computed,
   so a scene that grows pushes the rest along. Events are written relative to
-  their scene. Durations: 15, 5, 14.5, 34, 11, 15, 10, 17, 13, 6, 7 seconds.
-  Starts: Scene 1 0s, 2 15s, 3 20s, 4 34.5s, 5 68.5s, 6 79.5s, 7 94.5s,
-  8 104.5s, 9 121.5s, 10 134.5s, 11 140.5s (total 147.5s, 8850 frames).
+  their scene. Durations: 15, 5, 18, 40, 14, 19, 10, 17, 16, 6, 7 seconds.
+  Starts: Scene 1 0s, 2 15s, 3 20s, 4 38s, 5 78s, 6 92s, 7 111s, 8 121s,
+  9 138s, 10 154s, 11 160s (total 167s, 10020 frames).
 - `src/scenes/SceneNN*.tsx`, one per built scene.
 - `SpaceVideo` plays the built scenes; `Scene01`, `Scene02`... render one built scene alone.
 
@@ -239,101 +276,91 @@ Medium 84px, ink, -0.02em. Types at HEADLINE_CPS from 1.0s; the logo's dots
 assemble over 0.9s while the wordmark blurs in. A very soft radial light behind
 the line (white 45 percent, feathered). Holds about 1.8s.
 
-### Scene 3, Chat (0:20 to 0:34.5), built
-The Scene 2 line blurs out over 0.4s while plate 01 crossfades to plate 02
-(1.5s). FeatureTitle "Ask in plain language", then the frame rises with the
-chat page. Hero, input and chips settle; the camera zooms 1.25x on the input,
-which focuses (lime) and types the prompt at CHAT_CPS. Send at 7.0s: the send
-button becomes a small SpaceOrb, the thread starts with the user message
-(1.18x overview), pills at 7.3, 7.9 and 8.5s, the answer types at REPLAY_CPS
-from 9.3s at 1.25x, the cursor clicks [S1] at 11.95s and the camera pans as the
-source card opens beside the answer (12.0s), held about 2.5s. All at the UI
-type scale. `chatStateAt` lets Scene 4 open on the same frame.
+### Scene 3, Chat (0:20 to 0:38), built
+FeatureTitle (standard) "Ask, or tell it what to do". Turn 1 (about 8s): the
+prompt types at CHAT_CPS, three status pills (0.45s each), the cited answer
+with [S1] [S2] at REPLAY_CPS, [S1] clicked, the source card "Home Policy
+Wording 2026, p. 12" opens and closes (12.4s). Turn 2, an action (about 5s):
+the request types at 60 cps in the bottom input, the thread scrolls up,
+"Setting this up", then the action card "2 changes made" with two rows that
+tick in turn (Scheduled task with a calendar icon; Notification rule with the
+Slack logo), each with View and Undo. Final 2s: the chip "Create agents for
+this claim" appears and is clicked at 17.5s.
 
-### Scene 4, Agents and Control Room (0:34.5 to 1:08.5), built
-4A (0 to 10s) as before: FeatureTitle "Give every agent a job", the Agents
-page, the New agent panel creating Nora, then Theo and Owen.
-4B (10 to 34s; times below are within 4B):
-- 0 to 1.2s: click Control Room, counters Agents 0, Resources 4, Active tasks
-  0, Live; pill "Meet your team".
-- 1.2 to 4.2s, hero: the room dims to 35 percent with a 6px blur; a large Iris
-  (about 620px) and her plate, scaled to match, rise in the centre, wave 1.6s,
-  then figure and plate morph as one element to her desk over 0.9s (EASE) as
-  the room un-dims. 4.2 to 7.5s: compact heroes for Nora, Theo and Owen (about
-  360px; appear 0.25s, wave 0.45s, morph 0.4s), plates "Idle".
-- 7.5 to 9.0s: the "Claim CL-7305" tag drops at Iris's desk, pill "A new claim
-  arrives", Iris picks it up (it becomes a folder), Active tasks 1, chat line.
-- 9.0 to 17.0s: agents walk axis-aligned isometric routes with a step cycle
-  and facing (front, mirrored front, back view); camera follows at 1.5x. Iris
-  hands the folder to Nora ("Passed to Nora"); Nora walks to Gmail, Theo to
-  Google Drive, Owen to Google Sheets. Thought bubbles with three ticking lines
-  (Owen's last with a neutral flag); every line holds at least 0.9s. Pill "The
-  team works in tandem". No dashed lines, no travelling dot.
-- 17 to 18s results fly to Iris, plates "Done"; 18 to 19.3s the room
-  minimises; 19.3 to 23s three output cards, pill "Prepared for Emily's
-  review"; hold to 24s.
-Plates are sized to content: the widest of name, role and every status
-(`PLATE_STATUSES`) plus 16px padding; status 14px; never truncated. Pedestal
-labels: Gmail and Google Sheets to the left, Google Drive and Slack to the
-right, 12px clearance. Both are enforced by the fit and collision tests
-(`data-fit-box`/`data-fit-text`, `data-collide`, at least 12px).
+### Scene 4, Agents and Control Room (0:38 to 1:18), built
+4A (0 to 10s): opens from the clicked chip on the Agents page; the New agent
+panel creates Nora, then Theo and Owen.
+4B (10 to 40s): click Control Room (10.3s). Heroes: Iris appears 0.5s, waves
+3.0s (about four cycles), morphs 1.1s; Nora, Theo and Owen appear 0.4s, wave
+1.8s, morph 0.9s, each starting 0.4s before the previous morph ends (Owen ends
+23.7s). During every hero the room is dimmed to 35 percent with a 6px blur and
+every other plate and speech element is hidden. One persistent figure per
+agent (`AgentLayer` in `ControlRoomPage.tsx`): a single transform driven by
+one path function (`figurePath`), never unmounted, duplicated or swapped; the
+plate follows the same path parameter. The claim arrives 24.1s; walks from
+25.6s (`office/motion.ts`): axis aligned isometric routes, constant speed 140
+px/s at 1x with eased start and stop, a continuous step phase, facing per
+segment with a 0.2s cross fade at corners, z order by floor y. Iris hands the
+folder to Nora; Nora walks to Gmail, Theo to Google Drive, Owen to Google
+Sheets, partly in parallel (Theo's route is about 5s at that speed); thought
+bubbles tick at arrival. Results fly to Iris (34s), plates "Done", the room
+minimises (35s), result cards at 36.3, 36.9 and 37.5s (Theo's with [S1] [S2]),
+pill "Prepared for Emily's review"; the cursor clicks [S1] at 39.3s.
+`scripts/motion-test.mjs` samples every frame of 4B from the DOM and fails above
+14px per frame at 1x outside a hero, or on any duplicate copy.
 
 ### Scenes 5 to 9: compact FeatureTitle
-Scenes 5 to 9 use the compact FeatureTitle (about 2.4s, 0.9s hold); Scene 7
-uses the onDark variant (#F5F7FF with a navy feathered glow). Each opens with
-the previous frame sinking (0 to 0.6s) and rises on the new page; pages swap
-with a short blur-through; the last pill of a scene is carried into the next
-and fades in its first 0.35s.
+Compact titles (about 2.4s, 0.9s hold); Scene 7 uses the onDark variant.
 
-### Scene 5, Brain (1:08.5 to 1:19.5), built
-"Ground it in your files"; plate 02 to 03. Click Brain: two files index,
-counters Files 2, Passages 214, Drive chip "Claims shared drive, Synced",
-citations [S1] [S2] with "Answers cite these files"; zoom 1.4x; pill "Answers
-point back to your files".
+### Scene 5, Brain (1:18 to 1:32), built
+"Ground it in your own sources". The [S1] chip lands on the S1 file (Files
+tab). Connect data: tiles (Google Drive, Google Sheets, Gmail, Slack logos;
+original Website and File upload tiles). Added in turn with progress and
+Synced or Ready: Drive "Claims shared drive", Sheets "Excess and limits",
+Website "northfield.example/claims-faq" typed (Crawled, 12 pages), Slack
+"#claims-escalations", two PDFs. Knowledge bases: Claims knowledge with six
+sources, Sources 6, Passages 412, then its Graph view (Policy, Claim, Insured,
+Excess, FAQ, Escalations). Zoom 1.4x on the sources. "Use in playbook" clicked
+at 13.4s.
 
-### Scene 6, Playbook (1:19.5 to 1:34.5), built
-"Define the process once". Playbook page "Home claim review": seven steps added
-through "+ Add step" (1.05s apart): TRIGGER email (Gmail logo), READ CLAIM
-Nora, CHECK POLICY Theo (Brain chip "Home Policy Wording 2026"), MATCH EVIDENCE
-Owen (Sheets logo), REVIEW "Waiting for Emily" with the amber glyph, IF
-approved SEND via Gmail, NOTIFY Slack. Connectors draw one after another;
-REVIEW glows amber; zoom 1.5x; pill "Steps, agents, tools and a review".
+### Scene 6, Playbook graph (1:32 to 1:51), built
+"Define the process once". `PlaybookGraph.tsx`, rebuilt from
+11-playbook-graph.png: toolbar (Sequence, Graph selected, Variables (0), Check,
+Test, Share, Settings, Save draft, Save & activate), the note line, dotted
+canvas, zoom controls, the Add control with the full menu, the inspector.
+Settings shows the trigger "Email arrives in the claims inbox" (Gmail) for
+1.0s. Six steps through the Add menu (fully for the first, then quicker): ASK,
+AGENT Nora, AGENT Theo (with the Claims knowledge chip arriving), AGENT Owen,
+PAGE, REVIEW (approved and declined outputs). The Review inspector: name typed,
+Step type Review, reviewer Emily Carter with the amber glyph, the message typed,
+variable "review". Branches: IF, RUN Gmail, RUN Slack; SEND, END. Check: "No
+issues found". Save & activate: "Active".
 
-### Scene 7, Evening trigger (1:34.5 to 1:44.5), built
-onDark "Let it run on its own"; plate 03 to 04 under the NightGrade (dusk 0.8
-to 0.35, moon, stars). Clock 6:42 PM; email card; steps 1 to 4 run and stop at
-REVIEW (amber pulse, "Waiting for Emily"); pill "Waiting for a person. Nothing
-moves until they decide."; time ribbon 6:42 PM to 9:05 AM; the last 1s goes to
-plate 01 at dawn.
+### Scene 7, Evening (1:51 to 2:01), built
+onDark "Let it run on its own"; plate 03 to 04 under the NightGrade; the
+window stays white with a cool overlay (#0F1A33 up to 18 percent). Clock 6:42
+PM; the email from BotCircuits Concierge; nodes light in order (Ask, Nora,
+Theo, Owen, Page) and stop at REVIEW, "Waiting for Emily"; ribbon to 9:05 AM;
+plate 01 at dawn; the Slack notification "Claim CL-7305 needs your review".
 
-### Scene 8, Morning review (1:44.5 to 2:01.5), built
-"People approve what matters"; plate 01 to 02. The bell (badge 1) opens
-Reviews; the item "Claim CL-7305, James Whitfield, Home water damage"; findings
-with the flag, zoom 1.6x on the flag; the amber glyph beside Emily Carter; she
-types the note; Approve with an amber halo; the playbook strip runs REVIEW, IF,
-SEND with the settlement email ($1,590) and the Slack chip; pill "Approved by
-Emily Carter".
+### Scene 8, Morning review (2:01 to 2:18), built
+The notification is clicked (0.3s) and opens Reviews under the title; the
+review as before; then the toast "Approved. View record", clicked at 16.2s.
 
-### Scene 9, Records and Pages (2:01.5 to 2:14.5), built
-"Every step on record"; plate 02 to 03. Control Room, then the Records tab
-(composed: no Records screenshot was supplied). Replay clears the record and
-retypes the eight rows at REPLAY_CPS, 0.35s apart, with a highlight and a
-scrubber; the approved row (amber border, note, glyph) is held 1.2s; zoom 1.3x.
-Pages (4s): the prompt "Open claims by status, with who approved each" types,
-Build page, a table (Status, Count, Approved by) and violet bars; pill "Reports
-from the record". `Scene09EndFrame` renders the frozen last frame for Scene 10.
+### Scene 9, Records and Pages (2:18 to 2:34), built
+"Every step on record". Records first (first row "Handed over by BotCircuits
+Concierge, 6:42 PM", the approved row with the amber glyph). Pages: prompt
+typed, page built (table and bars) with the row "Claim CL-7305", clicked: its
+record opens; Replay rewinds the scrubber to the first row, which expands into
+the Concierge chat (`ConciergeCard`).
 
-### Scene 10, Concierge (2:14.5 to 2:20.5), built
-The Scene 9 frame fades into neutral #F4F6F8. A text-only "BotCircuits
-Concierge" card: the customer's message, the typed reply, a "Handed to Space"
-chip with the violet orb; the "Claim CL-7305" tag slides out right; the card
-fades and the scene ends on the neutral frame. Text at 28px.
+### Scene 10, Concierge (2:34 to 2:40), built
+Neutral #F4F6F8. The chat card continues from Scene 9; the reply types; the
+chip "Handed to Space" with the violet orb; the orb blooms into white.
 
-### Scene 11, End card (2:20.5 to 2:27.5), built
-Neutral to pure white. "Agents prepare." "People decide." "Every step on
-record." in FeatureTitle style (80px), an amber underline under "People
-decide." with the human glyph, a 1.0s hold, the lines exit; then "Space by"
-with the logo assembling from dots (no "Introducing"), held at least 1.5s.
+### Scene 11, End card (2:40 to 2:47), built
+Pure white from the first frame: the three lines, the amber underline under
+"People decide." with the glyph, then "Space by" with the logo assembling.
 
 ## Commands
 
@@ -345,4 +372,5 @@ npm run check                                 # all checks
 node scripts/stills.mjs Scene01 Scene02       # stills + guard report
 python3 -I scripts/check.py                   # guard checks on the report
 npx tsx scripts/check-timing.ts               # reading time and timeline
+node scripts/motion-test.mjs 10 40            # Scene 4B motion test, every frame
 ```
