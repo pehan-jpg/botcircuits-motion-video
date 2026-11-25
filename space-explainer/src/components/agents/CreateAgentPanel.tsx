@@ -58,7 +58,7 @@ export const CreateAgentPanel: React.FC<{ s: PanelState }> = ({ s }) => {
   if (s.open <= 0) return null;
   return (
     <>
-      <div style={{ position: "absolute", inset: 0, background: `rgba(0,0,0,${0.5 * s.open})` }} />
+      <div style={{ position: "absolute", inset: 0, background: `rgba(13,18,36,${0.22 * s.open})` }} />
       <div
         data-guard="uitext"
         data-guard-read="1"
@@ -72,7 +72,7 @@ export const CreateAgentPanel: React.FC<{ s: PanelState }> = ({ s }) => {
           borderRadius: 18,
           background: "#FFFFFF",
           border: "1px solid #E7E9F2",
-          boxShadow: "0 30px 80px rgba(0,0,0,0.5)",
+          boxShadow: "0 30px 80px rgba(20,24,60,0.22)",
           opacity: s.open,
           transform: `translateY(${(1 - s.open) * 18}px) scale(${0.97 + 0.03 * s.open})`,
           fontFamily: FONT.sans,

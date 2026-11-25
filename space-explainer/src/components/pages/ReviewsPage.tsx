@@ -1,7 +1,7 @@
 import React from "react";
 import { Img, staticFile } from "remotion";
 import { ArrowLeft, Check, Flag } from "lucide-react";
-import { CHAT_CPS, COLOR, FONT, UIN, type OrbPaletteKey } from "../../theme";
+import { CHAT_CPS, FONT, UIN, type OrbPaletteKey } from "../../theme";
 import { PLACEHOLDERS as P } from "../../placeholders";
 import { Sidebar, TopBar, UI } from "../chat/Sidebar";
 import { SpaceOrb } from "../SpaceOrb";
@@ -73,7 +73,7 @@ export const ReviewsPage: React.FC<{ s: ReviewsState }> = ({ s }) => {
             data-guard-label="Review item"
             style={{ position: "absolute", left: REVIEWS.item.x, top: REVIEWS.item.y, width: REVIEWS.item.w, height: REVIEWS.item.h, boxSizing: "border-box", borderRadius: 14, background: s.itemPressed > 0 ? "#EEF0FA" : "#FFFFFF", border: "1px solid #E7E9F2", display: "flex", alignItems: "center", gap: 16, padding: "0 22px", opacity: s.itemAppear, transform: `translateY(${(1 - s.itemAppear) * 10}px)` }}
           >
-            <span style={{ padding: "2px 9px", borderRadius: 6, background: "#FFF1DC", color: COLOR.amber, fontFamily: FONT.sans, fontSize: UIN.helper, fontWeight: 700 }}>REVIEW</span>
+            <span style={{ padding: "2px 9px", borderRadius: 6, background: "#FFF1DC", color: "#8A5200", fontFamily: FONT.sans, fontSize: UIN.helper, fontWeight: 700 }}>REVIEW</span>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <span style={{ fontFamily: FONT.sans, fontSize: READ, fontWeight: 600, color: UI.text }}>{P.review.item}</span>
               <span style={{ fontFamily: FONT.sans, fontSize: UIN.helper, color: "#5B6478" }}>{P.review.itemSub}</span>

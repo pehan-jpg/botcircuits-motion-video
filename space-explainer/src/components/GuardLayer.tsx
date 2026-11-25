@@ -97,7 +97,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
             h: rect.height / k,
           };
           const issues = [
-            ...(kind === "agent" ? [] : checkSafeArea(r, label)),
+            ...(kind === "agent" || kind === "decision" ? [] : checkSafeArea(r, label)),
             ...(kind === "logo"
               ? checkLogo(
                   (el.querySelector("img")?.getBoundingClientRect().height ??

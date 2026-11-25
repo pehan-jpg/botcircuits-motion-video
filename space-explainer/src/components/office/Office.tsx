@@ -451,7 +451,7 @@ export const ThoughtBubble: React.FC<{ x: number; y: number; lines: BubbleLine[]
         data-guard-read="1"
         data-guard-label={`Bubble ${name}`}
         data-fit-box={`bubble ${name}`}
-        style={{ position: "relative", padding: "12px 18px", borderRadius: 22, background: "#FFFFFF", boxShadow: "0 8px 22px rgba(40,30,20,0.18)", border: "1px solid rgba(0,0,0,0.06)", fontFamily: FONT.sans, whiteSpace: "nowrap" }}
+        style={{ position: "relative", padding: "14px 20px", borderRadius: 22, background: "#FFFFFF", boxShadow: "0 8px 22px rgba(40,30,20,0.18)", border: "1px solid rgba(0,0,0,0.06)", fontFamily: FONT.sans, whiteSpace: "nowrap" }}
       >
         {lines.map((l) =>
           l.appear > 0 ? (
