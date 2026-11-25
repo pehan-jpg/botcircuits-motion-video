@@ -1,17 +1,17 @@
 Duration: 167.000s, 10020 frames. Built scenes [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] sum to 10020 frames (167.000s).
 Black frames: none
-Motion gaps over 0.4s: 41.55s for 0.716667s, 70.5s for 1.01667s, 154.467s for 1.81667s, 156.283s for 1.06667s, 157.65s for 1.53333s, 159.817s for 0.633333s, 162.583s for 0.416667s, 163s for 0.416667s
+Motion gaps over 0.4s: 0.683333s for 1.08333s, 1.76667s for 0.45s, 14.45s for 0.416667s, 154.583s for 0.466667s
 
 Scene boundaries (last frame of scene, first frame of next):
-  Scene 1 to 2 at frame 900: mean abs diff 0.09/255, PSNR 56.6 dB, pixels changed by more than 12 levels 0.00%; neighbouring frames inside the scene 55.9 dB  [seamless]
-  Scene 2 to 3 at frame 1200: mean abs diff 0.15/255, PSNR 48.3 dB, pixels changed by more than 12 levels 0.05%; neighbouring frames inside the scene 55.3 dB  [seamless]
-  Scene 3 to 4 at frame 2280: mean abs diff 0.40/255, PSNR 37.5 dB, pixels changed by more than 12 levels 0.78%; neighbouring frames inside the scene 35.4 dB  [continuous motion]
-  Scene 4 to 5 at frame 4680: mean abs diff 0.11/255, PSNR 38.5 dB, pixels changed by more than 12 levels 0.13%; neighbouring frames inside the scene 44.0 dB  [seamless]
-  Scene 5 to 6 at frame 5520: mean abs diff 1.30/255, PSNR 26.9 dB, pixels changed by more than 12 levels 1.46%; neighbouring frames inside the scene 41.1 dB  [VISIBLE CHANGE]
-  Scene 6 to 7 at frame 6660: mean abs diff 0.55/255, PSNR 34.7 dB, pixels changed by more than 12 levels 0.99%; neighbouring frames inside the scene 36.9 dB  [VISIBLE CHANGE]
-  Scene 7 to 8 at frame 7260: mean abs diff 3.27/255, PSNR 32.3 dB, pixels changed by more than 12 levels 0.54%; neighbouring frames inside the scene 41.4 dB  [VISIBLE CHANGE]
-  Scene 8 to 9 at frame 8280: mean abs diff 1.45/255, PSNR 24.4 dB, pixels changed by more than 12 levels 1.66%; neighbouring frames inside the scene 42.7 dB  [VISIBLE CHANGE]
-  Scene 9 to 10 at frame 9240: mean abs diff 0.07/255, PSNR 47.4 dB, pixels changed by more than 12 levels 0.11%; neighbouring frames inside the scene 50.2 dB  [seamless]
+  Scene 1 to 2 at frame 900: mean abs diff 0.07/255, PSNR 57.9 dB, pixels changed by more than 12 levels 0.00%; neighbouring frames inside the scene 57.4 dB  [seamless]
+  Scene 2 to 3 at frame 1200: mean abs diff 0.12/255, PSNR 48.5 dB, pixels changed by more than 12 levels 0.05%; neighbouring frames inside the scene 56.0 dB  [seamless]
+  Scene 3 to 4 at frame 2280: mean abs diff 0.40/255, PSNR 37.5 dB, pixels changed by more than 12 levels 0.80%; neighbouring frames inside the scene 35.4 dB  [continuous motion]
+  Scene 4 to 5 at frame 4680: mean abs diff 0.10/255, PSNR 38.5 dB, pixels changed by more than 12 levels 0.12%; neighbouring frames inside the scene 44.2 dB  [seamless]
+  Scene 5 to 6 at frame 5520: mean abs diff 0.20/255, PSNR 39.2 dB, pixels changed by more than 12 levels 0.36%; neighbouring frames inside the scene 41.1 dB  [seamless]
+  Scene 6 to 7 at frame 6660: mean abs diff 0.54/255, PSNR 34.8 dB, pixels changed by more than 12 levels 1.00%; neighbouring frames inside the scene 37.0 dB  [VISIBLE CHANGE]
+  Scene 7 to 8 at frame 7260: mean abs diff 3.17/255, PSNR 34.2 dB, pixels changed by more than 12 levels 0.46%; neighbouring frames inside the scene 41.6 dB  [VISIBLE CHANGE]
+  Scene 8 to 9 at frame 8280: mean abs diff 0.13/255, PSNR 43.3 dB, pixels changed by more than 12 levels 0.22%; neighbouring frames inside the scene 43.1 dB  [seamless]
+  Scene 9 to 10 at frame 9240: mean abs diff 0.06/255, PSNR 47.6 dB, pixels changed by more than 12 levels 0.11%; neighbouring frames inside the scene 50.6 dB  [seamless]
   Scene 10 to 11 at frame 9600: mean abs diff 0.00/255, PSNR 99.0 dB, pixels changed by more than 12 levels 0.00%; neighbouring frames inside the scene 99.0 dB  [seamless]
 
-5 issue(s): stretches without motion; boundary 5 to 6 is not continuous; boundary 6 to 7 is not continuous; boundary 7 to 8 is not continuous; boundary 8 to 9 is not continuous
+3 issue(s): stretches without motion; boundary 6 to 7 is not continuous; boundary 7 to 8 is not continuous
