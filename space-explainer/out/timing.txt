@@ -1,0 +1,218 @@
+
+Scene 1
+  line1        ready 5.97s  held 7.63s  needs 2.20s   64px  ok              "The information is everywhere."
+  line2        ready 16.55s  held 1.80s  needs 2.70s   64px  brief exception "What if agents did the work?"
+  chips        ready 17.10s  held 1.25s  needs 3.45s   28px  brief exception "Claim read Policy checked Evidence matched Review pack draft"
+  task         ready 0.90s  held 12.70s  needs 2.45s   24px  ok              "Prepare claim CL-7305 for review"
+
+Scene 2
+  line         ready 2.91s  held 2.29s  needs 2.20s   84px  ok              "Introducing Space by [logo]"
+
+Scene 3
+  title        ready 0.30s  held 2.95s  needs 2.95s   88px  ok              "Ask, or tell it what to do"
+  prompt       ready 6.49s  held 11.51s  needs 3.95s   20px  ok              "Prepare claim CL-7305 for review. Check the policy and the e"
+  pill1        ready 6.90s  held 0.30s  needs 1.70s   20px  brief exception "Reading claim"
+  pill2        ready 7.35s  held 0.30s  needs 1.70s   20px  brief exception "Checking policy"
+  pill3        ready 7.80s  held 0.30s  needs 1.70s   20px  brief exception "Matching evidence"
+  answer       ready 10.75s  held 4.40s  needs 8.20s   20px  brief exception "Claim CL-7305 is covered under Section 4.2 [S1]. A $250 exce"
+  source       ready 11.50s  held 0.90s  needs 10.95s   20px  brief exception "Home Policy Wording 2026, p. 12 4.2 We cover sudden and acci"
+  prompt2      ready 14.41s  held 3.59s  needs 6.95s   21px  brief exception "Send me the weekly claims by status on Mondays at 8, and tel"
+  action       ready 16.20s  held 2.40s  needs 7.20s   21px  brief exception "2 changes made Scheduled task: Weekly claims by status, Mond"
+
+Scene 4
+  title        ready 0.45s  held 2.45s  needs 2.45s   88px  ok              "Give every agent a job"
+  panel        ready 7.73s  held 0.17s  needs 4.70s   20px  brief exception "Nora Intake Read the claim, pull the key facts and prepare t"
+  pill-Meet your team ready 10.80s  held 12.90s  needs 1.95s   28px  ok              "Meet your team"
+  pill-A new claim arrives ready 24.40s  held 2.20s  needs 2.20s   28px  ok              "A new claim arrives"
+  pill-The team works in tandem ready 26.90s  held 7.10s  needs 2.45s   28px  ok              "The team works in tandem"
+  pill-Prepared for Emily's review ready 38.10s  held 1.90s  needs 2.20s   28px  carries over    "Prepared for Emily's review"
+  bubble-nora-1 ready 29.89s  held 1.95s  needs 2.20s   22px  brief exception "Reading the claim email"
+  bubble-nora-2 ready 30.19s  held 1.65s  needs 2.45s   22px  brief exception "Pulling claimant and loss details"
+  bubble-nora-3 ready 30.49s  held 1.35s  needs 1.95s   22px  brief exception "Writing intake summary"
+  bubble-theo-1 ready 31.88s  held 1.95s  needs 2.45s   22px  brief exception "Opening Home Policy Wording 2026"
+  bubble-theo-2 ready 32.18s  held 1.65s  needs 2.70s   22px  brief exception "Section 4.2 covers escape of water"
+  bubble-theo-3 ready 32.48s  held 1.35s  needs 2.20s   22px  brief exception "Checking the $250 excess"
+  bubble-owen-1 ready 31.77s  held 2.05s  needs 1.95s   22px  ok              "Reading 3 photos"
+  bubble-owen-2 ready 32.07s  held 1.75s  needs 1.95s   22px  brief exception "Reading plumber invoice"
+  bubble-owen-3 ready 32.37s  held 1.45s  needs 3.20s   22px  brief exception "Invoice date does not match date of loss"
+  output-1     ready 36.80s  held 3.20s  needs 4.20s   21px  carries over    "Claim CL-7305 | James Whitfield | Kitchen water damage | Est"
+  output-2     ready 37.40s  held 2.60s  needs 2.95s   21px  carries over    "Covered under Section 4.2 | Excess $250 "
+  output-3     ready 38.00s  held 2.00s  needs 5.70s   21px  carries over    "3 photos and 1 plumber invoice found 1 flag: invoice date do"
+
+Scene 5
+  title        ready 0.45s  held 1.96s  needs 2.70s   88px  brief exception "Ground it in your own sources"
+  sources      ready 10.30s  held 0.20s  needs 6.95s   21px  brief exception "Claims shared drive Synced Excess and limits Synced northfie"
+  kb           ready 10.90s  held 0.55s  needs 4.95s   21px  brief exception "Claims shared drive Excess and limits northfield.example/cla"
+  pill         ready 11.10s  held 3.90s  needs 2.70s   28px  ok              "Answers point back to your sources"
+
+Scene 6
+  title        ready 0.45s  held 1.87s  needs 2.20s   88px  brief exception "Define the process once"
+  pill         ready 16.50s  held 3.50s  needs 2.70s   28px  ok              "Steps, agents, tools and a review"
+  trigger      ready 3.95s  held 1.00s  needs 2.95s   20px  brief exception "Trigger Email arrives in the claims inbox"
+  steps        ready 12.28s  held 6.72s  needs 10.70s   21px  brief exception "Get claim details Read the claim email and prepare the intak"
+  message      ready 15.23s  held 0.22s  needs 5.95s   21px  brief exception "Please review claim CL-7305. One item needs a person: the in"
+
+Scene 7
+  title        ready 0.45s  held 1.96s  needs 2.70s   88px  brief exception "Let it run on its own"
+  pill         ready 7.70s  held 1.30s  needs 3.45s   28px  brief exception "Waiting for a person. Nothing moves until they decide."
+  morning      ready 9.40s  held 0.90s  needs 1.70s   28px  brief exception "Next morning"
+
+Scene 8
+  title        ready 0.80s  held 1.87s  needs 2.20s   88px  brief exception "People approve what matters"
+  flag         ready 6.50s  held 5.10s  needs 3.45s   24px  ok              "Invoice date does not match the date of loss"
+  note         ready 10.92s  held 0.68s  needs 3.45s   22px  brief exception "Approved. Invoice date confirmed with the insured by phone."
+  pill         ready 14.80s  held 2.20s  needs 2.20s   28px  ok              "Approved by Emily Carter"
+
+Scene 9
+  title        ready 0.45s  held 1.87s  needs 2.20s   88px  brief exception "Every step on record"
+  records      ready 4.10s  held 4.90s  needs 6.20s   21px  brief exception "Claim email received Intake summary Policy check Evidence ma"
+  approved     ready 5.95s  held 1.20s  needs 2.20s   21px  brief exception "Approved by Emily Carter"
+
+Scene 10
+  title        ready 0.45s  held 1.96s  needs 2.45s   88px  brief exception "Build the views you need"
+  prompt1      ready 5.30s  held 1.70s  needs 3.20s   22px  brief exception "Open claims by status, with who approved each"
+  table        ready 6.55s  held 2.51s  needs 3.20s   21px  brief exception "Open claims by status Status Count Approved by"
+  prompt2      ready 8.86s  held 0.80s  needs 3.70s   22px  brief exception "A weekly claims dashboard: volume, time to prepare, and flag"
+  kpis         ready 10.21s  held 1.79s  needs 4.95s   21px  brief exception "Claims this week 38 Time to prepare 2 min Flags raised 5 Awa"
+  pill         ready 10.36s  held 0.94s  needs 2.70s   28px  brief exception "Pages and dashboards on live data"
+
+Scene 11
+  line         ready 1.91s  held 4.89s  needs 2.45s   64px  ok              "Same claim. Prepared in minutes."
+  pack         ready 3.70s  held 3.10s  needs 4.70s   28px  brief exception "Review pack Intake summary Policy check, Section 4.2 Evidenc"
+  ready        ready 4.25s  held 2.55s  needs 1.95s   28px  ok              "Ready for review"
+
+Scene 12
+  lines        ready 0.10s  held 3.45s  needs 3.20s   80px  ok              "Agents prepare. People decide. Every step on record."
+  lockup       ready 5.22s  held 1.78s  needs 1.70s   96px  ok              "Space by"
+
+Scene 4 thought bubble lines (each must hold at least 0.9s):
+  nora  1.95s  "Reading the claim email"
+  nora  1.65s  "Pulling claimant and loss details"
+  nora  1.35s  "Writing intake summary"
+  theo  1.95s  "Opening Home Policy Wording 2026"
+  theo  1.65s  "Section 4.2 covers escape of water"
+  theo  1.35s  "Checking the $250 excess"
+  owen  2.05s  "Reading 3 photos"
+  owen  1.75s  "Reading plumber invoice"
+  owen  1.45s  "Invoice date does not match date of loss"
+
+Scene 12 lockup complete at 5.22s, hold 1.78s (needs at least 1.5s)
+
+Scene 1 camera: largest move of a window centre between frames 12.66px at 12.85s (limit 14px)
+Scene 1 complete closing frame holds 1.25s (brief: at least 1.2s)
+  Scene 1 click at 3.20s: worst offset 0.00px
+  Scene 1 click at 4.70s: worst offset 0.00px
+  Scene 1 click at 6.40s: worst offset 0.00px
+  Scene 1 click at 9.00s: worst offset 0.00px
+  Scene 1 click at 10.65s: worst offset 0.00px
+  Scene 1 click at 11.50s: worst offset 0.00px
+
+Scene 2 line complete at 3.21s, hold at end 1.79s (needs at least 1.5s)
+
+Scene start times:
+  Scene  1 built      0.0s to   19.0s  (19s)  Problem
+  Scene  2 built     19.0s to   24.0s  (5s)  Intro
+  Scene  3 built     24.0s to   42.0s  (18s)  Chat
+  Scene  4 built     42.0s to   82.0s  (40s)  Agents and Control Room
+  Scene  5 built     82.0s to   96.0s  (14s)  Company Brain
+  Scene  6 built     96.0s to  115.0s  (19s)  Playbook
+  Scene  7 built    115.0s to  126.0s  (11s)  Run and wait
+  Scene  8 built    126.0s to  143.0s  (17s)  Morning review
+  Scene  9 built    143.0s to  152.0s  (9s)  Records
+  Scene 10 built    152.0s to  164.0s  (12s)  Pages and dashboards
+  Scene 11 built    164.0s to  172.0s  (8s)  Same claim, minutes not hours
+  Scene 12 built    172.0s to  179.0s  (7s)  End card
+
+Cursor clicks (ripple centre against the cursor hotspot, every frame of the ripple):
+  Scene 3 click at 10.95s: worst offset 0.00px
+  Scene 3 click at 17.50s: worst offset 0.00px
+  Scene 4 click at 4.35s: worst offset 0.00px
+  Scene 4 click at 7.85s: worst offset 0.00px
+  Scene 4 click at 10.30s: worst offset 0.00px
+  Scene 4 click at 39.30s: worst offset 0.00px
+  Scene 5 click at 4.70s: worst offset 0.00px
+  Scene 5 click at 5.30s: worst offset 0.00px
+  Scene 5 click at 6.10s: worst offset 0.00px
+  Scene 5 click at 6.90s: worst offset 0.00px
+  Scene 5 click at 8.75s: worst offset 0.00px
+  Scene 5 click at 9.45s: worst offset 0.00px
+  Scene 5 click at 10.45s: worst offset 0.00px
+  Scene 5 click at 11.40s: worst offset 0.00px
+  Scene 5 click at 13.40s: worst offset 0.00px
+  Scene 6 click at 3.70s: worst offset 0.00px
+  Scene 6 click at 5.20s: worst offset 0.00px
+  Scene 6 click at 5.75s: worst offset 0.00px
+  Scene 6 click at 6.30s: worst offset 0.00px
+  Scene 6 click at 6.85s: worst offset 0.00px
+  Scene 6 click at 7.43s: worst offset 0.00px
+  Scene 6 click at 7.95s: worst offset 0.00px
+  Scene 6 click at 8.53s: worst offset 0.00px
+  Scene 6 click at 9.05s: worst offset 0.00px
+  Scene 6 click at 9.63s: worst offset 0.00px
+  Scene 6 click at 10.15s: worst offset 0.00px
+  Scene 6 click at 10.73s: worst offset 0.00px
+  Scene 6 click at 11.25s: worst offset 0.00px
+  Scene 6 click at 11.83s: worst offset 0.00px
+  Scene 6 click at 16.50s: worst offset 0.00px
+  Scene 6 click at 17.60s: worst offset 0.00px
+  Scene 8 click at 0.30s: worst offset 0.00px
+  Scene 8 click at 4.60s: worst offset 0.00px
+  Scene 8 click at 8.50s: worst offset 0.00px
+  Scene 8 click at 11.25s: worst offset 0.00px
+  Scene 8 click at 16.20s: worst offset 0.00px
+  Scene 9 click at 4.00s: worst offset 0.00px
+  Scene 9 click at 8.50s: worst offset 0.00px
+  Scene 10 click at 3.65s: worst offset 0.00px
+  Scene 10 click at 5.55s: worst offset 0.00px
+  Scene 10 click at 6.95s: worst offset 0.00px
+  Scene 10 click at 9.06s: worst offset 0.00px
+  Scene 10 click at 11.40s: worst offset 0.00px
+Built scenes: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12; SpaceVideo is 10740 frames (179s)
+
+Notes:
+  Scene 1 line2: Brief: the line reveals at 15.4s and the complete frame holds 1.2s before 18.2s (held 1.80s, guard asks 2.70s)
+  Scene 1 chips: Brief: hold the complete frame at least 1.2s (held 1.25s, guard asks 3.45s)
+  Scene 3 pill1: Brief: three status pills, 0.6s each, replacing one another (held 0.30s, guard asks 1.70s)
+  Scene 3 pill2: Brief: three status pills, 0.6s each, replacing one another (held 0.30s, guard asks 1.70s)
+  Scene 3 pill3: Brief: three status pills, 0.6s each, replacing one another (held 0.30s, guard asks 1.70s)
+  Scene 3 answer: Brief: turn 1 about 8s; the answer stays in the thread until turn 2 scrolls it up (held 4.40s, guard asks 8.20s)
+  Scene 3 source: Brief: turn 1 compressed to about 8s, ending with the source card closing (held 0.90s, guard asks 10.95s)
+  Scene 3 prompt2: Read as it types; brief: turn 2 about 5.2s (held 3.59s, guard asks 6.95s)
+  Scene 3 action: Brief: final 2.0s goes to the chip and its click (held 2.40s, guard asks 7.20s)
+  Scene 4 panel: Brief: the panel is filled and created between 4.0s and 8.0s (held 0.17s, guard asks 4.70s)
+  Scene 4 pill-Prepared for Emily's review: on screen at scene end after 1.90s of 2.20s; the next scene must keep it until the hold is met
+  Scene 4 bubble-nora-1: Brief: each bubble line holds at least 0.9s (held 1.95s, guard asks 2.20s)
+  Scene 4 bubble-nora-2: Brief: each bubble line holds at least 0.9s (held 1.65s, guard asks 2.45s)
+  Scene 4 bubble-nora-3: Brief: each bubble line holds at least 0.9s (held 1.35s, guard asks 1.95s)
+  Scene 4 bubble-theo-1: Brief: each bubble line holds at least 0.9s (held 1.95s, guard asks 2.45s)
+  Scene 4 bubble-theo-2: Brief: each bubble line holds at least 0.9s (held 1.65s, guard asks 2.70s)
+  Scene 4 bubble-theo-3: Brief: each bubble line holds at least 0.9s (held 1.35s, guard asks 2.20s)
+  Scene 4 bubble-owen-2: Brief: each bubble line holds at least 0.9s (held 1.75s, guard asks 1.95s)
+  Scene 4 bubble-owen-3: Brief: each bubble line holds at least 0.9s (held 1.45s, guard asks 3.20s)
+  Scene 4 output-1: on screen at scene end after 3.20s of 4.20s; the next scene must keep it until the hold is met
+  Scene 4 output-2: on screen at scene end after 2.60s of 2.95s; the next scene must keep it until the hold is met
+  Scene 4 output-3: on screen at scene end after 2.00s of 5.70s; the next scene must keep it until the hold is met
+  Scene 5 title: Brief: compact title, 0.9s hold (held 1.96s, guard asks 2.70s)
+  Scene 5 sources: Brief: five source types added one after another; each is read as it lands (held 0.20s, guard asks 6.95s)
+  Scene 5 kb: Brief: the list, then a short graph view (held 0.55s, guard asks 4.95s)
+  Scene 6 title: Brief: compact title, 0.9s hold (held 1.87s, guard asks 2.20s)
+  Scene 6 trigger: Brief: Settings shows the trigger for 1.0s (held 1.00s, guard asks 2.95s)
+  Scene 6 steps: Brief: six steps added one at a time, each read as it lands (held 6.72s, guard asks 10.70s)
+  Scene 6 message: Read as it types; brief fits the inspector, branches, Check and Save in 19s (held 0.22s, guard asks 5.95s)
+  Scene 7 title: Brief: compact title, 0.9s hold (held 1.96s, guard asks 2.70s)
+  Scene 7 pill: Brief: the wait pill shows 7.4 to 9.0s (held 1.30s, guard asks 3.45s)
+  Scene 7 morning: Brief: Next morning shows for 1.2s (held 0.90s, guard asks 1.70s)
+  Scene 8 title: Brief: compact title, 0.9s hold (held 1.87s, guard asks 2.20s)
+  Scene 8 note: Brief: approve follows the note (held 0.68s, guard asks 3.45s)
+  Scene 9 title: Brief: compact title, 0.9s hold (held 1.87s, guard asks 2.20s)
+  Scene 9 records: Brief: Records in 9s; rows read during the replay (held 4.90s, guard asks 6.20s)
+  Scene 9 approved: Brief: approved row held 1.2s (held 1.20s, guard asks 2.20s)
+  Scene 10 title: Brief: compact title, 0.9s hold (held 1.96s, guard asks 2.45s)
+  Scene 10 prompt1: Read as it types (held 1.70s, guard asks 3.20s)
+  Scene 10 table: Brief: page build, then the dashboard, in 12s (held 2.51s, guard asks 3.20s)
+  Scene 10 prompt2: Read as it types (held 0.80s, guard asks 3.70s)
+  Scene 10 kpis: Brief: tiles in one by one, then the tile is clicked (held 1.79s, guard asks 4.95s)
+  Scene 10 pill: Brief: the pill gives way before the tile opens (held 0.94s, guard asks 2.70s)
+  Scene 11 pack: Brief: 8s scene; items are read as they tick in turn (held 3.10s, guard asks 4.70s)
+
+Timing and timeline checks passed.
