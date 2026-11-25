@@ -1,0 +1,9 @@
+Scene04 0.45s to 3.10s: 28 frames, worst 0 px (max diff 0)
+Scene05 0.45s to 2.70s: 24 frames, worst 0 px (max diff 0)
+Scene06 0.45s to 2.52s: 22 frames, worst 0 px (max diff 0)
+Scene07 0.45s to 2.70s: 24 frames, worst 0 px (max diff 0)
+Scene08 0.80s to 2.87s: 22 frames, worst 0 px (max diff 0)
+Scene09 0.45s to 2.52s: 22 frames, worst 0 px (max diff 0)
+Scene10 0.45s to 2.61s: 23 frames, worst 0 px (max diff 0)
+
+PASS: only the plate, the glow and the title are visible in every clean title window.
