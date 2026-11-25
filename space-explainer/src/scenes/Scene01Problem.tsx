@@ -77,7 +77,7 @@ export const S1 = {
   tabsOut: [15.1, 15.5],
   line2: 15.4,
   chips: [15.3, 15.8, 16.3, 16.8],
-  endOut: [18.3, 18.7],
+  endOut: [18.35, 18.75],
   orbShrink: [18.3, 18.95],
 };
 /** Top lines: the first at 5.0s, the second after the morph. */
@@ -156,9 +156,9 @@ export const S1_COMPLETE_HOLD = S1.endOut[0] - S1_COMPLETE_AT;
 export const S1_LINE3_HOLD = S1_COMPLETE_HOLD;
 export const SCENE01_TEXT: TextBeatSpec[] = [
   { id: "line1", text: LINES[0].text, readyAt: LINES[0].from + lineIn(LINES[0].text), leaveAt: LINES[0].to, fontPx: 64 },
-  { id: "line2", text: LINES[1].text, readyAt: LINES[1].from + lineIn(LINES[1].text), leaveAt: LINES[1].to, fontPx: 64 },
+  { id: "line2", text: LINES[1].text, readyAt: LINES[1].from + lineIn(LINES[1].text), leaveAt: LINES[1].to, fontPx: 64, exception: "Brief: the line reveals at 15.4s and the complete frame holds 1.2s before 18.2s" },
   { id: "chips", text: P.scene1.chips.join(" "), readyAt: S1_COMPLETE_AT, leaveAt: S1.endOut[0], fontPx: 28, exception: "Brief: hold the complete frame at least 1.2s" },
-  { id: "task", text: P.scene1.task, readyAt: 0.9, leaveAt: S1.hudOut[0], fontPx: 24 },
+  { id: "task", text: P.scene1.task, readyAt: 0.9, leaveAt: S1.hudOut[0], fontPx: 24, ui: true },
 ];
 
 /** A top line, words blurring in as in FeatureTitle, at 64px. */

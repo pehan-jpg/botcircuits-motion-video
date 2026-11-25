@@ -217,7 +217,7 @@ const Node: React.FC<{ i: number; st: GraphState["nodes"][number]; clock: number
           {n.chip ? (
             <span style={{ opacity: kbOn, transform: `scale(${0.9 + 0.1 * kbOn})`, padding: "2px 10px", borderRadius: 8, background: UI.lilacBg, color: UI.lilacText, fontSize: UIN.helper, fontWeight: 600, whiteSpace: "nowrap" }}>{n.chip}</span>
           ) : null}
-          {n.agent ? <SpaceOrb size={24} palette={n.agent as OrbPaletteKey} timeOffset={clock} /> : null}
+          {n.agent ? <SpaceOrb size={24} palette={n.agent as OrbPaletteKey} timeOffset={clock} pulse={running} /> : null}
           {n.agent ? <span style={{ fontSize: UIN.helper, fontWeight: 600, color: UI.text }}>{n.agent[0].toUpperCase() + n.agent.slice(1)}</span> : null}
           {n.logo ? <Img data-guard="brand" src={staticFile(n.logo)} style={{ width: 20, height: 20, objectFit: "contain" }} /> : null}
           {done ? <Check size={16} color={UI.green} strokeWidth={3} /> : null}

@@ -15,7 +15,7 @@ import { cardX, REVIEWS, ReviewsPage, type ReviewsState } from "../components/pa
 import type { CursorKey } from "../components/Cursor";
 import { typeDuration } from "../lib/typewriter";
 import type { TextBeatSpec } from "../lib/guards";
-import { ClockWidget, s7GraphAt, SLACK_NOTE, SlackNotification, S7_END_CAM, S7_PILL_LABEL } from "./Scene07Evening";
+import { s7GraphAt, SLACK_NOTE, SlackNotification, S7_END_CAM } from "./Scene07Evening";
 import { S2_PLATE } from "./Scene02Intro";
 import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./shared/stage";
 
@@ -90,7 +90,6 @@ export const S8_CURSOR: CursorKey[] = [
 
 export const S8_PILL_LABEL = "Approved by Emily Carter";
 export const S8_PILLS: Pill[] = [
-  { label: S7_PILL_LABEL, at: -10, until: 0, top: 846 },
   { label: S8_PILL_LABEL, at: 14.5, until: 999 },
 ];
 export const SCENE08_TEXT: TextBeatSpec[] = [
@@ -147,7 +146,6 @@ export const Scene08Review: React.FC = () => {
           </div>
         ) : null}
       </ProductStage>
-      <ClockWidget label={P.evening.clockEnd} opacity={1 - EASE(ramp(t, 0, 0.4))} night={0} />
       <Pills t={t} pills={S8_PILLS} />
       <GuardLayer scene={S} />
     </AbsoluteFill>

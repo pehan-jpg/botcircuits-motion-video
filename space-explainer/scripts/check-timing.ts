@@ -15,6 +15,8 @@ import { SCENE06_TEXT, S6_CURSOR } from "../src/scenes/Scene06Playbook";
 import { SCENE07_TEXT } from "../src/scenes/Scene07Evening";
 import { SCENE08_TEXT, S8_CURSOR } from "../src/scenes/Scene08Review";
 import { SCENE09_TEXT, S9_CURSOR } from "../src/scenes/Scene09Records";
+import { SCENE10_TEXT, S10_CURSOR } from "../src/scenes/Scene10Pages";
+import { SCENE11_TEXT } from "../src/scenes/Scene11Contrast";
 import { SCENE12_TEXT, S12_LOCKUP_READY } from "../src/scenes/Scene12EndCard";
 import { cursorClickReport } from "../src/components/Cursor";
 
@@ -41,6 +43,8 @@ report("Scene 6", SCENE06_TEXT);
 report("Scene 7", SCENE07_TEXT);
 report("Scene 8", SCENE08_TEXT);
 report("Scene 9", SCENE09_TEXT);
+report("Scene 10", SCENE10_TEXT);
+report("Scene 11", SCENE11_TEXT);
 report("Scene 12", SCENE12_TEXT);
 
 console.log("\nScene 4 thought bubble lines (each must hold at least 0.9s):");
@@ -99,7 +103,7 @@ console.log("\nScene start times:");
 for (const sc of SCENES) console.log(`  Scene ${String(sc.number).padStart(2)} ${sc.built ? "built  " : "pending"} ${sc.start.toFixed(1).padStart(6)}s to ${sc.end.toFixed(1).padStart(6)}s  (${sc.duration}s)  ${sc.name}`);
 
 console.log("\nCursor clicks (ripple centre against the cursor hotspot, every frame of the ripple):");
-for (const [name, keys] of [["Scene 3", S3_CURSOR], ["Scene 4", S4_CURSOR], ["Scene 5", S5_CURSOR], ["Scene 6", S6_CURSOR], ["Scene 8", S8_CURSOR], ["Scene 9", S9_CURSOR]] as const) {
+for (const [name, keys] of [["Scene 3", S3_CURSOR], ["Scene 4", S4_CURSOR], ["Scene 5", S5_CURSOR], ["Scene 6", S6_CURSOR], ["Scene 8", S8_CURSOR], ["Scene 9", S9_CURSOR], ["Scene 10", S10_CURSOR]] as const) {
   for (const c of cursorClickReport(keys)) {
     console.log(`  ${name} click at ${c.t.toFixed(2)}s: worst offset ${c.worst.toFixed(2)}px`);
     if (c.worst > 1) issues.push({ guard: "cursor", message: `${name} click at ${c.t.toFixed(2)}s drifts ${c.worst.toFixed(1)}px from its ripple` });
