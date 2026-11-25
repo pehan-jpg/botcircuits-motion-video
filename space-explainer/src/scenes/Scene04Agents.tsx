@@ -17,7 +17,7 @@ import { makeRoute, sampleRoutes, type Route } from "../components/office/motion
 import { AGENT_ORDER, proj, DESKS, FIGURE_H, plateAnchor, STANDING, type AgentKey, type AgentState, type BubbleLine, type OfficeState, type PedestalKey, type Pose } from "../components/office/Office";
 import { typeDuration } from "../lib/typewriter";
 import type { TextBeatSpec } from "../lib/guards";
-import { chatStateAt, S1_CHIP, S3_END_CAM, S3_KB_END } from "./Scene03Chat";
+import { chatStateAt, S3_ACTION_CHIP, S3_END_CAM, S3_KB_END } from "./Scene03Chat";
 import { S2_PLATE } from "./Scene02Intro";
 import { Pills, ramp, type Pill } from "./shared/stage";
 
@@ -35,8 +35,8 @@ export const S4_KB_END = S3_KB_END + 0.03;
 export const S4 = {
   sinkEnd: 0.6,
   frameRise: TITLE_START + TT.frameRiseStart,
-  clickAgents: 3.75,
-  agentsPage: 3.8,
+  /** The clicked chip in Scene 3 opens the Agents page: blur through while the frame sinks. */
+  agentsPage: 0.05,
   clickTile: 4.35,
   panelOpen: 4.4,
   nameType: 4.85,
@@ -315,9 +315,7 @@ const slotCentre = (i: number) => {
   return nat(r.x + r.w / 2, r.y + r.h / 2);
 };
 export const S4_CURSOR: CursorKey[] = [
-  { ...nat(1350, 700), t: 2.9 },
-  { ...nat(63, navY("agents")), t: S4.clickAgents - 0.05 },
-  { ...nat(63, navY("agents")), t: S4.clickAgents, click: true },
+  { ...nat(1350, 700), t: 3.4 },
   { ...slotCentre(1), t: S4.clickTile - 0.05 },
   { ...slotCentre(1), t: S4.clickTile, click: true },
   { ...nat(swatchCentre(1).x, swatchCentre(1).y), t: S4.clickSwatch - 0.05 },
@@ -398,14 +396,9 @@ export const Scene04Agents: React.FC = () => {
   const frameStyle: React.CSSProperties =
     t < S4.sinkEnd + 0.01 ? { opacity: 1 - sink, transform: `translateY(${40 * sink}px) scale(${1 - 0.06 * sink})`, transformOrigin: "50% 50%" } : frameRiseStyle(rise);
 
-  const showChatOpenCard = t < S4.sinkEnd + 0.01;
   const chat = chatStateAt(S3_FRAMES, fps, -S3_FRAMES);
   chat.clock = S3.start + S3.duration;
-  if (!showChatOpenCard) {
-    chat.cardOpen = 0;
-    chat.citeActive = 0;
-  }
-  const toAgents = EASE(ramp(t, S4.agentsPage, S4.agentsPage + 0.3));
+  const toAgents = EASE(ramp(t, S4.agentsPage, S4.agentsPage + 0.4));
   const toControl = EASE(ramp(t, S4.controlPage, S4.controlPage + 0.6));
   const blurThrough = (p: number) => Math.sin(Math.PI * p) * 10;
 
@@ -416,7 +409,7 @@ export const Scene04Agents: React.FC = () => {
   const lastCreated = doneCount > 0 ? S4.created[team[doneCount - 1]] : -1;
 
   const cam = s4CamAt(t);
-  const cursorO = EASE(ramp(t, 2.9, 3.2)) * (1 - EASE(ramp(t, S4.clickControl + 0.5, S4.clickControl + 1.0))) + EASE(ramp(t, S4.citeClick - 1.5, S4.citeClick - 1.2));
+  const cursorO = EASE(ramp(t, 3.4, 3.7)) * (1 - EASE(ramp(t, S4.clickControl + 0.5, S4.clickControl + 1.0))) + EASE(ramp(t, S4.citeClick - 1.5, S4.citeClick - 1.2));
 
   return (
     <AbsoluteFill style={{ width: 1920, height: 1080 }}>
@@ -463,7 +456,7 @@ export const Scene04Agents: React.FC = () => {
               ) : null}
             </ProductWindow>
           </div>
-          {1 - sink > 0 ? <Cursor keys={[{ ...S1_CHIP, t: -1 }]} opacity={1 - sink} /> : null}
+          {1 - sink > 0 ? <Cursor keys={[{ ...S3_ACTION_CHIP, t: -1 }]} opacity={1 - sink} /> : null}
           {cursorO > 0 ? <Cursor keys={S4_CURSOR} opacity={cursorO} /> : null}
         </AbsoluteFill>
       ) : null}

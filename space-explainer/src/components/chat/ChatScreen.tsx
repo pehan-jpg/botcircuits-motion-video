@@ -1,6 +1,9 @@
 import React from "react";
 import {
   ArrowUp,
+  CalendarClock as Calendar,
+  CircleCheck,
+  Sparkles,
   CalendarClock,
   ChartColumn,
   ChevronDown,
@@ -13,6 +16,7 @@ import {
   Workflow,
   Zap,
 } from "lucide-react";
+import { Img, staticFile } from "remotion";
 import { BLUR_IN, CHAT_CPS, FONT, REPLAY_CPS, UIN } from "../../theme";
 import { PLACEHOLDERS as P } from "../../placeholders";
 import { Typewriter } from "../Typewriter";
@@ -69,14 +73,32 @@ export type ChatState = {
   answerOpacity: number;
   citeActive: number;
   cardOpen: number;
+  /** Turn 2 (an action): the thread scrolls up by this many native px. */
+  scroll?: number;
+  t2Focus?: number;
+  t2TypeStart?: number;
+  t2Sent?: number;
+  t2Bubble?: number;
+  t2Pill?: number;
+  t2Card?: number;
+  t2Rows?: [number, number];
+  /** Suggested action chip under the card: appear, and pressed. */
+  t2Chip?: number;
+  t2ChipPressed?: number;
   /** Seconds added to orb clocks, for continuity across scenes. */
   clock: number;
 };
 
+/** Turn 2 layout, native px (before the scroll). */
+export const TURN2 = { bubbleTop: 470, statusY: 590, card: { x: 300, y: 590, w: 860 }, chipY: 838, chipX: 300 };
+/** Turn 2 typing speed: a fast, practised typist. */
+export const T2_CPS = 60;
+
 export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
   const grow = 46 * s.focus * (1 - s.sent);
-  const inputTop = 446 + (812 - 446) * s.sent;
-  const inputH = 63 + grow;
+  const t2grow = 40 * (s.t2Focus ?? 0) * (1 - (s.t2Sent ?? 0));
+  const inputTop = 446 + (812 - 446) * s.sent - t2grow;
+  const inputH = 63 + grow + t2grow;
   const rowY = inputTop + inputH - 31.5;
   const heroO = s.heroIn * (1 - s.heroOut);
   const heroY = (1 - s.heroIn) * BLUR_IN.rise;
@@ -84,8 +106,11 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
   const chipsO = s.chipsIn * (1 - s.chipsOut);
   const typedO = 1 - Math.min(1, s.sent * 3);
   const placeholderO = Math.max(1 - s.focus * 2, Math.min(1, Math.max(0, s.sent * 2 - 1)));
-  const lime = s.focus * (1 - s.sent);
-  const border = `rgba(${181 * lime + 61 * (1 - lime)}, ${210 * lime + 61 * (1 - lime)}, ${62 * lime + 61 * (1 - lime)}, 1)`;
+  const t2f = (s.t2Focus ?? 0) * (1 - (s.t2Sent ?? 0));
+  const lime = Math.max(s.focus * (1 - s.sent), t2f);
+  // Focus ring: violet at 35 percent around a violet tinted border.
+  const border = lime > 0 ? `rgba(124,98,240,${0.25 + 0.5 * lime})` : UI.line;
+  const scroll = s.scroll ?? 0;
 
   return (
     <div style={{ width: CHAT_NATIVE.w, height: CHAT_NATIVE.h, position: "relative", overflow: "hidden", background: UI.bg }}>
@@ -132,11 +157,11 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
             borderRadius: 14,
             background: UI.inputBg,
             border: `1.5px solid ${border}`,
-            boxShadow: lime > 0 ? `0 0 0 ${3 * lime}px rgba(124,98,240,${0.12 * lime})` : undefined,
+            boxShadow: lime > 0 ? `0 0 0 ${4 * lime}px rgba(124,98,240,${0.35 * lime})` : undefined,
           }}
         />
         <Plus size={18} color="#5B6478" style={{ position: "absolute", left: 707, top: rowY - 9 }} />
-        <div style={{ ...ui, left: 740, top: inputTop + 20, fontSize: UIN.helper, color: "#5B6478", opacity: placeholderO }}>
+        <div style={{ ...ui, left: 740, top: inputTop + 20, fontSize: UIN.helper, color: "#5B6478", opacity: placeholderO * (1 - Math.min(1, t2f * 3)) }}>
           Ask anything, or @ to mention an agent, a colleague or a resource
         </div>
         <Zap size={16} color="#0D1224" style={{ position: "absolute", left: 1306, top: rowY - 8 }} />
@@ -158,7 +183,7 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
             transform: `scale(${1 - 0.4 * s.statusOrb})`,
           }}
         >
-          <ArrowUp size={16} color={s.focus > 0.5 && s.sent === 0 ? "#111" : "#5B6478"} />
+          <ArrowUp size={16} color={s.focus > 0.5 && s.sent === 0 ? "#FFFFFF" : "#5B6478"} />
         </div>
         {/* The send button turns into a small status orb */}
         {s.statusOrb > 0 ? (
@@ -180,6 +205,13 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
           </div>
         ) : null}
       </div>
+
+      {/* Turn 2 typing in the bottom input */}
+      {t2f > 0 ? (
+        <div data-guard="uitext" data-guard-read="1" data-guard-label="Chat prompt 2" style={{ position: "absolute", left: 740, top: inputTop + 12, width: 660, opacity: Math.min(1, t2f * 2) }}>
+          <Typewriter lines={[...P.chat2.promptLines]} cps={T2_CPS} startFrame={s.t2TypeStart ?? 0} seed="s3-prompt2" caretColor={UI.text} style={{ fontFamily: FONT.sans, fontSize: UIN.userBubble, lineHeight: 1.3, color: UI.text }} />
+        </div>
+      ) : null}
 
       {/* Tool chips */}
       <div style={{ opacity: chipsO, transform: `translateY(${grow + (1 - s.chipsIn) * 12}px)` }}>
@@ -210,6 +242,8 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
         ))}
       </div>
 
+      <div style={{ position: "absolute", left: 0, top: 0, width: CHAT_NATIVE.w, height: 790, overflow: "hidden" }}>
+      <div style={{ position: "absolute", left: 0, top: -scroll, width: CHAT_NATIVE.w, height: 1600 }}>
       {/* Thread: user message */}
       {s.bubbleIn > 0 ? (
         <div
@@ -353,6 +387,68 @@ export const ChatScreen: React.FC<{ s: ChatState }> = ({ s }) => {
           </div>
         </div>
       ) : null}
+
+      {/* Turn 2: the user's request, a status pill, then the action card and a suggested next step */}
+      {(s.t2Bubble ?? 0) > 0 ? (
+        <div
+          data-guard="uitext"
+          data-guard-read="1"
+          data-guard-label="User message 2"
+          style={{ position: "absolute", right: THREAD.bubbleRight, top: TURN2.bubbleTop, background: UI.bubble, borderRadius: 22, padding: "14px 22px", fontFamily: FONT.sans, fontSize: UIN.userBubble, lineHeight: 1.35, color: UI.text, whiteSpace: "pre", opacity: s.t2Bubble, transform: `translateY(${(1 - (s.t2Bubble ?? 0)) * 20}px)` }}
+        >
+          {P.chat2.promptLines.join("\n")}
+        </div>
+      ) : null}
+      {(s.t2Pill ?? 0) > 0.001 ? (
+        <div data-guard="uitext" data-guard-label="Status: setting up" style={{ position: "absolute", left: TURN2.card.x, top: TURN2.statusY, display: "flex", alignItems: "center", gap: 12, padding: "9px 22px 9px 12px", borderRadius: 999, background: "#FFFFFF", border: `1px solid ${UI.chipBorder}`, fontFamily: FONT.sans, fontWeight: 500, fontSize: UIN.answer, color: UI.text, opacity: s.t2Pill }}>
+          <SpaceOrb timeOffset={s.clock} size={22} />
+          {P.chat2.status}
+        </div>
+      ) : null}
+      {(s.t2Card ?? 0) > 0 ? (
+        <div
+          data-guard="uitext"
+          data-guard-read="1"
+          data-guard-label="Action card"
+          data-fit-box="action card"
+          style={{ position: "absolute", left: TURN2.card.x, top: TURN2.card.y, width: TURN2.card.w, boxSizing: "border-box", padding: "16px 22px 10px", borderRadius: 16, background: "#FFFFFF", border: `1px solid ${UI.chipBorder}`, boxShadow: "0 12px 32px rgba(20,24,60,0.08)", fontFamily: FONT.sans, color: UI.text, opacity: s.t2Card, transform: `translateY(${(1 - (s.t2Card ?? 0)) * 14}px)` }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: UIN.answer, fontWeight: 700, marginBottom: 6 }}>
+            <SpaceOrb timeOffset={s.clock} size={22} />
+            {P.chat2.cardTitle}
+          </div>
+          {P.chat2.rows.map((r, i) => {
+            const tick = s.t2Rows?.[i] ?? 0;
+            return (
+              <div key={r.kind} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 0", borderTop: `1px solid ${UI.line}`, opacity: 0.35 + 0.65 * tick }}>
+                <div style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${UI.line}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  {i === 0 ? <Calendar size={16} color={UI.secondary} /> : <Img data-guard="brand" src={staticFile("logos/slack.svg")} style={{ width: 18, height: 18 }} />}
+                </div>
+                <div data-fit-text style={{ fontSize: UIN.answer * 0.92, lineHeight: 1.35, whiteSpace: "nowrap" }}>
+                  <span style={{ fontWeight: 700 }}>{r.kind}:</span> {r.text}
+                </div>
+                <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 14, fontSize: UIN.helper, color: UI.lilacText, fontWeight: 600 }}>
+                  <span>View</span>
+                  <span>Undo</span>
+                  <CircleCheck size={20} color="#FFFFFF" fill={UI.green} style={{ opacity: tick, transform: `scale(${0.6 + 0.4 * tick})` }} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
+      {(s.t2Chip ?? 0) > 0 ? (
+        <div
+          data-guard="uitext"
+          data-guard-label="Suggested action"
+          style={{ position: "absolute", left: TURN2.chipX, top: TURN2.chipY, display: "flex", alignItems: "center", gap: 10, height: 42, padding: "0 18px", borderRadius: 21, background: (s.t2ChipPressed ?? 0) > 0.5 ? UI.lilacBg : "#FFFFFF", border: `1.5px solid ${UI.accent}`, fontFamily: FONT.sans, fontSize: UIN.button, fontWeight: 600, color: UI.lilacText, whiteSpace: "nowrap", opacity: s.t2Chip, transform: `translateY(${(1 - (s.t2Chip ?? 0)) * 10}px) scale(${1 - 0.04 * (s.t2ChipPressed ?? 0)})` }}
+        >
+          <Sparkles size={16} color={UI.lilacText} />
+          {P.chat2.chip}
+        </div>
+      ) : null}
+      </div>
+      </div>
     </div>
   );
 };

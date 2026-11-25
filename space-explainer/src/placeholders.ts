@@ -55,6 +55,18 @@ export const PLACEHOLDERS = {
     "does not match the date of loss.",
   ],
   sourceCardTitle: "Home Policy Wording 2026, p. 12",
+  /** Scene 3, turn 2: an action request. */
+  chat2: {
+    prompt: "Send me the weekly claims by status on Mondays at 8, and tell me in Slack when a review is waiting for me.",
+    promptLines: ["Send me the weekly claims by status on Mondays at 8, and tell me", "in Slack when a review is waiting for me."],
+    status: "Setting this up",
+    cardTitle: "2 changes made",
+    rows: [
+      { kind: "Scheduled task", text: "Weekly claims by status, Mondays at 8:00 AM" },
+      { kind: "Notification rule", text: "Slack, when a review is waiting for Emily Carter" },
+    ],
+    chip: "Create agents for this claim",
+  },
   /** Placeholder policy text. The first sentence (Section 4.2) is highlighted. */
   policyText: [
     "4.2 We cover sudden and accidental escape of water from a fixed pipe or appliance in your home.",
