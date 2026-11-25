@@ -1,5 +1,5 @@
 Motion test, Scene 4 frames 600 to 2399 (1800 frames, every frame sampled from the DOM)
-  iris  max change per frame at 1x outside a hero: 5.19px (frame 1681, 28.02s)
+  iris  max change per frame at 1x outside a hero: 5.38px (frame 2056, 34.27s)
   nora  max change per frame at 1x outside a hero: 9.23px (frame 2140, 35.67s)
   theo  max change per frame at 1x outside a hero: 10.23px (frame 2140, 35.67s)
   owen  max change per frame at 1x outside a hero: 9.25px (frame 2140, 35.67s)
