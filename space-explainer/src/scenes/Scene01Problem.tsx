@@ -100,6 +100,10 @@ export const S1_STAGE = { top: S1_LANE.bottom + 24, bottom: 1080 - 48, feather: 
 const HUD = { left: 120, top: 98, chipH: 52, lineY: 205 };
 /** Caption sizes: 56px in the lane (64px would not fit under the card row), 64px once the lane is released. */
 const LINE_PX = [56, 64];
+/** Caption centres and the height of the soft light behind them: the lane line stays inside the lane;
+ * the closing line keeps its original place and light, so the morph and closing frames are unchanged. */
+const LINE_Y = [HUD.lineY, 204];
+const GLOW_H = [160, 320];
 /** Lane rule until the morph begins; then the stage clip is released over 0.4s. */
 export const S1_RELEASE = [13.6, 14.0];
 /** The cascade's desktop extent (Review summary top to Downloads tray bottom), desktop px. */
@@ -383,8 +387,8 @@ export const Scene01Problem: React.FC = () => {
         if (out >= 1) return null;
         return (
           <React.Fragment key={l.text}>
-            <div style={{ position: "absolute", left: 960 - 560, top: HUD.lineY - 80, width: 1120, height: 160, borderRadius: "50%", background: "radial-gradient(closest-side, rgba(255,255,255,0.65), rgba(255,255,255,0.35) 45%, rgba(255,255,255,0) 100%)", opacity: EASE(ramp(t, l.from, l.from + 0.5)) * (1 - out) }} />
-            <div style={{ position: "absolute", left: 0, right: 0, top: HUD.lineY, display: "flex", justifyContent: "center", transform: "translateY(-50%)" }}>
+            <div style={{ position: "absolute", left: 960 - 560, top: LINE_Y[i] - GLOW_H[i] / 2, width: 1120, height: GLOW_H[i], borderRadius: "50%", background: "radial-gradient(closest-side, rgba(255,255,255,0.65), rgba(255,255,255,0.35) 45%, rgba(255,255,255,0) 100%)", opacity: EASE(ramp(t, l.from, l.from + 0.5)) * (1 - out) }} />
+            <div style={{ position: "absolute", left: 0, right: 0, top: LINE_Y[i], display: "flex", justifyContent: "center", transform: "translateY(-50%)" }}>
               <Line text={l.text} t={t - l.from} out={out} px={LINE_PX[i]} />
             </div>
           </React.Fragment>
