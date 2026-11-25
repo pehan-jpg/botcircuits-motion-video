@@ -154,6 +154,20 @@ export const PLACEHOLDERS = {
     passages: [132, 214],
     driveChip: "Claims shared drive, Synced",
     citeLine: "Answers cite these files",
+    /** Scene 5: sources added through Connect data (counts are placeholders). */
+    sources: [
+      { kind: "drive", name: "Claims shared drive", type: "Google Drive folder", done: "Synced", passages: 96 },
+      { kind: "sheets", name: "Excess and limits", type: "Google Sheets", done: "Synced", passages: 38 },
+      { kind: "web", name: "northfield.example/claims-faq", type: "Website", done: "Crawled, 12 pages", passages: 54 },
+      { kind: "slack", name: "#claims-escalations", type: "Slack channel", done: "Synced", passages: 10 },
+      { kind: "file", name: "Home Policy Wording 2026.pdf", type: "File", done: "Ready", passages: 132 },
+      { kind: "file", name: "Excess Schedule 2026.pdf", type: "File", done: "Ready", passages: 82 },
+    ] as { kind: "drive" | "sheets" | "web" | "slack" | "file"; name: string; type: string; done: string; passages: number }[],
+    totalSources: 6,
+    totalPassages: 412,
+    url: "northfield.example/claims-faq",
+    graph: ["Policy", "Claim", "Insured", "Excess", "FAQ", "Escalations"],
+    useInPlaybook: "Use in playbook",
   },
   controlRoom: {
     irisStatusIdle: "Listening for requests",

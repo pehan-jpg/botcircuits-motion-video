@@ -108,7 +108,7 @@ export const Scene06Playbook: React.FC = () => {
       <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S6_CURSOR, opacity: o.showPrev ? 0 : cursorO }}>
         {toPb < 1 ? (
           <div style={{ position: "absolute", inset: 0, opacity: 1 - toPb, filter: blur > 0.05 ? `blur(${blur}px)` : undefined }}>
-            <BrainPage s={brainStateAt(sceneById("S05").duration)} />
+            <BrainPage s={brainStateAt(sceneById("S05").duration, F)} />
           </div>
         ) : null}
         {toPb > 0 ? (

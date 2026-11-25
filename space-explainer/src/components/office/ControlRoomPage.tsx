@@ -49,7 +49,7 @@ const Counter: React.FC<{ icon: React.ReactNode; label: string; value: number }>
   </div>
 );
 
-export type OutputCard = { agent: string; role: string; palette: OrbPaletteKey; text: string; flag?: string; cites?: string[]; citeActive?: number; appear: number };
+export type OutputCard = { agent: string; role: string; palette: OrbPaletteKey; text: string; flag?: string; cites?: string[]; citeActive?: number; /** Hide the [S1] chip (it has left as a shared element). */ citeHidden?: boolean; appear: number };
 
 /**
  * One persistent figure per agent. The same element carries the agent from its
@@ -125,7 +125,7 @@ const OutputCardView: React.FC<{ c: OutputCard; y: number; clock: number }> = ({
       {c.text}
       {c.cites
         ? c.cites.map((id) => (
-            <span key={id} data-cite={id} data-guard="box" data-guard-label={`Cite ${c.agent} ${id}`} style={{ marginLeft: 8, verticalAlign: "2px" }}>
+            <span key={id} data-cite={id} data-guard="box" data-guard-label={`Cite ${c.agent} ${id}`} style={{ marginLeft: 8, verticalAlign: "2px", opacity: id === "S1" && c.citeHidden ? 0 : 1 }}>
               <SourceChip id={id} active={id === "S1" ? c.citeActive ?? 0 : 0} />
             </span>
           ))
