@@ -1,0 +1,50 @@
+Checked 50 stills.
+Overflow test: 249 text boxes in 46 plates or boxes checked; collision test: 0 label pairs checked
+Product UI text at 1x: 14.0px to 22.0px (allowed 14 to 22)
+Cursor ripples in stills: 6 measured, worst offset 0.0px
+UI text meant to be read, largest effective size after camera zoom:
+  (labels also shown in the previous scene are carried over; that scene owns them)
+  Scene07 Run time: 20.7px
+  Scene07 Step 1: 20.7px
+  Scene07 Step 10: 20.7px
+  Scene07 Step 11: 20.7px
+  Scene07 Step 2: 20.7px
+  Scene07 Step 3: 20.7px
+  Scene07 Step 4: 20.7px
+  Scene07 Step 5: 20.7px
+  Scene07 Step 6: 20.7px
+  Scene07 Step 7: 20.7px
+  Scene07 Step 8: 20.7px
+  Scene07 Step 9: 20.7px
+  Scene10 Built page: 24.3px
+  Scene10 Claims per day: 22.0px
+  Scene10 Flags by type: 22.0px
+  Scene10 KPI Awaiting decision: 31.4px
+  Scene10 KPI Claims this week: 31.4px
+  Scene10 KPI Flags raised: 31.4px
+  Scene10 KPI Time to prepare: 31.4px
+  Scene10 Pages prompt: 23.4px
+  Scene10 Record row 1: 15.3px  BELOW 20px
+  Scene10 Record row 2: 15.3px  BELOW 20px
+  Scene10 Record row 3: 15.3px  BELOW 20px
+  Scene10 Record row 4: 15.3px  BELOW 20px
+  Scene10 Record row 5: 15.3px  BELOW 20px
+  Scene10 Record row 6: 15.3px  BELOW 20px
+  Scene10 Record row 7: 15.3px  BELOW 20px
+  Scene10 Record row 8: 15.3px  BELOW 20px
+Lowest contrast samples:
+  4.75:1  Scene11 t=4s  With Space stopwatch
+  4.75:1  Scene11 t=5s  With Space stopwatch
+  4.75:1  Scene11 t=6s  With Space stopwatch
+  4.80:1  Scene07 t=8s  Step 6
+  4.80:1  Scene07 t=9s  Step 6
+
+8 issue(s):
+  Scene10: Record row 1 never reaches 20px effective
+  Scene10: Record row 2 never reaches 20px effective
+  Scene10: Record row 3 never reaches 20px effective
+  Scene10: Record row 4 never reaches 20px effective
+  Scene10: Record row 5 never reaches 20px effective
+  Scene10: Record row 6 never reaches 20px effective
+  Scene10: Record row 7 never reaches 20px effective
+  Scene10: Record row 8 never reaches 20px effective

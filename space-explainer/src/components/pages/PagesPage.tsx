@@ -1,11 +1,14 @@
 import React from "react";
 import { LayoutGrid, Sparkles, WandSparkles } from "lucide-react";
-import { CHAT_CPS, FONT, UIN } from "../../theme";
+import { FONT, UIN } from "../../theme";
 import { PLACEHOLDERS as P } from "../../placeholders";
 import { Sidebar, TopBar, UI } from "../chat/Sidebar";
 import { Typewriter } from "../Typewriter";
 import { HumanGlyph } from "../HumanGlyph";
 import { PageHeader, READ, Segmented, SearchBox, text, WhiteButton } from "./common";
+
+/** Prompts on the Pages page type quickly so the built views get the reading time. */
+export const PAGES_CPS = 55;
 
 /** Layout from reference/ui/07-pages.png (native px). */
 export const PAGES = { build: { x: 471, y: 180, w: 1184, h: 186 }, prompt: { x: 493, y: 237, w: 1141, h: 56 }, button: { x: 1509, y: 310, w: 125, h: 36 }, out: { x: 471, y: 400, w: 1184, h: 470 } };
@@ -106,7 +109,7 @@ const Dashboard: React.FC<{ s: PagesState }> = ({ s }) => {
             style={{ position: "absolute", left: r.x, top: r.y, width: r.w, height: r.h, boxSizing: "border-box", borderRadius: 14, background: "#FFFFFF", border: `1.5px solid ${pressed > 0.3 ? UI.accent : UI.line}`, boxShadow: pressed > 0 ? `0 0 0 ${4 * pressed}px rgba(124,98,240,0.3)` : "0 4px 12px rgba(20,24,60,0.05)", padding: "16px 20px", fontFamily: FONT.sans, opacity: a, transform: `translateY(${(1 - a) * 14}px) scale(${1 - 0.03 * pressed})` }}
           >
             <div data-fit-text style={{ fontSize: UIN.helper, color: UI.secondary, whiteSpace: "nowrap" }}>{k.label}</div>
-            <div data-fit-text style={{ fontSize: 34, fontWeight: 700, color: UI.text, marginTop: 8, whiteSpace: "nowrap" }}>{k.value}</div>
+            <div data-fit-text style={{ fontSize: 23.5, fontWeight: 700, color: UI.text, marginTop: 8, whiteSpace: "nowrap" }}>{k.value}</div>
           </div>
         );
       })}
@@ -153,7 +156,7 @@ export const PagesPage: React.FC<{ s: PagesState }> = ({ s }) => {
       </div>
       <div data-guard="uitext" data-guard-read="1" data-guard-label="Pages prompt" style={{ position: "absolute", left: PAGES.prompt.x, top: PAGES.prompt.y, width: PAGES.prompt.w, height: PAGES.prompt.h, boxSizing: "border-box", padding: "14px 14px", borderRadius: 10, background: "#FFFFFF", border: `1px solid ${s.typing ? UI.secondary : UI.line}` }}>
         {s.typing ? (
-          <Typewriter key={s.prompt} lines={[promptText]} cps={s.prompt === 0 ? CHAT_CPS : 40} startFrame={s.typeStart} seed={`pages-prompt-${s.prompt}`} caretColor={UI.text} style={{ fontFamily: FONT.sans, fontSize: READ + 1, color: UI.text }} />
+          <Typewriter key={s.prompt} lines={[promptText]} cps={PAGES_CPS} startFrame={s.typeStart} seed={`pages-prompt-${s.prompt}`} caretColor={UI.text} style={{ fontFamily: FONT.sans, fontSize: READ + 1, color: UI.text }} />
         ) : (
           <span style={{ fontFamily: FONT.sans, fontSize: UIN.helper, color: UI.secondary }}>Describe the page you want</span>
         )}

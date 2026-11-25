@@ -76,7 +76,7 @@ export const Scene11Contrast: React.FC = () => {
   return (
     <AbsoluteFill style={{ width: 1920, height: 1080, background: "#FFFFFF" }}>
       {g < 1 ? (
-        <AbsoluteFill>
+        <AbsoluteFill data-guard-bg="Scene 10 end frame">
           <Scene10EndFrame F={F} clock={clock} />
         </AbsoluteFill>
       ) : null}
@@ -85,7 +85,7 @@ export const Scene11Contrast: React.FC = () => {
         {tileText > 0 ? (
           <div style={{ position: "absolute", left: 20 * (T0.w / 281), top: 16 * (T0.w / 281), opacity: tileText, fontFamily: FONT.sans, transform: `scale(${T0.w / 281})`, transformOrigin: "0 0" }}>
             <div style={{ fontSize: 15.2, color: T.secondary }}>{P.pages.kpis[1].label}</div>
-            <div style={{ fontSize: 34, fontWeight: 700, color: T.ink, marginTop: 8 }}>{P.pages.kpis[1].value}</div>
+            <div style={{ fontSize: 23.5, fontWeight: 700, color: T.ink, marginTop: 8 }}>{P.pages.kpis[1].value}</div>
           </div>
         ) : null}
       </div>
@@ -136,7 +136,7 @@ export const Scene11Contrast: React.FC = () => {
       {/* With Space: full colour; at the end this card grows to the white frame */}
       {panels > 0 ? (
         <div style={{ position: "absolute", left: rOut.x, top: rOut.y + (1 - panels) * 20, width: rOut.w, height: rOut.h, boxSizing: "border-box", borderRadius: 24 * (1 - out), background: "#FFFFFF", border: out < 1 ? `1px solid ${T.border}` : undefined, boxShadow: `0 24px 60px rgba(20,24,60,${0.1 * (1 - out)})`, opacity: panels }}>
-          <div style={{ opacity: 1 - out }}>
+          <div style={{ opacity: 1 - EASE(ramp(t, S11.out[0], S11.out[0] + 0.3)) }}>
             <div style={{ position: "absolute", left: 32, top: 26, display: "flex", alignItems: "center", gap: 12, fontFamily: FONT.sans, fontSize: 28, fontWeight: 700, color: T.ink }}>{C.after}</div>
             <div data-guard="text" data-guard-label="Review pack" data-fit-box="review pack" style={{ position: "absolute", left: 32, top: 92, width: 716, boxSizing: "border-box", borderRadius: 16, border: `1px solid ${T.border}`, padding: "18px 22px", fontFamily: FONT.sans }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 28, fontWeight: 700, color: T.ink }}>

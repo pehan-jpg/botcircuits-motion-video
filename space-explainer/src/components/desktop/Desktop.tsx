@@ -234,14 +234,17 @@ export const DriveBody: React.FC<{ typeStart: number | null; results: number; pr
                 ))}
               </div>
             ))}
-            <div data-guard="text" data-guard-min="18" data-guard-label="Policy page 12" style={{ height: 330, background: "#FFFFFF", borderRadius: 4, boxShadow: "0 2px 8px rgba(20,24,60,0.08)", position: "relative", padding: "26px 30px", boxSizing: "border-box" }}>
-              <div style={txt(20, { fontWeight: 700 })}>{d.heading}</div>
-              <div style={{ marginTop: 14 }}>
-                {d.text.map((l) => (
-                  <div key={l} style={{ display: "inline-block", ...txt(18, { lineHeight: 1.55 }), background: `rgba(124,98,240,${0.22 * highlight})`, borderRadius: 4, padding: "0 4px", marginBottom: 4 }}>
-                    {l}
-                  </div>
-                ))}
+            <div style={{ height: 330, background: "#FFFFFF", borderRadius: 4, boxShadow: "0 2px 8px rgba(20,24,60,0.08)", position: "relative", padding: "26px 30px", boxSizing: "border-box" }}>
+              {/* Guarded box is the readable text only: the page below it is clipped by the window */}
+              <div data-guard="text" data-guard-min="18" data-guard-label="Policy page 12">
+                <div style={txt(20, { fontWeight: 700 })}>{d.heading}</div>
+                <div style={{ marginTop: 14 }}>
+                  {d.text.map((l) => (
+                    <div key={l} style={{ display: "inline-block", ...txt(18, { lineHeight: 1.55 }), background: `rgba(124,98,240,${0.22 * highlight})`, borderRadius: 4, padding: "0 4px", marginBottom: 4 }}>
+                      {l}
+                    </div>
+                  ))}
+                </div>
               </div>
               {[0, 1, 2].map((l) => (
                 <div key={l} style={{ marginTop: 16, width: 380 - l * 50, height: 10, borderRadius: 5, background: "#E3E6EE" }} />

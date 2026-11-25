@@ -1,0 +1,116 @@
+Checked 229 stills.
+Overflow test: 764 text boxes in 182 plates or boxes checked; collision test: 180 label pairs checked
+Logo on plate: lowest contrast 10.29:1 (Scene02 t=4s)
+Product UI text at 1x: 14.0px to 31.3px (allowed 14 to 22)
+Cursor ripples in stills: 26 measured, worst offset 0.0px
+UI text meant to be read, largest effective size after camera zoom:
+  (labels also shown in the previous scene are carried over; that scene owns them)
+  Scene03 Action card: 23.4px
+  Scene03 Answer: 23.4px
+  Scene03 Chat prompt: 22.5px
+  Scene03 Chat prompt 2: 21.3px
+  Scene03 Source card: 25.0px
+  Scene03 User message: 22.1px
+  Scene03 User message 2: 22.1px
+  Scene04 Agent card Iris: 20.7px
+  Scene04 Agent card Nora: 20.7px
+  Scene04 Agent card Owen: 20.7px
+  Scene04 Agent card Theo: 20.7px
+  Scene04 Bubble Nora: 22.9px
+  Scene04 Bubble Owen: 22.9px
+  Scene04 Bubble Theo: 23.0px
+  Scene04 New agent panel: 26.1px
+  Scene04 Output Nora: 21.2px
+  Scene04 Output Owen: 21.2px
+  Scene04 Output Theo: 21.2px
+  Scene04 Plate Iris: 39.7px
+  Scene04 Plate Nora: 27.6px
+  Scene04 Plate Owen: 27.7px
+  Scene04 Plate Theo: 27.7px
+  Scene05 Brain graph: 21.5px
+  Scene05 File Excess Schedule 2026.pdf: 20.7px
+  Scene05 File Home Policy Wording 2026.pdf: 20.7px
+  Scene05 KB source #claims-escalations: 20.2px
+  Scene05 KB source Claims shared drive: 20.2px
+  Scene05 KB source Excess Schedule 2026.pdf: 20.2px
+  Scene05 KB source Excess and limits: 20.2px
+  Scene05 KB source Home Policy Wording 2026.pdf: 20.2px
+  Scene05 KB source northfield.example/claims-faq: 20.2px
+  Scene05 Source #claims-escalations: 22.4px
+  Scene05 Source Claims shared drive: 22.4px
+  Scene05 Source Excess Schedule 2026.pdf: 22.4px
+  Scene05 Source Excess and limits: 22.4px
+  Scene05 Source Home Policy Wording 2026.pdf: 22.4px
+  Scene05 Source northfield.example/claims-faq: 22.4px
+  Scene05 Website URL: 22.4px
+  Scene06 Check toast: 20.6px
+  Scene06 Playbook settings: 21.0px
+  Scene06 Review inspector: 21.6px
+  Scene06 Step 1: 22.0px
+  Scene06 Step 10: 21.6px
+  Scene06 Step 11: 20.5px
+  Scene06 Step 2: 22.0px
+  Scene06 Step 3: 22.0px
+  Scene06 Step 4: 22.0px
+  Scene06 Step 5: 22.0px
+  Scene06 Step 6: 21.6px
+  Scene06 Step 7: 21.6px
+  Scene06 Step 8: 21.6px
+  Scene06 Step 9: 20.5px
+  Scene07 Run time: 20.7px
+  Scene08 Approved toast: 20.7px
+  Scene08 Finding Evidence: 24.3px
+  Scene08 Finding Intake: 24.3px
+  Scene08 Finding Policy: 24.3px
+  Scene08 Playbook strip: 21.3px
+  Scene08 Review note: 22.6px
+  Scene08 Slack notification: 20.7px
+  Scene09 Record row 1: 20.5px
+  Scene09 Record row 2: 20.5px
+  Scene09 Record row 3: 20.5px
+  Scene09 Record row 4: 20.5px
+  Scene09 Record row 5: 20.5px
+  Scene09 Record row 6: 20.5px
+  Scene09 Record row 7: 20.5px
+  Scene09 Record row 8: 20.5px
+  Scene10 Built page: 24.3px
+  Scene10 Claims per day: 22.0px
+  Scene10 Flags by type: 22.0px
+  Scene10 KPI Awaiting decision: 31.9px
+  Scene10 KPI Claims this week: 45.4px
+  Scene10 KPI Flags raised: 45.4px
+  Scene10 KPI Time to prepare: 45.4px
+  Scene10 Pages prompt: 23.4px
+Lowest contrast samples:
+  3.28:1  Scene07 t=8s  Run time
+  3.28:1  Scene07 t=9s  Run time
+  3.30:1  Scene07 t=7s  Run time
+  3.35:1  Scene07 t=5s  Run time
+  3.39:1  Scene11 t=0s  KPI Time to prepare
+
+25 issue(s):
+  Scene01 t=7s: SafeAreaGuard: Policy page 12 at {"x":591,"y":529,"w":728,"h":462} enters the 96px margin
+  Scene07 t=4s: ReadabilityGuard: "Run time" contrast 3.99:1 (bg lum mean 0.60, 5th pct 0.47)
+  Scene07 t=5s: ReadabilityGuard: "Run time" contrast 3.35:1 (bg lum mean 0.56, 5th pct 0.39)
+  Scene07 t=6s: ReadabilityGuard: "Run time" contrast 3.40:1 (bg lum mean 0.55, 5th pct 0.39)
+  Scene07 t=7s: ReadabilityGuard: "Run time" contrast 3.30:1 (bg lum mean 0.54, 5th pct 0.38)
+  Scene07 t=8s: ReadabilityGuard: "Run time" contrast 3.28:1 (bg lum mean 0.59, 5th pct 0.60)
+  Scene07 t=9s: ReadabilityGuard: "Run time" contrast 3.28:1 (bg lum mean 0.59, 5th pct 0.60)
+  Scene10 t=7s: Colour: 8 amber pixels with no person deciding in Scene10
+  Scene10 t=9s: Colour: 9 amber pixels with no person deciding in Scene10
+  Scene10 t=10s: ReadabilityGuard: UI text in "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb" is 31.3px at 1x, maximum 22px
+  Scene10 t=10s: ReadabilityGuard: UI text in "KPI Claims this week" is 31.3px at 1x, maximum 22px
+  Scene10 t=10s: ReadabilityGuard: UI text in "KPI Time to prepare" is 31.3px at 1x, maximum 22px
+  Scene10 t=10s: ReadabilityGuard: UI text in "KPI Flags raised" is 31.3px at 1x, maximum 22px
+  Scene10 t=11s: ReadabilityGuard: UI text in "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb" is 31.3px at 1x, maximum 22px
+  Scene10 t=11s: ReadabilityGuard: UI text in "KPI Claims this week" is 31.3px at 1x, maximum 22px
+  Scene10 t=11s: ReadabilityGuard: UI text in "KPI Time to prepare" is 31.3px at 1x, maximum 22px
+  Scene10 t=11s: ReadabilityGuard: UI text in "KPI Flags raised" is 31.3px at 1x, maximum 22px
+  Scene10 t=11s: ReadabilityGuard: UI text in "KPI Awaiting decision" is 31.3px at 1x, maximum 22px
+  Scene11 t=0s: ReadabilityGuard: UI text in "NorthfieldSearch chats⌘KNew chatControl RoomAgentsBrainPlayb" is 31.3px at 1x, maximum 22px
+  Scene11 t=0s: ReadabilityGuard: UI text in "KPI Claims this week" is 31.3px at 1x, maximum 22px
+  Scene11 t=0s: ReadabilityGuard: UI text in "KPI Time to prepare" is 31.3px at 1x, maximum 22px
+  Scene11 t=0s: ReadabilityGuard: "KPI Time to prepare" contrast 3.39:1 (bg lum mean 0.95, 5th pct 0.55)
+  Scene11 t=0s: ReadabilityGuard: UI text in "KPI Flags raised" is 31.3px at 1x, maximum 22px
+  Scene11 t=0s: ReadabilityGuard: UI text in "KPI Awaiting decision" is 31.3px at 1x, maximum 22px
+  Scene11 t=7s: SafeAreaGuard: With Space stopwatch at {"x":1627,"y":127,"w":214,"h":64} enters the 96px margin

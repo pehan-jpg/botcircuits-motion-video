@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { CHAT_CPS, EASE, PRODUCT } from "../theme";
+import { EASE, PRODUCT } from "../theme";
 import { sceneById } from "../timeline";
 import { PLACEHOLDERS as P } from "../placeholders";
 import { PlateBackground } from "../backgrounds/PlateBackground";
@@ -8,7 +8,7 @@ import { GuardLayer } from "../components/GuardLayer";
 import { FeatureTitle } from "../components/FeatureTitle";
 import { camAt, FRAME_CENTRE, nat, type Cam, type CamKey } from "../components/chat/ProductWindow";
 import { RecordsPage } from "../components/pages/RecordsPage";
-import { kpiRect, PAGES, PagesPage, type PagesState } from "../components/pages/PagesPage";
+import { kpiRect, PAGES, PAGES_CPS, PagesPage, type PagesState } from "../components/pages/PagesPage";
 import type { CursorKey } from "../components/Cursor";
 import { typeDuration } from "../lib/typewriter";
 import type { TextBeatSpec } from "../lib/guards";
@@ -20,16 +20,16 @@ const S = "S10" as const;
 export const S10_TITLE = "Build the views you need";
 /** The title starts once the previous frame has sunk away (clean title rule). */
 const TITLE_START = 0.45;
-const P1_DUR = typeDuration(P.pages.prompt, CHAT_CPS, "pages-prompt-0");
-const P2_DUR = typeDuration(P.pages.dashPrompt, 40, "pages-prompt-1");
+const P1_DUR = typeDuration(P.pages.prompt, PAGES_CPS, "pages-prompt-0");
+const P2_DUR = typeDuration(P.pages.dashPrompt, PAGES_CPS, "pages-prompt-1");
 /** Scene 10 beats: a page from a prompt, then a dashboard from a second prompt, then the KPI tile is clicked. */
 export const S10 = {
-  focus1: 3.65,
-  type1: 3.7,
-  build1: 3.7 + P1_DUR + 0.25,
-  focus2: 6.95,
-  type2: 7.0,
-  build2: 7.0 + P2_DUR + 0.2,
+  focus1: 3.6,
+  type1: 3.65,
+  build1: 3.65 + P1_DUR + 0.25,
+  focus2: 7.2,
+  type2: 7.25,
+  build2: 7.25 + P2_DUR + 0.2,
   tileClick: 11.4,
 };
 const B1 = S10.build1;
@@ -48,16 +48,16 @@ export const pagesStateAt = (t: number, F: (s: number) => number, shift = 0): Pa
     bars: EASE(ramp(t, B1 + 0.55, B1 + 1.15)),
     claimRow: EASE(ramp(t, B1 + 1.0, B1 + 1.4)),
     dash: EASE(ramp(t, B2 + 0.1, B2 + 0.4)),
-    tiles: [0, 1, 2, 3].map((i) => EASE(ramp(t, B2 + 0.25 + i * 0.2, B2 + 0.55 + i * 0.2))),
-    line: ramp(t, B2 + 0.85, B2 + 1.55),
-    flags: EASE(ramp(t, B2 + 1.05, B2 + 1.4)),
+    tiles: [0, 1, 2, 3].map((i) => EASE(ramp(t, B2 + 0.2 + i * 0.15, B2 + 0.45 + i * 0.15))),
+    line: ramp(t, B2 + 0.5, B2 + 1.1),
+    flags: EASE(ramp(t, B2 + 0.6, B2 + 0.9)),
     tilePressed: Math.max(0, 1 - Math.abs(t - S10.tileClick) / 0.2),
   };
 };
 
 const promptFocus = nat(1060, 270);
 const tableFocus = nat(830, 610);
-const dashFocus = nat(1063, 520);
+const dashFocus = nat(1063, 605);
 export const S10_CAM_KEYS: CamKey[] = [
   { t: 0, c: S9_END_CAM },
   { t: 1.6, c: { ...FRAME_CENTRE, z: 1 } },
@@ -69,7 +69,7 @@ export const S10_CAM_KEYS: CamKey[] = [
   { t: S10.type2 + 0.4, c: { ...promptFocus, z: 1.4 } },
   { t: B2, c: { x: promptFocus.x + 12, y: promptFocus.y, z: 1.4 }, lin: true },
   { t: B2 + 0.8, c: { ...dashFocus, z: 1.45 } },
-  { t: 10.75, c: { x: dashFocus.x + 8, y: dashFocus.y + 4, z: 1.45 }, lin: true },
+  { t: 10.85, c: { x: dashFocus.x + 8, y: dashFocus.y + 4, z: 1.45 }, lin: true },
   { t: 11.25, c: { ...FRAME_CENTRE, z: 1 } },
   { t: 12, c: { x: FRAME_CENTRE.x + 2, y: FRAME_CENTRE.y + 1, z: 1.004 }, lin: true },
 ];
@@ -103,7 +103,7 @@ export const SCENE10_TEXT: TextBeatSpec[] = [
   { id: "prompt1", text: P.pages.prompt, readyAt: S10.type1 + P1_DUR, leaveAt: S10.type2, fontPx: 22, ui: true, exception: "Read as it types" },
   { id: "table", text: `${P.pages.title} Status Count Approved by`, readyAt: B1 + 1.0, leaveAt: B2, fontPx: 21, ui: true, exception: "Brief: page build, then the dashboard, in 12s" },
   { id: "prompt2", text: P.pages.dashPrompt, readyAt: S10.type2 + P2_DUR, leaveAt: B2 + 0.6, fontPx: 22, ui: true, exception: "Read as it types" },
-  { id: "kpis", text: P.pages.kpis.map((k) => `${k.label} ${k.value}`).join(" "), readyAt: B2 + 1.15, leaveAt: 12, fontPx: 21, ui: true, exception: "Brief: tiles in one by one, then the tile is clicked" },
+  { id: "kpis", text: P.pages.kpis.map((k) => `${k.label} ${k.value}`).join(" "), readyAt: B2 + 0.9, leaveAt: 12, fontPx: 21, ui: true, exception: "Brief: tiles in one by one, then the tile is clicked" },
   { id: "pill", text: S10_PILL_LABEL, readyAt: B2 + 1.3, leaveAt: 11.3, fontPx: 28, exception: "Brief: the pill gives way before the tile opens" },
 ];
 
@@ -118,7 +118,13 @@ const Scene10Body: React.FC<{ t: number; F: (s: number) => number; clock: number
       <PlateBackground plate="03" duration={F(def.duration)} kbFrom={S9_KB_END} kbTo={S10_KB_END} timeOffset={def.start - 15} {...S2_PLATE} />
       <FeatureTitle text={S10_TITLE} startFrame={F(TITLE_START) + shift} variant="compact" />
       <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S10_CURSOR, opacity: cursorO }}>
-        {o.showPrev ? <RecordsPage s={recordsStateAt(sceneById("S09").duration, clock)} /> : <PagesPage s={pagesStateAt(t, F, shift)} />}
+        {o.showPrev ? (
+          <div data-guard-bg="Scene 9 records, read in Scene 9" style={{ position: "absolute", inset: 0 }}>
+            <RecordsPage s={recordsStateAt(sceneById("S09").duration, clock)} />
+          </div>
+        ) : (
+          <PagesPage s={pagesStateAt(t, F, shift)} />
+        )}
       </ProductStage>
       {frozen ? null : <Pills t={t} pills={S10_PILLS} />}
       {frozen ? null : <GuardLayer scene={S} />}

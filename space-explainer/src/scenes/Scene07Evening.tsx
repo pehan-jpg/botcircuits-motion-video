@@ -79,7 +79,7 @@ export const Stopwatch: React.FC<{ t: number }> = ({ t }) => {
       data-guard="uitext"
       data-guard-read="1"
       data-guard-label="Run time"
-      style={{ position: "absolute", left: 610, top: 50, height: 36, display: "flex", alignItems: "center", gap: 8, padding: "0 14px", borderRadius: 999, background: done ? UI.greenBg : UI.lilacBg, color: done ? UI.greenText : UI.lilacText, fontFamily: FONT.sans, fontSize: 16.5, fontWeight: 600, whiteSpace: "nowrap", opacity: appear, transform: `scale(${done ? 0.96 + 0.04 * flip : 1})` }}
+      style={{ position: "absolute", left: 610, top: 50, height: 36, display: "flex", alignItems: "center", gap: 8, padding: "0 14px", borderRadius: 999, background: done ? UI.greenBg : UI.lilacBg, color: UI.text, fontFamily: FONT.sans, fontSize: 16.5, fontWeight: 600, whiteSpace: "nowrap", opacity: appear, transform: `scale(${done ? 0.96 + 0.04 * flip : 1})` }}
     >
       {done ? <Check size={16} color={UI.greenText} strokeWidth={3} /> : <Timer size={16} color={UI.lilacText} />}
       {done ? P.evening.prepared : `Run time ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`}
