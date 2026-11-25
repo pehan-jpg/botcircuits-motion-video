@@ -8,19 +8,21 @@ import { PlateBackground } from "../backgrounds/PlateBackground";
 import { GuardLayer } from "../components/GuardLayer";
 import { FeatureTitle } from "../components/FeatureTitle";
 import { camAt, FRAME_CENTRE, nat, type Cam, type CamKey } from "../components/chat/ProductWindow";
-import { PlaybookPage, STEPS, type PlaybookState, type StepStatus } from "../components/pages/PlaybookPage";
+import { PlaybookGraphPage, type GraphState, type NodeStatus } from "../components/pages/PlaybookGraph";
+import { PRODUCT_RECT } from "../components/chat/ProductWindow";
+import { UI } from "../components/chat/Sidebar";
 import type { TextBeatSpec } from "../lib/guards";
-import { playbookStateAt, S6_END_CAM, S6_KB_END } from "./Scene06Playbook";
+import { graphStateAt, S6_END_CAM, S6_KB_END } from "./Scene06Playbook";
 import { S2_PLATE } from "./Scene02Intro";
 import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./shared/stage";
 
 const S = "S07" as const;
 export const S7_TITLE = "Let it run on its own";
 const TITLE_START = 0.15;
-const S7 = { email: 3.3, run: 3.8, stepLen: 0.5, review: 5.8, zoomIn: 3.6, zoomOut: 6.3, ribbon: [6.5, 9.0], dawn: 9.0 };
+export const S7 = { email: 3.3, run: 3.8, stepLen: 0.45, review: 6.05, zoomIn: 3.6, zoomOut: 6.4, ribbon: [6.5, 8.5], dawn: 8.5, slack: 8.6 };
 
 /** Night grade: dusk (brightness 0.8) at the start, full night (0.35) by 6s, easing back as morning comes. */
-const gradeAt = (t: number) => 0.31 + 0.69 * EASE(ramp(t, 0, 6.0)) - 0.6 * EASE(ramp(t, 7.8, 9.0));
+export const gradeAt = (t: number) => 0.31 + 0.69 * EASE(ramp(t, 0, 6.0)) - 0.6 * EASE(ramp(t, 7.4, 8.6));
 
 /** Clock time along the ribbon, in minutes after midnight (may pass 24h). */
 const START_MIN = 18 * 60 + 42;
@@ -33,28 +35,21 @@ const fmt = (m: number) => {
 };
 export const clockAt = (t: number) => fmt(START_MIN + (END_MIN - START_MIN) * EASE(ramp(t, S7.ribbon[0], S7.ribbon[1])));
 
-/** Playbook run state: steps 1 to 4 run in sequence, then it waits at REVIEW. */
-export const s7PlaybookAt = (t: number, clock: number): PlaybookState => {
-  const base = playbookStateAt(sceneById("S06").duration, clock);
-  const statuses: StepStatus[] = STEPS.map((_, i) => {
-    if (i < 4) {
+/** Playbook run: Ask, Nora, Theo, Owen and Page light in order, then it waits at REVIEW. */
+export const s7GraphAt = (t: number, F: (s: number) => number, clock: number): GraphState => {
+  const base = graphStateAt(sceneById("S06").duration, F, clock, -F(sceneById("S06").duration));
+  const nodes = base.nodes.map((nd, i) => {
+    let status: NodeStatus = "idle";
+    if (i < 5) {
       const a = S7.run + i * S7.stepLen;
-      return t < a ? "idle" : t < a + S7.stepLen ? "running" : "done";
-    }
-    if (i === 4) return t >= S7.review ? "waiting" : "idle";
-    return "idle";
+      status = t < a ? "idle" : t < a + S7.stepLen ? "running" : "done";
+    } else if (i === 5) status = t >= S7.review ? "waiting" : "idle";
+    return { ...nd, status, pulse: 0.5 + 0.5 * Math.sin(t * 5) };
   });
-  const pulse = 0.5 + 0.5 * Math.sin(t * 5);
-  return {
-    ...base,
-    steps: base.steps.map((st, i) => ({ ...st, status: statuses[i], pulse: i === 4 ? pulse : 0.5 + 0.5 * Math.sin(t * 8) })),
-    runPressed: Math.max(0, 1 - Math.abs(t - (S7.run - 0.15)) / 0.15),
-    bellBadge: t >= S7.review ? 1 : 0,
-    bellPulse: Math.sin(Math.PI * ramp(t, S7.review, S7.review + 0.6)),
-  };
+  return { ...base, nodes };
 };
 
-const stepsFocus = nat(1390, 470);
+const stepsFocus = nat(600, 470);
 export const S7_CAM_KEYS: CamKey[] = [
   { t: 0, c: S6_END_CAM },
   { t: 1.6, c: { ...FRAME_CENTRE, z: 1 } },
@@ -69,7 +64,7 @@ export const S7_END_CAM: Cam = S7_CAM_KEYS[S7_CAM_KEYS.length - 1].c;
 export const S7_PILL_LABEL = "Waiting for a person. Nothing moves until they decide.";
 export const S7_PILLS: Pill[] = [
   { label: "Steps, agents, tools and a review", at: -10, until: 0, top: 912 },
-  { label: S7_PILL_LABEL, at: 6.0, until: 999 },
+  { label: S7_PILL_LABEL, at: 6.2, until: 999 },
 ];
 export const SCENE07_TEXT: TextBeatSpec[] = [
   { id: "title", text: S7_TITLE, readyAt: TITLE_START, leaveAt: TITLE_START + 1.96, fontPx: 88, exception: "Brief: compact title, 0.9s hold" },
@@ -98,17 +93,36 @@ const TimeRibbon: React.FC<{ p: number; opacity: number }> = ({ p, opacity }) =>
   </div>
 );
 
-/** The new claim email, top right of the product window. Scene 8 carries it over and fades it out. */
+/** The new claim email from BotCircuits Concierge, top right of the product window. */
 export const EmailCard: React.FC<{ opacity: number; slide?: number }> = ({ opacity, slide = 1 }) => (
   <div
     data-guard="uitext"
     data-guard-label="Email card"
-    style={{ position: "absolute", left: 1450, top: 58, width: 400, boxSizing: "border-box", padding: "12px 16px", borderRadius: 12, background: "#f6f6f6", color: "#1d1d1d", boxShadow: "0 16px 40px rgba(0,0,0,0.45)", display: "flex", gap: 12, alignItems: "flex-start", opacity, transform: `translateX(${(1 - slide) * 60}px)` }}
+    style={{ position: "absolute", left: 1440, top: 40, width: 410, boxSizing: "border-box", padding: "12px 16px", borderRadius: 12, background: "#FFFFFF", border: `1px solid ${UI.line}`, color: UI.text, boxShadow: "0 16px 40px rgba(20,24,60,0.18)", display: "flex", gap: 12, alignItems: "flex-start", opacity, transform: `translateX(${(1 - slide) * 60}px)`, zIndex: 8 }}
   >
     <Img data-guard="brand" src={staticFile("logos/gmail.svg")} style={{ width: 26, height: 20, objectFit: "contain", marginTop: 3 }} />
     <div style={{ fontFamily: FONT.sans, fontSize: UIN.helper, lineHeight: 1.4 }}>
-      <div style={{ fontWeight: 700 }}>Claims inbox</div>
+      <div style={{ fontWeight: 700 }}>{P.evening.emailFrom}</div>
       {P.evening.email}
+    </div>
+  </div>
+);
+
+/** Slack style notification: the rule set up in Scene 3 fires. Scene 8 opens on it and clicks it. */
+export const SLACK_NOTE = { x: 1440, y: 40, w: 410, h: 76 };
+export const SlackNotification: React.FC<{ opacity: number; slide?: number; pressed?: number }> = ({ opacity, slide = 1, pressed = 0 }) => (
+  <div
+    data-guard="uitext"
+    data-guard-read="1"
+    data-guard-label="Slack notification"
+    style={{ position: "absolute", left: SLACK_NOTE.x, top: SLACK_NOTE.y, width: SLACK_NOTE.w, height: SLACK_NOTE.h, boxSizing: "border-box", padding: "12px 16px", borderRadius: 12, background: pressed > 0.3 ? "#F4F2FF" : "#FFFFFF", border: `1px solid ${UI.line}`, color: UI.text, boxShadow: "0 16px 40px rgba(20,24,60,0.18)", display: "flex", gap: 12, alignItems: "center", opacity, transform: `translateX(${(1 - slide) * 60}px) scale(${1 - 0.03 * pressed})`, zIndex: 9 }}
+  >
+    <Img data-guard="brand" src={staticFile("logos/slack.svg")} style={{ width: 28, height: 28, objectFit: "contain" }} />
+    <div style={{ fontFamily: FONT.sans, fontSize: UIN.helper, lineHeight: 1.35 }}>
+      <div style={{ fontWeight: 700 }}>
+        {P.evening.slackFrom} <span style={{ fontWeight: 400, color: UI.secondary }}>· 9:05 AM</span>
+      </div>
+      <div style={{ fontSize: 16.5 }}>{P.evening.slack}</div>
     </div>
   </div>
 );
@@ -136,13 +150,15 @@ export const Scene07Evening: React.FC = () => {
         cam={cam}
         frameStyle={o.frameStyle}
         visible={o.visible}
-        overlay={null}
+        cursor={{ keys: [{ ...nat(1300, 640), t: 9.0 }, { ...nat(SLACK_NOTE.x + 200, SLACK_NOTE.y + 40), t: 9.8 }], opacity: EASE(ramp(t, 9.0, 9.3)) }}
+        overlay={<div style={{ position: "absolute", inset: 0, borderRadius: PRODUCT_RECT.radius, background: "#0F1A33", opacity: 0.18 * Math.max(0, Math.min(1, (grade - 0.31) / 0.69)), pointerEvents: "none" }} />}
       >
-        <PlaybookPage s={o.showPrev ? playbookStateAt(sceneById("S06").duration, clock) : s7PlaybookAt(t, clock)} />
-        {/* Gmail style email card */}
-        {!o.showPrev && t >= S7.email ? <EmailCard opacity={EASE(ramp(t, S7.email, S7.email + 0.35))} slide={EASE(ramp(t, S7.email, S7.email + 0.45))} /> : null}
+        <PlaybookGraphPage s={o.showPrev ? graphStateAt(sceneById("S06").duration, F, clock, -F(sceneById("S06").duration)) : s7GraphAt(t, F, clock)} />
+        {/* Email from BotCircuits Concierge starts the run; it leaves as the night passes */}
+        {!o.showPrev && t >= S7.email ? <EmailCard opacity={EASE(ramp(t, S7.email, S7.email + 0.35)) * (1 - EASE(ramp(t, S7.ribbon[0], S7.ribbon[0] + 0.4)))} slide={EASE(ramp(t, S7.email, S7.email + 0.45))} /> : null}
+        {t >= S7.slack ? <SlackNotification opacity={EASE(ramp(t, S7.slack, S7.slack + 0.35))} slide={EASE(ramp(t, S7.slack, S7.slack + 0.45))} /> : null}
       </ProductStage>
-      <ClockWidget label={clockAt(t)} opacity={EASE(ramp(t, 2.6, 3.0))} night={Math.min(1, grade * 1.5) * (1 - dawn)} />
+      <ClockWidget label={clockAt(t)} opacity={EASE(ramp(t, 0.3, 0.7))} night={Math.min(1, grade * 1.5) * (1 - dawn)} />
       <TimeRibbon p={ribbonP} opacity={EASE(ramp(t, S7.ribbon[0] - 0.3, S7.ribbon[0])) * (1 - EASE(ramp(t, S7.ribbon[1] + 0.2, S7.ribbon[1] + 0.7)))} />
       <Pills t={t} pills={S7_PILLS} top={846} />
       <GuardLayer scene={S} />

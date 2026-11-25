@@ -348,8 +348,8 @@ const IRIS_CARD: CardData = {
 
 export const S4_PILLS: Pill[] = [
   { label: P.controlRoom.pills[0], at: 10.5, until: heroEnd("owen") },
-  { label: P.controlRoom.pills[1], at: S4.claim, until: S4.walkStart, spin: true },
-  { label: P.controlRoom.pills[2], at: S4.walkStart, until: S4.resultsAt, spin: true },
+  { label: P.controlRoom.pills[1], at: S4.claim, until: S4.walkStart + 1.0, spin: true },
+  { label: P.controlRoom.pills[2], at: S4.walkStart + 1.0, until: S4.resultsAt, spin: true },
   { label: P.controlRoom.pills[3], at: 37.8, until: 999 },
 ];
 

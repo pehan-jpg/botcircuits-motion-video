@@ -6,21 +6,25 @@ import { PLACEHOLDERS as P } from "../placeholders";
 import { PlateBackground } from "../backgrounds/PlateBackground";
 import { GuardLayer } from "../components/GuardLayer";
 import { FeatureTitle } from "../components/FeatureTitle";
-import { BELL } from "../components/chat/Sidebar";
+import { UI } from "../components/chat/Sidebar";
+import { FONT, UIN } from "../theme";
+import { FileClock } from "lucide-react";
 import { camAt, FRAME_CENTRE, nat, type Cam, type CamKey } from "../components/chat/ProductWindow";
-import { PlaybookPage } from "../components/pages/PlaybookPage";
+import { PlaybookGraphPage } from "../components/pages/PlaybookGraph";
 import { cardX, REVIEWS, ReviewsPage, type ReviewsState } from "../components/pages/ReviewsPage";
 import type { CursorKey } from "../components/Cursor";
 import { typeDuration } from "../lib/typewriter";
 import type { TextBeatSpec } from "../lib/guards";
-import { ClockWidget, EmailCard, s7PlaybookAt, S7_END_CAM, S7_PILL_LABEL } from "./Scene07Evening";
+import { ClockWidget, s7GraphAt, SLACK_NOTE, SlackNotification, S7_END_CAM, S7_PILL_LABEL } from "./Scene07Evening";
 import { S2_PLATE } from "./Scene02Intro";
 import { opening, Pills, ProductStage, ramp, useScene, type Pill } from "./shared/stage";
 
 const S = "S08" as const;
 export const S8_TITLE = "People approve what matters";
-const TITLE_START = 0.15;
-export const S8 = { bellClick: 3.7, page: 3.75, itemClick: 4.6, detail: 4.65, findings: [5.1, 5.3, 5.5], zoomFlag: 5.9, noteClick: 8.5, glyph: 8.4, type: 8.8, approve: 11.25, strip: 11.7, steps: [11.9, 12.3, 12.7, 13.6], email: 12.9, slack: 13.9, zoomOut: 14.4 };
+/** The notification is clicked at 0.3s; the frame then sinks under the title (opening shifted by 0.45s). */
+const SHIFT = 0.45;
+const TITLE_START = 0.15 + SHIFT;
+export const S8 = { slackClick: 0.3, toast: 14.5, toastClick: 16.2, page: 0.35, itemClick: 4.6, detail: 4.65, findings: [5.1, 5.3, 5.5], zoomFlag: 5.9, noteClick: 8.5, glyph: 8.4, type: 8.8, approve: 11.25, strip: 11.7, steps: [11.9, 12.3, 12.7, 13.6], email: 12.9, slack: 13.9, zoomOut: 14.4 };
 export const S8_KB_END = 1.25;
 
 export const reviewsStateAt = (t: number, F: (s: number) => number, clock: number, shift = 0): ReviewsState => ({
@@ -46,7 +50,8 @@ const noteFocus = nat(1120, 620);
 const stripFocus = nat(1080, 800);
 export const S8_CAM_KEYS: CamKey[] = [
   { t: 0, c: S7_END_CAM },
-  { t: 1.6, c: { ...FRAME_CENTRE, z: 1 } },
+  { t: SHIFT, c: S7_END_CAM },
+  { t: 1.6 + SHIFT, c: { ...FRAME_CENTRE, z: 1 } },
   { t: S8.zoomFlag, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 2, z: 1.008 }, lin: true },
   { t: S8.zoomFlag + 0.6, c: { ...flagFocus, z: 1.6 } },
   { t: 8.0, c: { x: flagFocus.x - 12, y: flagFocus.y + 4, z: 1.6 }, lin: true },
@@ -55,15 +60,21 @@ export const S8_CAM_KEYS: CamKey[] = [
   { t: 12.2, c: { ...stripFocus, z: 1.4 } },
   { t: S8.zoomOut, c: { x: stripFocus.x + 12, y: stripFocus.y, z: 1.4 }, lin: true },
   { t: S8.zoomOut + 0.6, c: { ...FRAME_CENTRE, z: 1 } },
-  { t: 17, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 2, z: 1.008 }, lin: true },
+  { t: S8.toast + 0.4, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 1, z: 1.004 }, lin: true },
+  { t: S8.toast + 0.9, c: { ...nat(1500, 260), z: 1.2 } },
+  { t: 17, c: { ...nat(1506, 262), z: 1.21 }, lin: true },
 ];
 export const S8_END_CAM: Cam = S8_CAM_KEYS[S8_CAM_KEYS.length - 1].c;
 
 const approveC = nat(REVIEWS.approve.x + REVIEWS.approve.w / 2, REVIEWS.approve.y + REVIEWS.approve.h / 2);
+/** Notification and toast click targets (native px). */
+const NOTE_C = nat(SLACK_NOTE.x + 200, SLACK_NOTE.y + 40);
+export const TOAST = { x: 1400, y: 40, w: 450, h: 64, btn: { x: 1700, y: 52, w: 136, h: 40 } };
+const TOAST_BTN_C = nat(TOAST.btn.x + TOAST.btn.w / 2, TOAST.btn.y + TOAST.btn.h / 2);
 export const S8_CURSOR: CursorKey[] = [
-  { ...nat(1300, 700), t: 3.0 },
-  { ...nat(BELL.x - 2, BELL.y + 2), t: S8.bellClick - 0.05 },
-  { ...nat(BELL.x - 2, BELL.y + 2), t: S8.bellClick, click: true },
+  { ...NOTE_C, t: -1 },
+  { ...NOTE_C, t: S8.slackClick, click: true },
+  { ...nat(1300, 700), t: 3.6 },
   { ...nat(900, REVIEWS.item.y + 42), t: S8.itemClick - 0.05 },
   { ...nat(900, REVIEWS.item.y + 42), t: S8.itemClick, click: true },
   { ...nat(1400, REVIEWS.note.y + 36), t: S8.noteClick - 0.05 },
@@ -71,6 +82,9 @@ export const S8_CURSOR: CursorKey[] = [
   { ...approveC, t: S8.approve - 0.05 },
   { ...approveC, t: S8.approve, click: true },
   { ...nat(1700, 860), t: 12.6 },
+  { ...nat(1500, 400), t: S8.toast + 0.6 },
+  { ...TOAST_BTN_C, t: S8.toastClick - 0.05 },
+  { ...TOAST_BTN_C, t: S8.toastClick, click: true },
 ];
 
 export const S8_PILL_LABEL = "Approved by Emily Carter";
@@ -87,12 +101,14 @@ export const SCENE08_TEXT: TextBeatSpec[] = [
 
 export const Scene08Review: React.FC = () => {
   const { t, F, clock, dur, start } = useScene(S);
-  const o = opening(t, S8_TITLE, TITLE_START, "compact");
+  const o = opening(Math.max(0, t - SHIFT), S8_TITLE, TITLE_START - SHIFT, "compact");
   const toReviews = EASE(ramp(t, S8.page, S8.page + 0.3));
   const blur = Math.sin(Math.PI * toReviews) * 10;
   const cam = camAt(S8_CAM_KEYS, t, EASE);
-  const cursorO = EASE(ramp(t, 3.0, 3.3)) * (1 - EASE(ramp(t, 12.3, 12.7)));
-  const pb = { ...s7PlaybookAt(sceneById("S07").duration, clock), bellPulse: o.showPrev ? 0 : Math.max(0, Math.sin(Math.PI * ramp(t, 2.9, 3.4))) };
+  const cursorO = Math.max(1 - EASE(ramp(t, S8.slackClick + 0.45, S8.slackClick + 0.6)), EASE(ramp(t, 3.6, 3.9)) * (1 - EASE(ramp(t, 12.3, 12.7))), EASE(ramp(t, S8.toast + 0.4, S8.toast + 0.7)));
+  const pb = s7GraphAt(sceneById("S07").duration, F, clock);
+  const toast = EASE(ramp(t, S8.toast, S8.toast + 0.35));
+  const toastPressed = Math.max(0, 1 - Math.abs(t - S8.toastClick) / 0.15);
   return (
     <AbsoluteFill style={{ width: 1920, height: 1080 }}>
       <PlateBackground plate="01" to="02" crossfadeAt={0} crossfadeSeconds={1.5} duration={F(dur)} kbFrom={1} kbTo={S8_KB_END} timeOffset={start - 15} {...S2_PLATE} />
@@ -100,14 +116,29 @@ export const Scene08Review: React.FC = () => {
       <ProductStage cam={cam} frameStyle={o.frameStyle} visible={o.visible} cursor={{ keys: S8_CURSOR, opacity: o.showPrev ? 0 : cursorO }}>
         {toReviews < 1 ? (
           <div style={{ position: "absolute", inset: 0, opacity: 1 - toReviews, filter: blur > 0.05 ? `blur(${blur}px)` : undefined }}>
-            <PlaybookPage s={pb} />
-            {/* Carried over from Scene 7, then faded out. */}
-            <EmailCard opacity={1 - EASE(ramp(t, 0, 0.4))} />
+            <PlaybookGraphPage s={pb} />
+            {/* Carried over from Scene 7: clicked, it opens Reviews. */}
+            <SlackNotification opacity={1} pressed={Math.max(0, 1 - Math.abs(t - S8.slackClick) / 0.15)} />
           </div>
         ) : null}
         {toReviews > 0 ? (
           <div style={{ position: "absolute", inset: 0, opacity: toReviews, filter: blur > 0.05 ? `blur(${blur}px)` : undefined }}>
             <ReviewsPage s={reviewsStateAt(t, F, clock)} />
+            {toast > 0 ? (
+              <div
+                data-guard="uitext"
+                data-guard-read="1"
+                data-guard-label="Approved toast"
+                style={{ position: "absolute", left: TOAST.x, top: TOAST.y, width: TOAST.w, height: TOAST.h, boxSizing: "border-box", padding: "0 12px 0 18px", borderRadius: 12, background: "#FFFFFF", border: `1px solid ${UI.line}`, boxShadow: "0 16px 40px rgba(20,24,60,0.18)", display: "flex", alignItems: "center", gap: 12, fontFamily: FONT.sans, fontSize: 16.5, fontWeight: 600, color: UI.text, opacity: toast, transform: `translateY(${(1 - toast) * -12}px)`, zIndex: 9 }}
+              >
+                <span style={{ width: 10, height: 10, borderRadius: 5, background: UI.green }} />
+                Approved.
+                <div style={{ marginLeft: "auto", width: TOAST.btn.w, height: TOAST.btn.h, borderRadius: 9, background: toastPressed > 0.3 ? "#2A3147" : UI.primaryBg, color: UI.primaryText, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: UIN.button, transform: `scale(${1 - 0.04 * toastPressed})` }}>
+                  <FileClock size={15} color={UI.primaryText} />
+                  View record
+                </div>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </ProductStage>

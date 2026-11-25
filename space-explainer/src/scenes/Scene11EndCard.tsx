@@ -7,7 +7,6 @@ import { HumanGlyph } from "../components/HumanGlyph";
 import { FEATURE_TITLE } from "../components/FeatureTitle";
 import { lockupTiming, SpaceByLockup } from "../components/SpaceByLockup";
 import type { TextBeatSpec } from "../lib/guards";
-import { NEUTRAL } from "./Scene10Concierge";
 import { ramp, useScene } from "./shared/stage";
 
 const S = "S11" as const;
@@ -49,13 +48,12 @@ const Line: React.FC<{ text: string; t: number; start: number; exitP: number; y:
 
 export const Scene11EndCard: React.FC = () => {
   const { t, F } = useScene(S);
-  const white = EASE(ramp(t, S11.white[0], S11.white[1]));
   const exitP = EASE(ramp(t, S11.exit[0], S11.exit[1]));
   const under = EASE(ramp(t, S11.underline[0], S11.underline[1]));
   const glyph = EASE(ramp(t, S11.underline[0] + 0.15, S11.underline[1] + 0.1));
   return (
     <AbsoluteFill style={{ width: 1920, height: 1080, background: "#FFFFFF" }}>
-      <AbsoluteFill style={{ background: NEUTRAL, opacity: 1 - white }} />
+      {/* Scene 10's orb bloom ends on pure white, so this scene starts white. */}
       {exitP < 1 ? (
         <AbsoluteFill style={{ transform: `scale(${1 + 0.025 * ramp(t, 0, S11.exit[1])})`, transformOrigin: "50% 50%" }}>
         {LINES.map((l, i) => (

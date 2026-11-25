@@ -10,7 +10,7 @@ import { PageHeader, READ, Segmented, SearchBox, text, WhiteButton } from "./com
 /** Layout from reference/ui/07-pages.png (native px). */
 export const PAGES = { build: { x: 471, y: 180, w: 1184, h: 186 }, prompt: { x: 493, y: 237, w: 1141, h: 56 }, button: { x: 1509, y: 310, w: 125, h: 36 }, out: { x: 471, y: 400, w: 1184, h: 440 } };
 
-export type PagesState = { typeStart: number; typing: boolean; pressed: number; build: number; rows: number; bars: number };
+export type PagesState = { typeStart: number; typing: boolean; pressed: number; build: number; rows: number; bars: number; /** Claim row under Approved: shown, and pressed. */ claimRow?: number; claimPressed?: number };
 
 export const PagesPage: React.FC<{ s: PagesState }> = ({ s }) => {
   const data = P.pages.rows;
@@ -61,7 +61,8 @@ export const PagesPage: React.FC<{ s: PagesState }> = ({ s }) => {
                 <span>Approved by</span>
               </div>
               {data.map((r, i) => (
-                <div key={r.status} style={{ display: "grid", gridTemplateColumns: "180px 90px 1fr", alignItems: "center", height: 46, borderBottom: "1px solid #E7E9F2", fontSize: READ, color: UI.text, opacity: Math.min(1, Math.max(0, s.rows * data.length - i)) }}>
+                <React.Fragment key={r.status}>
+                <div style={{ display: "grid", gridTemplateColumns: "180px 90px 1fr", alignItems: "center", height: 46, borderBottom: "1px solid #E7E9F2", fontSize: READ, color: UI.text, opacity: Math.min(1, Math.max(0, s.rows * data.length - i)) }}>
                   <span>{r.status}</span>
                   <span style={{ fontFamily: FONT.mono }}>{r.count}</span>
                   <span style={{ display: "flex", alignItems: "center", gap: 8, color: "#5B6478" }}>
@@ -69,6 +70,21 @@ export const PagesPage: React.FC<{ s: PagesState }> = ({ s }) => {
                     {r.approvedBy || "Not yet decided"}
                   </span>
                 </div>
+                {i === 0 && (s.claimRow ?? 0) > 0 ? (
+                  <div
+                    data-guard="box"
+                    data-guard-label="Pages claim row"
+                    style={{ display: "grid", gridTemplateColumns: "180px 90px 1fr", alignItems: "center", height: 40, margin: "2px 0", paddingLeft: 18, borderRadius: 8, background: (s.claimPressed ?? 0) > 0.3 ? "#E4DEFF" : UI.lilacBg, fontSize: 15.2, color: UI.lilacText, fontWeight: 600, opacity: s.claimRow }}
+                  >
+                    <span>{P.pages.claimRow.id}</span>
+                    <span style={{ color: UI.secondary, fontWeight: 400 }}>{P.pages.claimRow.insured.split(" ")[0]}</span>
+                    <span style={{ display: "flex", alignItems: "center", gap: 8, color: UI.text, fontWeight: 400 }}>
+                      <HumanGlyph size={16} style={{ width: 26, height: 26 }} />
+                      {P.pages.claimRow.approvedBy}
+                    </span>
+                  </div>
+                ) : null}
+                </React.Fragment>
               ))}
             </div>
             <div style={{ flex: 1, height: 260, display: "flex", alignItems: "flex-end", gap: 30, padding: "0 10px", borderLeft: "1px solid #E7E9F2", borderBottom: "1px solid #E7E9F2" }}>

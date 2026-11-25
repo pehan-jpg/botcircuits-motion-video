@@ -1,107 +1,59 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
-import { ArrowRight, FileText } from "lucide-react";
-import { CHAT_CPS, COLOR, EASE, FONT } from "../theme";
+import { CHAT_CPS, EASE } from "../theme";
 import { PLACEHOLDERS as P } from "../placeholders";
 import { GuardLayer } from "../components/GuardLayer";
 import { SpaceOrb } from "../components/SpaceOrb";
-import { Typewriter } from "../components/Typewriter";
+import { CONCIERGE, ConciergeCard, lerpRect, type Rect } from "../components/ConciergeCard";
 import { typeDuration } from "../lib/typewriter";
 import type { TextBeatSpec } from "../lib/guards";
-import { Scene09EndFrame, S9_PILL_LABEL } from "./Scene09Records";
-import { Pills, ramp, useScene, type Pill } from "./shared/stage";
+import { Scene09EndFrame, S9_CARD_END } from "./Scene09Records";
+import { ramp, useScene } from "./shared/stage";
 
 const S = "S10" as const;
 export const NEUTRAL = "#F4F6F8";
 const C = P.concierge;
-export const S10 = { neutral: [0.05, 0.6], card: 0.45, customer: 0.7, reply: 1.15, chip: 3.45, tag: 3.9, slide: [4.5, 5.1], cardOut: [5.7, 5.95] };
+/** Scene 10 beats: the record's first entry is now the Concierge chat; the reply types; the orb blooms into white. */
+export const S10 = { neutral: [0.05, 0.7], move: [0.0, 0.9], reply: 1.0, chip: 3.3, bloom: [5.15, 6.0] };
 const REPLY = C.reply.join(" ");
-const REPLY_DUR = typeDuration(REPLY, CHAT_CPS, "concierge-reply");
-const CARD = { x: 480, y: 240, w: 960, h: 560 };
-const MSG = 28;
+const REPLY_DUR = typeDuration(C.reply.join("\n"), CHAT_CPS, "concierge-reply");
+const CARD: Rect = { x: 480, y: 240, w: CONCIERGE.w, h: CONCIERGE.h };
 
-export const S10_PILLS: Pill[] = [{ label: S9_PILL_LABEL, at: -10, until: 0 }];
 export const SCENE10_TEXT: TextBeatSpec[] = [
-  { id: "customer", text: C.customer, readyAt: S10.customer + 0.3, leaveAt: S10.cardOut[0], fontPx: MSG },
-  { id: "reply", text: REPLY, readyAt: S10.reply + REPLY_DUR, leaveAt: S10.cardOut[0], fontPx: MSG, exception: "Read as it types; brief: 6s scene" },
-  { id: "chip", text: C.handed, readyAt: S10.chip + 0.3, leaveAt: S10.cardOut[0], fontPx: 28 },
+  { id: "customer", text: C.customer, readyAt: 0, leaveAt: S10.bloom[0] + 0.4, fontPx: 28 },
+  { id: "reply", text: REPLY, readyAt: S10.reply + REPLY_DUR, leaveAt: S10.bloom[0] + 0.4, fontPx: 28, exception: "Read as it types; brief: 6s scene" },
+  { id: "chip", text: C.handed, readyAt: S10.chip + 0.3, leaveAt: S10.bloom[0] + 0.4, fontPx: 28 },
 ];
 
 export const Scene10Concierge: React.FC = () => {
   const { t, F, clock, start } = useScene(S);
   const neutral = EASE(ramp(t, S10.neutral[0], S10.neutral[1]));
-  const card = EASE(ramp(t, S10.card, S10.card + 0.45));
-  const out = EASE(ramp(t, S10.cardOut[0], S10.cardOut[1]));
-  const cust = EASE(ramp(t, S10.customer, S10.customer + 0.35));
-  const replyIn = EASE(ramp(t, S10.reply - 0.2, S10.reply));
+  const r = lerpRect(S9_CARD_END, CARD, EASE(ramp(t, S10.move[0], S10.move[1])));
   const chip = EASE(ramp(t, S10.chip, S10.chip + 0.35));
-  const tagIn = EASE(ramp(t, S10.tag, S10.tag + 0.3));
-  const slide = EASE(ramp(t, S10.slide[0], S10.slide[1]));
+  // Bloom: the chip's orb grows and turns to white light that fills the frame.
+  const grow = EASE(ramp(t, S10.bloom[0], S10.bloom[1]));
+  const white = ramp(t, S10.bloom[0] + 0.25, S10.bloom[1] - 0.1);
+  const blooming = t >= S10.bloom[0];
+  const k = r.w / CONCIERGE.w;
+  const orb = { x: r.x + CONCIERGE.chip.x * k, y: r.y + CONCIERGE.chip.y * k };
+  const scale = 1 + 115 * grow * grow;
   return (
     <AbsoluteFill style={{ width: 1920, height: 1080, background: NEUTRAL }}>
       {neutral < 1 ? (
-        <AbsoluteFill style={{ opacity: 1 - neutral, transform: `scale(${1 - 0.03 * neutral})` }}>
+        <AbsoluteFill style={{ opacity: 1 - neutral }}>
           <Scene09EndFrame F={F} clock={clock} />
         </AbsoluteFill>
       ) : null}
-      {neutral > 0 && neutral < 1 ? <AbsoluteFill style={{ background: NEUTRAL, opacity: neutral }} /> : null}
-      {card > 0 && out < 1 ? (
-        <div
-          style={{
-            position: "absolute",
-            left: CARD.x,
-            top: CARD.y,
-            width: CARD.w,
-            height: CARD.h,
-            boxSizing: "border-box",
-            borderRadius: 24,
-            background: "#FFFFFF",
-            boxShadow: "0 30px 80px rgba(13,18,36,0.12), 0 8px 20px rgba(13,18,36,0.06)",
-            opacity: card * (1 - out),
-            // A slow drift keeps the frame alive while the reply types.
-            transform: `translateY(${(1 - card) * 24 - out * 16 - 6 * ramp(t, 0, 6)}px) scale(${(0.98 + 0.02 * card) * (1 + 0.02 * ramp(t, 0, 6))})`,
-            fontFamily: FONT.sans,
-            color: COLOR.ink,
-          }}
-        >
-          <div data-guard="text" data-guard-label="Concierge title" style={{ position: "absolute", left: 40, top: 32, fontSize: 28, fontWeight: 700, letterSpacing: "-0.01em" }}>
-            {C.title}
+      <ConciergeCard r={r} opacity={1} content={1} replyStart={F(S10.reply)} chip={chip} orbHidden={blooming} clock={start} />
+      {blooming ? (
+        <div style={{ position: "absolute", left: orb.x, top: orb.y, width: 0, height: 0 }}>
+          <div style={{ position: "absolute", left: -19, top: -19, width: 38, height: 38, transform: `scale(${scale})`, opacity: 1 - white }}>
+            <SpaceOrb size={38} timeOffset={start} />
           </div>
-          <div style={{ position: "absolute", left: 40, right: 40, top: 92, height: 1, background: "#E6E9EE" }} />
-          {/* Customer */}
-          <div style={{ position: "absolute", right: 40, top: 128, opacity: cust, transform: `translateY(${(1 - cust) * 12}px)` }}>
-            <div data-guard="text" data-guard-label="Customer message" style={{ padding: "16px 22px", borderRadius: "20px 20px 6px 20px", background: "#EEF0F4", fontSize: MSG, lineHeight: 1.35, whiteSpace: "nowrap" }}>
-              {C.customer}
-            </div>
-            <div style={{ marginTop: 8, textAlign: "right", fontSize: 20, color: "#5B6273" }}>{P.insured}</div>
-          </div>
-          {/* Reply */}
-          <div style={{ position: "absolute", left: 40, top: 280, opacity: replyIn }}>
-            <div data-guard="text" data-guard-label="Concierge reply" style={{ padding: "16px 22px", borderRadius: "20px 20px 20px 6px", border: "1px solid #E1E4EA", fontSize: MSG, lineHeight: 1.35 }}>
-              <Typewriter lines={[...C.reply]} cps={CHAT_CPS} startFrame={F(S10.reply)} seed="concierge-reply" caretColor={COLOR.ink} style={{ fontSize: MSG, color: COLOR.ink }} />
-            </div>
-          </div>
-          {/* Handoff */}
-          <div style={{ position: "absolute", left: 40, top: 452, display: "flex", alignItems: "center", gap: 16 }}>
-            <div data-guard="text" data-guard-label="Handed chip" style={{ display: "flex", alignItems: "center", gap: 12, height: 58, padding: "0 22px 0 12px", borderRadius: 29, background: "#F3F0FF", border: "1px solid #DCD3FF", fontSize: 28, fontWeight: 600, color: "#3B2A8F", opacity: chip, transform: `scale(${0.94 + 0.06 * chip})`, whiteSpace: "nowrap" }}>
-              <SpaceOrb size={38} timeOffset={start} />
-              {C.handed}
-            </div>
-            {chip > 0 ? <ArrowRight size={24} color="#8E7CF0" style={{ opacity: chip }} /> : null}
-            {tagIn > 0 ? (
-              <div
-                data-guard="text"
-                data-guard-label="Claim tag"
-                style={{ display: "flex", alignItems: "center", gap: 10, height: 56, padding: "0 20px", borderRadius: 12, background: "#FFFFFF", border: "2px solid #6B4FE0", boxShadow: "0 8px 18px rgba(13,18,36,0.12)", fontSize: 28, fontWeight: 700, color: COLOR.ink, whiteSpace: "nowrap", opacity: tagIn * (1 - ramp(t, S10.slide[1] - 0.15, S10.slide[1])), transform: `translateX(${slide * 1100}px)` }}
-              >
-                <FileText size={24} color="#6B4FE0" />
-                {`Claim ${P.claimId}`}
-              </div>
-            ) : null}
-          </div>
+          <div style={{ position: "absolute", left: -19, top: -19, width: 38, height: 38, borderRadius: "50%", background: "radial-gradient(circle, #FFFFFF 0%, #FFFFFF 60%, rgba(255,255,255,0.85) 80%, rgba(255,255,255,0) 100%)", transform: `scale(${scale * 1.05})`, opacity: Math.min(1, white * 1.2) }} />
         </div>
       ) : null}
-      <Pills t={t} pills={S10_PILLS} />
+      {t >= S10.bloom[1] - 0.12 ? <AbsoluteFill style={{ background: "#FFFFFF", opacity: ramp(t, S10.bloom[1] - 0.12, S10.bloom[1] - 0.02) }} /> : null}
       <GuardLayer scene={S} />
     </AbsoluteFill>
   );
