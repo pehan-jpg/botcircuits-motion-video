@@ -70,11 +70,11 @@ Scene 9
 
 Scene 10
   title        ready 0.45s  held 1.96s  needs 2.45s   88px  brief exception "Build the views you need"
-  prompt1      ready 5.30s  held 1.70s  needs 3.20s   22px  brief exception "Open claims by status, with who approved each"
-  table        ready 6.55s  held 2.51s  needs 3.20s   21px  brief exception "Open claims by status Status Count Approved by"
-  prompt2      ready 8.86s  held 0.80s  needs 3.70s   22px  brief exception "A weekly claims dashboard: volume, time to prepare, and flag"
-  kpis         ready 10.21s  held 1.79s  needs 4.95s   21px  brief exception "Claims this week 38 Time to prepare 2 min Flags raised 5 Awa"
-  pill         ready 10.36s  held 0.94s  needs 2.70s   28px  brief exception "Pages and dashboards on live data"
+  prompt1      ready 4.67s  held 2.58s  needs 3.20s   22px  brief exception "Open claims by status, with who approved each"
+  table        ready 5.92s  held 2.98s  needs 3.20s   21px  brief exception "Open claims by status Status Count Approved by"
+  prompt2      ready 8.70s  held 0.80s  needs 3.70s   22px  brief exception "A weekly claims dashboard: volume, time to prepare, and flag"
+  kpis         ready 9.80s  held 2.20s  needs 4.95s   21px  brief exception "Claims this week 38 Time to prepare 2 min Flags raised 5 Awa"
+  pill         ready 10.20s  held 1.10s  needs 2.70s   28px  brief exception "Pages and dashboards on live data"
 
 Scene 11
   line         ready 1.91s  held 4.89s  needs 2.45s   64px  ok              "Same claim. Prepared in minutes."
@@ -162,10 +162,10 @@ Cursor clicks (ripple centre against the cursor hotspot, every frame of the ripp
   Scene 8 click at 16.20s: worst offset 0.00px
   Scene 9 click at 4.00s: worst offset 0.00px
   Scene 9 click at 8.50s: worst offset 0.00px
-  Scene 10 click at 3.65s: worst offset 0.00px
-  Scene 10 click at 5.55s: worst offset 0.00px
-  Scene 10 click at 6.95s: worst offset 0.00px
-  Scene 10 click at 9.06s: worst offset 0.00px
+  Scene 10 click at 3.60s: worst offset 0.00px
+  Scene 10 click at 4.92s: worst offset 0.00px
+  Scene 10 click at 7.20s: worst offset 0.00px
+  Scene 10 click at 8.90s: worst offset 0.00px
   Scene 10 click at 11.40s: worst offset 0.00px
 Built scenes: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12; SpaceVideo is 10740 frames (179s)
 
@@ -208,11 +208,11 @@ Notes:
   Scene 9 records: Brief: Records in 9s; rows read during the replay (held 4.90s, guard asks 6.20s)
   Scene 9 approved: Brief: approved row held 1.2s (held 1.20s, guard asks 2.20s)
   Scene 10 title: Brief: compact title, 0.9s hold (held 1.96s, guard asks 2.45s)
-  Scene 10 prompt1: Read as it types (held 1.70s, guard asks 3.20s)
-  Scene 10 table: Brief: page build, then the dashboard, in 12s (held 2.51s, guard asks 3.20s)
+  Scene 10 prompt1: Read as it types (held 2.58s, guard asks 3.20s)
+  Scene 10 table: Brief: page build, then the dashboard, in 12s (held 2.98s, guard asks 3.20s)
   Scene 10 prompt2: Read as it types (held 0.80s, guard asks 3.70s)
-  Scene 10 kpis: Brief: tiles in one by one, then the tile is clicked (held 1.79s, guard asks 4.95s)
-  Scene 10 pill: Brief: the pill gives way before the tile opens (held 0.94s, guard asks 2.70s)
+  Scene 10 kpis: Brief: tiles in one by one, then the tile is clicked (held 2.20s, guard asks 4.95s)
+  Scene 10 pill: Brief: the pill gives way before the tile opens (held 1.10s, guard asks 2.70s)
   Scene 11 pack: Brief: 8s scene; items are read as they tick in turn (held 3.10s, guard asks 4.70s)
 
 Timing and timeline checks passed.
