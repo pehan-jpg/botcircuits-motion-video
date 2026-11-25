@@ -24,6 +24,14 @@ type GuardProps = {
  * With inputProps.guardLog it prints a JSON report per frame for the check script.
  * With inputProps.hideText it hides text so the check script can sample the background behind it.
  */
+/** Margins set by an enclosing layer (`data-guard-margin="top,side,bottom"`), else the 96px safe area. */
+const layerMargin = (el: Element) => {
+  const v = (el.closest("[data-guard-margin]") as HTMLElement | null)?.dataset.guardMargin;
+  if (!v) return undefined;
+  const [top, side, bottom] = v.split(",").map(Number);
+  return { top, side, bottom };
+};
+
 export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
   const frame = useCurrentFrame();
   const ref = useRef<HTMLDivElement>(null);
@@ -99,7 +107,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
             h: rect.height / k,
           };
           const issues = [
-            ...(kind === "agent" || kind === "decision" || (kind === "brand" && el.closest("[data-guard-bg]")) ? [] : checkSafeArea(r, label)),
+            ...(kind === "agent" || kind === "decision" || (kind === "brand" && el.closest("[data-guard-bg]")) ? [] : checkSafeArea(r, label, layerMargin(el))),
             ...(kind === "logo"
               ? checkLogo(
                   (el.querySelector("img")?.getBoundingClientRect().height ??

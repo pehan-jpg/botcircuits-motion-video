@@ -28,10 +28,14 @@ for (const comp of scenes) {
 	const bgDir = path.join(outDir, 'guards', 'bg', `scene-${n}`);
 	fs.mkdirSync(dir, {recursive: true});
 	const seconds = Math.round(comp.durationInFrames / comp.fps);
-	for (let s = 0; s < seconds; s++) {
-		const frame = Math.min(comp.durationInFrames - 1, s * comp.fps);
+	// STILL_STEP=0.5 renders a still every half second (half-second stills are named t05.5s).
+	const step = Number(process.env.STILL_STEP ?? 1);
+	for (let k = 0; k * step < seconds - 1e-9; k++) {
+		const s = k * step;
+		const frame = Math.min(comp.durationInFrames - 1, Math.round(s * comp.fps));
 		const logs = [];
-		const output = path.join(dir, `scene-${n}-t${String(s).padStart(2, '0')}s.png`);
+		const label = Number.isInteger(s) ? String(s).padStart(2, '0') : String(Math.floor(s)).padStart(2, '0') + (s % 1).toFixed(1).slice(1);
+		const output = path.join(dir, `scene-${n}-t${label}s.png`);
 		await renderStill({
 			composition: comp,
 			serveUrl,
@@ -48,7 +52,7 @@ for (const comp of scenes) {
 		let bg = null;
 		if (BUILT(comp.id)) {
 			fs.mkdirSync(bgDir, {recursive: true});
-			bg = path.join(bgDir, `t${String(s).padStart(2, '0')}s.png`);
+			bg = path.join(bgDir, `t${label}s.png`);
 			await renderStill({composition: comp, serveUrl, frame, output: bg, puppeteerInstance: browser, logLevel: 'error', inputProps: {hideText: true}});
 		}
 		report.push({scene: comp.id, second: s, frame, still: path.relative(root, output), bg: bg && path.relative(root, bg), guard: logs[logs.length - 1] ?? null});

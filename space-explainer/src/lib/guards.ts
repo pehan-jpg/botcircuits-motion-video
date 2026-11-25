@@ -12,18 +12,27 @@ export type Rect = { x: number; y: number; w: number; h: number };
 export type GuardIssue = { guard: string; message: string };
 
 /** SafeAreaGuard: nothing within 96px of the edge except backgrounds. */
-export const checkSafeArea = (r: Rect, label: string): GuardIssue[] => {
+/**
+ * Margins for elements inside a layer that sets its own (`data-guard-margin="top,side,bottom"`,
+ * frame px from each edge; a negative side means the camera may crop at the sides).
+ */
+export type GuardMargin = { top: number; side: number; bottom: number };
+export const checkSafeArea = (r: Rect, label: string, m?: GuardMargin): GuardIssue[] => {
   const tol = 0.5;
+  const top = m ? m.top : SAFE;
+  const side = m ? m.side : SAFE;
+  const bottom = m ? m.bottom : SAFE;
   const out =
-    r.x < SAFE - tol ||
-    r.y < SAFE - tol ||
-    r.x + r.w > VIDEO.width - SAFE + tol ||
-    r.y + r.h > VIDEO.height - SAFE + tol;
+    (side >= 0 && (r.x < side - tol || r.x + r.w > VIDEO.width - side + tol)) ||
+    r.y < top - tol ||
+    r.y + r.h > VIDEO.height - bottom + tol;
   return out
     ? [
         {
           guard: "SafeAreaGuard",
-          message: `${label} at ${JSON.stringify(roundRect(r))} enters the ${SAFE}px margin`,
+          message: m
+            ? `${label} at ${JSON.stringify(roundRect(r))} leaves its layer (top ${top}px, bottom margin ${bottom}px)`
+            : `${label} at ${JSON.stringify(roundRect(r))} enters the ${SAFE}px margin`,
         },
       ]
     : [];

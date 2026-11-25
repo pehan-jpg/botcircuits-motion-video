@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, getInputProps, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Clock, Layers } from "lucide-react";
 import { EASE, FONT, PRODUCT_THEME_LIGHT as T } from "../theme";
 import { sceneById } from "../timeline";
@@ -88,7 +88,24 @@ const LINES = [
 const TABS: [number, number][] = [[0, 1], [1.2, 2], [S1.drive, 3], [S1.rowClick, 4], [S1.sheets, 5], [S1.slack, 6], [10.6, 7], [11.0, 8], [12.7, 9], [13.0, 11], [13.3, 14]];
 const CLOCK_AT = [0, 2.6, 5.6, 8.5, 9.6, 11.0, 13.0];
 
-const HUD = { left: 120, top: 104, lineY: 204 };
+/**
+ * Two layers. HUD (fixed, never under the camera): the task card and chips in the
+ * top corners of the caption lane, and the caption below them. STAGE (camera):
+ * windows, cursor, Downloads tray, Review summary, clipped below the lane.
+ */
+export const S1_LANE = { top: 96, bottom: 96 + 140 };
+/** Windows keep at least 24px below the lane; the stage keeps 48px at the bottom. */
+export const S1_STAGE = { top: S1_LANE.bottom + 24, bottom: 1080 - 48, feather: 24 };
+/** Card and chips sit in the lane's top corners; the caption below them, 24px clear. */
+const HUD = { left: 120, top: 98, chipH: 52, lineY: 205 };
+/** Caption sizes: 56px in the lane (64px would not fit under the card row), 64px once the lane is released. */
+const LINE_PX = [56, 64];
+/** Lane rule until the morph begins; then the stage clip is released over 0.4s. */
+export const S1_RELEASE = [13.6, 14.0];
+/** The cascade's desktop extent (Review summary top to Downloads tray bottom), desktop px. */
+const CASCADE = { top: 300, bottom: 894 };
+/** Camera zoom cap for Scene 1. */
+export const S1_ZOOM_MAX = 1.25;
 const ORB = { x: INTRO.handoffOrb.x, y: INTRO.handoffOrb.y, size: 300, endSize: INTRO.handoffOrb.size };
 const ORDER: WinKey[] = ["gmail", "drive", "sheets", "slack"];
 const ROT: Record<string, number> = { gmail: -7, drive: 5, sheets: -4, slack: 6 };
@@ -109,7 +126,20 @@ const CAM: { t: number; c: Cam; lin?: boolean }[] = [
   { t: S1.pullBack[1], c: { x: 960, y: 600, z: 0.9 } },
   { t: DUR, c: { x: 966, y: 603, z: 0.912 }, lin: true },
 ];
+/**
+ * Clamp a camera key so the cascade stays inside the stage: its top edge at or below
+ * S1_STAGE.top and its bottom at or above S1_STAGE.bottom, zoom at most S1_ZOOM_MAX.
+ */
+const clampCam = (c: Cam): Cam => {
+  const z = Math.min(c.z, S1_ZOOM_MAX);
+  // 6px margin: zoom and pan interpolate together between keys, which can lift the top edge a little.
+  const maxY = CASCADE.top + (540 - S1_STAGE.top - 6) / z;
+  const minY = CASCADE.bottom - (S1_STAGE.bottom - 540) / z;
+  return { x: c.x, y: Math.max(minY, Math.min(maxY, c.y)), z };
+};
+const CAM_KEYS = CAM.map((k) => ({ ...k, c: clampCam(k.c) }));
 export const s1CamAt = (t: number): Cam => {
+  const CAM = CAM_KEYS;
   if (t <= CAM[0].t) return CAM[0].c;
   for (let i = 0; i < CAM.length - 1; i++) {
     const a = CAM[i];
@@ -155,17 +185,17 @@ export const S1_COMPLETE_AT = Math.max(S1.chips[3] + 0.3, S1.line2 + lineIn(LINE
 export const S1_COMPLETE_HOLD = S1.endOut[0] - S1_COMPLETE_AT;
 export const S1_LINE3_HOLD = S1_COMPLETE_HOLD;
 export const SCENE01_TEXT: TextBeatSpec[] = [
-  { id: "line1", text: LINES[0].text, readyAt: LINES[0].from + lineIn(LINES[0].text), leaveAt: LINES[0].to, fontPx: 64 },
+  { id: "line1", text: LINES[0].text, readyAt: LINES[0].from + lineIn(LINES[0].text), leaveAt: LINES[0].to, fontPx: LINE_PX[0] },
   { id: "line2", text: LINES[1].text, readyAt: LINES[1].from + lineIn(LINES[1].text), leaveAt: LINES[1].to, fontPx: 64, exception: "Brief: the line reveals at 15.4s and the complete frame holds 1.2s before 18.2s" },
   { id: "chips", text: P.scene1.chips.join(" "), readyAt: S1_COMPLETE_AT, leaveAt: S1.endOut[0], fontPx: 28, exception: "Brief: hold the complete frame at least 1.2s" },
   { id: "task", text: P.scene1.task, readyAt: 0.9, leaveAt: S1.hudOut[0], fontPx: 24, ui: true },
 ];
 
 /** A top line, words blurring in as in FeatureTitle, at 64px. */
-const Line: React.FC<{ text: string; t: number; out: number }> = ({ text, t, out }) => {
+const Line: React.FC<{ text: string; t: number; out: number; px: number }> = ({ text, t, out, px }) => {
   const words = text.split(" ");
   return (
-    <div data-guard="text" data-guard-label={`Line: ${text}`} style={{ fontFamily: FONT.sans, fontWeight: FEATURE_TITLE.weight, fontSize: 64, letterSpacing: FEATURE_TITLE.tracking, lineHeight: 1.1, color: T.ink, whiteSpace: "nowrap", opacity: 1 - out }}>
+    <div data-guard="text" data-guard-label={`Line: ${text}`} style={{ fontFamily: FONT.sans, fontWeight: FEATURE_TITLE.weight, fontSize: px, letterSpacing: FEATURE_TITLE.tracking, lineHeight: 1.1, color: T.ink, whiteSpace: "nowrap", opacity: 1 - out }}>
       {words.map((w, i) => {
         const p = EASE(ramp(t, i * FEATURE_TITLE.stagger, i * FEATURE_TITLE.stagger + FEATURE_TITLE.wordIn));
         const blur = 12 * (1 - p) + 10 * out;
@@ -224,11 +254,23 @@ export const Scene01Problem: React.FC = () => {
   const orbR = spaceOrbOuterRadius(orbSize, true);
   const summaryOut = EASE(ramp(t, S1.hudOut[0], S1.hudOut[1]));
 
+  // Stage clip below the caption lane, feathered 24px at the top; released when the morph begins.
+  const release = EASE(ramp(t, S1_RELEASE[0], S1_RELEASE[1]));
+  const clipTop = S1_LANE.bottom * (1 - release);
+  const featherEnd = clipTop + S1_STAGE.feather * (1 - release);
+  const stageMask = release >= 1 ? undefined : `linear-gradient(to bottom, rgba(0,0,0,0) ${clipTop}px, rgba(0,0,0,1) ${featherEnd}px)`;
+  const stageClip = release >= 1 ? undefined : `inset(${clipTop}px 0px 0px 0px round ${24 * (1 - release)}px)`;
+  // Test hooks (scripts/s1-lane-test.mjs): render without the HUD, or the backdrop only.
+  const layer = (getInputProps() as { s1Layer?: "noHud" | "backdrop" }).s1Layer;
+  const hideHud = layer === "noHud" || layer === "backdrop";
+  const hideStage = layer === "backdrop";
+
   return (
     <AbsoluteFill style={{ width: 1920, height: 1080 }}>
       <ProblemBackdrop timeOffset={sceneById(S).start} />
 
-      {/* Desktop under the camera */}
+      {/* STAGE layer: the desktop under the camera, clipped below the caption lane */}
+      <AbsoluteFill data-s1="stage" data-guard-margin={release > 0 ? undefined : `${S1_STAGE.top},-1,${1080 - S1_STAGE.bottom}`} style={{ visibility: hideStage ? "hidden" : undefined, clipPath: stageClip, WebkitMaskImage: stageMask, maskImage: stageMask }}>
       <AbsoluteFill style={{ transform: camCss(cam), transformOrigin: "0 0" }}>
         {summaryOut < 1 ? (
           <div style={{ opacity: 1 - summaryOut }}>
@@ -274,6 +316,7 @@ export const Scene01Problem: React.FC = () => {
         {dragging ? <DragStack x={cur.x} y={cur.y} opacity={EASE(ramp(t, S1.dragPress, S1.dragPress + 0.12))} /> : null}
         {cursorO > 0 ? <Cursor keys={S1_CURSOR} opacity={cursorO} ripple="neutral" /> : null}
       </AbsoluteFill>
+      </AbsoluteFill>
 
       {/* Logos detach from their windows and stream into the centre */}
       {ORDER.map((k) => {
@@ -302,7 +345,9 @@ export const Scene01Problem: React.FC = () => {
         </div>
       ) : null}
 
-      {/* Task card, top left, inside the safe area */}
+      {/* HUD layer: fixed, never transformed by the camera */}
+      <AbsoluteFill data-s1="hud" style={{ visibility: hideHud ? "hidden" : undefined }}>
+      {/* Task card, top left corner of the lane */}
       {hudOut < 1 ? (
         <div style={{ position: "absolute", left: HUD.left, top: HUD.top, opacity: hudIn * (1 - hudOut), filter: hudOut > 0.02 ? `blur(${10 * hudOut}px)` : undefined, transform: `translateY(${(1 - hudIn) * 24}px)` }}>
           <Chip label="Task card">
@@ -338,13 +383,15 @@ export const Scene01Problem: React.FC = () => {
         if (out >= 1) return null;
         return (
           <React.Fragment key={l.text}>
-            <div style={{ position: "absolute", left: 960 - 560, top: HUD.lineY - 160, width: 1120, height: 320, borderRadius: "50%", background: "radial-gradient(closest-side, rgba(255,255,255,0.65), rgba(255,255,255,0.35) 45%, rgba(255,255,255,0) 100%)", opacity: EASE(ramp(t, l.from, l.from + 0.5)) * (1 - out) }} />
+            <div style={{ position: "absolute", left: 960 - 560, top: HUD.lineY - 80, width: 1120, height: 160, borderRadius: "50%", background: "radial-gradient(closest-side, rgba(255,255,255,0.65), rgba(255,255,255,0.35) 45%, rgba(255,255,255,0) 100%)", opacity: EASE(ramp(t, l.from, l.from + 0.5)) * (1 - out) }} />
             <div style={{ position: "absolute", left: 0, right: 0, top: HUD.lineY, display: "flex", justifyContent: "center", transform: "translateY(-50%)" }}>
-              <Line text={l.text} t={t - l.from} out={out} />
+              <Line text={l.text} t={t - l.from} out={out} px={LINE_PX[i]} />
             </div>
           </React.Fragment>
         );
       })}
+
+      </AbsoluteFill>
 
       {/* Four chips pop around the orb, one after another */}
       {P.scene1.chips.map((c, i) => {

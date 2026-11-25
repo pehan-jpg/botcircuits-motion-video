@@ -1,0 +1,2 @@
+137 frames from 0 to 13.6s; most stage pixels in the lane in one frame: 0; frames with a caption: 87
+PASS: the lane is clear of the stage, the HUD is inside the safe area, the caption keeps 24px from the card and chips.

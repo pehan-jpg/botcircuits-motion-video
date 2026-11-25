@@ -305,6 +305,21 @@ tabs" and the clock top right.
   the complete frame holds at least 1.2s.
 - 18.2 to 19.0s chips and line fade; the lone orb equals Scene 2's first frame.
 The camera keeps every visible window's move under 14px per frame.
+**Layers and caption lane.** Scene 1 is two layers. The HUD layer is fixed and
+never transformed by the camera: the task card (top left) and the Open tabs and
+clock chips (top right) at y 98, and the caption below them, centred at y 205
+in 56px (64px for "What if agents did the work?", after the lane is released).
+The caption lane runs from y 96 to 236. The STAGE layer (windows, cursor,
+Downloads tray, Review summary) is the only layer under the camera; it is
+clipped below the lane with a rounded mask feathered over 24px. The camera zoom
+is capped at 1.25 and every key is clamped so the cascade's top edge stays at or
+below y 266 and its bottom at or above y 1032; the cascade keeps scale 1.0 (window
+text 18px at 1x). From 13.6s the clip is released over 0.4s, so the morph, the
+orb and the four chips use the full frame. `scripts/check-timing.ts` checks the
+stage top edge every frame; `scripts/s1-lane-test.mjs` renders frames without
+the HUD against the backdrop alone and fails on any stage pixel in the lane, on
+a HUD element outside the safe area, or on a caption within 24px of the card or
+chips.
 
 ### Scene 2, Intro (0:19 to 0:24), built
 First frame equals Scene 1's last. The orb dissolves while the backdrop
@@ -386,4 +401,6 @@ python3 -I scripts/check.py                   # guard checks on the report
 npx tsx scripts/check-timing.ts               # reading time and timeline
 node scripts/motion-test.mjs 10 40            # Scene 4B motion test, every frame
 node scripts/clean-title-test.mjs             # clean title rule, Scenes 4 to 10
+node scripts/s1-lane-test.mjs                 # Scene 1 caption lane and HUD
+STILL_STEP=0.5 node scripts/stills.mjs Scene01  # stills every 0.5s
 ```

@@ -5,8 +5,9 @@
 import { BUILT_FRAMES, BUILT_SCENES, SCENES, TOTAL_SECONDS } from "../src/timeline";
 import { checkReadability, type GuardIssue, type TextBeatSpec } from "../src/lib/guards";
 import { readHoldSeconds } from "../src/theme";
-import { S1, SCENE01_TEXT, S1_LINE3_HOLD, s1CamAt, S1_CURSOR } from "../src/scenes/Scene01Problem";
-import { WINDOWS, WIN } from "../src/components/desktop/Desktop";
+import { S1, SCENE01_TEXT, S1_LINE3_HOLD, s1CamAt, S1_CURSOR, S1_LANE, S1_STAGE, S1_RELEASE, S1_ZOOM_MAX } from "../src/scenes/Scene01Problem";
+import { cursorPosAt } from "../src/components/Cursor";
+import { TRAY, WINDOWS, WIN } from "../src/components/desktop/Desktop";
 import { SCENE02_TEXT, SCENE02_SETTLED } from "../src/scenes/Scene02Intro";
 import { SCENE03_TEXT, S3_CURSOR } from "../src/scenes/Scene03Chat";
 import { BUBBLE_HOLDS, SCENE04_TEXT, S4_CURSOR } from "../src/scenes/Scene04Agents";
@@ -81,6 +82,32 @@ if (s11Hold < 1.5) issues.push({ guard: "timeline", message: "Scene 12 lockup ho
   }
   console.log(`\nScene 1 camera: largest move of a window centre between frames ${worst.toFixed(2)}px at ${worstT.toFixed(2)}s (limit 14px)`);
   if (worst > 14) issues.push({ guard: "motion", message: `Scene 1 camera moves a window ${worst.toFixed(1)}px in one frame at ${worstT.toFixed(2)}s` });
+  // Caption lane: until the morph begins, every window, the tray and the cursor stay 24px below the lane.
+  let topMin = Infinity;
+  let topAt = 0;
+  let zMax = 0;
+  for (let f = 0; f < S1_RELEASE[0] * fps; f++) {
+    const t = f / fps;
+    const c = s1CamAt(t);
+    zMax = Math.max(zMax, c.z);
+    const tops: number[] = [];
+    for (const k of Object.keys(WINDOWS) as (keyof typeof WINDOWS)[]) {
+      const from = (S1 as unknown as Record<string, number>)[k];
+      if (t >= from) tops.push(WINDOWS[k].y);
+    }
+    if (t >= S1.tray) tops.push(TRAY.y);
+    if (t >= 1.2) tops.push(cursorPosAt(S1_CURSOR, t).y);
+    for (const y of tops) {
+      const sy = 540 + c.z * (y - c.y);
+      if (sy < topMin) {
+        topMin = sy;
+        topAt = t;
+      }
+    }
+  }
+  console.log(`Scene 1 stage: highest top edge ${topMin.toFixed(1)}px at ${topAt.toFixed(2)}s (lane ends ${S1_LANE.bottom}px, stage starts ${S1_STAGE.top}px); largest zoom ${zMax.toFixed(3)}`);
+  if (topMin < S1_STAGE.top - 0.5) issues.push({ guard: "lane", message: `Scene 1 stage reaches ${topMin.toFixed(1)}px at ${topAt.toFixed(2)}s, above ${S1_STAGE.top}px` });
+  if (zMax > S1_ZOOM_MAX + 1e-6) issues.push({ guard: "lane", message: `Scene 1 zoom ${zMax.toFixed(3)} over ${S1_ZOOM_MAX}` });
   console.log(`Scene 1 complete closing frame holds ${S1_LINE3_HOLD.toFixed(2)}s (brief: at least 1.2s)`);
   if (S1_LINE3_HOLD < 1.2) issues.push({ guard: "timeline", message: "Scene 1 closing frame holds under 1.2s" });
   for (const c of cursorClickReport(S1_CURSOR)) {
