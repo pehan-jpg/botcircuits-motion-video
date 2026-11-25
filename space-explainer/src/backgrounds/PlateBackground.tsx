@@ -227,7 +227,7 @@ export const PlateBackground: React.FC<PlateBackgroundProps> = ({
   const dotCount = Math.max(6, Math.min(10, dots));
 
   return (
-    <AbsoluteFill style={{ overflow: "hidden", backgroundColor: "#DDE3EA" }}>
+    <AbsoluteFill data-layer="plate" style={{ overflow: "hidden", backgroundColor: "#DDE3EA" }}>
       <AbsoluteFill style={{ transform: kb, transformOrigin: "50% 60%" }}>
         <PlateImage plate={plate} filter={nf} />
         {to ? (

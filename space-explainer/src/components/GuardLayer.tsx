@@ -12,6 +12,8 @@ import { checkLogo, checkSafeArea } from "../lib/guards";
 type GuardProps = {
   guardLog?: boolean;
   hideText?: boolean;
+  /** Clean title reference: hides every layer of the scene except the plate and the title. */
+  cleanRef?: boolean;
   showSafeArea?: boolean;
 };
 
@@ -200,7 +202,10 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
   }, [frame, props.guardLog, scene]);
 
   return (
-    <AbsoluteFill ref={ref} style={{ pointerEvents: "none" }}>
+    <AbsoluteFill ref={ref} data-guard-root style={{ pointerEvents: "none" }}>
+      {props.cleanRef ? (
+        <style>{`:has(> [data-guard-root]) > :not([data-layer]):not([data-guard-root]) { visibility: hidden !important; }`}</style>
+      ) : null}
       {props.hideText ? (
         <style>{`[data-guard="text"], [data-guard="text"] *, [data-guard="uitext"], [data-guard="uitext"] * { color: transparent !important; text-shadow: none !important; } [data-guard-caret] { opacity: 0 !important; } [data-guard="logo"] img { opacity: 0 !important; } [data-guard="uitext"] [data-orb], [data-guard="text"] [data-orb], [data-guard="text"] img, [data-guard="decision"] { visibility: hidden !important; }`}</style>
       ) : null}

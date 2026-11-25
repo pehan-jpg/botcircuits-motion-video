@@ -204,20 +204,36 @@ tied to time of day. Each boundary is one continuous motion with no blank frame.
 - 1 to 2: the lone orb dissolves into the lockup. 2 to 3: the lockup blurs
   out, the FeatureTitle arrives, the window rises.
 - 3 to 4: the cursor clicks the chip "Create agents for this claim"; the chat
-  blurs through to the Agents page under Scene 4's title. 4A to 4B: click
+  sinks away and the Agents page rises under Scene 4's title. 4A to 4B: click
   Control Room.
-- 4 to 5: the cursor clicks [S1] in Theo's result card; that chip lifts off,
-  waits above the title and lands as the S1 file highlight in Brain.
-- 5 to 6: "Use in playbook" on Claims knowledge; the chip travels to the
-  playbook header, then onto Theo's step.
-- 6 to 7: Save & activate makes the playbook Active; the clock appears at
-  6:42 PM and the evening begins.
-- 7 to 8: the time ribbon reaches 9:05 AM and the Slack notification arrives;
-  Scene 8 clicks it.
+- 4 to 5: the cursor clicks [S1] in Theo's result card; the chip dissolves
+  with its page; the S1 tag appears in the Brain file row 0.5s after the rise.
+- 5 to 6: "Use in playbook" on Claims knowledge; the chip dissolves with its
+  page and appears inside the Theo node.
+- 6 to 7: Save & activate makes the playbook Active; the claim email arrives
+  (6:42 PM inside the card) and the run starts.
+- 7 to 8: night crossfades to morning, "Next morning", and the Slack
+  notification "Claim CL-7305 needs your review" arrives; Scene 8 clicks it.
 - 8 to 9: the toast "Approved. View record" is clicked and opens Records.
-- 9 to 10: the Pages table row opens the record; Replay rewinds to the first
-  entry, which expands into the Concierge chat.
-- 10 to 11: the orb in "Handed to Space" blooms into the white end card.
+- 9 to 10: after the replay the cursor clicks Pages in the sidebar.
+- 10 to 11: the "Time to prepare" KPI tile is clicked and expands to a white
+  frame, which becomes the Before and With Space contrast.
+- 11 to 12: the With Space card expands to white; the end card starts white.
+
+**Clean title rule.** From the moment a FeatureTitle starts until the frame
+starts rising, only the plate, the glow and the title words are visible: no
+chips, cursors, tags, pills or partial UI. Elements belong to their page and
+dissolve with it. `scripts/clean-title-test.mjs` samples every 6th frame of
+each window in Scenes 4 to 10, renders it as is and with `cleanRef` (every
+layer except `data-layer="plate"` and `data-layer="title"` hidden), and fails
+on any pixel difference.
+
+**No persistent clock.** No scene shows a clock widget or time ribbon. Times
+appear only inside the content they belong to (an email card, a notification,
+a record row); elapsed effort is shown as a stopwatch chip.
+
+**No people on screen in Scene 1.** No figures, avatars, initials, silhouettes
+or photos; the cursor is the only actor. `data-person` markers fail check.py.
 
 ## 1A. Plate background system (`src/backgrounds`)
 
@@ -259,128 +275,103 @@ table **[S2]**. Evidence: 3 photos and 1 plumber invoice. One flag: the invoice
 date does not match the reported date of loss, so a person should check it.
 State it as a flag, never as an accusation.
 
-### Scene 1, One claim, five places (0:00 to 0:15), built
-An employee's screen; **no people on screen** (no figures, avatars, initials,
-silhouettes or photos; the cursor is the only actor; names only as plain text
-inside content). ProblemBackdrop, Plus Jakarta Sans only, light theme, black
-arrow cursor with a neutral ripple. Windows (`components/desktop/Desktop.tsx`)
-are white, 640x420, radius 20, official logos in the header (Gmail, Google
-Drive, Google Sheets, Slack), cascading like a desktop; window text 18px or
-more at 1x. HUD: task card top left ("Prepare claim CL-7305 for review", empty
-checkbox) and chips top right ("Open tabs", clock), 24px.
-- 0 to 2.2s "One claim to review." word by word at 88px; 2.2 to 3.4s it
-  glides to the top at 64px, the task card and chips rise in (tabs 1, 9:04 AM).
-- 3.4s Gmail: the claim email with photo_1 to 3 (original kitchen thumbnails)
-  and invoice.pdf, dragged to Downloads. 5.0s Drive: "home policy" typed, three
-  near identical results, the 2026 file opens, scrolls to page 12, Section 4.2
-  highlighted; the line becomes "The information is everywhere." (6.25s).
-  7.0s Sheets: the row "Home, escape of water, $250" found and highlighted.
-  8.6s Slack: the question typed and sent in #claims, "Someone is typing", no
-  reply, unread badge counts to 12. Tabs and clock climb to 14 and 11:48 AM.
-- 10.0s pull back to the whole cascade; the Review summary appears at the back
-  with two lines and an empty rest.
-- 11.2s the SpaceOrb (300px, ticks, pulse) rises; the windows slide and shrink
-  into it; tabs count down to 0; the clock fades; chips "Claim read", "Policy
-  checked", "Evidence matched"; "What if agents did the gathering?" (11.3s).
-- 13.9s the HUD fades and blurs out; the orb settles to 187.5px at the centre,
-  exactly Scene 2's first frame.
-Camera follows the cursor with symmetric eases up to 1.4x, framed so the top
-line never covers a window header; a check keeps every visible window's move
-under 14px per frame. The people check (`data-person` markers on figures and
-person glyphs) fails Scene 1 if any appear.
+Scene start times (179s, 10,740 frames at 60fps): S1 0:00, S2 0:19, S3 0:24,
+S4 0:42, S5 1:22, S6 1:36, S7 1:55, S8 2:06, S9 2:23, S10 2:32, S11 2:44,
+S12 2:52.
 
-### Scene 2, Intro (0:15 to 0:20), built
-First frame equals Scene 1's last. Over the first 1s the orb dissolves (scale
-1 to 0.7, opacity to 0, soft bloom) while the backdrop dissolves into plate 01.
-One line only, centred: "Introducing Space by" plus the logo, Plus Jakarta Sans
-Medium 84px, ink, -0.02em. Types at HEADLINE_CPS from 1.0s; the logo's dots
-assemble over 0.9s while the wordmark blurs in. A very soft radial light behind
-the line (white 45 percent, feathered). Holds about 1.8s.
+### Scene 1, One claim, five places (0:00 to 0:19), built
+An employee's screen; **no people on screen** (the cursor is the only actor;
+names only as plain text inside content). No opening title and never an empty
+frame. ProblemBackdrop, light theme, black arrow cursor with a neutral ripple.
+Windows (`components/desktop/Desktop.tsx`) are white, 640x420, official logos in
+the header (Gmail, Google Drive, Google Sheets, Slack). HUD inside the 96px safe
+area: the task card "Prepare claim CL-7305 for review" top left, chips "Open
+tabs" and the clock top right.
+- 0 to 0.9s HUD in; Gmail opens 0.3 to 1.2s. 1.2 to 4.2s the attachments are
+  dragged to Downloads (tabs 2).
+- 4.2 to 7.6s Drive: "home policy" typed, three results, the 2026 file opens,
+  page 12, Section 4.2 highlighted (tabs 3 to 4). 5.0s "The information is
+  everywhere." at 64px.
+- 7.6 to 10.2s Sheets: the matching row highlighted (tabs 5, 10:12).
+- 10.2 to 12.6s Slack: question typed and sent, typing indicator, badge to 12
+  (tabs 8, 11:20).
+- 12.6 to 13.6s pull back (tabs 9, 11, 14; 11:48); the Review summary behind.
+- 13.6 to 15.2s morph: HUD, line and summary fade first; the windows shrink to
+  the centre (0.12, slight rotation), their logos detach and stream in; a violet
+  glow gathers; the SpaceOrb grows from scale 0 once the windows are under 30
+  percent; tabs tick down to 0 and fade.
+- 15.2 to 18.2s chips "Claim read", "Policy checked", "Evidence matched",
+  "Review pack drafted" 0.5s apart; "What if agents did the work?" at 15.4s;
+  the complete frame holds at least 1.2s.
+- 18.2 to 19.0s chips and line fade; the lone orb equals Scene 2's first frame.
+The camera keeps every visible window's move under 14px per frame.
 
-### Scene 3, Chat (0:20 to 0:38), built
-FeatureTitle (standard) "Ask, or tell it what to do". Turn 1 (about 8s): the
-prompt types at CHAT_CPS, three status pills (0.45s each), the cited answer
-with [S1] [S2] at REPLAY_CPS, [S1] clicked, the source card "Home Policy
-Wording 2026, p. 12" opens and closes (12.4s). Turn 2, an action (about 5s):
-the request types at 60 cps in the bottom input, the thread scrolls up,
-"Setting this up", then the action card "2 changes made" with two rows that
-tick in turn (Scheduled task with a calendar icon; Notification rule with the
-Slack logo), each with View and Undo. Final 2s: the chip "Create agents for
-this claim" appears and is clicked at 17.5s.
+### Scene 2, Intro (0:19 to 0:24), built
+First frame equals Scene 1's last. The orb dissolves while the backdrop
+dissolves into plate 01. "Introducing Space by" plus the logo, 84px; the logo's
+dots assemble over 0.9s. Holds about 1.8s.
 
-### Scene 4, Agents and Control Room (0:38 to 1:18), built
-4A (0 to 10s): opens from the clicked chip on the Agents page; the New agent
-panel creates Nora, then Theo and Owen.
-4B (10 to 40s): click Control Room (10.3s). Heroes: Iris appears 0.5s, waves
-3.0s (about four cycles), morphs 1.1s; Nora, Theo and Owen appear 0.4s, wave
-1.8s, morph 0.9s, each starting 0.4s before the previous morph ends (Owen ends
-23.7s). During every hero the room is dimmed to 35 percent with a 6px blur and
-every other plate and speech element is hidden. One persistent figure per
-agent (`AgentLayer` in `ControlRoomPage.tsx`): a single transform driven by
-one path function (`figurePath`), never unmounted, duplicated or swapped; the
-plate follows the same path parameter. The claim arrives 24.1s; walks from
-25.6s (`office/motion.ts`): axis aligned isometric routes, constant speed 140
-px/s at 1x with eased start and stop, a continuous step phase, facing per
-segment with a 0.2s cross fade at corners, z order by floor y. Iris hands the
-folder to Nora; Nora walks to Gmail, Theo to Google Drive, Owen to Google
-Sheets, partly in parallel (Theo's route is about 5s at that speed); thought
-bubbles tick at arrival. Results fly to Iris (34s), plates "Done", the room
-minimises (35s), result cards at 36.3, 36.9 and 37.5s (Theo's with [S1] [S2]),
-pill "Prepared for Emily's review"; the cursor clicks [S1] at 39.3s.
-`scripts/motion-test.mjs` samples every frame of 4B from the DOM and fails above
-14px per frame at 1x outside a hero, or on any duplicate copy.
+### Scene 3, Chat (0:24 to 0:42), built
+FeatureTitle (standard) "Ask, or tell it what to do". Connect your apps shows
+the official Gmail, Drive, Sheets and Slack logos at 22px. Turn 1: the cited
+answer with [S1] [S2]; [S1] opens the source card. Turn 2, an action: "2 changes
+made" (Scheduled task; Notification rule with the Slack logo). The chip "Create
+agents for this claim" is clicked at 17.5s.
 
-### Scenes 5 to 9: compact FeatureTitle
+### Scene 4, Agents and Control Room (0:42 to 1:22), built
+4A (0 to 10s): the Agents page; the New agent panel creates Nora, Theo and Owen
+(no avatar picker: orb colours are assigned automatically).
+4B (10 to 40s): the Control Room heroes, walks, thought bubbles and result
+cards as before; the cursor clicks [S1] at 39.3s. `scripts/motion-test.mjs`
+fails above 14px per frame at 1x outside a hero, or on a duplicate copy.
+
+### Scenes 5 to 10: compact FeatureTitle
 Compact titles (about 2.4s, 0.9s hold); Scene 7 uses the onDark variant.
 
-### Scene 5, Brain (1:18 to 1:32), built
-"Ground it in your own sources". The [S1] chip lands on the S1 file (Files
-tab). Connect data: tiles (Google Drive, Google Sheets, Gmail, Slack logos;
-original Website and File upload tiles). Added in turn with progress and
-Synced or Ready: Drive "Claims shared drive", Sheets "Excess and limits",
-Website "northfield.example/claims-faq" typed (Crawled, 12 pages), Slack
-"#claims-escalations", two PDFs. Knowledge bases: Claims knowledge with six
-sources, Sources 6, Passages 412, then its Graph view (Policy, Claim, Insured,
-Excess, FAQ, Escalations). Zoom 1.4x on the sources. "Use in playbook" clicked
-at 13.4s.
+### Scene 5, Brain (1:22 to 1:36), built
+"Ground it in your own sources". The S1 tag appears in the file row 0.5s after
+the rise. Connect data tiles, sources added in turn, Claims knowledge with its
+Graph view; "Use in playbook" clicked.
 
-### Scene 6, Playbook graph (1:32 to 1:51), built
-"Define the process once". `PlaybookGraph.tsx`, rebuilt from
-11-playbook-graph.png: toolbar (Sequence, Graph selected, Variables (0), Check,
-Test, Share, Settings, Save draft, Save & activate), the note line, dotted
-canvas, zoom controls, the Add control with the full menu, the inspector.
-Settings shows the trigger "Email arrives in the claims inbox" (Gmail) for
-1.0s. Six steps through the Add menu (fully for the first, then quicker): ASK,
-AGENT Nora, AGENT Theo (with the Claims knowledge chip arriving), AGENT Owen,
-PAGE, REVIEW (approved and declined outputs). The Review inspector: name typed,
-Step type Review, reviewer Emily Carter with the amber glyph, the message typed,
-variable "review". Branches: IF, RUN Gmail, RUN Slack; SEND, END. Check: "No
-issues found". Save & activate: "Active".
+### Scene 6, Playbook graph (1:36 to 1:55), built
+"Define the process once". The playbook graph: trigger, ASK, AGENT Nora, AGENT
+Theo (the Claims knowledge chip inside the node), AGENT Owen, PAGE, REVIEW with
+Emily Carter (amber), branches; Check, then Save & activate.
 
-### Scene 7, Evening (1:51 to 2:01), built
-onDark "Let it run on its own"; plate 03 to 04 under the NightGrade; the
-window stays white with a cool overlay (#0F1A33 up to 18 percent). Clock 6:42
-PM; the email from BotCircuits Concierge; nodes light in order (Ask, Nora,
-Theo, Owen, Page) and stop at REVIEW, "Waiting for Emily"; ribbon to 9:05 AM;
-plate 01 at dawn; the Slack notification "Claim CL-7305 needs your review".
+### Scene 7, Run and wait (1:55 to 2:06), built
+onDark "Let it run on its own"; no clock, no ribbon. 2.4 to 4.2s the email card
+"New claim CL-7305, kitchen water damage" (6:42 PM inside it). 4.2 to 7.4s the
+stopwatch chip in the playbook header counts "Run time 0:00" to 2:04 as Ask,
+Nora, Theo, Owen and Page light (orbs pulse), then "Prepared in 2 min 4 s" with
+a tick; REVIEW pulses amber, "Waiting for Emily". 7.4 to 9.0s "Waiting for a
+person..." while dusk turns to night. 9.0 to 11.0s crossfade to morning, the
+"Next morning" pill with a sun, the Slack notification (9:05 AM inside it).
 
-### Scene 8, Morning review (2:01 to 2:18), built
-The notification is clicked (0.3s) and opens Reviews under the title; the
-review as before; then the toast "Approved. View record", clicked at 16.2s.
+### Scene 8, Morning review (2:06 to 2:23), built
+The notification is clicked and opens Reviews under the title; the review;
+the toast "Approved. View record", clicked at 16.2s.
 
-### Scene 9, Records and Pages (2:18 to 2:34), built
-"Every step on record". Records first (first row "Handed over by BotCircuits
-Concierge, 6:42 PM", the approved row with the amber glyph). Pages: prompt
-typed, page built (table and bars) with the row "Claim CL-7305", clicked: its
-record opens; Replay rewinds the scrubber to the first row, which expands into
-the Concierge chat (`ConciergeCard`).
+### Scene 9, Records (2:23 to 2:32), built
+"Every step on record". Rows from "Claim email received 6:42 PM" to "Slack
+notified 9:12"; the approved row carries the note and the amber glyph. Replay
+highlights each row, the approved row held 1.2s; the cursor clicks Pages.
 
-### Scene 10, Concierge (2:34 to 2:40), built
-Neutral #F4F6F8. The chat card continues from Scene 9; the reply types; the
-chip "Handed to Space" with the violet orb; the orb blooms into white.
+### Scene 10, Pages and dashboards (2:32 to 2:44), built
+"Build the views you need". A page from a prompt: table and bars, the claim row
+pushes the rows below it down. A second prompt, "A weekly claims dashboard:
+volume, time to prepare, and flags": KPI tiles (38, 2 min, 5, 7), a line chart,
+"Flags by type". Zoom 1.4x while reading, out before the click. Pill "Pages and
+dashboards on live data". The "Time to prepare" tile is clicked.
 
-### Scene 11, End card (2:40 to 2:47), built
-Pure white from the first frame: the three lines, the amber underline under
+### Scene 11, Same claim, minutes not hours (2:44 to 2:52), built
+The tile expands to white; "Same claim. Prepared in minutes." (64px). Before
+(muted): ghost windows, "5 tools", "14 tabs", a stopwatch to "2 h 44 min". With
+Space: the Review pack card ticks, "1 place", "0 tabs", a stopwatch to "2 min 4
+s" with a tick, "Ready for review". Footnote "Illustrative example, placeholder
+data." 20px #8A91A5. No amber. The last 1.2s expands the right card to white.
+
+### Scene 12, End card (2:52 to 2:59), built
+Starts from Scene 11's white frame: the three lines, the amber underline under
 "People decide." with the glyph, then "Space by" with the logo assembling.
 
 ## Commands
@@ -394,4 +385,5 @@ node scripts/stills.mjs Scene01 Scene02       # stills + guard report
 python3 -I scripts/check.py                   # guard checks on the report
 npx tsx scripts/check-timing.ts               # reading time and timeline
 node scripts/motion-test.mjs 10 40            # Scene 4B motion test, every frame
+node scripts/clean-title-test.mjs             # clean title rule, Scenes 4 to 10
 ```

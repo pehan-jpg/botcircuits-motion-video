@@ -152,7 +152,7 @@ export const Scene07Evening: React.FC = () => {
       <PlateBackground plate="04" to="01" crossfadeAt={F(S7.dawn)} crossfadeSeconds={1.0} duration={F(dur)} kbFrom={0} kbTo={1} night={grade} timeOffset={start - 15} {...S2_PLATE} />
       {/* Plate 03 from Scene 6 fades out during the title */}
       {prevPlate > 0 ? (
-        <AbsoluteFill style={{ opacity: prevPlate }}>
+        <AbsoluteFill data-layer="plate" style={{ opacity: prevPlate }}>
           <PlateBackground plate="03" duration={F(dur)} kbFrom={S6_KB_END} kbTo={S6_KB_END - 0.02} timeOffset={start - 15} {...S2_PLATE} />
         </AbsoluteFill>
       ) : null}

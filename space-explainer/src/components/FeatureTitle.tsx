@@ -70,6 +70,7 @@ export const FeatureTitle: React.FC<{
   return (
     <>
       <div
+        data-layer="title"
         style={{
           position: "absolute",
           left: 960 - g.w / 2,
@@ -84,6 +85,7 @@ export const FeatureTitle: React.FC<{
         }}
       />
       <div
+        data-layer="title"
         style={{
           position: "absolute",
           left: 0,
