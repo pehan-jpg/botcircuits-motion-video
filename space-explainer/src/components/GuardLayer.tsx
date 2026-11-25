@@ -97,7 +97,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
             h: rect.height / k,
           };
           const issues = [
-            ...checkSafeArea(r, label),
+            ...(kind === "agent" ? [] : checkSafeArea(r, label)),
             ...(kind === "logo"
               ? checkLogo(
                   (el.querySelector("img")?.getBoundingClientRect().height ??
@@ -112,6 +112,7 @@ export const GuardLayer: React.FC<{ scene: string }> = ({ scene }) => {
           return {
             kind,
             label,
+            ...(kind === "agent" ? { zoom: Number(el.dataset.zoom ?? 1), morph: el.dataset.morph === "1" } : {}),
             text: (el.textContent ?? "").trim(),
             backing: el.dataset.guardBacking,
             opacity: op,

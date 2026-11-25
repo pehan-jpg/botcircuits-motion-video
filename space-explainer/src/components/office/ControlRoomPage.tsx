@@ -27,7 +27,9 @@ import { FONT, UIN, type OrbPaletteKey } from "../../theme";
 import { PLACEHOLDERS as P } from "../../placeholders";
 import { Sidebar, TopBar, UI } from "../chat/Sidebar";
 import { SpaceOrb } from "../SpaceOrb";
-import { FIGURE_H, LOOKS, NamePlate, Office, Person, plateAnchor, proj, DESKS, type AgentKey, type OfficeState, type PlateState, type Pose } from "./Office";
+import { FIGURE_H, LOOKS, NamePlate, Office, Person, ThoughtBubble, type AgentKey, type BubbleLine, type OfficeState, type PlateState, type Pose } from "./Office";
+import type { Facing } from "./motion";
+import { SourceChip } from "../pages/common";
 
 /** Screenshot 02-control-room-office.png is drawn at this offset inside the native screen. */
 export const CR_OFFSET = { x: 242, y: 52 };
@@ -47,31 +49,41 @@ const Counter: React.FC<{ icon: React.ReactNode; label: string; value: number }>
   </div>
 );
 
-export type OutputCard = { agent: string; role: string; palette: OrbPaletteKey; text: string; flag?: string; appear: number };
+export type OutputCard = { agent: string; role: string; palette: OrbPaletteKey; text: string; flag?: string; cites?: string[]; citeActive?: number; appear: number };
 
 /**
- * Hero introduction: a large copy-free version of an agent (the same Person
- * and NamePlate components) that morphs to its desk. morph 0 is the hero
- * pose in the centre, 1 is exactly the agent's place in the room.
+ * One persistent figure per agent. The same element carries the agent from its
+ * hero introduction to its desk and along its walks: a single transform
+ * (translate to the feet point, then scale) driven by one path function of the
+ * frame. The name plate follows the same path parameter.
  */
-export type Hero = {
+export type FigureRender = {
   k: AgentKey;
   name: string;
   palette: OrbPaletteKey;
+  /** Feet point in page (room) coordinates, and figure scale (1 in the room). */
+  x: number;
+  y: number;
+  scale: number;
+  opacity: number;
+  zIndex: number;
+  /** 0 to 1: dimmed with the room (placed agents behind a hero). */
+  dim: number;
+  facings: { f: Facing; w: number }[];
   pose: Pose;
-  plate: PlateState;
-  /** Figure height on screen at the start, px. */
-  heroPx: number;
-  plateScale: number;
-  appear: number;
-  morph: number;
+  plate: { x: number; y: number; scale: number; opacity: number; state: PlateState; read: boolean };
+  bubble?: { lines: BubbleLine[]; opacity: number };
+  /** True while in a hero or its morph (excluded from the per frame motion limit). */
+  morphing: boolean;
 };
 
 export type ControlRoomState = {
   office: OfficeState;
   /** 0 to 1: the room dims to 35 percent and blurs 6px behind a hero. */
   dim: number;
-  hero?: Hero;
+  figures: FigureRender[];
+  /** Camera zoom, recorded on each agent's guard marker for the motion test. */
+  camZoom?: number;
   agents: number;
   activeTasks: number;
   irisMessage: number;
@@ -109,7 +121,16 @@ const OutputCardView: React.FC<{ c: OutputCard; y: number; clock: number }> = ({
       <div style={{ fontSize: UIN.button, fontWeight: 700 }}>{c.agent}</div>
       <div style={{ fontSize: UIN.button, color: UI.muted }}>{c.role}</div>
     </div>
-    <div style={{ fontSize: OUTPUT_TEXT, lineHeight: 1.38 }}>{c.text}</div>
+    <div style={{ fontSize: OUTPUT_TEXT, lineHeight: 1.38 }}>
+      {c.text}
+      {c.cites
+        ? c.cites.map((id) => (
+            <span key={id} data-cite={id} data-guard="box" data-guard-label={`Cite ${c.agent} ${id}`} style={{ marginLeft: 8, verticalAlign: "2px" }}>
+              <SourceChip id={id} active={id === "S1" ? c.citeActive ?? 0 : 0} />
+            </span>
+          ))
+        : null}
+    </div>
     {c.flag ? (
       <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 10, padding: "4px 12px", borderRadius: 8, background: "#F4F5F9", border: `1px solid ${UI.line}`, fontSize: OUTPUT_TEXT, color: UI.text }}>
         <Flag size={18} color={UI.secondary} />
@@ -211,7 +232,7 @@ export const ControlRoomPage: React.FC<{ s: ControlRoomState }> = ({ s }) => {
           }}
         >
           <div style={{ position: "absolute", left: -CANVAS.x, top: -CANVAS.y }}>
-            <Office s={s.office} readPlates={s.mini < 0.5} />
+            <Office s={s.office} readPlates={s.mini < 0.5} drawAgents={false} />
           </div>
           <div style={{ position: "absolute", left: 12, top: 565, display: "flex", alignItems: "center", gap: 18, height: 44, padding: "0 16px", borderRadius: 9, background: UI.primaryBg, boxShadow: "0 4px 12px rgba(0,0,0,0.12)", fontFamily: FONT.sans, fontSize: UIN.helper, color: "#E7E9F2", whiteSpace: "nowrap", opacity: chromeO }}>
             <RotateCcw size={16} color="#E7E9F2" />
@@ -223,7 +244,12 @@ export const ControlRoomPage: React.FC<{ s: ControlRoomState }> = ({ s }) => {
           </div>
         </div>
 
-        {s.hero ? <HeroLayer h={s.hero} clock={s.clock} /> : null}
+        {/* Agents: outside the dimmed canvas, same transform as the canvas */}
+        <div style={{ position: "absolute", left: cx, top: cy, width: CANVAS.w, height: CANVAS.h, transform: `scale(${sc})`, transformOrigin: "0 0", overflow: m > 0 ? "hidden" : "visible", borderRadius: 4 + 16 * m }}>
+          <div style={{ position: "absolute", left: -CANVAS.x, top: -CANVAS.y, width: 1633, height: 836 }}>
+            <AgentLayer figures={s.figures} clock={s.clock} readPlates={s.mini < 0.5} zoom={s.camZoom ?? 1} />
+          </div>
+        </div>
 
         {/* Results the agents bring */}
         {s.outputs.map((c, i) => (c.appear > 0 ? <OutputCardView key={c.agent} c={c} y={ys[i]} clock={s.clock} /> : null))}
@@ -266,36 +292,52 @@ export const ControlRoomPage: React.FC<{ s: ControlRoomState }> = ({ s }) => {
   );
 };
 
-const lerp = (a: number, b: number, p: number) => a + (b - a) * p;
+const dimFilter = (d: number) => (d > 0.001 ? `brightness(${1 - 0.65 * d}) blur(${6 * d}px)` : undefined);
 
-/** The hero figure and plate, in page coordinates (identical to room coordinates while the canvas is full size). */
-const HeroLayer: React.FC<{ h: Hero; clock: number }> = ({ h, clock }) => {
-  // Product scale: 1728 / 1875 screen px per page unit.
-  const S = h.heroPx / (FIGURE_H * (1728 / 1875));
-  const big = h.heroPx > 500;
-  const start = { x: big ? 560 : 610, y: big ? 395 + (FIGURE_H * S) / 2 : 400 + (FIGURE_H * S) / 2 };
-  const end = proj(DESKS[h.k].feet[0], DESKS[h.k].feet[1]);
-  const p = h.morph;
-  const scale = Math.pow(S, 1 - p);
-  const fx = lerp(start.x, end.x, p);
-  const fy = lerp(start.y, end.y, p) + (1 - h.appear) * 40;
-  const plateStart = { x: start.x + (big ? 340 : 240), y: start.y - FIGURE_H * S * (big ? 0.62 : 0.6) };
-  const an = plateAnchor(h.k);
-  const ps = Math.pow(h.plateScale, 1 - p);
-  return (
-    <>
-      <svg width={1633} height={836} style={{ position: "absolute", left: 0, top: 0, overflow: "visible", opacity: h.appear }}>
-        <g transform={`translate(${fx} ${fy}) scale(${scale})`}>
-          <Person look={LOOKS[h.k]} pose={h.pose} />
-        </g>
-      </svg>
-      <NamePlate
-        name={h.name}
-        p={{ ...h.plate, opacity: h.appear }}
-        palette={h.palette}
-        clock={clock}
-        style={{ left: lerp(plateStart.x, an.x, p), top: lerp(plateStart.y, an.y, p), transform: `translateX(-50%) scale(${ps})`, transformOrigin: "50% 0" }}
-      />
-    </>
-  );
-};
+/** Figures, plates and bubbles: one persistent element of each per agent, never unmounted or duplicated. */
+const AgentLayer: React.FC<{ figures: FigureRender[]; clock: number; readPlates: boolean; zoom: number }> = ({ figures, clock, readPlates, zoom }) => (
+  <>
+    {figures.map((g) => (
+      <div key={`fig-${g.k}`} data-agent-figure={g.k} style={{ position: "absolute", left: 0, top: 0, zIndex: g.zIndex, opacity: g.opacity, filter: dimFilter(g.dim) }}>
+        <svg width={1} height={1} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
+          <g transform={`translate(${g.x} ${g.y}) scale(${g.scale})`}>
+            {g.facings.map(({ f, w }) => (
+              <g key={`${f.facing}-${f.mirror}`} opacity={w}>
+                <Person look={LOOKS[g.k]} pose={{ ...g.pose, facing: f.facing, mirror: f.mirror }} />
+              </g>
+            ))}
+          </g>
+        </svg>
+        {/* Motion test marker at the feet point */}
+        <div
+          data-guard="agent"
+          data-guard-label={g.k}
+          data-zoom={String(zoom)}
+          data-morph={g.morphing ? "1" : "0"}
+          style={{ position: "absolute", left: g.x - 0.5, top: g.y - 0.5, width: 1, height: 1, opacity: g.opacity > 0.05 ? 1 : 0 }}
+        />
+      </div>
+    ))}
+    {figures.map((g) =>
+      g.plate.opacity > 0 ? (
+        <div key={`plate-${g.k}`} style={{ position: "absolute", left: 0, top: 0, zIndex: 2000 + g.zIndex, filter: dimFilter(g.dim) }}>
+          <NamePlate
+            name={g.name}
+            p={{ ...g.plate.state, opacity: g.plate.opacity }}
+            palette={g.palette}
+            clock={clock}
+            read={readPlates && g.dim < 0.5}
+            style={{ left: g.plate.x, top: g.plate.y, transform: `translateX(-50%) scale(${g.plate.scale})`, transformOrigin: "50% 0" }}
+          />
+        </div>
+      ) : null,
+    )}
+    {figures.map((g) =>
+      g.bubble && g.bubble.opacity > 0 ? (
+        <div key={`bubble-${g.k}`} style={{ position: "absolute", left: 0, top: 0, zIndex: 4000 }}>
+          <ThoughtBubble x={g.x} y={g.y - FIGURE_H * g.scale - 30} lines={g.bubble.lines} opacity={g.bubble.opacity} name={g.name} />
+        </div>
+      ) : null,
+    )}
+  </>
+);

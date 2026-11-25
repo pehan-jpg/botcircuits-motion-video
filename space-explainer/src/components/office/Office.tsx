@@ -149,6 +149,10 @@ export type Pose = {
   walk: number | null;
   carry: boolean;
   breathe: number;
+  /** Wave oscillation frequency, Hz (default 3). */
+  waveHz?: number;
+  /** 0 to 1: leg and arm swing amplitude (eases to 0 as a walk stops). */
+  stride?: number;
 };
 export const STANDING: Pose = { facing: "front", mirror: false, wave: -1, waveLen: 1.2, walk: null, carry: false, breathe: 0 };
 /** Figure height in office units (feet to top of hair). */
@@ -160,9 +164,9 @@ export const Person: React.FC<{ look: Look; pose: Pose }> = ({ look, pose }) => 
   const inWave = wave >= 0 && wave <= waveLen;
   const ramp = Math.min(0.2, waveLen / 4);
   const up = inWave ? Math.min(1, wave / ramp, (waveLen - wave) / ramp) : 0;
-  const swing = walk === null ? 0 : Math.sin(walk);
-  const bob = walk === null ? pose.breathe * 0.6 : Math.abs(Math.sin(walk)) * 1.6;
-  const waveArm = -150 * up + 20 * Math.sin(wave * Math.PI * 2 * 3) * up;
+  const swing = walk === null ? 0 : Math.sin(walk) * (pose.stride ?? 1);
+  const bob = walk === null ? pose.breathe * 0.6 : Math.abs(Math.sin(walk)) * 1.6 * (pose.stride ?? 1);
+  const waveArm = -150 * up + 24 * Math.sin(wave * Math.PI * 2 * (pose.waveHz ?? 3)) * up;
   const rightArm = inWave ? waveArm : carry ? -35 : -swing * 22;
   const leftArm = swing * 22;
   const legA = swing * 20;
@@ -499,7 +503,8 @@ export type OfficeState = {
 };
 
 /** readPlates: false when the room is shown minimised, where plates are not meant to be read. */
-export const Office: React.FC<{ s: OfficeState; readPlates?: boolean }> = ({ s, readPlates = true }) => {
+/** drawAgents: false when figures, plates and bubbles are drawn by the Control Room's agent layer. */
+export const Office: React.FC<{ s: OfficeState; readPlates?: boolean; drawAgents?: boolean }> = ({ s, readPlates = true, drawAgents = true }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps + s.clock;
@@ -528,7 +533,7 @@ export const Office: React.FC<{ s: OfficeState; readPlates?: boolean }> = ({ s, 
       <svg width={1633} height={836} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
         {order.map((k, i) => {
           const a = s.agents[k];
-          if (!a.visible) return null;
+          if (!a.visible || !drawAgents) return null;
           const p = proj(a.pos[0], a.pos[1]);
           return (
             <g key={k} transform={`translate(${p.x} ${p.y})`}>
@@ -591,13 +596,13 @@ export const Office: React.FC<{ s: OfficeState; readPlates?: boolean }> = ({ s, 
         : null}
       {AGENT_ORDER.map((k) => {
         const a = s.agents[k];
-        if (!a.plateVisible || a.plate.opacity <= 0) return null;
+        if (!drawAgents || !a.plateVisible || a.plate.opacity <= 0) return null;
         const an = plateAnchor(k);
         return <NamePlate key={k} name={s.names[k]} p={a.plate} palette={s.palettes[k]} clock={s.clock} read={readPlates} style={{ left: an.x, top: an.y, transform: "translateX(-50%)" }} />;
       })}
       {AGENT_ORDER.map((k) => {
         const a = s.agents[k];
-        if (!a.bubble || !a.visible) return null;
+        if (!drawAgents || !a.bubble || !a.visible) return null;
         const p = proj(a.pos[0], a.pos[1]);
         return <ThoughtBubble key={k} x={p.x} y={p.y - FIGURE_H - 30} lines={a.bubble.lines} opacity={a.bubble.opacity} name={s.names[k]} />;
       })}
