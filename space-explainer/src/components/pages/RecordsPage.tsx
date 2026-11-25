@@ -98,7 +98,7 @@ export const RecordsPage: React.FC<{ s: RecordsState }> = ({ s }) => (
             data-guard-label={`Record row ${i + 1}`}
             style={{ position: "absolute", left: 14, right: 14, top: y, height: approved ? 76 : 44, display: "flex", alignItems: approved ? "flex-start" : "center", gap: 16, padding: approved ? "8px 12px" : "0 12px", borderRadius: 10, background: h > 0 ? `rgba(124,98,240,${0.1 * h})` : "transparent", border: `1px solid ${h > 0.5 ? "rgba(124,98,240,0.45)" : approved ? "rgba(242,164,58,0.35)" : "transparent"}`, boxSizing: "border-box", fontFamily: FONT.sans }}
           >
-            <span style={{ width: 92, fontSize: UIN.helper, color: "#5B6478", fontFamily: FONT.mono, whiteSpace: "nowrap", opacity: 0.35 + 0.65 * rv }}>{r.time}</span>
+            <span style={{ width: 92, fontSize: UIN.helper, color: "#454C60", fontFamily: FONT.mono, whiteSpace: "nowrap", opacity: 0.35 + 0.65 * rv }}>{r.time}</span>
             <div style={{ width: 10, height: 10, borderRadius: 5, background: h > 0.5 ? "#7C62F0" : "#C5CAD8", marginTop: approved ? 7 : 0 }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
               {Number.isFinite(s.rowType[i]) ? (

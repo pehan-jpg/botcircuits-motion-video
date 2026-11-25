@@ -110,12 +110,12 @@ export type GraphState = {
 
 const BADGE: Record<string, { bg: string; fg: string }> = {
   ASK: { bg: "#EEF0F4", fg: "#3B4256" },
-  AGENT: { bg: UI.lilacBg, fg: UI.lilacText },
-  PAGE: { bg: "#E7F6EA", fg: "#1E7A3A" },
-  REVIEW: { bg: "#FFF1DC", fg: "#9A5B00" },
-  IF: { bg: "#EEF0F4", fg: "#3B4256" },
-  RUN: { bg: "#E8F1FB", fg: "#285A8F" },
-  SEND: { bg: "#F4EEF2", fg: "#7A3E60" },
+  AGENT: { bg: UI.lilacBg, fg: "#3A24A6" },
+  PAGE: { bg: "#E7F6EA", fg: "#155A28" },
+  REVIEW: { bg: "#FFF1DC", fg: "#7A4600" },
+  IF: { bg: "#EEF0F4", fg: "#2E3446" },
+  RUN: { bg: "#E8F1FB", fg: "#1D4673" },
+  SEND: { bg: "#F4EEF2", fg: "#62304D" },
   END: { bg: "#EEF0F4", fg: "#3B4256" },
 };
 const Badge: React.FC<{ b: string }> = ({ b }) => (
@@ -197,7 +197,7 @@ const Node: React.FC<{ i: number; st: GraphState["nodes"][number]; clock: number
       {review ? <div data-guard="decision" style={{ position: "absolute", inset: -8, pointerEvents: "none" }} /> : null}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <Badge b={n.badge} />
-        <span style={{ fontSize: UIN.helper, color: UI.placeholder }}>s{i + 1}</span>
+        <span style={{ fontSize: UIN.helper, color: UI.secondary }}>s{i + 1}</span>
         <span style={{ fontSize: READ, color: UI.text, whiteSpace: "nowrap" }}>{n.text}</span>
         {review ? <HumanGlyph size={16} style={{ width: 26, height: 26, marginLeft: "auto" }} /> : null}
       </div>

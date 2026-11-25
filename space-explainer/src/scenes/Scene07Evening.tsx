@@ -57,7 +57,9 @@ export const S7_CAM_KEYS: CamKey[] = [
   { t: S7.zoomIn + 0.5, c: { ...stepsFocus, z: 1.35 } },
   { t: S7.zoomOut, c: { x: stepsFocus.x - 10, y: stepsFocus.y + 20, z: 1.36 }, lin: true },
   { t: S7.zoomOut + 0.6, c: { ...FRAME_CENTRE, z: 1 } },
-  { t: 10, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 2, z: 1.008 }, lin: true },
+  { t: 8.7, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 2, z: 1.008 }, lin: true },
+  { t: 9.4, c: { ...nat(1500, 160), z: 1.36 } },
+  { t: 10, c: { ...nat(1504, 162), z: 1.365 }, lin: true },
 ];
 export const S7_END_CAM: Cam = S7_CAM_KEYS[S7_CAM_KEYS.length - 1].c;
 
@@ -73,7 +75,7 @@ export const SCENE07_TEXT: TextBeatSpec[] = [
 
 /** Clock widget overlay (screen space). */
 export const ClockWidget: React.FC<{ label: string; opacity: number; night: number }> = ({ label, opacity, night }) => (
-  <div style={{ position: "absolute", right: 96, top: 96, opacity, display: "flex", alignItems: "center", gap: 12, padding: "10px 20px", borderRadius: 16, background: `rgba(${Math.round(15 + 220 * (1 - night))},${Math.round(22 + 215 * (1 - night))},${Math.round(45 + 200 * (1 - night))},0.72)`, backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.25)", boxShadow: "0 10px 30px rgba(0,0,0,0.25)" }}>
+  <div style={{ position: "absolute", right: 96, top: 96, opacity, display: "flex", alignItems: "center", gap: 12, padding: "10px 20px", borderRadius: 16, background: `rgba(${Math.round(15 + 220 * (1 - night))},${Math.round(22 + 215 * (1 - night))},${Math.round(45 + 200 * (1 - night))},0.86)`, backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.25)", boxShadow: "0 10px 30px rgba(0,0,0,0.25)" }}>
     <Clock size={24} color={night > 0.5 ? "#F5F7FF" : "#0D1224"} />
     <span data-guard="text" data-guard-label="Clock" style={{ fontFamily: FONT.sans, fontWeight: 700, fontSize: 30, color: night > 0.5 ? "#F5F7FF" : "#0D1224" }}>
       {label}

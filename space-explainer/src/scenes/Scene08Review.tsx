@@ -61,8 +61,8 @@ export const S8_CAM_KEYS: CamKey[] = [
   { t: S8.zoomOut, c: { x: stripFocus.x + 12, y: stripFocus.y, z: 1.4 }, lin: true },
   { t: S8.zoomOut + 0.6, c: { ...FRAME_CENTRE, z: 1 } },
   { t: S8.toast + 0.4, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 1, z: 1.004 }, lin: true },
-  { t: S8.toast + 0.9, c: { ...nat(1500, 260), z: 1.2 } },
-  { t: 17, c: { ...nat(1506, 262), z: 1.21 }, lin: true },
+  { t: S8.toast + 0.9, c: { ...nat(1560, 200), z: 1.36 } },
+  { t: 17, c: { ...nat(1566, 202), z: 1.365 }, lin: true },
 ];
 export const S8_END_CAM: Cam = S8_CAM_KEYS[S8_CAM_KEYS.length - 1].c;
 
@@ -126,13 +126,10 @@ export const Scene08Review: React.FC = () => {
             <ReviewsPage s={reviewsStateAt(t, F, clock)} />
             {toast > 0 ? (
               <div
-                data-guard="uitext"
-                data-guard-read="1"
-                data-guard-label="Approved toast"
                 style={{ position: "absolute", left: TOAST.x, top: TOAST.y, width: TOAST.w, height: TOAST.h, boxSizing: "border-box", padding: "0 12px 0 18px", borderRadius: 12, background: "#FFFFFF", border: `1px solid ${UI.line}`, boxShadow: "0 16px 40px rgba(20,24,60,0.18)", display: "flex", alignItems: "center", gap: 12, fontFamily: FONT.sans, fontSize: 16.5, fontWeight: 600, color: UI.text, opacity: toast, transform: `translateY(${(1 - toast) * -12}px)`, zIndex: 9 }}
               >
                 <span style={{ width: 10, height: 10, borderRadius: 5, background: UI.green }} />
-                Approved.
+                <span data-guard="uitext" data-guard-read="1" data-guard-label="Approved toast">Approved.</span>
                 <div style={{ marginLeft: "auto", width: TOAST.btn.w, height: TOAST.btn.h, borderRadius: 9, background: toastPressed > 0.3 ? "#2A3147" : UI.primaryBg, color: UI.primaryText, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: UIN.button, transform: `scale(${1 - 0.04 * toastPressed})` }}>
                   <FileClock size={15} color={UI.primaryText} />
                   View record

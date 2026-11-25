@@ -73,11 +73,13 @@ const content = nat(1077, 520);
 export const S5_CAM_KEYS: CamKey[] = [
   { t: 0, c: S4_END_CAM },
   { t: 1.6, c: { ...FRAME_CENTRE, z: 1 } },
-  { t: S5.zoomIn, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 2, z: 1.006 }, lin: true },
-  { t: S5.zoomIn + 0.6, c: { ...content, z: 1.4 } },
-  { t: S5.zoomOut, c: { x: content.x + 16, y: content.y + 4, z: 1.41 }, lin: true },
-  { t: S5.kb + 0.4, c: { ...nat(1077, 560), z: 1.25 } },
-  { t: 12.7, c: { ...nat(1090, 566), z: 1.26 }, lin: true },
+  { t: 3.0, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 2, z: 1.006 }, lin: true },
+  { t: 3.55, c: { ...nat(1077, 320), z: 1.36 } },
+  { t: S5.zoomIn, c: { ...nat(1082, 322), z: 1.36 }, lin: true },
+  { t: S5.zoomIn + 0.6, c: { ...content, z: 1.46 } },
+  { t: S5.zoomOut, c: { x: content.x + 16, y: content.y + 4, z: 1.47 }, lin: true },
+  { t: S5.kb + 0.4, c: { ...nat(1077, 560), z: 1.33 } },
+  { t: 12.7, c: { ...nat(1090, 566), z: 1.34 }, lin: true },
   { t: 13.2, c: { ...FRAME_CENTRE, z: 1 } },
   { t: 14, c: { x: FRAME_CENTRE.x + 2, y: FRAME_CENTRE.y + 2, z: 1.006 }, lin: true },
 ];

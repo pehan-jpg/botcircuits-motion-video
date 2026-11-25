@@ -49,7 +49,7 @@ const FINDINGS: { agent: string; role: string; palette: OrbPaletteKey; text: str
 
 const StripStep: React.FC<{ badge: string; label: string; lit: number; tone: "amber" | "grey" | "lime" }> = ({ badge, label, lit, tone }) => (
   <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", borderRadius: 10, background: "#FFFFFF", border: `1.5px solid ${lit > 0.5 ? "#BFE3C8" : "#E7E9F2"}`, whiteSpace: "nowrap" }}>
-    <span style={{ padding: "1px 8px", borderRadius: 6, background: tone === "amber" ? "#FFF1DC" : tone === "lime" ? "#ECE8FF" : "#E7E9F2", color: tone === "amber" ? COLOR.amber : tone === "lime" ? "#4B34C7" : "#0D1224", fontFamily: FONT.sans, fontSize: UIN.helper, fontWeight: 700 }}>{badge}</span>
+    <span style={{ padding: "1px 8px", borderRadius: 6, background: tone === "amber" ? "#FFF1DC" : tone === "lime" ? "#ECE8FF" : "#E7E9F2", color: tone === "amber" ? "#8A5200" : tone === "lime" ? "#4B34C7" : "#0D1224", fontFamily: FONT.sans, fontSize: UIN.helper, fontWeight: 700 }}>{badge}</span>
     <span style={{ fontFamily: FONT.sans, fontSize: READ, color: UI.text }}>{label}</span>
     <div style={{ width: 20, height: 20, borderRadius: 10, background: "#2E9E4F", display: "flex", alignItems: "center", justifyContent: "center", opacity: lit, transform: `scale(${0.6 + 0.4 * lit})` }}>
       <Check size={13} color="#fff" strokeWidth={3} />
@@ -71,7 +71,7 @@ export const ReviewsPage: React.FC<{ s: ReviewsState }> = ({ s }) => {
           <div
             data-guard="uitext"
             data-guard-label="Review item"
-            style={{ position: "absolute", left: REVIEWS.item.x, top: REVIEWS.item.y, width: REVIEWS.item.w, height: REVIEWS.item.h, boxSizing: "border-box", borderRadius: 14, background: s.itemPressed > 0 ? "#2e2e2e" : "#FFFFFF", border: "1px solid #E7E9F2", display: "flex", alignItems: "center", gap: 16, padding: "0 22px", opacity: s.itemAppear, transform: `translateY(${(1 - s.itemAppear) * 10}px)` }}
+            style={{ position: "absolute", left: REVIEWS.item.x, top: REVIEWS.item.y, width: REVIEWS.item.w, height: REVIEWS.item.h, boxSizing: "border-box", borderRadius: 14, background: s.itemPressed > 0 ? "#EEF0FA" : "#FFFFFF", border: "1px solid #E7E9F2", display: "flex", alignItems: "center", gap: 16, padding: "0 22px", opacity: s.itemAppear, transform: `translateY(${(1 - s.itemAppear) * 10}px)` }}
           >
             <span style={{ padding: "2px 9px", borderRadius: 6, background: "#FFF1DC", color: COLOR.amber, fontFamily: FONT.sans, fontSize: UIN.helper, fontWeight: 700 }}>REVIEW</span>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>

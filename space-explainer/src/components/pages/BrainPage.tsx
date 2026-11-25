@@ -240,7 +240,7 @@ export const BrainPage: React.FC<{ s: BrainState }> = ({ s }) => {
             {s.urlFocus > 0 ? (
               <Typewriter lines={[P.brain.url]} cps={CHAT_CPS} startFrame={s.urlTypeStart} seed="brain-url" caretColor={UI.text} style={{ fontSize: READ, color: UI.text }} />
             ) : (
-              <span style={{ fontSize: UIN.helper, color: UI.placeholder }}>Paste a website address to crawl</span>
+              <span style={{ fontSize: UIN.helper, color: UI.secondary }}>Paste a website address to crawl</span>
             )}
           </div>
           {/* Sources being added */}

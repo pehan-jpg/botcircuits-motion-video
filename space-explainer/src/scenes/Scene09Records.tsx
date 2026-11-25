@@ -66,8 +66,8 @@ export const S9_CAM_KEYS: CamKey[] = [
   { t: 0, c: S8_END_CAM },
   { t: 1.6, c: { ...FRAME_CENTRE, z: 1 } },
   { t: 3.3, c: { x: FRAME_CENTRE.x, y: FRAME_CENTRE.y + 2, z: 1.006 }, lin: true },
-  { t: 3.9, c: { ...timelineFocus, z: 1.3 } },
-  { t: 6.4, c: { x: timelineFocus.x + 6, y: timelineFocus.y + 30, z: 1.3 }, lin: true },
+  { t: 3.9, c: { ...timelineFocus, z: 1.35 } },
+  { t: 6.4, c: { x: timelineFocus.x + 6, y: timelineFocus.y + 30, z: 1.35 }, lin: true },
   { t: S9.pages + 0.2, c: { ...FRAME_CENTRE, z: 1 } },
   { t: S9.type + 0.2, c: { ...promptFocus, z: 1.3 } },
   { t: BUILD_CLICK, c: { x: promptFocus.x + 14, y: promptFocus.y, z: 1.3 }, lin: true },
@@ -113,7 +113,7 @@ export const SCENE09_TEXT: TextBeatSpec[] = [
 
 const toScreen = (c: Cam, p: { x: number; y: number }) => ({ x: FRAME_CENTRE.x + c.z * (p.x - c.x), y: FRAME_CENTRE.y + c.z * (p.y - c.y) });
 /** Where the Concierge chat ends in this scene (screen px); Scene 10 continues from here. */
-export const S9_CARD_END: Rect = { x: 520, y: 262, w: 880, h: 513 };
+export const S9_CARD_END: Rect = { x: 480, y: 240, w: 960, h: 560 };
 /** First Records row, as a screen rect at time t. */
 const firstRowRect = (cam: Cam): Rect => {
   const a = toScreen(cam, nat(RECORDS.x + 14, RECORDS.rowY0));
