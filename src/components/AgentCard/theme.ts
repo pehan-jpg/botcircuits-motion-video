@@ -1,4 +1,4 @@
-import { loadFont } from "./fonts";
+import { FONT_INTER, loadFont } from "./fonts";
 
 loadFont();
 
@@ -7,7 +7,7 @@ loadFont();
  * banking reference; every composition picks it up.
  */
 export const theme = {
-  fontFamily: "Inter, system-ui, sans-serif",
+  fontFamily: FONT_INTER,
   lime: "#c4e639",
   limeSoft: "rgba(196, 230, 57, 0.14)",
   limeBorder: "rgba(196, 230, 57, 0.75)",

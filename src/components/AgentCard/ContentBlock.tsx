@@ -2,11 +2,11 @@ import React from "react";
 import { Easing, interpolate } from "remotion";
 import { theme } from "./theme";
 import { CheckIcon, Icon } from "./icons";
-import { progress, timing } from "./timing";
+import { progress, useTiming, type Timing } from "./timing";
 import type { ContentBlock as Block, IconName } from "./types";
 
 type Of<T extends Block["type"]> = Extract<Block, { type: T }>;
-type BlockProps<T extends Block["type"]> = { block: Of<T>; frame: number; start: number };
+type BlockProps<T extends Block["type"]> = { block: Of<T>; frame: number; start: number; timing: Timing };
 
 /** How many stagger slots a block occupies before the next block starts. */
 export const itemCount = (block: Block): number => {
@@ -29,10 +29,16 @@ export const itemCount = (block: Block): number => {
       return block.items.length;
     case "callout":
       return 2;
+    case "reschedule":
+      return 3;
+    case "checkPanel":
+      return block.items.length;
+    case "channelPanel":
+      return block.rows.length;
   }
 };
 
-const at = (start: number, i: number) => start + i * timing.contentStagger;
+const at = (timing: Timing, start: number, i: number) => start + i * timing.contentStagger;
 
 const rise = (p: number, dist = 12): React.CSSProperties => ({
   opacity: p,
@@ -63,8 +69,8 @@ const IconTile: React.FC<{ icon: IconName; size?: number }> = ({ icon, size = 46
   </div>
 );
 
-const Message: React.FC<BlockProps<"message">> = ({ block, frame, start }) => {
-  const p = progress(frame, at(start, 0), timing.itemDuration + 6);
+const Message: React.FC<BlockProps<"message">> = ({ block, frame, start, timing }) => {
+  const p = progress(frame, at(timing, start, 0), timing.itemDuration + 6);
   return (
     <div style={{ display: "flex", ...rise(p, 16) }}>
       <div
@@ -88,10 +94,10 @@ const Message: React.FC<BlockProps<"message">> = ({ block, frame, start }) => {
   );
 };
 
-const Chips: React.FC<BlockProps<"chips">> = ({ block, frame, start }) => (
+const Chips: React.FC<BlockProps<"chips">> = ({ block, frame, start, timing }) => (
   <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
     {block.chips.map((c, i) => {
-      const p = progress(frame, at(start, i), timing.itemDuration);
+      const p = progress(frame, at(timing, start, i), timing.itemDuration);
       return (
         <div
           key={c.label}
@@ -115,11 +121,11 @@ const Chips: React.FC<BlockProps<"chips">> = ({ block, frame, start }) => (
   </div>
 );
 
-const Checklist: React.FC<BlockProps<"checklist">> = ({ block, frame, start }) => (
+const Checklist: React.FC<BlockProps<"checklist">> = ({ block, frame, start, timing }) => (
   <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
     {block.items.map((item, i) => {
-      const p = progress(frame, at(start, i), timing.itemDuration);
-      const tick = progress(frame, at(start, i) + 4, timing.itemDuration - 4);
+      const p = progress(frame, at(timing, start, i), timing.itemDuration);
+      const tick = progress(frame, at(timing, start, i) + 4, timing.itemDuration - 4);
       return (
         <div key={item} style={{ display: "flex", alignItems: "center", gap: 18, opacity: p, transform: `translateX(${(1 - p) * -14}px)` }}>
           <div style={{ transform: `scale(${interpolate(tick, [0, 1], [0.4, 1])})` }}>
@@ -132,11 +138,11 @@ const Checklist: React.FC<BlockProps<"checklist">> = ({ block, frame, start }) =
   </div>
 );
 
-const Rows: React.FC<BlockProps<"rows">> = ({ block, frame, start }) => (
+const Rows: React.FC<BlockProps<"rows">> = ({ block, frame, start, timing }) => (
   <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
     {block.rows.map((r, i) => {
       // Rows are spaced two stagger slots apart so each tick lands before the next row.
-      const s = at(start, i * 1.6);
+      const s = at(timing, start, i * 1.6);
       const p = progress(frame, s, timing.itemDuration);
       const tick = progress(frame, s + 12, 16);
       return (
@@ -201,11 +207,11 @@ const Airport: React.FC<{ code: string; city: string; align: "left" | "right"; p
   </div>
 );
 
-const BoardingPass: React.FC<BlockProps<"boardingPass">> = ({ block, frame, start }) => {
-  const panel = progress(frame, at(start, 0), timing.itemDuration);
-  const codes = progress(frame, at(start, 0) + 6, timing.itemDuration);
-  const foot = progress(frame, at(start, 1) + 6, timing.itemDuration);
-  const flight = interpolate(frame, [at(start, 0) + 14, at(start, 0) + 14 + 84], [0, 1], {
+const BoardingPass: React.FC<BlockProps<"boardingPass">> = ({ block, frame, start, timing }) => {
+  const panel = progress(frame, at(timing, start, 0), timing.itemDuration);
+  const codes = progress(frame, at(timing, start, 0) + 6, timing.itemDuration);
+  const foot = progress(frame, at(timing, start, 1) + 6, timing.itemDuration);
+  const flight = interpolate(frame, [at(timing, start, 0) + 14, at(timing, start, 0) + 14 + 84], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.inOut(Easing.cubic),
@@ -277,15 +283,15 @@ const BoardingPass: React.FC<BlockProps<"boardingPass">> = ({ block, frame, star
   );
 };
 
-const RatingStrip: React.FC<BlockProps<"ratingStrip">> = ({ block, frame, start }) => {
-  const p = progress(frame, at(start, 0), timing.itemDuration);
+const RatingStrip: React.FC<BlockProps<"ratingStrip">> = ({ block, frame, start, timing }) => {
+  const p = progress(frame, at(timing, start, 0), timing.itemDuration);
   return (
     <div style={{ ...inset, borderRadius: 16, display: "flex", alignItems: "center", gap: 18, padding: "14px 22px 14px 14px", ...rise(p, 10) }}>
       <IconTile icon={block.icon} />
       <span style={{ flex: 1, fontSize: theme.size.body - 2, color: theme.text, fontWeight: 500 }}>{block.text}</span>
       <div style={{ display: "flex", gap: 6 }}>
         {Array.from({ length: block.stars }).map((_, i) => {
-          const s = progress(frame, at(start, 1) + i * 7, 14);
+          const s = progress(frame, at(timing, start, 1) + i * 7, 14);
           return (
             <div key={i} style={{ position: "relative", width: 22, height: 22 }}>
               <div style={{ position: "absolute", inset: 0 }}>
@@ -302,10 +308,10 @@ const RatingStrip: React.FC<BlockProps<"ratingStrip">> = ({ block, frame, start 
   );
 };
 
-const Files: React.FC<BlockProps<"files">> = ({ block, frame, start }) => (
+const Files: React.FC<BlockProps<"files">> = ({ block, frame, start, timing }) => (
   <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
     {block.files.map((file, i) => {
-      const p = progress(frame, at(start, i), timing.itemDuration + 4);
+      const p = progress(frame, at(timing, start, i), timing.itemDuration + 4);
       return (
         <div
           key={file}
@@ -329,8 +335,8 @@ const Files: React.FC<BlockProps<"files">> = ({ block, frame, start }) => (
   </div>
 );
 
-const Summary: React.FC<BlockProps<"summary">> = ({ block, frame, start }) => {
-  const panel = progress(frame, at(start, 0), timing.itemDuration);
+const Summary: React.FC<BlockProps<"summary">> = ({ block, frame, start, timing }) => {
+  const panel = progress(frame, at(timing, start, 0), timing.itemDuration);
   return (
     <div style={{ ...inset, borderRadius: 16, padding: "14px 20px", ...rise(panel, 10) }}>
       <div style={{ fontSize: theme.size.caption, color: theme.textDim, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>
@@ -338,7 +344,7 @@ const Summary: React.FC<BlockProps<"summary">> = ({ block, frame, start }) => {
       </div>
       <div style={{ display: "flex", alignItems: "center" }}>
         {block.items.map((it, i) => {
-          const p = progress(frame, at(start, i) + 4, timing.itemDuration);
+          const p = progress(frame, at(timing, start, i) + 4, timing.itemDuration);
           return (
             <React.Fragment key={it.label}>
               {i > 0 && <div style={{ width: 1, height: 28, background: "rgba(255,255,255,0.12)", margin: "0 16px", opacity: p }} />}
@@ -356,10 +362,10 @@ const Summary: React.FC<BlockProps<"summary">> = ({ block, frame, start }) => {
   );
 };
 
-const Callout: React.FC<BlockProps<"callout">> = ({ block, frame, start }) => {
-  const panel = progress(frame, at(start, 0), timing.itemDuration);
-  const head = progress(frame, at(start, 0) + 6, timing.itemDuration);
-  const body = progress(frame, at(start, 1) + 6, timing.itemDuration);
+const Callout: React.FC<BlockProps<"callout">> = ({ block, frame, start, timing }) => {
+  const panel = progress(frame, at(timing, start, 0), timing.itemDuration);
+  const head = progress(frame, at(timing, start, 0) + 6, timing.itemDuration);
+  const body = progress(frame, at(timing, start, 1) + 6, timing.itemDuration);
   return (
     <div style={{ ...inset, display: "flex", gap: 18, padding: "22px 26px", ...rise(panel, 10) }}>
       <div style={{ paddingTop: 1, ...rise(head, 6) }}>
@@ -373,38 +379,238 @@ const Callout: React.FC<BlockProps<"callout">> = ({ block, frame, start }) => {
   );
 };
 
-const renderBlock = (block: Block, frame: number, start: number) => {
+// ---------------------------------------------------------------------------
+// Light-panel blocks (Healthcare)
+
+const lightPanel: React.CSSProperties = {
+  background: "rgba(255,255,255,0.055)",
+  border: "1px solid rgba(255,255,255,0.09)",
+  borderRadius: 18,
+};
+
+/** Lime check circle that draws in: ring first, then the tick. */
+const DrawnCheck: React.FC<{ ring: number; tick: number; size?: number }> = ({ ring, tick, size = 30 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={{ display: "block", flexShrink: 0 }}>
+    <circle cx="12" cy="12" r="10.5" fill={`rgba(196,230,57,${0.14 * tick})`} />
+    <circle
+      cx="12"
+      cy="12"
+      r="10.5"
+      stroke={theme.lime}
+      strokeWidth={1.8}
+      pathLength={1}
+      strokeDasharray="1 1"
+      strokeDashoffset={1 - ring}
+      transform="rotate(-90 12 12)"
+      opacity={ring > 0 ? 1 : 0}
+    />
+    <path
+      d="M7.5 12.3l3 3 6-6.3"
+      stroke={theme.lime}
+      strokeWidth={2.2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      pathLength={1}
+      strokeDasharray="1 1"
+      strokeDashoffset={1 - tick}
+      opacity={tick > 0 ? 1 : 0}
+    />
+  </svg>
+);
+
+const Reschedule: React.FC<BlockProps<"reschedule">> = ({ block, frame, start, timing }) => {
+  const row = (i: number) => progress(frame, at(timing, start, i), timing.itemDuration);
+  const strikeStart = at(timing, start, 2) + timing.itemDuration;
+  const strike = progress(frame, strikeStart, 20);
+  const arrow = progress(frame, strikeStart + 18, 16);
+  const toStart = strikeStart + 24;
+  const to = progress(frame, toStart, 24);
+  // Brief lime highlight as the new date lands, settling to the normal lime chip.
+  const glow = interpolate(frame, [toStart, toStart + 12, toStart + 54], [0, 1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const chip: React.CSSProperties = {
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    padding: "10px 18px 10px 14px",
+    borderRadius: 12,
+    fontSize: theme.size.chip,
+    fontWeight: 600,
+  };
+  return (
+    <div style={{ ...lightPanel, padding: "22px 24px", display: "flex", flexDirection: "column", gap: 18 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, ...rise(row(0), 10) }}>
+        <div
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.12)",
+            border: "1px solid rgba(255,255,255,0.16)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 16,
+            fontWeight: 600,
+            letterSpacing: "0.04em",
+            color: theme.text,
+          }}
+        >
+          {block.initials}
+        </div>
+        <span style={{ fontSize: theme.size.body - 1, color: theme.text, fontWeight: 500 }}>{block.name}</span>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, ...rise(row(1), 10) }}>
+        <div
+          style={{
+            ...chip,
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            color: `rgba(255,255,255,${interpolate(strike, [0, 1], [1, 0.55])})`,
+          }}
+        >
+          <Icon name="calendar" size={20} color={`rgba(255,255,255,${interpolate(strike, [0, 1], [0.8, 0.45])})`} />
+          {block.from}
+          <div
+            style={{
+              position: "absolute",
+              left: 10,
+              right: 10,
+              top: "50%",
+              height: 2,
+              marginTop: -1,
+              borderRadius: 2,
+              background: "rgba(255,255,255,0.8)",
+              transformOrigin: "0% 50%",
+              transform: `scaleX(${strike})`,
+            }}
+          />
+        </div>
+        <div style={{ opacity: arrow, transform: `translateX(${(1 - arrow) * -6}px)` }}>
+          <Icon name="arrowRight" size={22} color={theme.textMuted} />
+        </div>
+        <div
+          style={{
+            ...chip,
+            color: theme.lime,
+            background: `rgba(196,230,57,${0.12 + 0.16 * glow})`,
+            border: `1.5px solid ${theme.lime}`,
+            boxShadow: `0 0 ${28 * glow}px rgba(196,230,57,${0.35 * glow})`,
+            opacity: to,
+            transform: `translateX(${(1 - to) * -16}px)`,
+          }}
+        >
+          <Icon name="calendar" size={20} color={theme.lime} />
+          {block.to}
+        </div>
+      </div>
+      <div style={{ fontSize: theme.size.chip, color: theme.textMuted, ...rise(row(2), 8) }}>{block.detail}</div>
+    </div>
+  );
+};
+
+const PanelRows: React.FC<{
+  rows: { key: string; lead?: React.ReactNode; label: string; trail?: React.ReactNode }[];
+  frame: number;
+  start: number;
+  timing: Timing;
+}> = ({ rows, frame, start, timing }) => (
+  <div style={{ ...lightPanel, padding: "6px 24px" }}>
+    {rows.map((r, i) => {
+      const p = progress(frame, at(timing, start, i), timing.itemDuration);
+      return (
+        <div
+          key={r.key}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+            padding: "16px 0",
+            borderTop: i > 0 ? `1px solid rgba(255,255,255,${0.07 * p})` : undefined,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 16, flex: 1, ...rise(p, 8) }}>
+            {r.lead}
+            <span style={{ fontSize: theme.size.body - 1, color: theme.text, fontWeight: 500 }}>{r.label}</span>
+          </div>
+          {r.trail}
+        </div>
+      );
+    })}
+  </div>
+);
+
+const CheckPanel: React.FC<BlockProps<"checkPanel">> = ({ block, frame, start, timing }) => {
+  // Checks draw one after another, once the rows are in.
+  const checksStart = at(timing, start, block.items.length) + 6;
+  return (
+    <PanelRows
+      frame={frame}
+      start={start}
+      timing={timing}
+      rows={block.items.map((label, i) => {
+        const s = checksStart + i * 20;
+        return {
+          key: label,
+          label,
+          lead: <DrawnCheck ring={progress(frame, s, 18)} tick={progress(frame, s + 10, 14)} />,
+        };
+      })}
+    />
+  );
+};
+
+const ChannelPanel: React.FC<BlockProps<"channelPanel">> = ({ block, frame, start, timing }) => (
+  <PanelRows
+    frame={frame}
+    start={start}
+    timing={timing}
+    rows={block.rows.map((r) => ({ key: r.label, label: r.label, lead: <IconTile icon={r.icon} size={42} /> }))}
+  />
+);
+
+const renderBlock = (block: Block, frame: number, start: number, timing: Timing) => {
   switch (block.type) {
     case "message":
-      return <Message block={block} frame={frame} start={start} />;
+      return <Message block={block} frame={frame} start={start} timing={timing} />;
     case "chips":
-      return <Chips block={block} frame={frame} start={start} />;
+      return <Chips block={block} frame={frame} start={start} timing={timing} />;
     case "checklist":
-      return <Checklist block={block} frame={frame} start={start} />;
+      return <Checklist block={block} frame={frame} start={start} timing={timing} />;
     case "rows":
-      return <Rows block={block} frame={frame} start={start} />;
+      return <Rows block={block} frame={frame} start={start} timing={timing} />;
     case "boardingPass":
-      return <BoardingPass block={block} frame={frame} start={start} />;
+      return <BoardingPass block={block} frame={frame} start={start} timing={timing} />;
     case "ratingStrip":
-      return <RatingStrip block={block} frame={frame} start={start} />;
+      return <RatingStrip block={block} frame={frame} start={start} timing={timing} />;
     case "files":
-      return <Files block={block} frame={frame} start={start} />;
+      return <Files block={block} frame={frame} start={start} timing={timing} />;
     case "summary":
-      return <Summary block={block} frame={frame} start={start} />;
+      return <Summary block={block} frame={frame} start={start} timing={timing} />;
     case "callout":
-      return <Callout block={block} frame={frame} start={start} />;
+      return <Callout block={block} frame={frame} start={start} timing={timing} />;
+    case "reschedule":
+      return <Reschedule block={block} frame={frame} start={start} timing={timing} />;
+    case "checkPanel":
+      return <CheckPanel block={block} frame={frame} start={start} timing={timing} />;
+    case "channelPanel":
+      return <ChannelPanel block={block} frame={frame} start={start} timing={timing} />;
   }
 };
 
 /** Stacks a state's blocks; each block starts after the previous block's items. */
 export const ContentStack: React.FC<{ blocks: Block[]; frame: number }> = ({ blocks, frame }) => {
+  const timing = useTiming();
   let slot = 0;
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       {blocks.map((block, i) => {
         const start = timing.contentStart + slot * timing.contentStagger;
         slot += itemCount(block);
-        return <React.Fragment key={i}>{renderBlock(block, frame, start)}</React.Fragment>;
+        return <React.Fragment key={i}>{renderBlock(block, frame, start, timing)}</React.Fragment>;
       })}
     </div>
   );

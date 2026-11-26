@@ -4,7 +4,21 @@
  * is one card shown in sequence; its `content` is a stack of blocks.
  */
 
-export type IconName = "plane" | "bed" | "pin" | "car" | "calendar" | "people" | "info" | "file" | "star";
+export type IconName =
+  | "plane"
+  | "bed"
+  | "pin"
+  | "car"
+  | "calendar"
+  | "calendarCheck"
+  | "people"
+  | "info"
+  | "file"
+  | "star"
+  | "arrowRight"
+  | "whatsapp"
+  | "sms"
+  | "email";
 
 export type IconLabel = { icon: IconName; label: string };
 
@@ -32,20 +46,32 @@ export type ContentBlock =
   /** Summary strip of icon items separated by dividers. */
   | { type: "summary"; caption: string; items: (IconLabel & { highlight?: boolean })[] }
   /** Human-review callout on a darker inset panel. */
-  | { type: "callout"; heading: string; body: string };
+  | { type: "callout"; heading: string; body: string }
+  /** Light panel: avatar + name, a date change (old date struck through, new date in lime), detail line. */
+  | { type: "reschedule"; initials: string; name: string; from: string; to: string; detail: string }
+  /** Light panel of rows, each with a lime check circle that draws in. */
+  | { type: "checkPanel"; items: string[] }
+  /** Light panel of rows, each with a channel icon on the left. */
+  | { type: "channelPanel"; rows: IconLabel[] };
 
 export type AgentState = {
   /** e.g. "AGENT-01" */
   agentId: string;
-  /** e.g. "Intake Agent" */
-  role: string;
+  /** e.g. "Intake Agent". Optional. */
+  role?: string;
   /** Status pill text, e.g. "RECEIVED" */
   status: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   content: ContentBlock[];
   /** Human-in-the-loop styling: lime filled tag and pill, lime-tinted border. */
   escalation?: boolean;
+  /** Lime filled status pill without the rest of the escalation styling. */
+  pillFilled?: boolean;
+  /** "timeline": icon circle on the left with a vertical lime line, content to its right. */
+  layout?: "default" | "timeline";
+  /** Icon for the timeline layout's circle. */
+  icon?: IconName;
 };
 
 export type AgentFlow = {
