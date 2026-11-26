@@ -20,7 +20,7 @@ export const AgentFlowHero: React.FC<AgentFlowHeroProps> = ({ flow, background }
   const local = frame - index * flow.framesPerState;
 
   return (
-    <AbsoluteFill style={{ backgroundColor: background, alignItems: "center", justifyContent: "center" }}>
+    <AbsoluteFill style={{ backgroundColor: background, alignItems: "center", justifyContent: "flex-start", paddingTop: flow.cardTop }}>
       <AgentCard state={flow.states[index]} frame={local} durationInFrames={flow.framesPerState} />
     </AbsoluteFill>
   );

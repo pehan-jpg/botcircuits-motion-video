@@ -31,6 +31,7 @@ export const theme = {
     title: 46,
     subtitle: 22,
     body: 22,
+    caption: 13,
     chip: 19,
     calloutHeading: 20,
     calloutBody: 20,

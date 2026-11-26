@@ -1,7 +1,7 @@
 import React from "react";
 import { interpolate } from "remotion";
 import { theme } from "./theme";
-import { ContentBlock } from "./ContentBlock";
+import { ContentStack } from "./ContentBlock";
 import { easeIn, easeOut, progress, timing } from "./timing";
 import type { AgentState } from "./types";
 
@@ -176,8 +176,8 @@ export const AgentCard: React.FC<Props> = ({ state, frame, durationInFrames }) =
         </div>
 
         {/* Content */}
-        <div style={{ marginTop: 36 }}>
-          <ContentBlock block={state.content} frame={frame} />
+        <div style={{ marginTop: 32 }}>
+          <ContentStack blocks={state.content} frame={frame} />
         </div>
       </div>
     </div>
