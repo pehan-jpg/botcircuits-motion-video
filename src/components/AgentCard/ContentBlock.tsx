@@ -341,10 +341,12 @@ const Summary: React.FC<BlockProps<"summary">> = ({ block, frame, start }) => {
           const p = progress(frame, at(start, i) + 4, timing.itemDuration);
           return (
             <React.Fragment key={it.label}>
-              {i > 0 && <div style={{ width: 1, height: 28, background: "rgba(255,255,255,0.12)", margin: "0 20px", opacity: p }} />}
+              {i > 0 && <div style={{ width: 1, height: 28, background: "rgba(255,255,255,0.12)", margin: "0 16px", opacity: p }} />}
               <div style={{ display: "flex", alignItems: "center", gap: 10, opacity: p, transform: `translateX(${(1 - p) * 14}px)` }}>
                 <Icon name={it.icon} size={22} color={theme.lime} />
-                <span style={{ fontSize: 18, color: theme.text, fontWeight: 500, whiteSpace: "nowrap" }}>{it.label}</span>
+                <span style={{ fontSize: 17, color: it.highlight ? theme.lime : theme.text, fontWeight: it.highlight ? 600 : 500, whiteSpace: "nowrap" }}>
+                  {it.label}
+                </span>
               </div>
             </React.Fragment>
           );

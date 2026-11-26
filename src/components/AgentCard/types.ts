@@ -30,7 +30,7 @@ export type ContentBlock =
   /** File chips. */
   | { type: "files"; files: string[] }
   /** Summary strip of icon items separated by dividers. */
-  | { type: "summary"; caption: string; items: IconLabel[] }
+  | { type: "summary"; caption: string; items: (IconLabel & { highlight?: boolean })[] }
   /** Human-review callout on a darker inset panel. */
   | { type: "callout"; heading: string; body: string };
 

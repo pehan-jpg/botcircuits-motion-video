@@ -70,8 +70,9 @@ export const travelFlow: AgentFlow = {
           caption: "Trip context attached",
           items: [
             { icon: "plane", label: "CMB to DXB" },
-            { icon: "bed", label: "Family room · 4 nights" },
+            { icon: "bed", label: "Hotel · 4 nights" },
             { icon: "pin", label: "Desert safari" },
+            { icon: "car", label: "Private transfer", highlight: true },
           ],
         },
         {
