@@ -4,6 +4,7 @@ import { SpaceVideo } from "./SpaceVideo";
 import { NightGradeTest } from "./NightGradeTest";
 import { BUILT_FRAMES, BUILT_SCENES, sceneFrames } from "./timeline";
 import { SCENE_COMPONENTS } from "./scenes";
+import { SpaceReel9x16 } from "./reel/SpaceReel9x16";
 
 const W = 1920;
 const H = 1080;
@@ -18,6 +19,14 @@ export const RemotionRoot: React.FC = () => (
       fps={FPS}
       width={W}
       height={H}
+    />
+    <Composition
+      id="SpaceReel9x16"
+      component={SpaceReel9x16}
+      durationInFrames={BUILT_FRAMES}
+      fps={FPS}
+      width={1080}
+      height={1920}
     />
     <Folder name="Scenes">
       {BUILT_SCENES.map((s) => (
